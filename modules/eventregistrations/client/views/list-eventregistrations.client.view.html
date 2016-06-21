@@ -1,0 +1,22 @@
+<section>
+  <div class="page-header">
+    <h1>Eventregistrations</h1>
+  </div>
+  <div class="list-group">
+    <a data-ng-repeat="eventregistration in vm.eventregistrations"
+       data-ui-sref="eventregistrations.view({ eventregistrationId: eventregistration._id })"
+       class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span data-ng-bind="eventregistration.created | date:'mediumDate'"></span>
+        by
+        <span data-ng-if="eventregistration.user" data-ng-bind="eventregistration.user.displayName"></span>
+        <span data-ng-if="!eventregistration.user">Deleted User</span>
+      </small>
+      <h4 class="list-group-item-heading" data-ng-bind="eventregistration.name"></h4>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="vm.eventregistrations.$resolved && !vm.eventregistrations.length">
+    No Eventregistrations yet, why don't you <a data-ui-sref="eventregistrations.create">create one</a>?
+  </div>
+</section>
