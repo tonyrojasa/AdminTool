@@ -63,7 +63,7 @@
         eventregistrationResolve: {}
       });
 
-      //Spy on state go
+      // Spy on state go
       spyOn($state, 'go');
     }));
 
@@ -141,12 +141,12 @@
 
     describe('vm.remove()', function () {
       beforeEach(function () {
-        //Setup Eventregistrations
+        // Setup Eventregistrations
         $scope.vm.eventregistration = mockEventregistration;
       });
 
       it('should delete the Eventregistration and redirect to Eventregistrations', function () {
-        //Return true on confirm message
+        // Return true on confirm message
         spyOn(window, 'confirm').and.returnValue(true);
 
         $httpBackend.expectDELETE(/api\/eventregistrations\/([0-9a-fA-F]{24})$/).respond(204);
@@ -158,7 +158,7 @@
       });
 
       it('should should not delete the Eventregistration and not redirect', function () {
-        //Return false on confirm message
+        // Return false on confirm message
         spyOn(window, 'confirm').and.returnValue(false);
 
         $scope.vm.remove();

@@ -51,13 +51,13 @@ var EventregistrationSchema = new Schema({
   sponsorship: {
     sponsorRequired: Boolean,
     sponsor: {
-        type: Schema.ObjectId,
-        ref: 'Person'
+      type: Schema.ObjectId,
+      ref: 'Person'
     },
     percentage: Number,
     comments: String
   },
-  balanceAmount:{
+  balanceAmount: {
     type: Number,
     default: '',
     required: 'Please fill balance amount'

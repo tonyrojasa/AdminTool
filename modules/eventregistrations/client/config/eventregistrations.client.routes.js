@@ -33,7 +33,7 @@
         },
         data: {
           roles: ['user', 'admin'],
-          pageTitle : 'Eventregistrations Create'
+          pageTitle: 'Eventregistrations Create'
         }
       })
       .state('eventregistrations.edit', {
@@ -57,7 +57,7 @@
         resolve: {
           eventregistrationResolve: getEventregistration
         },
-        data:{
+        data: {
           pageTitle: 'Eventregistration {{ articleResolve.name }}'
         }
       });

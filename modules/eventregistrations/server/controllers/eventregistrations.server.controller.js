@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * Module dependencies.
  */
@@ -44,9 +45,9 @@ exports.read = function(req, res) {
  * Update a Eventregistration
  */
 exports.update = function(req, res) {
-  var eventregistration = req.eventregistration ;
+  var eventregistration = req.eventregistration;
 
-  eventregistration = _.extend(eventregistration , req.body);
+  eventregistration = _.extend(eventregistration, req.body);
 
   eventregistration.save(function(err) {
     if (err) {
@@ -63,7 +64,7 @@ exports.update = function(req, res) {
  * Delete an Eventregistration
  */
 exports.delete = function(req, res) {
-  var eventregistration = req.eventregistration ;
+  var eventregistration = req.eventregistration;
 
   eventregistration.remove(function(err) {
     if (err) {
@@ -79,7 +80,7 @@ exports.delete = function(req, res) {
 /**
  * List of Eventregistrations
  */
-exports.list = function(req, res) { 
+exports.list = function(req, res) {
   Eventregistration.find().sort('-created').populate('user', 'displayName').exec(function(err, eventregistrations) {
     if (err) {
       return res.status(400).send({
