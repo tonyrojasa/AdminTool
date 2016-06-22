@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
  * Eventregistration Schema
  */
 var EventregistrationSchema = new Schema({
-  name: {
+  eventName: {
     type: String,
     default: '',
     required: 'Please fill Eventregistration name',
