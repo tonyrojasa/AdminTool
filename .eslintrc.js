@@ -41,7 +41,7 @@ module.exports = {
     'padded-blocks': 0,
     'space-before-function-paren': 0,
     'space-in-parens': [2, 'never'],
-    'spaced-comment': [2, 'always'],
+    'spaced-comment': [1, 'always'],
     strict: 0,
     'quote-props': 0,
     quotes: [1, 'single'],

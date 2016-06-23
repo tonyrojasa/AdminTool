@@ -1,0 +1,26 @@
+<section>
+  <div class="page-header">
+    <h1 data-ng-bind="vm.organization.name"></h1>
+  </div>
+  <div class="pull-right"
+       data-ng-show="vm.organization.isCurrentUserOwner">
+    <a class="btn btn-primary"
+       data-ui-sref="organizations.edit({ organizationId: vm.organization._id })">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn btn-primary" data-ng-click="vm.remove()">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <small>
+    <em class="text-muted">
+      Creado en
+      <span data-ng-bind="vm.organization.created | date:'mediumDate'"></span>
+      por
+      <span data-ng-if="vm.organization.user"
+            data-ng-bind="vm.organization.user.displayName"></span>
+      <span data-ng-if="!vm.organization.user">Deleted User</span>
+    </em>
+  </small>
+  <p class="lead" data-ng-bind="vm.organization.description"></p>
+</section>

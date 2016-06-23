@@ -1,0 +1,23 @@
+<section>
+  <div class="page-header">
+    <h1>Organizations</h1>
+  </div>
+  <div class="list-group">
+    <a data-ng-repeat="organization in vm.organizations"
+       data-ui-sref="organizations.view({ organizationId: organization._id })"
+       class="list-group-item">
+      <small class="list-group-item-text">
+        Creado en
+        <span data-ng-bind="organization.created | date:'mediumDate'"></span>
+        por
+        <span data-ng-if="organization.user" data-ng-bind="organization.user.displayName"></span>
+        <span data-ng-if="!organization.user">Deleted User</span>
+      </small>
+      <h4 class="list-group-item-heading" data-ng-bind="organization.name"></h4>
+      <p class="list-group-item-text" ng-bind="organization.description"></p>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="vm.organizations.$resolved && !vm.organizations.length">
+    No Organizations yet, why don't you <a data-ui-sref="organizations.create">create one</a>?
+  </div>
+</section>

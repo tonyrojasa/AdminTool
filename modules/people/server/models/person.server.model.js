@@ -6,115 +6,110 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
+var SchemaTypes = mongoose.Schema.Types;
+
 /**
  * Person Schema
  */
-var PersonSchema = new Schema({
-  name: {
-    type: String,
-    default: '',
-    required: 'Please fill Person name',
-    trim: true
-  },
-  person_id: {
-    type: 'integer',
-    unique: true,
-    columnName: 'person_id',
-    required: true
-  },
-  church: {
-    model: 'Church'
-  },
-  name: {
-    type: 'string',
-    columnName: 'name',
-    required: true
-  },
-  firstName: {
-    type: 'string',
-    columnName: 'firstName',
-    required: true
-  },
-  lastName: {
-    type: 'string',
-    columnName: 'lastName',
-    required: true
-  },
-  activeMember: {
-    type: 'boolean',
-    columnName: 'activeMember',
-    required: true
-  },
-  memberTimeYears: {
-    type: 'float',
-    columnName: 'memberTimeYears'
+var PersonSchema = new Schema({  
+  organization: {
+    type: Schema.ObjectId,
+    ref: 'Organization'
   },
   serviceAcademyClass: {
-    collection: 'serviceAcademyClass',
-    via: 'members'
-  },
-  address: {
-    type: 'string',
-    columnName: 'address'
+    type: Schema.ObjectId,
+    ref: 'ServiceAcademyClass'
   },
   location: {
-    model: 'geoLocation'
+    type: Schema.ObjectId,
+    ref: 'Location'
   },
   contactInfo: {
-    collection: 'ContactInfo',
-    via: 'person',
-    required: true
+    type: Schema.ObjectId,
+    ref: 'ContactInfo'
   },
-  events: {
-    collection: 'PersonEnrolment',
-    via: 'person'
+  personId: {
+    type: Number,
+    required: 'Please fill personId'
   },
+  firstName: {
+    type: String,
+    required: 'Please fill firstName',
+    trim: true
+  },
+  lastName: {
+    type: String,
+    required: 'Please fill lastName',
+    trim: true
+  },
+  activeMember: {
+    type: Boolean,
+    required: 'Please fill activeMember',
+    trim: true
+  },
+  memberTimeYears: {
+    type: String,
+    default: '',
+    required: 'Please fill memberTimeYears',
+    trim: true
+  },  
+  address: {
+    type: String,
+    required: 'Please fill address',
+    trim: true
+  },  
   personType: {
-    collection: 'PersonType',
-    required: true
+    type: String,
+    trim: true
   },
   birthDate: {
-    type: 'date',
-    columnName: 'birthDate'
+    type: Date,
+    required: 'Please fill birthDate',
+    trim: true
   },
   age: {
-    type: 'integer',
-    columnName: 'age'
+    type: Number,
+    required: 'Please fill age',
+    trim: true
   },
   maritalStatus: {
-    type: 'string',
-    enum: ['married', 'single', 'divorced', 'widower', 'freeUnion', 'other'],
-    columnName: 'maritalStatus',
-    required: true
+    type: String,
+    required: 'Please fill maritalStatus',
+    trim: true
   },
   grade: {
-    type: 'string',
-    columnName: 'grade'
+    type: String,
+    trim: true
   },
   occupation: {
-    type: 'string',
-    columnName: 'grade'
+    type: String,
+    required: 'Please fill occupation',
+    trim: true
   },
   employer: {
-    type: 'string',
-    columnName: 'grade'
+    type: String,
+    required: 'Please fill employer',
+    trim: true
   },
   shirtSize: {
-    type: 'string',
-    columnName: 'shirtSize'
+    type: String,
+    required: 'Please fill shirtSize',
+    trim: true
   },
   medicalTreatment: {
-    type: 'string',
-    columnName: 'medicalTreatment'
+    comments: { 
+      type: String,
+      trim: true 
+    },
+    medicineType: { 
+      type: String,
+      trim: true 
+    },
+    allergies: { 
+      type: String,
+      trim: true 
+    }
   },
-  medicineType: {
-    type: 'string',
-    columnName: 'medicineType'
-  },
-  allergies: {
-    type: 'string',
-    columnName: 'allergies'
-  }
   created: {
     type: Date,
     default: Date.now
