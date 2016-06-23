@@ -18,8 +18,6 @@ var OrganizationSchema = new Schema({
   },
   description: {
     type: String,
-    default: '',
-    required: 'Please fill Organization name',
     trim: true
   },
   created: {

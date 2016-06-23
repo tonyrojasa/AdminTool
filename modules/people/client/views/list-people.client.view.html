@@ -1,7 +1,8 @@
 <section>
   <div class="page-header">
-    <h1>People</h1>
+    <h1>Lista de Personas</h1>
   </div>
+  <a class="btn btn-primary" data-ui-sref="people.create">Nueva Persona</a>
   <div class="list-group">
     <a data-ng-repeat="person in vm.people"
        data-ui-sref="people.view({ personId: person._id })"
@@ -17,6 +18,6 @@
     </a>
   </div>
   <div class="alert alert-warning text-center" data-ng-if="vm.people.$resolved && !vm.people.length">
-    No People yet, why don't you <a data-ui-sref="people.create">create one</a>?
+    No hay ninguna persona creada <a data-ui-sref="people.create">Crear una</a>?
   </div>
 </section>

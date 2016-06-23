@@ -10,7 +10,7 @@
   function menuConfig(Menus) {
     // Set top bar menu items
     Menus.addMenuItem('topbar', {
-      title: 'People',
+      title: 'Personas',
       state: 'people',
       type: 'dropdown',
       roles: ['*']
@@ -18,13 +18,13 @@
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'people', {
-      title: 'List People',
+      title: 'Lista de Personas',
       state: 'people.list'
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'people', {
-      title: 'Create Person',
+      title: 'Crear Persona',
       state: 'people.create',
       roles: ['user']
     });

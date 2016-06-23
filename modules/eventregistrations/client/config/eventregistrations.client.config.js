@@ -18,13 +18,13 @@
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'eventregistrations', {
-      title: 'Registros de eventos',
+      title: 'Lista de Inscripciones',
       state: 'eventregistrations.list'
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'eventregistrations', {
-      title: 'Crear Inscripcion',
+      title: 'Crear Inscripción',
       state: 'eventregistrations.create',
       roles: ['user']
     });

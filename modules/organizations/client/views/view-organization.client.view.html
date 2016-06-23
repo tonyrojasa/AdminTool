@@ -23,4 +23,5 @@
     </em>
   </small>
   <p class="lead" data-ng-bind="vm.organization.description"></p>
+  <p class="lead" data-ng-if="!vm.organization.description.length"> No hay descripción para esta organización</p>
 </section>

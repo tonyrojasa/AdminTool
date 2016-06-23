@@ -10,7 +10,7 @@
   function menuConfig(Menus) {
     // Set top bar menu items
     Menus.addMenuItem('topbar', {
-      title: 'Organizations',
+      title: 'Organizaciones',
       state: 'organizations',
       type: 'dropdown',
       roles: ['*']
@@ -18,13 +18,13 @@
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'organizations', {
-      title: 'List Organizations',
+      title: 'Lista de  Organizaciones',
       state: 'organizations.list'
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'organizations', {
-      title: 'Create Organization',
+      title: 'Crear Organización',
       state: 'organizations.create',
       roles: ['user']
     });

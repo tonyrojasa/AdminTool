@@ -20,7 +20,7 @@
         controller: 'OrganizationsListController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Organizations List'
+          pageTitle: 'Lista de Organizaciones'
         }
       })
       .state('organizations.create', {
@@ -33,7 +33,7 @@
         },
         data: {
           roles: ['user', 'admin'],
-          pageTitle: 'Organizations Create'
+          pageTitle: 'Crear Organización'
         }
       })
       .state('organizations.edit', {
@@ -46,7 +46,7 @@
         },
         data: {
           roles: ['user', 'admin'],
-          pageTitle: 'Edit Organization {{ organizationResolve.name }}'
+          pageTitle: 'Editar Organización: {{ organizationResolve.name }}'
         }
       })
       .state('organizations.view', {
@@ -58,7 +58,7 @@
           organizationResolve: getOrganization
         },
         data: {
-          pageTitle: 'Organization {{ articleResolve.name }}'
+          pageTitle: 'Organización: {{ articleResolve.name }}'
         }
       });
   }

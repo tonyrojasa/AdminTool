@@ -20,7 +20,7 @@
         controller: 'PeopleListController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'People List'
+          pageTitle: 'Lista de Personas'
         }
       })
       .state('people.create', {
@@ -33,7 +33,7 @@
         },
         data: {
           roles: ['user', 'admin'],
-          pageTitle: 'People Create'
+          pageTitle: 'Crear Persona'
         }
       })
       .state('people.edit', {
@@ -46,7 +46,7 @@
         },
         data: {
           roles: ['user', 'admin'],
-          pageTitle: 'Edit Person {{ personResolve.name }}'
+          pageTitle: 'Editar Persona: {{ personResolve.name }}'
         }
       })
       .state('people.view', {
@@ -58,7 +58,7 @@
           personResolve: getPerson
         },
         data: {
-          pageTitle: 'Person {{ articleResolve.name }}'
+          pageTitle: 'Persona: {{ articleResolve.name }}'
         }
       });
   }
