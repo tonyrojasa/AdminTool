@@ -42,6 +42,11 @@ var PersonSchema = new Schema({
     required: 'Please fill lastName',
     trim: true
   },
+  secondLastName: {
+    type: String,
+    required: 'Please fill secondLastName',
+    trim: true
+  },
   activeMember: {
     type: Boolean,
     required: 'Please fill activeMember',
@@ -50,7 +55,6 @@ var PersonSchema = new Schema({
   memberTimeYears: {
     type: String,
     default: '',
-    required: 'Please fill memberTimeYears',
     trim: true
   },  
   address: {
@@ -83,12 +87,10 @@ var PersonSchema = new Schema({
   },
   occupation: {
     type: String,
-    required: 'Please fill occupation',
     trim: true
   },
   employer: {
     type: String,
-    required: 'Please fill employer',
     trim: true
   },
   shirtSize: {
@@ -97,6 +99,11 @@ var PersonSchema = new Schema({
     trim: true
   },
   medicalTreatment: {
+    exists: { 
+      type: Boolean,
+      default: false,
+      trim: true 
+    },
     comments: { 
       type: String,
       trim: true 

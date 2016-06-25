@@ -14,9 +14,7 @@
     vm.authentication = Authentication;
     vm.person = person;
     vm.error = null;
-    vm.form = {};
     vm.remove = remove;
-    vm.save = save;
 
     // Remove existing Person
     function remove() {
@@ -25,29 +23,15 @@
       }
     }
 
-    // Save Person
-    function save(isValid) {
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.form.personForm');
-        return false;
-      }
+    // Save Person callbacks
+    function successCallback(res) {
+      $state.go('people.view', {
+        personId: res._id
+      });
+    }
 
-      // TODO: move create/update logic to service
-      if (vm.person._id) {
-        vm.person.$update(successCallback, errorCallback);
-      } else {
-        vm.person.$save(successCallback, errorCallback);
-      }
-
-      function successCallback(res) {
-        $state.go('people.view', {
-          personId: res._id
-        });
-      }
-
-      function errorCallback(res) {
-        vm.error = res.data.message;
-      }
+    function errorCallback(res) {
+      vm.error = res.data.message;
     }
   }
 })();
