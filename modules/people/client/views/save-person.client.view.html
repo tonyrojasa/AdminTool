@@ -4,7 +4,19 @@
       <fieldset>
         <div class="form-group" show-errors>
           <label class="control-label" for="organization">Organización</label>
-          <input name="organization" type="text" ng-model="person.organization" id="organization" class="form-control" placeholder="Organización" required>
+          <input name="organization" type="hidden" ng-model="person.organization" id="organization" class="form-control" placeholder="Organización" required>
+          <div class="dropdown" id="organizationDropdown" uib-dropdown>
+            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+              <span ng-if="!person.organization">-- Seleccione uno --</span>
+              {{person.organization}}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" ng-if="organizations">
+              <li data-ng-repeat="organization in organizations">
+                <a ng-click="setOrganization(organization.name)">{{organization.name}}</a>
+              </li>
+            </ul>
+          </div> 
           <div ng-messages="form.personForm.organization.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Organización es requerido.</p>
           </div>
@@ -123,7 +135,19 @@
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="grade">Educación</label>
-          <input name="grade" type="text" ng-model="person.grade" id="grade" class="form-control" placeholder="Educación" required>
+          <input name="grade" type="hidden" ng-model="person.grade" id="grade" class="form-control" placeholder="Educación" required>
+          <div class="dropdown" id="gradeDropdown" uib-dropdown>
+            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+              <span ng-if="!person.grade">-- Seleccione uno --</span>
+              {{person.grade}}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li ng-repeat="grade in grades">
+                <a ng-click="setGrade(maritalStatus)">{{grade}}</a>
+              </li>
+            </ul>
+          </div> 
           <div ng-messages="form.personForm.grade.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Educación es requerido.</p>
           </div>
@@ -167,10 +191,10 @@
           <br/>
           <div class="radio">
             <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" ng-model="person.medicalTreatment.exists" id="medicalTreatmentYes" data-ng-value="true" class="radio"> Si 
+              <input type="radio" name="medicalTreatmentYes" ng-model="person.medicalTreatment.exists" id="medicalTreatmentYes" data-ng-value="true" class="radio"> Si 
             </label>
             <label class="radio-inline" active>
-              <input type="radio" name="inlineRadioOptions" ng-model="person.medicalTreatment.exists" id="medicalTreatmentNo" data-ng-value="false" class="radio"  checked="checked"> No
+              <input type="radio" name="medicalTreatmentNo" ng-model="person.medicalTreatment.exists" id="medicalTreatmentNo" data-ng-value="false" class="radio"> No
             </label>
           </div>
         </div>

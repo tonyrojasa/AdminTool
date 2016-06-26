@@ -5,9 +5,9 @@
     .module('people')
     .directive('savePerson', savePerson);
 
-  savePerson.$inject = ['$rootScope'];
+  savePerson.$inject = ['$rootScope', 'OrganizationsService'];
 
-  function savePerson($rootScope) {
+  function savePerson($rootScope,OrganizationsService) {
     return {
       templateUrl: 'modules/people/client/views/save-person.client.view.html',
       restrict: 'E',
@@ -17,11 +17,12 @@
         errorCallback: '@'
       },
       link: function postLink(scope, element, attrs) {
-        // Save person directive logic
-
-        //scope.form = {};
         scope.save = save;
-        scope.hola = 'hola';
+        
+        scope.organizations = OrganizationsService.query();
+        scope.setOrganization = function (organization){
+          scope.person.organization = organization;
+        }
 
         scope.personTypes = ['Encuentrista', 'Lider'];
         scope.setPersonType = function (personType){
@@ -36,6 +37,25 @@
         scope.shirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
         scope.setShirtSize = function (shirtSize){
           scope.person.shirtSize = shirtSize;
+        }
+
+        scope.grades = 
+        ['Ninguna', 
+        'Primaria incompleta', 
+        'Primaria completa', 
+        'Secundatia incompleta', 
+        'Secundatia completa', 
+        'Bachiller Universitario incompleto',
+        'Bachiller Universitario completo',
+        'Licenciatura Universitaria incompleto',
+        'Licenciatura Universitaria completo',
+        'Maestría Universitaria incompleto',
+        'Maestría Universitaria completo',
+        'Doctorado Universitaria incompleto',
+        'Doctorado Universitaria completo',
+        'Otro(a)'];
+        scope.setGrade = function (grade){
+          scope.person.grade = grade;
         }
 
 
