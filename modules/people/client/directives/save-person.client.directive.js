@@ -7,7 +7,7 @@
 
   savePerson.$inject = ['$rootScope', 'OrganizationsService'];
 
-  function savePerson($rootScope,OrganizationsService) {
+  function savePerson($rootScope, OrganizationsService) {
     return {
       templateUrl: 'modules/people/client/views/save-person.client.view.html',
       restrict: 'E',
@@ -20,24 +20,24 @@
         scope.save = save;
         
         scope.organizations = OrganizationsService.query();
-        scope.setOrganization = function (organization){
+        scope.setOrganization = function (organization) {
           scope.person.organization = organization;
-        }
+        };
 
         scope.personTypes = ['Encuentrista', 'Lider'];
-        scope.setPersonType = function (personType){
+        scope.setPersonType = function (personType) {
           scope.person.personType = personType;
-        }
+        };
 
         scope.maritalStatuses = ['Soltero(a)', 'Comprometido(a)', 'Casado(a)', 'Unión Libre', 'Divorciado(a)', 'Viudo(a)'];
-        scope.setMaritalStatus = function (maritalStatus){
+        scope.setMaritalStatus = function (maritalStatus) {
           scope.person.maritalStatus = maritalStatus;
-        }
+        };
 
         scope.shirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
-        scope.setShirtSize = function (shirtSize){
+        scope.setShirtSize = function (shirtSize) {
           scope.person.shirtSize = shirtSize;
-        }
+        };
 
         scope.grades = 
         ['Ninguna', 
@@ -54,9 +54,9 @@
         'Doctorado Universitaria incompleto',
         'Doctorado Universitaria completo',
         'Otro(a)'];
-        scope.setGrade = function (grade){
+        scope.setGrade = function (grade) {
           scope.person.grade = grade;
-        }
+        };
 
 
         // Save Person

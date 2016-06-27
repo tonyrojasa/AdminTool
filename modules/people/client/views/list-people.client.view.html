@@ -8,9 +8,9 @@
        data-ui-sref="people.view({ personId: person._id })"
        class="list-group-item">
       <small class="list-group-item-text">
-        Posted on
+        Creado en
         <span data-ng-bind="person.created | date:'mediumDate'"></span>
-        by
+        por
         <span data-ng-if="person.user" data-ng-bind="person.user.displayName"></span>
         <span data-ng-if="!person.user">Deleted User</span>
       </small>
