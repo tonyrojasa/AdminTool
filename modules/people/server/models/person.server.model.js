@@ -47,6 +47,22 @@ var PersonSchema = new Schema({
     required: 'Please fill secondLastName',
     trim: true
   },
+  email: {
+    type: String,
+    trim: true
+  },
+  mobilePhone: {
+    type: String,
+    trim: true
+  },
+  homePhone: {
+    type: String,
+    trim: true
+  },
+  otherPhone: {
+    type: String,
+    trim: true
+  },
   activeMember: {
     type: Boolean,
     required: 'Please fill activeMember',

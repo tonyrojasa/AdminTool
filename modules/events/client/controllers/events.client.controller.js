@@ -18,6 +18,16 @@
     vm.remove = remove;
     vm.save = save;
 
+    vm.dateOptions = {
+      formatYear: 'yy',
+      maxDate: new Date(2020, 5, 22),
+      minDate: new Date(),
+      startingDay: 1
+    };
+
+    vm.format = 'dd/mm/yyyy';
+
+
     // Remove existing Event
     function remove() {
       if (confirm('Are you sure you want to delete?')) {

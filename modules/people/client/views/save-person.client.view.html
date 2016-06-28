@@ -64,6 +64,28 @@
           </div>
         </div>
         <div class="form-group" show-errors>
+          <label class="control-label" for="email">Email</label>
+          <input name="email" type="text" ng-model="person.email" id="email" class="form-control" placeholder="Segundo Apellido" required>
+          <div ng-messages="form.personForm.email.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Email es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="mobilePhone">Teléfono celular</label>
+          <input name="mobilePhone" type="text" ng-model="person.mobilePhone" id="mobilePhone" class="form-control" placeholder="Teléfono celular">
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="homePhone">Teléfono casa</label>
+          <input name="homePhone" type="text" ng-model="person.homePhone" id="homePhone" class="form-control" placeholder="Teléfono casa" required>
+          <div ng-messages="form.personForm.homePhone.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">STeléfono casa es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="otherPhone">Teléfono (otro)</label>
+          <input name="otherPhone" type="text" ng-model="person.otherPhone" id="otherPhone" class="form-control" placeholder="Teléfono (otro)">
+        </div>
+        <div class="form-group" show-errors>
           <label class="control-label" for="activeMember">Miembro activo</label>
           <input name="activeMember" type="text" ng-model="person.activeMember" id="activeMember" class="form-control" placeholder="Miembro activo" required>
           <div ng-messages="form.personForm.activeMember.$error" role="alert">

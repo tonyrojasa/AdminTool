@@ -30,6 +30,11 @@ var EventSchema = new Schema({
     type: Date,
     required: 'Please fill Event endDate'
   },
+  price: {
+    type: String,
+    default: '',
+    trim: true
+  },
   created: {
     type: Date,
     default: Date.now

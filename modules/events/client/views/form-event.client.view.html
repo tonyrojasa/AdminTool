@@ -14,7 +14,7 @@
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="description">Descripción</label>
-          <input name="description" type="text" ng-model="vm.event.description" id="description" class="form-control" placeholder="Name">
+          <input name="description" type="text" ng-model="vm.event.description" id="description" class="form-control" placeholder="Descripción">
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="startDate">Fecha de inicio</label>
@@ -28,6 +28,16 @@
           <input name="endDate" type="date" ng-model="vm.event.endDate" id="endDate" class="form-control" placeholder="Fecha final" required>
           <div ng-messages="vm.form.eventForm.endDate.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Fecha final es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="price">Precio del evento (por persona)</label>
+          <div class="input-group"> 
+            <span class="input-group-addon">$</span>
+            <input name="price" type="number" ng-model="vm.event.price" id="price" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Precio del evento" required>
+          </div>
+          <div ng-messages="vm.form.eventForm.price.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Precio del evento es requerido.</p>
           </div>
         </div>
         <div class="form-group">
