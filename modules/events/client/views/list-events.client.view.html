@@ -4,8 +4,13 @@
   </div>
   <a class="btn btn-primary" data-ui-sref="events.create">Nuevo Evento</a>
   <br/><br/>
+  <div class="form-inline"> 
+    <label class="control-label" for="filterDate">Buscar:</label>
+    <input name="filterDate" type="text" ng-model="vm.searchFilter" id="filterDate" class="form-control">
+  </div>
+  <br/>
   <div class="list-group">
-    <a data-ng-repeat="event in vm.events"
+    <a data-ng-repeat="event in vm.events | orderBy:'startDate' | filter : vm.searchFilter"
        data-ui-sref="events.view({ eventId: event._id })"
        class="list-group-item">
       <small class="list-group-item-text">
@@ -17,8 +22,8 @@
       </small>
       <h4 class="list-group-item-heading" data-ng-bind="event.name"></h4>      
       <p class="list-group-item-text" ng-bind="event.description"></p> 
-      <p class="list-group-item-text" ng-bind="event.startDate"></p>   
-      <p class="list-group-item-text" ng-bind="event.endDate"></p>
+      <p>Fecha de inicio: <span class="list-group-item-text" ng-bind="event.startDate | date:'longDate'"></span></p> 
+      <p>Fecha final: <span class="list-group-item-text" ng-bind="event.endDate | date:'longDate'"></span></p>         
     </a>
   </div>
   <div class="alert alert-warning text-center" data-ng-if="vm.events.$resolved && !vm.events.length">

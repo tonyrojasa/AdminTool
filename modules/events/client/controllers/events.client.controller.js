@@ -19,14 +19,10 @@
     vm.save = save;
 
     vm.dateOptions = {
-      formatYear: 'yy',
-      maxDate: new Date(2020, 5, 22),
-      minDate: new Date(),
-      startingDay: 1
+      showWeeks: false
     };
 
-    vm.format = 'dd/mm/yyyy';
-
+    vm.format = 'dd-MMM-yyyy';
 
     // Remove existing Event
     function remove() {

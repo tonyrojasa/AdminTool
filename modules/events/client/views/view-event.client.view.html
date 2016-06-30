@@ -25,6 +25,6 @@
   <p class="lead" data-ng-bind="vm.event.content"></p>
   <p class="lead" data-ng-bind="vm.event.description"></p>
   <p class="lead" data-ng-if="!vm.organization.description.length"> No hay descripción para esta organización</p>  
-  Fecha de inicio: <p class="lead" data-ng-bind="vm.event.startDate"></p>
-  Fecha final: <p class="lead" data-ng-bind="vm.event.endDate"></p>
+  Fecha de inicio: <p class="lead" data-ng-bind="vm.event.startDate | date:'longDate'"></p>
+  Fecha final: <p class="lead" data-ng-bind="vm.event.endDate | date:'longDate'"></p>
 </section>
