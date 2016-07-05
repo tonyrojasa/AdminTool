@@ -23,7 +23,7 @@
     };
 
     vm.format = 'dd-MMM-yyyy';
-
+    
     // Remove existing Event
     function remove() {
       if (confirm('Are you sure you want to delete?')) {

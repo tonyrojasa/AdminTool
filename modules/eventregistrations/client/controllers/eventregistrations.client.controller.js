@@ -6,17 +6,24 @@
     .module('eventregistrations')
     .controller('EventregistrationsController', EventregistrationsController);
 
-  EventregistrationsController.$inject = ['$scope', '$state', 'Authentication', 'eventregistrationResolve'];
+  EventregistrationsController.$inject = ['$scope', '$state', 'Authentication', 'eventregistrationResolve', 'EventsService'];
 
-  function EventregistrationsController ($scope, $state, Authentication, eventregistration) {
+  function EventregistrationsController ($scope, $state, Authentication, eventregistration, EventsService) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.eventregistration = eventregistration;
     vm.error = null;
     vm.form = {};
+    vm.events = EventsService.query();
     vm.remove = remove;
     vm.save = save;
+    vm.setEvent = setEvent;
+
+    //set registration event
+    function setEvent(event) {
+      vm.eventregistration.event = event;
+    }
 
     // Remove existing Eventregistration
     function remove() {

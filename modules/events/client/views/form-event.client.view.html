@@ -20,7 +20,14 @@
           <label class="control-label" for="startDate">Fecha de inicio</label>
           <br />
           <input name="startDate" type="hidden" ng-model="vm.event.startDate" id="startDate" class="form-control" required>
-          <datetimepicker ng-model="vm.event.startDate" hidden-time="true" date-format="{{vm.format}}" date-options="vm.dateOptions">
+          <datetimepicker 
+            ng-model="vm.event.startDate" 
+            hidden-time="true" 
+            date-format="{{vm.format}}" 
+            date-options="vm.dateOptions"
+            current-text="Hoy"
+            clear-text="Limpiar"
+            close-text="Cerrar" />           
           <div ng-messages="vm.form.eventForm.startDate.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Fecha de inicio es requerido.</p>
           </div>
@@ -29,7 +36,14 @@
           <label class="control-label" for="endDate">Fecha final</label>
           <br />
           <input name="endDate" type="hidden" ng-model="vm.event.endDate" id="endDate" class="form-control" required>
-          <datetimepicker ng-model="vm.event.endDate" hidden-time="true" date-format="{{vm.format}}" date-options="vm.dateOptions">
+          <datetimepicker 
+            ng-model="vm.event.endDate" 
+            hidden-time="true" 
+            date-format="{{vm.format}}" 
+            date-options="vm.dateOptions"
+            current-text="Hoy"
+            clear-text="Limpiar"
+            close-text="Cerrar">
           <div ng-messages="vm.form.eventForm.endDate.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Fecha final es requerido.</p>
           </div>

@@ -10,29 +10,15 @@ var mongoose = require('mongoose'),
  * Eventregistration Schema
  */
 var EventregistrationSchema = new Schema({
-  eventName: {
-    type: String,
-    default: '',
-    required: 'Please fill Eventregistration name',
-    trim: true
-  },
   eventGroup: {
     type: String,
     default: '',
     required: 'Please select the event group',
     trim: true
   },
-  personname: {
-    type: String,
-    default: '',
-    required: 'Please fill Eventregistration name',
-    trim: true
-  },
-  email: {
-    type: String,
-    default: '',
-    required: 'Please fill email address',
-    trim: true
+  event: {
+    type: Schema.ObjectId,
+    ref: 'Event'
   },
   person: {
     type: Schema.ObjectId,

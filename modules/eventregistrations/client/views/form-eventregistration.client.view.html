@@ -4,16 +4,28 @@
   </div>
   <div class="col-md-12">
     <form name="vm.form.eventregistrationForm" class="form-horizontal" ng-submit="vm.save(vm.form.eventregistrationForm.$valid)" novalidate>
-      <fieldset>            
+      <fieldset>    
         <div class="form-group" show-errors>
-          <label class="control-label" for="eventName">Nombre del Evento</label>
-          <input name="eventName" type="text" ng-model="vm.eventregistration.eventName" id="eventName" class="form-control" placeholder="Nombre del evento" required>
-          <div ng-messages="vm.form.eventregistrationForm.eventName.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Nombre del Evento es un campo requerido.</p>
+          <label class="control-label" for="event">Evento</label>
+          <input name="event" type="hidden" ng-model="vm.eventregistration.event" id="event" class="form-control" placeholder="Organización" required>
+          <div class="dropdown" id="eventDropdown" uib-dropdown>
+            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+              <span ng-if="!vm.eventregistration.event">-- Seleccione uno --</span>
+              {{vm.eventregistration.event.name}}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" ng-if="vm.events">
+              <li data-ng-repeat="event in vm.events">
+                <a ng-click="vm.setEvent(event)">{{event.name}}</a>
+              </li>
+            </ul>
+          </div> 
+          <div ng-messages="form.personForm.event.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Organización es requerido.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label class="control-label" for="eventGroup">Grupo de Encuentro</label>
+          <label class="control-label" for="eventGroup">Grupo de Evento</label>
           <input name="eventGroup" type="text" ng-model="vm.eventregistration.eventGroup" id="eventGroup" class="form-control" placeholder="Grupo de encuentro" required>
           <div ng-messages="vm.form.eventregistrationForm.eventGroup.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Grupo de encuentro es un campo requerido.</p>
