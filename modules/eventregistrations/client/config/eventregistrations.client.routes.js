@@ -29,7 +29,8 @@
         controller: 'EventregistrationsController',
         controllerAs: 'vm',
         resolve: {
-          eventregistrationResolve: newEventregistration
+          eventregistrationResolve: newEventregistration,
+          personResolve: newPerson
         },
         data: {
           roles: ['user', 'admin'],
@@ -38,11 +39,13 @@
       })
       .state('eventregistrations.edit', {
         url: '/:eventregistrationId/edit',
+        params: { 'personId': null },
         templateUrl: 'modules/eventregistrations/client/views/form-eventregistration.client.view.html',
         controller: 'EventregistrationsController',
         controllerAs: 'vm',
         resolve: {
-          eventregistrationResolve: getEventregistration
+          eventregistrationResolve: getEventregistration,
+          personResolve: getPerson
         },
         data: {
           roles: ['user', 'admin'],
@@ -51,11 +54,13 @@
       })
       .state('eventregistrations.view', {
         url: '/:eventregistrationId',
+        params: { 'personId': null },
         templateUrl: 'modules/eventregistrations/client/views/view-eventregistration.client.view.html',
         controller: 'EventregistrationsController',
         controllerAs: 'vm',
         resolve: {
-          eventregistrationResolve: getEventregistration
+          eventregistrationResolve: getEventregistration,
+          personResolve: getPerson
         },
         data: {
           pageTitle: 'Eventregistration {{ articleResolve.name }}'
@@ -75,5 +80,19 @@
 
   function newEventregistration(EventregistrationsService) {
     return new EventregistrationsService();
+  }
+
+  getPerson.$inject = ['$stateParams', 'PeopleService'];
+
+  function getPerson($stateParams, PeopleService) {
+    return PeopleService.get({
+      personId: $stateParams.personId
+    }).$promise;
+  }
+
+  newPerson.$inject = ['PeopleService'];
+
+  function newPerson(PeopleService) {
+    return new PeopleService();
   }
 })();

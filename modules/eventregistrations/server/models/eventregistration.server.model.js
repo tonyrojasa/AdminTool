@@ -10,11 +10,10 @@ var mongoose = require('mongoose'),
  * Eventregistration Schema
  */
 var EventregistrationSchema = new Schema({
-  eventGroup: {
-    type: String,
-    default: '',
+  eventPeopleGroup: {
     required: 'Please select the event group',
-    trim: true
+    type: Schema.ObjectId,
+    ref: 'Eventpeoplegroup'
   },
   event: {
     type: Schema.ObjectId,
@@ -27,12 +26,6 @@ var EventregistrationSchema = new Schema({
   registrationDate: {
     type: Date,
     default: Date.now
-  },
-  shirtSize: {
-    type: String,
-    default: '',
-    required: 'Please fill t-shirt size',
-    trim: true
   },
   sponsorship: {
     sponsorRequired: Boolean,

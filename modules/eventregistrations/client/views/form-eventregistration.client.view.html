@@ -11,7 +11,7 @@
           <div class="dropdown" id="eventDropdown" uib-dropdown>
             <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
               <span ng-if="!vm.eventregistration.event">-- Seleccione uno --</span>
-              {{vm.eventregistration.event.name}}
+              {{vm.selectedEventName}}
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" ng-if="vm.events">
@@ -20,22 +20,42 @@
               </li>
             </ul>
           </div> 
-          <div ng-messages="form.personForm.event.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Organización es requerido.</p>
+          <div ng-messages="vm.form.eventregistrationForm.event.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Evento es requerido.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label class="control-label" for="eventGroup">Grupo de Evento</label>
-          <input name="eventGroup" type="text" ng-model="vm.eventregistration.eventGroup" id="eventGroup" class="form-control" placeholder="Grupo de encuentro" required>
-          <div ng-messages="vm.form.eventregistrationForm.eventGroup.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Grupo de encuentro es un campo requerido.</p>
+          <label class="control-label" for="event">Grupo</label>
+          <input name="eventPeopleGroup" type="hidden" ng-model="vm.eventregistration.eventPeopleGroup" id="eventPeopleGroup" class="form-control" placeholder="Grupo de Persona" required>
+          <div class="dropdown" id="eventPeopleGroupDropdown" uib-dropdown>
+            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+              <span ng-if="!vm.eventregistration.eventPeopleGroup">-- Seleccione uno --</span>
+              {{vm.selectedEventPeopleGroupName}}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" ng-if="vm.eventPeopleGroups">
+              <li data-ng-repeat="eventPeopleGroup in vm.eventPeopleGroups">
+                <a ng-click="vm.setEventPeopleGroup(eventPeopleGroup)">{{eventPeopleGroup.name}}</a>
+              </li>
+            </ul>
+          </div> 
+          <div ng-messages="vm.form.eventregistrationForm.eventPeopleGroup.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Grupo es requerido.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="registrationDate">Fecha de inscripción</label>
-          <input name="registrationDate" type="text" ng-model="vm.eventregistration.registrationDate" id="registrationDate" class="form-control" placeholder="Fecha de inscripción" required>
-          <div ng-messages="vm.form.eventregistrationForm.registrationDate.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Fecha de inscripción es un campo requerido.</p>
+          <br />
+          <input name="registrationDate" type="hidden" ng-model="vm.eventregistration.registrationDate" id="registrationDate" class="form-control" required>
+          <datetimepicker 
+            ng-model="vm.eventregistration.registrationDate" 
+            hidden-time="true" 
+            date-format="dd-MMM-yyyy" 
+            current-text="Hoy"
+            clear-text="Limpiar"
+            close-text="Cerrar" />           
+          <div ng-messages="vm.form.eventForm.registrationDate.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Fecha de inicio es requerido.</p>
           </div>
         </div>
          <div class="form-group" show-errors>
@@ -45,6 +65,7 @@
             <p class="help-block error-text" ng-message="required">Saldo es un campo requerido.</p>
           </div>
         </div>
+        <person-form person="vm.person" form="vm.form"></person-form>
         <div class="form-group">
           <button type="submit" class="btn btn-default">{{vm.eventregistration._id ? 'Actualizar' : 'Crear'}}</button>
         </div>

@@ -3,25 +3,29 @@
 
   angular
     .module('people')
-    .directive('savePerson', savePerson);
+    .directive('personForm', personForm);
 
-  savePerson.$inject = ['$rootScope', 'OrganizationsService'];
+  personForm.$inject = ['$rootScope', 'OrganizationsService'];
 
-  function savePerson($rootScope, OrganizationsService) {
+  function personForm($rootScope, OrganizationsService) {
     return {
-      templateUrl: 'modules/people/client/views/save-person.client.view.html',
+      templateUrl: 'modules/people/client/views/person-form.client.view.html',
       restrict: 'E',
       scope: {
         person: '=',
-        successCallback: '@',
-        errorCallback: '@'
+        form: '='
       },
-      link: function postLink(scope, element, attrs) {
-        scope.save = save;
-        
-        scope.organizations = OrganizationsService.query();
+      link: function postLink(scope, element, attrs) {     
+        if(scope.person._id){    
+          OrganizationsService.query({ id: scope.person.organization },function(data){
+            scope.selectedOrganizationName = data[0].name;
+          });
+        }
+
+        scope.organizations = OrganizationsService.query();        
         scope.setOrganization = function (organization) {
           scope.person.organization = organization;
+          scope.selectedOrganizationName = organization.name;
         };
 
         scope.personTypes = ['Encuentrista', 'Lider'];
@@ -57,22 +61,6 @@
         scope.setGrade = function (grade) {
           scope.person.grade = grade;
         };
-
-
-        // Save Person
-        function save(isValid) {
-          if (!isValid) {
-            $rootScope.$broadcast('show-errors-check-validity', 'form.personForm');
-            return false;
-          }
-
-          // TODO: move create/update logic to service
-          if (scope.person._id) {
-            scope.person.$update(scope.successCallback, scope.errorCallback);
-          } else {
-            scope.person.$save(scope.successCallback, scope.errorCallback);
-          }
-        }
 
       }
     };

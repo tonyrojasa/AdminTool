@@ -5,7 +5,7 @@
   <div class="pull-right"
        data-ng-show="vm.eventregistration.isCurrentUserOwner">
     <a class="btn btn-primary"
-       data-ui-sref="eventregistrations.edit({ eventregistrationId: vm.eventregistration._id })">
+       data-ui-sref="eventregistrations.edit({ eventregistrationId: vm.eventregistration._id, personId: vm.eventregistration.person })">
       <i class="glyphicon glyphicon-edit"></i>
     </a>
     <a class="btn btn-primary" data-ng-click="vm.remove()">

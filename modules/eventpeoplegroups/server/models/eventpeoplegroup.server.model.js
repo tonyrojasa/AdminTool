@@ -16,6 +16,11 @@ var EventpeoplegroupSchema = new Schema({
     required: 'Please fill Eventpeoplegroup name',
     trim: true
   },
+  description: {
+    type: String,
+    default: '',
+    trim: true
+  },
   created: {
     type: Date,
     default: Date.now
