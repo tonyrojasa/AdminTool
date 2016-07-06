@@ -3,19 +3,38 @@
     <h1>Lista de Inscritos</h1>
   </div>
   <a class="btn btn-primary" data-ui-sref="eventregistrations.create">Nueva Inscripción</a>
-  <div class="list-group">
-    <a data-ng-repeat="eventregistration in vm.eventregistrations"
-       data-ui-sref="eventregistrations.view({ eventregistrationId: eventregistration._id, personId: eventregistration.person })"
-       class="list-group-item">
-      <small class="list-group-item-text">
-        Posted on
-        <span data-ng-bind="eventregistration.created | date:'mediumDate'"></span>
-        by
-        <span data-ng-if="eventregistration.user" data-ng-bind="eventregistration.user.displayName"></span>
-        <span data-ng-if="!eventregistration.user">Deleted User</span>
-      </small>
-      <h4 class="list-group-item-heading" data-ng-bind="eventregistration.name"></h4>
-    </a>
+  <div>
+    <br />
+    <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
+    <br />
+    <table class="table table-condensed">
+      <thead>
+      <tr>
+        <th>Evento</th>
+        <th>Fecha de Inscripcion</th>
+        <th>Grupo Persona</th>
+        <th>Nombre Persona Inscrita</th>
+        <th>Tipo de Persona</th>
+        <th>Saldo</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="active" ng-repeat="eventRegistration in vm.eventregistrations | orderBy:'registrationDate' | filter : vm.searchFilter">
+        <td>{{eventRegistration.event.name}}</td>
+        <td>{{eventRegistration.registrationDate | date:'dd-MMM-yyyy'}}</td>
+        <td>{{eventRegistration.eventPeopleGroup.name}}</td>
+        <td>{{eventRegistration.person.name}} {{eventRegistration.person.lastName}} {{eventRegistration.person.secondLastName}}</td>
+        <td>{{eventRegistration.person.personType}}</td>
+        <td>{{eventRegistration.balanceAmount}}</td>
+        <td>    
+          <a data-ui-sref="eventregistrations.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })">Editar</a>    
+        </td>
+        <td>    
+          <a data-ui-sref="eventregistrations.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })">Pagar</a>    
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
   <div class="alert alert-warning text-center" data-ng-if="vm.eventregistrations.$resolved && !vm.eventregistrations.length">
     No Eventregistrations yet, why don't you <a data-ui-sref="eventregistrations.create">create one</a>?

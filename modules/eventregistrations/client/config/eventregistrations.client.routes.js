@@ -54,13 +54,12 @@
       })
       .state('eventregistrations.view', {
         url: '/:eventregistrationId',
-        params: { 'personId': null },
         templateUrl: 'modules/eventregistrations/client/views/view-eventregistration.client.view.html',
         controller: 'EventregistrationsController',
         controllerAs: 'vm',
         resolve: {
           eventregistrationResolve: getEventregistration,
-          personResolve: getPerson
+          personResolve: newPerson
         },
         data: {
           pageTitle: 'Eventregistration {{ articleResolve.name }}'
@@ -85,9 +84,11 @@
   getPerson.$inject = ['$stateParams', 'PeopleService'];
 
   function getPerson($stateParams, PeopleService) {
-    return PeopleService.get({
-      personId: $stateParams.personId
-    }).$promise;
+    if($stateParams.personId){
+      return PeopleService.get({
+        personId: $stateParams.personId
+      }).$promise;
+    }
   }
 
   newPerson.$inject = ['PeopleService'];
@@ -95,4 +96,5 @@
   function newPerson(PeopleService) {
     return new PeopleService();
   }
+
 })();

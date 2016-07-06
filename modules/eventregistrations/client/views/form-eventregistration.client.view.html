@@ -11,7 +11,7 @@
           <div class="dropdown" id="eventDropdown" uib-dropdown>
             <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
               <span ng-if="!vm.eventregistration.event">-- Seleccione uno --</span>
-              {{vm.selectedEventName}}
+              {{vm.eventregistration.event.name}}
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" ng-if="vm.events">
@@ -30,7 +30,7 @@
           <div class="dropdown" id="eventPeopleGroupDropdown" uib-dropdown>
             <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
               <span ng-if="!vm.eventregistration.eventPeopleGroup">-- Seleccione uno --</span>
-              {{vm.selectedEventPeopleGroupName}}
+              {{vm.eventregistration.eventPeopleGroup.name}}
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" ng-if="vm.eventPeopleGroups">
@@ -47,7 +47,8 @@
           <label class="control-label" for="registrationDate">Fecha de inscripción</label>
           <br />
           <input name="registrationDate" type="hidden" ng-model="vm.eventregistration.registrationDate" id="registrationDate" class="form-control" required>
-          <datetimepicker 
+          <input name="registrationDate" ng-if="vm.editMode" type="text" ng-model="vm.eventregistration.registrationDate | date:'dd-MMM-yyyy'" id="registrationDate" class="form-control" ng-disabled="true" required>
+          <datetimepicker ng-if="!vm.editMode"
             ng-model="vm.eventregistration.registrationDate" 
             hidden-time="true" 
             date-format="dd-MMM-yyyy" 

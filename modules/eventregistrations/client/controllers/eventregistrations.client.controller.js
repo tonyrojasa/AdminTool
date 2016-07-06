@@ -7,44 +7,39 @@
     .controller('EventregistrationsController', EventregistrationsController);
 
   EventregistrationsController.$inject = ['$scope', '$state', 'Authentication', 
-  'eventregistrationResolve', 'EventsService', 'EventpeoplegroupsService', 'personResolve'];
+  'eventregistrationResolve', 'EventsService', 'EventpeoplegroupsService', 'personResolve', 'PeopleService'];
 
   function EventregistrationsController ($scope, $state, Authentication, eventregistration, 
-    EventsService, EventpeoplegroupsService, person) {
+    EventsService, EventpeoplegroupsService, person, PeopleService) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.eventregistration = eventregistration;
-    vm.person = person;
+    vm.person = eventregistration.person;
     vm.error = null;
     vm.form = {};
     vm.events = EventsService.query();
     vm.eventPeopleGroups = EventpeoplegroupsService.query();
     vm.remove = remove;
-    vm.save = save;
+    vm.save = save;  
+    vm.editMode = vm.eventregistration._id ? true : false;
     vm.setEvent = setEvent;
     vm.setEventPeopleGroup = setEventPeopleGroup;
 
-    if(vm.person._id){    
-      EventsService.query({ id: vm.eventregistration.event },function(data){
-        vm.selectedEventName = data[0].name;
+    if(vm.eventregistration._id){
+      PeopleService.query({personId: vm.eventregistration.person._Id }, function(data){
+        vm.person = data[0];
       });
-      EventpeoplegroupsService.query({ id: vm.eventregistration.eventPeopleGroup },function(data){
-        vm.selectedEventPeopleGroupName = data[0].name;
-      });
-    }
-
+    }    
 
     //set registration eventPeopleGroup
     function setEventPeopleGroup(eventPeopleGroup) {
       vm.eventregistration.eventPeopleGroup = eventPeopleGroup;
-      vm.selectedEventPeopleGroupName = eventPeopleGroup.name;
     }
 
     //set registration event
     function setEvent(event) {
       vm.eventregistration.event = event;
-      vm.selectedEventName = event.name;
       vm.eventregistration.balanceAmount = event.price;
     }
 
@@ -80,9 +75,7 @@
         vm.eventregistration.$save(successCallback, errorCallback);
       }
       function successCallback(res) {
-        $state.go('eventregistrations.view', {
-          eventregistrationId: res._id
-        });
+        $state.go('eventregistrations.list');
       }
       function errorCallback(res) {
         vm.error = res.data.message;
