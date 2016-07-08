@@ -101,8 +101,10 @@
 <div class="form-group" show-errors>
   <label class="control-label" for="birthDate">Fecha de Nacimiento</label>
   <br />
-  <input name="birthDate" type="hidden" ng-model="person.birthDate" ng-change="calculateAge()" id="birthDate" class="form-control" ng-required="false">
-  <datetimepicker 
+  <input name="birthDate" type="hidden" ng-model="person.birthDate" id="birthDate" class="form-control" ng-required="false">
+  <datetimepicker
+    date-options="dateOptions"
+    readonly-date="true"
     ng-model="person.birthDate" 
     hidden-time="true" 
     date-format="dd-MMM-yyyy" 
@@ -112,7 +114,7 @@
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="age">Edad *</label>
-  <input name="age" type="number" ng-model="person.age" id="age" class="form-control" placeholder="Edad" required>
+  <input name="age" type="number" ng-model="person.age" id="age" class="form-control" placeholder="Edad" ng-disabled="person.birthDate" required>
   <div ng-messages="form.age.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Edad es requerido.</p>
   </div>

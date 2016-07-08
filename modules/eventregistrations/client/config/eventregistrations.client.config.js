@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -26,7 +26,7 @@
     Menus.addSubMenuItem('topbar', 'eventregistrations', {
       title: 'Crear Inscripción',
       state: 'eventregistrations.create',
-      roles: ['user']
+      roles: ['user', 'admin']
     });
   }
 })();

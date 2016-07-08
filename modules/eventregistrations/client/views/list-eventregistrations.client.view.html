@@ -3,7 +3,7 @@
     <h1>Lista de Inscritos</h1>
   </div>
   <a class="btn btn-primary" data-ui-sref="eventregistrations.create">Nueva Inscripción</a>
-  <div>
+  <div id="content">
     <br />
     <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
     <br />
@@ -35,7 +35,7 @@
       </tr>
       </tbody>
     </table>
-  </div>
+  </div>   
   <div class="alert alert-warning text-center" data-ng-if="vm.eventregistrations.$resolved && !vm.eventregistrations.length">
     No Eventregistrations yet, why don't you <a data-ui-sref="eventregistrations.create">create one</a>?
   </div>

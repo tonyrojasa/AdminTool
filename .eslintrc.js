@@ -54,13 +54,14 @@ module.exports = {
     'padded-blocks': 0,
     'space-before-function-paren': 0,
     'space-in-parens': [2, 'never'],
-    'spaced-comment': [1, 'always'],
+    'spaced-comment': [0, 'always'],
     strict: 0,
     'quote-props': 0,
     quotes: [1, 'single'],
     'wrap-iife': [1, 'any'],
     'vars-on-top': 0,
     'eol-last': 0,
+    'no-console': 0
   },
   env: {
     node: true,

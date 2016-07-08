@@ -81,15 +81,17 @@ exports.delete = function(req, res) {
  * List of Receipts
  */
 exports.list = function(req, res) {
-  Receipt.find().sort('-created').populate('user', 'displayName').exec(function(err, receipts) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(receipts);
-    }
-  });
+  Receipt.find().sort('-created')
+    .populate('event')
+    .populate('user', 'displayName').exec(function(err, receipts) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(receipts);
+      }
+    });
 };
 
 /**
@@ -103,15 +105,17 @@ exports.receiptByID = function(req, res, next, id) {
     });
   }
 
-  Receipt.findById(id).populate('user', 'displayName').exec(function(err, receipt) {
-    if (err) {
-      return next(err);
-    } else if (!receipt) {
-      return res.status(404).send({
-        message: 'No Receipt with that identifier has been found'
-      });
-    }
-    req.receipt = receipt;
-    next();
-  });
+  Receipt.findById(id).populate('user', 'displayName')
+    .populate('event')
+    .populate('eventRegistration').exec(function(err, receipt) {
+      if (err) {
+        return next(err);
+      } else if (!receipt) {
+        return res.status(404).send({
+          message: 'No Receipt with that identifier has been found'
+        });
+      }
+      req.receipt = receipt;
+      next();
+    });
 };

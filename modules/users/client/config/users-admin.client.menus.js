@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -10,7 +10,7 @@
   // Configuring the Users module
   function menuConfig(menuService) {
     menuService.addSubMenuItem('topbar', 'admin', {
-      title: 'Manage Users',
+      title: 'Usuarios del Sistema',
       state: 'admin.users'
     });
   }

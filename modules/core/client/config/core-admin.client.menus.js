@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -9,10 +9,16 @@
 
   function menuConfig(menuService) {
     menuService.addMenuItem('topbar', {
-      title: 'Admin',
+      title: 'Administración',
       state: 'admin',
       type: 'dropdown',
       roles: ['admin']
+    });
+    menuService.addMenuItem('topbar', {
+      title: 'Manteimiento',
+      state: 'maintenance',
+      type: 'dropdown',
+      roles: ['user', 'admin']
     });
   }
 }());

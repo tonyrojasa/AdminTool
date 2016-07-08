@@ -18,15 +18,15 @@
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'receipts', {
-      title: 'Lista',
+      title: 'Lista de Recibos',
       state: 'receipts.list'
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'receipts', {
-      title: 'Crear',
+      title: 'Crear Recibo',
       state: 'receipts.create',
-      roles: ['user']
+      roles: ['user', 'admin']
     });
 
     // Add the dropdown list item

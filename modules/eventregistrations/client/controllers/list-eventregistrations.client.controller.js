@@ -17,7 +17,8 @@
     };
 
     vm.getStatusClass = function(eventRegistration) {
-      return vm.hasPendingPayment(eventRegistration) ? 'warning' : 'success'
+      return vm.hasPendingPayment(eventRegistration) ? 'warning' : 'success';
     };
+
   }
 })();

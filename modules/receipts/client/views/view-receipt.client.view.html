@@ -1,5 +1,5 @@
 <section>
-  <div class="page-header">
+   <div class="page-header">
     <h1 data-ng-bind="vm.receipt.name"></h1>
   </div>
   <div class="pull-right"
@@ -11,16 +11,88 @@
     <a class="btn btn-primary" data-ng-click="vm.remove()">
       <i class="glyphicon glyphicon-trash"></i>
     </a>
+    <a class="btn btn-primary" data-ng-click="vm.print('receiptContent')">
+      <i class="glyphicon glyphicon-print"></i>
+    </a>
   </div>
   <small>
     <em class="text-muted">
-      Posted on
+      Creado en
       <span data-ng-bind="vm.receipt.created | date:'mediumDate'"></span>
-      by
+      Por
       <span data-ng-if="vm.receipt.user"
             data-ng-bind="vm.receipt.user.displayName"></span>
       <span data-ng-if="!vm.receipt.user">Deleted User</span>
     </em>
   </small>
   <p class="lead" data-ng-bind="vm.receipt.content"></p>
+</section>
+<section>
+  <div id="receiptContent" class="col-md-12">
+    <fieldset>
+      <div class="form-group" >  
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="vm.receipt.isDebit" ng-disabled="true">
+            <b>Entrada de dinero</b>
+          </label>
+        </div>
+      </div>
+      <div class="form-group" >
+        <label class="control-label" for="paymentDate">Fecha de pago</label>
+        <br />
+        <input name="paymentDate" type="text" ng-model="vm.receipt.paymentDate | date:'mediumDate'" id="paymentDate" class="form-control" ng-disabled="true">
+        
+      </div>
+      <div class="form-group" >
+        <label class="control-label" for="event">Evento</label>
+        <input name="event" type="text" ng-model="vm.receipt.event.name" id="event" class="form-control" placeholder="Organización" ng-disabled="true">
+      </div>
+      <div ng-if="vm.isEventRegistrationPayment" class="form-group" >
+        <label class="control-label" for="eventPeopleGrupo">Grupo</label>
+        <input ng-disabled="vm.isEventRegistrationPayment" name="eventPeopleGrupo" type="text" ng-model="vm.eventregistration.eventPeopleGroup.name" id="eventPeopleGrupo" class="form-control" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="receivedFrom">Recibido de</label>
+        <input name="receivedFrom" type="text" ng-model="vm.receipt.receivedFrom" id="receivedFrom" class="form-control" placeholder="Recibido de" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="shirtSize">Por concepto de</label>
+        <input name="paymentOf" type="text" ng-model="vm.receipt.paymentOf" id="paymentOf" class="form-control" placeholder="Por concepto de" ng-disabled="true">
+      </div>
+      <div class="form-group" >
+        <label class="control-label" for="description">Descripción</label>
+        <input name="description" type="text" ng-model="vm.receipt.description" id="description" class="form-control" placeholder="Descripción" ng-disabled="true">
+      </div>
+      <div class="form-group" >
+        <label class="control-label" for="currentBalance">Saldo actual</label>
+        <div class="input-group"> 
+          <span class="input-group-addon">₡</span>
+          <input ng-disabled="vm.isEventRegistrationPayment" name="currentBalance" type="number" ng-model="vm.receipt.currentBalance" id="currentBalance" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Saldo actual" ng-disabled="true">
+        </div>    
+      </div>
+      <div class="form-group" >
+        <label class="control-label" for="paymentAmount">Abono (monto del pago)</label>
+        <div class="input-group"> 
+          <span class="input-group-addon">₡</span>
+          <input name="paymentAmount" type="number" ng-model="vm.receipt.paymentAmount" id="paymentAmount" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Abono" ng-disabled="true">
+        </div>
+      </div>
+      <div class="form-group" >
+        <label class="control-label" for="balanceDue">Saldo adeudado</label>
+        <div class="input-group"> 
+          <span class="input-group-addon">₡</span>
+          <input name="balanceDue" type="number" ng-model="vm.receipt.balanceDue" value="{{vm.receipt.currentBalance - vm.receipt.paymentAmount}}" id="balanceDue" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Abono" ng-disabled="true" ng-disabled="true">
+        </div>
+      </div>
+      <div class="form-group" >
+        <label class="control-label" for="receivedBy">Recibido por</label>
+        <input name="receivedBy" type="text" ng-model="vm.receipt.receivedBy" id="receivedBy" class="form-control" placeholder="Recibido de" ng-disabled="true">
+      </div>
+
+        <div ng-show="vm.error" class="text-danger">
+          <strong ng-bind="vm.error"></strong>
+        </div>
+    </fieldset>
+  </div>
 </section>

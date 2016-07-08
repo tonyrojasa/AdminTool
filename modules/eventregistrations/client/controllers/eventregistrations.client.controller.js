@@ -29,11 +29,19 @@
 
     if (vm.eventregistration._id) {
       vm.person = eventregistration.person;
-      PeopleService.query({
-        personId: vm.eventregistration.person._Id
+      loadDates();
+      PeopleService.get({
+        personId: vm.eventregistration.person._id
       }, function(data) {
-        vm.person = data[0];
+        vm.person = data;
+        loadDates();
       });
+    }
+
+    function loadDates() {
+      if (vm.person.birthDate) {
+        vm.person.birthDate = new Date(vm.person.birthDate);
+      }
     }
 
     //set registration eventPeopleGroup
@@ -63,7 +71,6 @@
       }
 
       function successPersonCallback(res) {
-        debugger;
         vm.eventregistration.person = res;
         saveEventRegistration();
       }

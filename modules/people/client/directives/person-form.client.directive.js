@@ -13,7 +13,8 @@
       restrict: 'E',
       scope: {
         person: '=',
-        form: '='
+        form: '=',
+        error: '='
       },
       link: function postLink(scope, element, attrs) {
         if (scope.person && scope.person._id) {
@@ -22,6 +23,10 @@
           }, function(data) {
             scope.selectedOrganizationName = data[0].name;
           });
+        }
+
+        if (scope.person.birthDate) {
+          scope.person.birthDate = new Date(scope.person.birthDate);
         }
 
         scope.organizations = OrganizationsService.query();
@@ -51,6 +56,15 @@
             var ageDate = new Date(ageDifMs); // miliseconds from epoch
             scope.person.age = Math.abs(ageDate.getUTCFullYear() - 1970);
           }
+        };
+
+        scope.$watch('person.birthDate', function(newValue, oldValue) {
+          scope.calculateAge();
+        });
+
+        scope.dateOptions = {
+          showWeeks: false,
+          startingDay: 0
         };
 
         scope.grades =

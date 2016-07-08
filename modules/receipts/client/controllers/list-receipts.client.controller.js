@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -11,5 +11,13 @@
     var vm = this;
 
     vm.receipts = ReceiptsService.query();
+
+    vm.hasPendingPayment = function(receipt) {
+      return receipt.balanceDue > 0;
+    };
+
+    vm.getStatusClass = function(receipt) {
+      return vm.hasPendingPayment(receipt) ? 'warning' : 'success';
+    };
   }
 })();
