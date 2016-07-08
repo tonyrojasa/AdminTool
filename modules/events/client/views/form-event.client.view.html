@@ -5,6 +5,25 @@
   <div class="col-md-12">
     <form name="vm.form.eventForm" class="form-horizontal" ng-submit="vm.save(vm.form.eventForm.$valid)" novalidate>
       <fieldset>
+      <div class="form-group" show-errors>
+        <label class="control-label" for="organization">Organización *</label>
+        <input name="organization" type="hidden" ng-model="vm.event.organization" id="organization" class="form-control" placeholder="Organización" required>
+        <div class="dropdown" id="organizationDropdown" uib-dropdown>
+          <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+            <span ng-if="!vm.event.organization">-- Seleccione uno --</span>
+            {{vm.selectedOrganizationName}}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li data-ng-repeat="organization in vm.organizations | orderBy:'name'">
+              <a ng-click="vm.setOrganization(organization)">{{organization.name}}</a>
+            </li>
+          </ul>
+        </div> 
+        <div ng-messages="form.organization.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Organización es requerido.</p>
+        </div>
+      </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="name">Nombre</label>
           <input name="name" type="text" ng-model="vm.event.name" id="name" class="form-control" placeholder="Nombre" required>

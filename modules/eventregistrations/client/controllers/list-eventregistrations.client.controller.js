@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -11,5 +11,13 @@
     var vm = this;
 
     vm.eventregistrations = EventregistrationsService.query();
+
+    vm.hasPendingPayment = function(eventRegistration) {
+      return eventRegistration.balanceAmount > 0;
+    };
+
+    vm.getStatusClass = function(eventRegistration) {
+      return vm.hasPendingPayment(eventRegistration) ? 'warning' : 'success'
+    };
   }
 })();

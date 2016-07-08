@@ -10,6 +10,10 @@ var mongoose = require('mongoose'),
  * Event Schema
  */
 var EventSchema = new Schema({
+  organization: {
+    type: Schema.ObjectId,
+    ref: 'Organization'
+  },
   name: {
     type: String,
     default: '',

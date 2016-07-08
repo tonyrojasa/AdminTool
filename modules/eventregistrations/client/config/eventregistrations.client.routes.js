@@ -84,7 +84,7 @@
   getPerson.$inject = ['$stateParams', 'PeopleService'];
 
   function getPerson($stateParams, PeopleService) {
-    if($stateParams.personId){
+    if ($stateParams.personId) {
       return PeopleService.get({
         personId: $stateParams.personId
       }).$promise;

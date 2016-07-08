@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   // Events controller
@@ -6,9 +6,9 @@
     .module('events')
     .controller('EventsController', EventsController);
 
-  EventsController.$inject = ['$scope', '$state', 'Authentication', 'eventResolve'];
+  EventsController.$inject = ['$scope', '$state', 'Authentication', 'eventResolve', 'OrganizationsService'];
 
-  function EventsController ($scope, $state, Authentication, event) {
+  function EventsController($scope, $state, Authentication, event, OrganizationsService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -23,7 +23,13 @@
     };
 
     vm.format = 'dd-MMM-yyyy';
-    
+
+    vm.organizations = OrganizationsService.query();
+    vm.setOrganization = function(organization) {
+      vm.event.organization = organization;
+      vm.selectedOrganizationName = organization.name;
+    };
+
     // Remove existing Event
     function remove() {
       if (confirm('Are you sure you want to delete?')) {

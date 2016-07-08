@@ -5,18 +5,31 @@ module.exports = {
   rules: {
     camelcase: 0,
     'comma-dangle': [2, 'never'],
-    'comma-spacing': [2, { before: false, after: true }],
+    'comma-spacing': [2, {
+      before: false,
+      after: true
+    }],
     'consistent-return': 0,
     curly: 0,
     'default-case': 0,
     eqeqeq: [2, 'smart'],
     'func-names': 0,
     'guard-for-in': 2,
-    indent: [2, 2, { SwitchCase: 1 }],
-    'key-spacing': [2, { beforeColon: false, afterColon: true }],
-    'keyword-spacing': [2, { before: true, after: true }],
+    indent: [2, 2, {
+      SwitchCase: 1
+    }],
+    'key-spacing': [2, {
+      beforeColon: false,
+      afterColon: true
+    }],
+    'keyword-spacing': [2, {
+      before: true,
+      after: true
+    }],
     'max-len': 0,
-    'new-cap': [2, { newIsCapExceptions: ['acl.memoryBackend', 'acl'] }],
+    'new-cap': [2, {
+      newIsCapExceptions: ['acl.memoryBackend', 'acl']
+    }],
     'no-bitwise': 0,
     'no-caller': 2,
     'no-else-return': 0,
@@ -46,7 +59,8 @@ module.exports = {
     'quote-props': 0,
     quotes: [1, 'single'],
     'wrap-iife': [1, 'any'],
-    'vars-on-top': 0
+    'vars-on-top': 0,
+    'eol-last': 0,
   },
   env: {
     node: true,

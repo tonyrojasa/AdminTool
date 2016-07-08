@@ -11,7 +11,7 @@ var SchemaTypes = mongoose.Schema.Types;
 /**
  * Person Schema
  */
-var PersonSchema = new Schema({  
+var PersonSchema = new Schema({
   organization: {
     type: Schema.ObjectId,
     ref: 'Organization'
@@ -29,8 +29,7 @@ var PersonSchema = new Schema({
     ref: 'ContactInfo'
   },
   personId: {
-    type: Number,
-    required: 'Please fill personId'
+    type: Number
   },
   firstName: {
     type: String,
@@ -65,26 +64,24 @@ var PersonSchema = new Schema({
   },
   activeMember: {
     type: Boolean,
-    required: 'Please fill activeMember',
+    default: false,
     trim: true
   },
   memberTimeYears: {
-    type: String,
-    default: '',
+    type: Number,
     trim: true
-  },  
+  },
   address: {
     type: String,
     required: 'Please fill address',
     trim: true
-  },  
+  },
   personType: {
     type: String,
     trim: true
   },
   birthDate: {
     type: Date,
-    required: 'Please fill birthDate',
     trim: true
   },
   age: {
@@ -115,22 +112,22 @@ var PersonSchema = new Schema({
     trim: true
   },
   medicalTreatment: {
-    exists: { 
+    exists: {
       type: Boolean,
       default: false,
-      trim: true 
+      trim: true
     },
-    comments: { 
+    comments: {
       type: String,
-      trim: true 
+      trim: true
     },
-    medicineType: { 
+    medicineType: {
       type: String,
-      trim: true 
+      trim: true
     },
-    allergies: { 
+    allergies: {
       type: String,
-      trim: true 
+      trim: true
     }
   },
   created: {

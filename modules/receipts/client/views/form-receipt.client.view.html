@@ -1,0 +1,131 @@
+<section>
+  <div class="page-header">
+    <h1>{{vm.receipt._id ? 'Editar Recibo' : 'Nuevo Recibo'}}</h1>
+  </div>
+  <div class="col-md-12">
+    <form name="vm.form.receiptForm" class="form-horizontal" ng-submit="vm.save(vm.form.receiptForm.$valid)" novalidate>
+      <fieldset>
+        <div class="form-group" show-errors>  
+          <input name="isDebit" type="hidden" ng-model="vm.receipt.isDebit" id="isDebit" class="form-control">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="vm.receipt.isDebit">
+              <b>Entrada de dinero</b>
+            </label>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="paymentDate">Fecha de pago</label>
+          <br />
+          <input name="paymentDate" type="hidden" ng-model="vm.receipt.paymentDate" id="paymentDate" class="form-control" required>
+          <datetimepicker 
+            ng-model="vm.receipt.paymentDate" 
+            hidden-time="true" 
+            date-format="dd-MMM-yyyy" 
+            current-text="Hoy"
+            clear-text="Limpiar"
+            close-text="Cerrar" />           
+          <div ng-messages="vm.form.paymentDate.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Fecha de pago es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="event">Evento</label>
+          <input name="event" type="hidden" ng-model="vm.receipt.event" id="event" class="form-control" placeholder="Organización" required>
+          <div class="dropdown" id="eventDropdown" uib-dropdown>
+            <button ng-disabled="vm.isEventRegistrationPayment" class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+              <span ng-if="!vm.receipt.event">-- Seleccione uno --</span>
+              {{vm.receipt.event.name}}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" ng-if="vm.events">
+              <li data-ng-repeat="event in vm.events | orderBy:'name'">
+                <a ng-click="vm.setEvent(event)">{{event.name}}</a>
+              </li>
+            </ul>
+          </div> 
+          <div ng-messages="vm.form.eventregistrationForm.event.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Evento es requerido.</p>
+          </div>
+        </div>
+        <div ng-if="vm.isEventRegistrationPayment" class="form-group" show-errors>
+          <label class="control-label" for="eventPeopleGrupo">Grupo</label>
+          <input ng-disabled="vm.isEventRegistrationPayment" name="eventPeopleGrupo" type="text" ng-model="vm.eventregistration.eventPeopleGroup.name" id="eventPeopleGrupo" class="form-control">
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="receivedFrom">Recibido de</label>
+          <input name="receivedFrom" type="text" ng-model="vm.receipt.receivedFrom" id="receivedFrom" class="form-control" placeholder="Recibido de" required>
+          <div ng-messages="vm.form.receiptForm.receivedFrom.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Recibido de es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="shirtSize">Por concepto de</label>
+          <input name="paymentOf" type="hidden" ng-model="vm.receipt.paymentOf" id="paymentOf" class="form-control" placeholder="Por concepto de" required>
+          <div class="dropdown" id="paymentOfDropdown" uib-dropdown>
+            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+              <span ng-if="!vm.receipt.paymentOf">-- Seleccione uno --</span>
+              {{vm.receipt.paymentOf}}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li ng-repeat="paymentOf in vm.paymentOfList">
+                <a ng-click="vm.setPaymentOf(paymentOf)">{{paymentOf}}</a>
+              </li>
+            </ul>
+          </div> 
+          <div ng-messages="vm.form.receiptForm.paymentOf.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">or concepto de es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="description">Descripción</label>
+          <input name="description" type="text" ng-model="vm.receipt.description" id="description" class="form-control" placeholder="Descripción" required>
+          <div ng-messages="vm.form.receiptForm.description.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Descripción es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="currentBalance">Saldo actual</label>
+          <div class="input-group"> 
+            <span class="input-group-addon">₡</span>
+            <input ng-disabled="vm.isEventRegistrationPayment" name="currentBalance" type="number" ng-model="vm.receipt.currentBalance" id="currentBalance" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Saldo actual" required>
+          </div>         
+          <div ng-messages="vm.form.receiptForm.currentBalance.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Saldo actual es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="paymentAmount">Abono (monto del pago)</label>
+          <div class="input-group"> 
+            <span class="input-group-addon">₡</span>
+            <input name="paymentAmount" type="number" ng-model="vm.receipt.paymentAmount" id="paymentAmount" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Abono" required>
+          </div>
+          <div ng-messages="vm.form.receiptForm.paymentAmount.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Abono es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="balanceDue">Saldo adeudado</label>
+          <div class="input-group"> 
+            <span class="input-group-addon">₡</span>
+            <input name="balanceDue" type="number" ng-model="vm.receipt.balanceDue" value="{{vm.receipt.currentBalance - vm.receipt.paymentAmount}}" id="balanceDue" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Abono" ng-disabled="true">
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="receivedBy">Recibido por</label>
+          <input name="receivedBy" type="text" ng-model="vm.receipt.receivedBy" id="receivedBy" class="form-control" placeholder="Recibido de" required>
+          <div ng-messages="vm.form.receiptForm.receivedBy.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Recibido por es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-default">{{vm.receipt._id ? 'Update' : 'Create'}}</button>
+        </div>
+        <div ng-show="vm.error" class="text-danger">
+          <strong ng-bind="vm.error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section>

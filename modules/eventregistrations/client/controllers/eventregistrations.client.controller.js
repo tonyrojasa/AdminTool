@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   // Eventregistrations controller
@@ -6,31 +6,35 @@
     .module('eventregistrations')
     .controller('EventregistrationsController', EventregistrationsController);
 
-  EventregistrationsController.$inject = ['$scope', '$state', 'Authentication', 
-  'eventregistrationResolve', 'EventsService', 'EventpeoplegroupsService', 'personResolve', 'PeopleService'];
+  EventregistrationsController.$inject = ['$scope', '$state', 'Authentication',
+    'eventregistrationResolve', 'EventsService', 'EventpeoplegroupsService', 'personResolve', 'PeopleService'
+  ];
 
-  function EventregistrationsController ($scope, $state, Authentication, eventregistration, 
+  function EventregistrationsController($scope, $state, Authentication, eventregistration,
     EventsService, EventpeoplegroupsService, person, PeopleService) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.eventregistration = eventregistration;
-    vm.person = eventregistration.person;
+    vm.person = person;
     vm.error = null;
     vm.form = {};
     vm.events = EventsService.query();
     vm.eventPeopleGroups = EventpeoplegroupsService.query();
     vm.remove = remove;
-    vm.save = save;  
+    vm.save = save;
     vm.editMode = vm.eventregistration._id ? true : false;
     vm.setEvent = setEvent;
     vm.setEventPeopleGroup = setEventPeopleGroup;
 
-    if(vm.eventregistration._id){
-      PeopleService.query({personId: vm.eventregistration.person._Id }, function(data){
+    if (vm.eventregistration._id) {
+      vm.person = eventregistration.person;
+      PeopleService.query({
+        personId: vm.eventregistration.person._Id
+      }, function(data) {
         vm.person = data[0];
       });
-    }    
+    }
 
     //set registration eventPeopleGroup
     function setEventPeopleGroup(eventPeopleGroup) {
@@ -57,14 +61,16 @@
       } else {
         vm.person.$save(successPersonCallback, errorPersonCallback);
       }
+
       function successPersonCallback(res) {
         debugger;
         vm.eventregistration.person = res;
         saveEventRegistration();
       }
+
       function errorPersonCallback(res) {
         vm.error = res.data.message;
-      }      
+      }
     }
 
     // Save EventRegistration
@@ -74,9 +80,11 @@
       } else {
         vm.eventregistration.$save(successCallback, errorCallback);
       }
+
       function successCallback(res) {
         $state.go('eventregistrations.list');
       }
+
       function errorCallback(res) {
         vm.error = res.data.message;
       }
@@ -88,7 +96,7 @@
         $scope.$broadcast('show-errors-check-validity', 'vm.form.eventregistrationForm');
         return false;
       }
-      savePerson();      
+      savePerson();
     }
   }
 })();

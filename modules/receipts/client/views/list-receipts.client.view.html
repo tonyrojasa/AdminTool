@@ -1,0 +1,22 @@
+<section>
+  <div class="page-header">
+    <h1>Recibos</h1>
+  </div>
+  <div class="list-group">
+    <a data-ng-repeat="receipt in vm.receipts"
+       data-ui-sref="receipts.view({ receiptId: receipt._id })"
+       class="list-group-item">
+      <small class="list-group-item-text">
+        Creado en
+        <span data-ng-bind="receipt.created | date:'mediumDate'"></span>
+        por
+        <span data-ng-if="receipt.user" data-ng-bind="receipt.user.displayName"></span>
+        <span data-ng-if="!receipt.user">Deleted User</span>
+      </small>
+      <h4 class="list-group-item-heading" data-ng-bind="receipt.name"></h4>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="vm.receipts.$resolved && !vm.receipts.length">
+    No hay recibos creados <a data-ui-sref="receipts.create">Crear uno</a>?
+  </div>
+</section>

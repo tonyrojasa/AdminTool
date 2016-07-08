@@ -15,7 +15,7 @@
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" ng-if="vm.events">
-              <li data-ng-repeat="event in vm.events">
+              <li data-ng-repeat="event in vm.events | orderBy:'name'">
                 <a ng-click="vm.setEvent(event)">{{event.name}}</a>
               </li>
             </ul>
@@ -34,7 +34,7 @@
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" ng-if="vm.eventPeopleGroups">
-              <li data-ng-repeat="eventPeopleGroup in vm.eventPeopleGroups">
+              <li data-ng-repeat="eventPeopleGroup in vm.eventPeopleGroups | orderBy:'name'">
                 <a ng-click="vm.setEventPeopleGroup(eventPeopleGroup)">{{eventPeopleGroup.name}}</a>
               </li>
             </ul>
@@ -47,7 +47,7 @@
           <label class="control-label" for="registrationDate">Fecha de inscripción</label>
           <br />
           <input name="registrationDate" type="hidden" ng-model="vm.eventregistration.registrationDate" id="registrationDate" class="form-control" required>
-          <input name="registrationDate" ng-if="vm.editMode" type="text" ng-model="vm.eventregistration.registrationDate | date:'dd-MMM-yyyy'" id="registrationDate" class="form-control" ng-disabled="true" required>
+          <input name="registrationDate" ng-if="vm.editMode" type="text" value="{{vm.eventregistration.registrationDate | date:'dd-MMM-yyyy'}}" id="registrationDate" class="form-control" ng-disabled="true" required>
           <datetimepicker ng-if="!vm.editMode"
             ng-model="vm.eventregistration.registrationDate" 
             hidden-time="true" 

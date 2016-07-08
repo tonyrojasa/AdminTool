@@ -1,5 +1,5 @@
 <div class="form-group" show-errors>
-  <label class="control-label" for="organization">Organización</label>
+  <label class="control-label" for="organization">Organización *</label>
   <input name="organization" type="hidden" ng-model="person.organization" id="organization" class="form-control" placeholder="Organización" required>
   <div class="dropdown" id="organizationDropdown" uib-dropdown>
     <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
@@ -8,7 +8,7 @@
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu" ng-if="organizations">
-      <li data-ng-repeat="organization in organizations">
+      <li data-ng-repeat="organization in organizations | orderBy:'name'">
         <a ng-click="setOrganization(organization)">{{organization.name}}</a>
       </li>
     </ul>
@@ -33,27 +33,24 @@
 </div> -->
 <div class="form-group" show-errors>
   <label class="control-label" for="personId">Identificación (cedula)</label>
-  <input name="personId" type="text" ng-model="person.personId" id="personId" class="form-control" placeholder="Identificación" required>
-  <div ng-messages="form.personId.$error" role="alert">
-    <p class="help-block error-text" ng-message="required">Person personId is required.</p>
-  </div>
+  <input name="personId" type="text" ng-model="person.personId" id="personId" class="form-control" placeholder="Identificación">
 </div>
 <div class="form-group" show-errors>
-  <label class="control-label" for="firstName">Nombre</label>
+  <label class="control-label" for="firstName">Nombre *</label>
   <input name="firstName" type="text" ng-model="person.firstName" id="firstName" class="form-control" placeholder="Nombre" required>
   <div ng-messages="form.firstName.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Nombre es requerido.</p>
   </div>
 </div>
 <div class="form-group" show-errors>
-  <label class="control-label" for="lastName">Primer Apellido</label>
+  <label class="control-label" for="lastName">Primer Apellido *</label>
   <input name="lastName" type="text" ng-model="person.lastName" id="lastName" class="form-control" placeholder="Primer Apellido" required>
   <div ng-messages="form.lastName.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Primer Apellido es requerido.</p>
   </div>
 </div>
  <div class="form-group" show-errors>
-  <label class="control-label" for="secondLastName">Segundo Apellido</label>
+  <label class="control-label" for="secondLastName">Segundo Apellido *</label>
   <input name="secondLastName" type="text" ng-model="person.secondLastName" id="secondLastName" class="form-control" placeholder="Segundo Apellido" required>
   <div ng-messages="form.secondLastName.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Segundo Apellido es requerido.</p>
@@ -61,10 +58,7 @@
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="email">Email</label>
-  <input name="email" type="text" ng-model="person.email" id="email" class="form-control" placeholder="Segundo Apellido" required>
-  <div ng-messages="form.email.$error" role="alert">
-    <p class="help-block error-text" ng-message="required">Email es requerido.</p>
-  </div>
+  <input name="email" type="text" ng-model="person.email" id="email" class="form-control" placeholder="Email">
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="mobilePhone">Teléfono celular</label>
@@ -79,14 +73,14 @@
   <input name="otherPhone" type="text" ng-model="person.otherPhone" id="otherPhone" class="form-control" placeholder="Teléfono (otro)">
 </div>
 <div class="form-group" show-errors>
-  <label class="control-label" for="address">Dirección</label>
+  <label class="control-label" for="address">Dirección *</label>
   <input name="address" type="text" ng-model="person.address" id="address" class="form-control" placeholder="Dirección" required>
   <div ng-messages="form.address.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Dirección es requerido.</p>
   </div>
 </div>
 <div class="form-group" show-errors>
-  <label class="control-label" for="personType">Tipo de Persona</label>
+  <label class="control-label" for="personType">Tipo de Persona *</label>
   <input name="personType" type="hidden" ng-model="person.personType" id="personType" class="form-control" placeholder="Tipo de Persona" required>
   <div class="dropdown" id="personTypeDropdown" uib-dropdown>
     <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
@@ -107,27 +101,24 @@
 <div class="form-group" show-errors>
   <label class="control-label" for="birthDate">Fecha de Nacimiento</label>
   <br />
-  <input name="birthDate" type="hidden" ng-model="person.birthDate" id="birthDate" class="form-control" required>
+  <input name="birthDate" type="hidden" ng-model="person.birthDate" ng-change="calculateAge()" id="birthDate" class="form-control" ng-required="false">
   <datetimepicker 
     ng-model="person.birthDate" 
     hidden-time="true" 
     date-format="dd-MMM-yyyy" 
     current-text="Hoy"
     clear-text="Limpiar"
-    close-text="Cerrar" />           
-  <div ng-messages="formm.birthDate.$error" role="alert">
-    <p class="help-block error-text" ng-message="required">Fecha de inicio es requerido.</p>
-  </div>
+    close-text="Cerrar" />    
 </div>
 <div class="form-group" show-errors>
-  <label class="control-label" for="age">Edad</label>
+  <label class="control-label" for="age">Edad *</label>
   <input name="age" type="number" ng-model="person.age" id="age" class="form-control" placeholder="Edad" required>
   <div ng-messages="form.age.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Edad es requerido.</p>
   </div>
 </div>
 <div class="form-group" show-errors>
-  <label class="control-label" for="maritalStatus">Estado Civil</label>
+  <label class="control-label" for="maritalStatus">Estado Civil *</label>
   <input name="maritalStatus" type="hidden" ng-model="person.maritalStatus" id="maritalStatus" class="form-control" placeholder="Estado Civil" required>
   <div class="dropdown" id="maritalStatusDropdown" uib-dropdown>
     <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
@@ -147,7 +138,7 @@
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="grade">Educación</label>
-  <input name="grade" type="hidden" ng-model="person.grade" id="grade" class="form-control" placeholder="Educación" required>
+  <input name="grade" type="hidden" ng-model="person.grade" id="grade" class="form-control" placeholder="Educación">
   <div class="dropdown" id="gradeDropdown" uib-dropdown>
     <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
       <span ng-if="!person.grade">-- Seleccione uno --</span>
@@ -160,26 +151,17 @@
       </li>
     </ul>
   </div> 
-  <div ng-messages="form.grade.$error" role="alert">
-    <p class="help-block error-text" ng-message="required">Educación es requerido.</p>
-  </div>
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="occupation">Profesión</label>
-  <input name="occupation" type="text" ng-model="person.occupation" id="occupation" class="form-control" placeholder="occupation" required>
-  <div ng-messages="form.occupation.$error" role="alert">
-    <p class="help-block error-text" ng-message="required">Profesión es requerido.</p>
-  </div>
+  <input name="occupation" type="text" ng-model="person.occupation" id="occupation" class="form-control" placeholder="occupation">
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="employer">Empleador (Empresa donde labora)</label>
-  <input name="employer" type="text" ng-model="person.employer" id="employer" class="form-control" placeholder="Empleador" required>
-  <div ng-messages="form.employer.$error" role="alert">
-    <p class="help-block error-text" ng-message="required">Empleador es requerido.</p>
-  </div>
+  <input name="employer" type="text" ng-model="person.employer" id="employer" class="form-control" placeholder="Empleador">
 </div>
 <div class="form-group" show-errors>
-  <label class="control-label" for="shirtSize">Talla de camiseta</label>
+  <label class="control-label" for="shirtSize">Talla de camiseta *</label>
   <input name="shirtSize" type="hidden" ng-model="person.shirtSize" id="shirtSize" class="form-control" placeholder="Talla de camiseta" required>
   <div class="dropdown" id="shirtSizeDropdown" uib-dropdown>
     <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
@@ -198,7 +180,7 @@
   </div>
 </div>
 <div class="form-group" show-errors>  
-  <input name="activeMember" type="hidden" ng-model="person.activeMember" id="activeMember" class="form-control" required>
+  <input name="activeMember" type="hidden" ng-model="person.activeMember" id="activeMember" class="form-control">
   <div class="checkbox">
     <label>
       <input type="checkbox" ng-model="person.activeMember">
@@ -207,11 +189,11 @@
   </div>
 </div>
 <div ng-show="person.activeMember" class="form-group" show-errors>
-  <label class="control-label" for="memberTimeYears">Tiempo de asistir(años)</label>
-  <input name="memberTimeYears" type="text" ng-model="person.memberTimeYears" id="memberTimeYears" class="form-control" placeholder="Años de asistir">
+  <label class="control-label" for="memberTimeYears">Tiempo de asistir (años)</label>
+  <input name="memberTimeYears" type="Number" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" ng-model="person.memberTimeYears" id="memberTimeYears" class="form-control" placeholder="Años de asistir">
 </div>
 <div class="form-group" show-errors>  
-  <input name="medicalTreatment" type="hidden" ng-model="person.medicalTreatment.exists" id="medicalTreatment" class="form-control" required>
+  <input name="medicalTreatment" type="hidden" ng-model="person.medicalTreatment.exists" id="medicalTreatment" class="form-control">
   <div class="checkbox">
     <label>
       <input type="checkbox" ng-model="person.medicalTreatment.exists">
