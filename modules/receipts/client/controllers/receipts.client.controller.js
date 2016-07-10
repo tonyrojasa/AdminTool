@@ -7,12 +7,14 @@
     .controller('ReceiptsController', ReceiptsController);
 
   ReceiptsController.$inject = ['$scope', '$state', 'Authentication', 'receiptResolve', 'EventsService',
-    'eventregistrationResolve', 'EventregistrationsService'
+    'eventregistrationResolve', 'EventregistrationsService', "$stateParams"
   ];
 
   function ReceiptsController($scope, $state, Authentication, receipt, EventsService, eventregistration,
-    EventregistrationsService) {
+    EventregistrationsService, $stateParams) {
     var vm = this;
+
+    vm.successMessage = $stateParams.successMessage;
 
     vm.authentication = Authentication;
     vm.receipt = receipt;
@@ -35,15 +37,17 @@
       ];
       //default to current user
       vm.receipt.receivedBy = vm.authentication.user.displayName;
+
       if (vm.receipt._id) {
         vm.eventregistration = receipt.eventRegistration;
-        EventregistrationsService.get({
-          eventregistrationId: receipt.eventRegistration._id
-        }, function(data) {
-          vm.eventregistration = data;
-        });
+        if (vm.eventregistration) {
+          EventregistrationsService.get({
+            eventregistrationId: receipt.eventRegistration._id
+          }, function(data) {
+            vm.eventregistration = data;
+          });
+        }
       }
-
       debugger;
       if (vm.eventregistration && !vm.receipt.eventRegistration) {
         vm.isEventRegistrationPayment = true;
@@ -55,7 +59,6 @@
 
       if (vm.receipt.paymentDate) {
         vm.receipt.paymentDate = new Date(vm.receipt.paymentDate);
-
       } else {
         vm.receipt.paymentDate = new Date();
 
@@ -107,8 +110,12 @@
       }
 
       function successCallback(res) {
+        debugger;
         if (vm.isEventRegistrationPayment) {
-          $state.go('eventregistrations.list');
+          $state.go('receipts.view', {
+            receiptId: res._id,
+            successMessage: 'El pago se ha ealizado exitosamente.'
+          });
         } else {
           $state.go('receipts.list');
         }

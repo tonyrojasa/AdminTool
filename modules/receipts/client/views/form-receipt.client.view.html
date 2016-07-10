@@ -2,6 +2,17 @@
   <div class="page-header">
     <h1>{{vm.receipt._id ? 'Editar Recibo' : 'Nuevo Recibo'}}</h1>
   </div>
+  <div class="pull-left">
+    <a class="btn btn-secondary" ng-if="vm.isEventRegistrationPayment" data-ui-sref="eventregistrations.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Inscripciones
+    </a>
+    <a class="btn btn-secondary" data-ui-sref="receipts.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Recibos
+    </a>
+  </div>
+  <br /><br />
   <div class="col-md-12">
     <form name="vm.form.receiptForm" class="form-horizontal" ng-submit="vm.save(vm.form.receiptForm.$valid)" novalidate>
       <fieldset>
@@ -31,7 +42,7 @@
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="event">Evento</label>
-          <input name="event" type="hidden" ng-model="vm.receipt.event" id="event" class="form-control" placeholder="Organización" required>
+          <input name="event" type="hidden" ng-model="vm.receipt.event" id="event" class="form-control" placeholder="Organización">
           <div class="dropdown" id="eventDropdown" uib-dropdown>
             <button ng-disabled="vm.isEventRegistrationPayment" class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
               <span ng-if="!vm.receipt.event">-- Seleccione uno --</span>
@@ -44,9 +55,6 @@
               </li>
             </ul>
           </div> 
-          <div ng-messages="vm.form.eventregistrationForm.event.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Evento es requerido.</p>
-          </div>
         </div>
         <div ng-if="vm.isEventRegistrationPayment" class="form-group" show-errors>
           <label class="control-label" for="eventPeopleGrupo">Grupo</label>
@@ -54,7 +62,7 @@
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="receivedFrom">Recibido de</label>
-          <input name="receivedFrom" type="text" ng-model="vm.receipt.receivedFrom" id="receivedFrom" class="form-control" placeholder="Recibido de" required>
+          <input name="receivedFrom" ng-disabled="vm.isEventRegistrationPayment" type="text" ng-model="vm.receipt.receivedFrom" id="receivedFrom" class="form-control" placeholder="Recibido de" required>
           <div ng-messages="vm.form.receiptForm.receivedFrom.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Recibido de es requerido.</p>
           </div>

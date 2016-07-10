@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
+var autoIncrement = require('mongoose-auto-increment');
 
 /**
  * Receipt Schema
@@ -17,6 +18,9 @@ var ReceiptSchema = new Schema({
   eventRegistration: {
     type: Schema.ObjectId,
     ref: 'Eventregistration'
+  },
+  receiptNumber: {
+    type: Number
   },
   receivedFrom: {
     type: String,
@@ -80,4 +84,11 @@ var ReceiptSchema = new Schema({
   }
 });
 
+autoIncrement.initialize(mongoose.connection);
+ReceiptSchema.plugin(autoIncrement.plugin, {
+  model: 'Receipt',
+  field: 'receiptNumber',
+  startAt: 1,
+  incrementBy: 1
+});
 mongoose.model('Receipt', ReceiptSchema);

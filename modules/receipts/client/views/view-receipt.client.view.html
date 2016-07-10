@@ -1,32 +1,46 @@
+<div ng-if="vm.successMessage" class="alert alert-success" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Recibo Creado:</span>
+  {{vm.successMessage}}
+</div>
 <section>
-   <div class="page-header">
-    <h1 data-ng-bind="vm.receipt.name"></h1>
+  <div class="page-header">
+    <h1># de Recibo: {{vm.receipt.receiptNumber}}</h1>
+      <small>
+        <em class="text-muted">
+          Creado en
+          <span data-ng-bind="vm.receipt.created | date:'mediumDate'"></span>
+          Por
+          <span data-ng-if="vm.receipt.user"
+                data-ng-bind="vm.receipt.user.displayName"></span>
+          <span data-ng-if="!vm.receipt.user">Deleted User</span>
+        </em>
+      </small>
+  </div>  
+  <div class="pull-left">
+    <a class="btn btn-secondary" ng-if="vm.eventregistration" data-ui-sref="eventregistrations.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Inscripciones
+    </a>
+    <a class="btn btn-secondary" data-ui-sref="receipts.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Recibos
+    </a>
   </div>
-  <div class="pull-right"
-       data-ng-show="vm.receipt.isCurrentUserOwner">
-    <a class="btn btn-primary"
-       data-ui-sref="receipts.edit({ receiptId: vm.receipt._id })">
+  <div class="pull-right">
+    <!-- <a class="btn btn-primary" data-ng-show="vm.receipt.isCurrentUserOwner" data-ui-sref="receipts.edit({ receiptId: vm.receipt._id })">
       <i class="glyphicon glyphicon-edit"></i>
-    </a>
-    <a class="btn btn-primary" data-ng-click="vm.remove()">
+    </a> -->
+    <!-- <a class="btn btn-primary" data-ng-click="vm.remove()">
       <i class="glyphicon glyphicon-trash"></i>
-    </a>
+    </a> -->
     <a class="btn btn-primary" data-ng-click="vm.print('receiptContent')">
-      <i class="glyphicon glyphicon-print"></i>
+      <i class="glyphicon glyphicon-print"></i> 
+      Imprimir
     </a>
   </div>
-  <small>
-    <em class="text-muted">
-      Creado en
-      <span data-ng-bind="vm.receipt.created | date:'mediumDate'"></span>
-      Por
-      <span data-ng-if="vm.receipt.user"
-            data-ng-bind="vm.receipt.user.displayName"></span>
-      <span data-ng-if="!vm.receipt.user">Deleted User</span>
-    </em>
-  </small>
-  <p class="lead" data-ng-bind="vm.receipt.content"></p>
 </section>
+<br /><br />
 <section>
   <div id="receiptContent" class="col-md-12">
     <fieldset>
@@ -41,7 +55,7 @@
       <div class="form-group" >
         <label class="control-label" for="paymentDate">Fecha de pago</label>
         <br />
-        <input name="paymentDate" type="text" ng-model="vm.receipt.paymentDate | date:'mediumDate'" id="paymentDate" class="form-control" ng-disabled="true">
+        <input name="paymentDate" type="text" value="{{vm.receipt.paymentDate | date:'mediumDate'}}" id="paymentDate" class="form-control" ng-disabled="true">
         
       </div>
       <div class="form-group" >
@@ -68,7 +82,7 @@
         <label class="control-label" for="currentBalance">Saldo actual</label>
         <div class="input-group"> 
           <span class="input-group-addon">₡</span>
-          <input ng-disabled="vm.isEventRegistrationPayment" name="currentBalance" type="number" ng-model="vm.receipt.currentBalance" id="currentBalance" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Saldo actual" ng-disabled="true">
+          <input name="currentBalance" type="number" ng-model="vm.receipt.currentBalance" id="currentBalance" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Saldo actual" ng-disabled="true">
         </div>    
       </div>
       <div class="form-group" >

@@ -3,15 +3,17 @@
     <h1>Lista de Inscritos</h1>
   </div>
   <a class="btn btn-primary" data-ui-sref="eventregistrations.create">Nueva Inscripción</a>
-  <div id="content">
+  <br /><br />
+  <div id="content" data-ng-if="vm.eventregistrations.length">
     <br />
     <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
     <br />
     <table class="table table-condensed">
       <thead>
       <tr>
+        <th># Inscripción</th>
         <th>Evento</th>
-        <th>Fecha de Inscripcion</th>
+        <th>Fecha de Inscripción</th>
         <th>Grupo</th>
         <th>Nombre Persona Inscrita</th>
         <th>Tipo de Persona</th>
@@ -19,7 +21,8 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in vm.eventregistrations | orderBy:'registrationDate' | filter : vm.searchFilter">
+      <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in vm.eventregistrations | orderBy:['person.firstName', 'person.lastName', 'person.secondLastName'] | filter : vm.searchFilter">
+        <td>{{eventRegistration.registrationNumber}}</td>
         <td>{{eventRegistration.event.name}}</td>
         <td>{{eventRegistration.registrationDate | date:'dd-MMM-yyyy'}}</td>
         <td>{{eventRegistration.eventPeopleGroup.name}}</td>
@@ -30,7 +33,7 @@
           <a data-ui-sref="eventregistrations.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })">Editar</a>    
         </td>
         <td>    
-          <a ng-if="vm.hasPendingPayment(eventRegistration)" data-ui-sref="receipts.createFromEventRegistration({ eventregistrationId: eventRegistration._id })">Pagar Recibo</a>    
+          <a ng-if="vm.hasPendingPayment(eventRegistration)" data-ui-sref="receipts.createFromEventRegistration({ eventregistrationId: eventRegistration._id })">Realizar Pago</a>    
         </td>
       </tr>
       </tbody>

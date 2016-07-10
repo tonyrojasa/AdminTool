@@ -5,11 +5,15 @@
  */
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
+var autoIncrement = require('mongoose-auto-increment');
 
 /**
  * Eventregistration Schema
  */
 var EventregistrationSchema = new Schema({
+  registrationNumber: {
+    type: Number
+  },
   eventPeopleGroup: {
     required: 'Please select the event group',
     type: Schema.ObjectId,
@@ -51,4 +55,11 @@ var EventregistrationSchema = new Schema({
   }
 });
 
+autoIncrement.initialize(mongoose.connection);
+EventregistrationSchema.plugin(autoIncrement.plugin, {
+  model: 'Eventregistration',
+  field: 'registrationNumber',
+  startAt: 1,
+  incrementBy: 1
+});
 mongoose.model('Eventregistration', EventregistrationSchema);

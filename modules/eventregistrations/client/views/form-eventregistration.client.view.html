@@ -1,7 +1,25 @@
 <section>
   <div class="page-header">
-    <h1>{{vm.eventregistration._id ? 'Editar Inscripción' : 'Nueva Inscripción'}}</h1>
+    <h1 ng-if="vm.eventregistration._id"># de Inscripción: {{vm.eventregistration.registrationNumber}}</h1>
+      <small>
+        <em class="text-muted">
+          Creado en
+          <span data-ng-bind="vm.eventregistration.created | date:'mediumDate'"></span>
+          Por
+          <span data-ng-if="vm.eventregistration.user"
+                data-ng-bind="vm.eventregistration.user.displayName"></span>
+          <span data-ng-if="!vm.eventregistration.user">Deleted User</span>
+        </em>
+      </small>
+  </div>  
+  <div class="pull-left">
+     <a class="btn btn-secondary"
+       data-ui-sref="eventregistrations.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
+    </a>
   </div>
+  <br /><br />
   <div class="col-md-12">
     <form name="vm.form.eventregistrationForm" class="form-horizontal" ng-submit="vm.save(vm.form.eventregistrationForm.$valid)" novalidate>
       <fieldset>    
