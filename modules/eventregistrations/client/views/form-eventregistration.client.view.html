@@ -1,7 +1,8 @@
 <section>
   <div class="page-header">
-    <h1 ng-if="vm.eventregistration._id"># de Inscripción: {{vm.eventregistration.registrationNumber}}</h1>
-      <small>
+    <h1>{{vm.eventregistration._id ? 'Editar' : 'Nueva Inscripción'}}</h1>
+    <h2 ng-if="vm.eventregistration._id"># de Inscripción: {{vm.eventregistration.registrationNumber}}</h2>
+      <small ng-if="vm.eventregistration._id">
         <em class="text-muted">
           Creado en
           <span data-ng-bind="vm.eventregistration.created | date:'mediumDate'"></span>

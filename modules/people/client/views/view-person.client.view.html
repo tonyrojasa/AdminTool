@@ -2,8 +2,7 @@
   <div class="page-header">
     <h1 data-ng-bind="vm.person.name"></h1>
   </div>
-  <div class="pull-right"
-       data-ng-show="vm.person.isCurrentUserOwner">
+  <div class="pull-right" data-ng-show="vm.person.isCurrentUserOwner">
     <a class="btn btn-primary"
        data-ui-sref="people.edit({ personId: vm.person._id })">
       <i class="glyphicon glyphicon-edit"></i>
