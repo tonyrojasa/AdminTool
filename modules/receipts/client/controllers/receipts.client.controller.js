@@ -25,6 +25,14 @@
     vm.remove = remove;
     vm.save = save;
     vm.initReceipt = initReceipt;
+    vm.onIsDebitClicked = onIsDebitClicked;
+
+    function onIsDebitClicked() {
+      if (vm.receipt.isDebit) {
+        vm.receipt.currentBalance = 0;
+        vm.receipt.balanceDue = 0;
+      }
+    }
 
     function initReceipt() {
       vm.paymentOfList = [
@@ -48,7 +56,7 @@
           });
         }
       }
-      debugger;
+
       if (vm.eventregistration && !vm.receipt.eventRegistration) {
         vm.isEventRegistrationPayment = true;
         vm.receipt.event = vm.eventregistration.event;
@@ -132,7 +140,11 @@
         $scope.$broadcast('show-errors-check-validity', 'vm.form.receiptForm');
         return false;
       }
-      vm.receipt.balanceDue = vm.receipt.currentBalance - vm.receipt.paymentAmount;
+      if (vm.receipt.isDebit) {
+        vm.receipt.balanceDue = -vm.receipt.paymentAmount;
+      } else {
+        vm.receipt.balanceDue = vm.receipt.currentBalance - vm.receipt.paymentAmount;
+      }
 
       saveEventRegistration();
     }

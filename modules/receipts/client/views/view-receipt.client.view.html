@@ -44,7 +44,7 @@
 <section>
   <div id="receiptContent" class="col-md-12">
     <fieldset>
-      <div class="form-group" >  
+      <div ng-if="!vm.eventregistration" class="form-group" >  
         <div class="checkbox">
           <label>
             <input type="checkbox" ng-model="vm.receipt.isDebit" ng-disabled="true">
@@ -53,57 +53,64 @@
         </div>
       </div>
       <div class="form-group" >
-        <label class="control-label" for="paymentDate">Fecha de pago</label>
+        <label class="control-label" for="paymentDate">Fecha de pago:</label>
         <br />
-        <input name="paymentDate" type="text" value="{{vm.receipt.paymentDate | date:'mediumDate'}}" id="paymentDate" class="form-control" ng-disabled="true">
-        
+         <span>{{vm.receipt.paymentDate | date:'mediumDate'}}</span>     
       </div>
       <div class="form-group" >
-        <label class="control-label" for="event">Evento</label>
-        <input name="event" type="text" ng-model="vm.receipt.event.name" id="event" class="form-control" placeholder="Organización" ng-disabled="true">
-      </div>
-      <div ng-if="vm.isEventRegistrationPayment" class="form-group" >
-        <label class="control-label" for="eventPeopleGrupo">Grupo</label>
-        <input ng-disabled="vm.isEventRegistrationPayment" name="eventPeopleGrupo" type="text" ng-model="vm.eventregistration.eventPeopleGroup.name" id="eventPeopleGrupo" class="form-control" ng-disabled="true">
+        <label class="control-label" for="event">Evento:</label>
+        <div class="input-group"> 
+          <span>{{vm.receipt.event.name}}</span>
+        </div>
       </div>
       <div class="form-group">
-        <label class="control-label" for="receivedFrom">Recibido de</label>
-        <input name="receivedFrom" type="text" ng-model="vm.receipt.receivedFrom" id="receivedFrom" class="form-control" placeholder="Recibido de" ng-disabled="true">
+        <label class="control-label" for="receivedFrom">Recibido de:</label>
+        <div class="input-group"> 
+          <span>{{vm.receipt.receivedFrom}}</span>
+        </div>
       </div>
       <div class="form-group">
-        <label class="control-label" for="shirtSize">Por concepto de</label>
-        <input name="paymentOf" type="text" ng-model="vm.receipt.paymentOf" id="paymentOf" class="form-control" placeholder="Por concepto de" ng-disabled="true">
-      </div>
-      <div class="form-group" >
-        <label class="control-label" for="description">Descripción</label>
-        <input name="description" type="text" ng-model="vm.receipt.description" id="description" class="form-control" placeholder="Descripción" ng-disabled="true">
-      </div>
-      <div class="form-group" >
-        <label class="control-label" for="currentBalance">Saldo actual</label>
+        <label class="control-label" for="shirtSize">Por concepto de:</label>
         <div class="input-group"> 
-          <span class="input-group-addon">₡</span>
-          <input name="currentBalance" type="number" ng-model="vm.receipt.currentBalance" id="currentBalance" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Saldo actual" ng-disabled="true">
-        </div>    
-      </div>
-      <div class="form-group" >
-        <label class="control-label" for="paymentAmount">Abono (monto del pago)</label>
-        <div class="input-group"> 
-          <span class="input-group-addon">₡</span>
-          <input name="paymentAmount" type="number" ng-model="vm.receipt.paymentAmount" id="paymentAmount" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Abono" ng-disabled="true">
+          <span>{{vm.receipt.paymentOf}}</span>
         </div>
       </div>
       <div class="form-group" >
-        <label class="control-label" for="balanceDue">Saldo adeudado</label>
+        <label class="control-label" for="description">Descripción:</label>
         <div class="input-group"> 
-          <span class="input-group-addon">₡</span>
-          <input name="balanceDue" type="number" ng-model="vm.receipt.balanceDue" value="{{vm.receipt.currentBalance - vm.receipt.paymentAmount}}" id="balanceDue" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Abono" ng-disabled="true" ng-disabled="true">
+          <span>{{vm.receipt.description}}</span>
         </div>
       </div>
       <div class="form-group" >
-        <label class="control-label" for="receivedBy">Recibido por</label>
-        <input name="receivedBy" type="text" ng-model="vm.receipt.receivedBy" id="receivedBy" class="form-control" placeholder="Recibido de" ng-disabled="true">
+        <label class="control-label" for="currentBalance">Saldo actual:</label>
+        <div class="input-group">         
+          <span>{{vm.receipt.currentBalance | currency:'₡'}}</span>
+        </div>
       </div>
-
+      <div class="form-group" >
+        <label class="control-label" for="paymentAmount">Abono (monto del pago):</label>
+        <div class="input-group">         
+          <span>{{vm.receipt.paymentAmount | currency:'₡'}}</span>
+      </div>
+      <br />
+      <div class="form-group" >
+        <label class="control-label" for="balanceDue">Saldo adeudado:</label>
+        <div class="input-group"> 
+          <span>{{vm.receipt.balanceDue | currency:'₡'}}</span>
+        </div>
+      </div>
+      <div class="form-group"s>
+        <label class="control-label" for="otherReference">Otra referencia:</label>
+        <div class="input-group"> 
+          <span>{{vm.receipt.otherReference}}</span>
+        </div>
+      </div>
+      <div class="form-group" >
+        <label class="control-label" for="receivedBy">Recibido por:</label>
+        <div class="input-group"> 
+          <span>{{vm.receipt.receivedBy}}</span>
+        </div>
+      </div>
         <div ng-show="vm.error" class="text-danger">
           <strong ng-bind="vm.error"></strong>
         </div>

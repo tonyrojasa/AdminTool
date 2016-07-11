@@ -40,6 +40,10 @@ var EventregistrationSchema = new Schema({
     percentage: Number,
     comments: String
   },
+  assignedSector: {
+    type: String,
+    default: ''
+  },
   balanceAmount: {
     type: Number,
     default: '',

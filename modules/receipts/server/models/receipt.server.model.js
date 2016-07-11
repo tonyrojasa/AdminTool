@@ -46,6 +46,11 @@ var ReceiptSchema = new Schema({
     required: 'Please fill description',
     trim: true
   },
+  otherReference: {
+    type: String,
+    default: '',
+    trim: true
+  },
   currentBalance: {
     type: Number,
     default: '',
