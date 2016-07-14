@@ -12,6 +12,9 @@ module.exports = function(app) {
     .get(events.list)
     .post(events.create);
 
+  app.route('/api/events/current').all(eventsPolicy.isAllowed)
+    .get(events.listAllCurrent);
+
   app.route('/api/events/:eventId').all(eventsPolicy.isAllowed)
     .get(events.read)
     .put(events.update)

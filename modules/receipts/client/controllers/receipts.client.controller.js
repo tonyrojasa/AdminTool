@@ -118,7 +118,6 @@
       }
 
       function successCallback(res) {
-        debugger;
         if (vm.isEventRegistrationPayment) {
           $state.go('receipts.view', {
             receiptId: res._id,

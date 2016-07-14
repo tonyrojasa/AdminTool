@@ -22,7 +22,8 @@ module.exports = {
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
         'public/lib/angular-ui-bootstrap-datetimepicker/datetimepicker.js',
         'public/lib/angular-file-upload/angular-file-upload.js',
-        'public/lib/moment/min/moment.min.js'
+        'public/lib/moment/min/moment.min.js',
+        'public/lib/angular-file-saver/dist/angular-file-saver.bundle.js'
         // endbower
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']

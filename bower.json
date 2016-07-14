@@ -15,7 +15,8 @@
     "bootstrap": "~3.3.6",
     "owasp-password-strength-test": "~1.3.0",
     "angular-ui-bootstrap-datetimepicker": "^1.3.3",
-    "moment": "^2.14.1"
+    "moment": "^2.14.1",
+    "angular-file-saver": "^1.1.2"
   },
   "browserify-shim": {
     "moment": "moment"

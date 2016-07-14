@@ -80,8 +80,23 @@ exports.delete = function(req, res) {
 /**
  * List of Events
  */
-exports.list = function(req, res) { 
+exports.list = function(req, res) {
   Event.find().sort('-created').populate('user', 'displayName').exec(function(err, events) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(events);
+    }
+  });
+};
+
+/**
+ * List of Current Events (startDate is >= Today)
+ */
+exports.listAllCurrent = function(req, res) {
+  Event.where('startDate').gte(new Date()).sort('-created').populate('user', 'displayName').exec(function(err, events) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -103,7 +118,7 @@ exports.eventByID = function(req, res, next, id) {
     });
   }
 
-  Event.findById(id).populate('user', 'displayName').exec(function (err, event) {
+  Event.findById(id).populate('user', 'displayName').exec(function(err, event) {
     if (err) {
       return next(err);
     } else if (!event) {

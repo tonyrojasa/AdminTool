@@ -67,6 +67,9 @@
       })
       .state('receipts.view', {
         url: '/:receiptId',
+        params: {
+          successMessage: null
+        },
         templateUrl: 'modules/receipts/client/views/view-receipt.client.view.html',
         controller: 'ReceiptsController',
         controllerAs: 'vm',

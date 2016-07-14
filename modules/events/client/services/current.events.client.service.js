@@ -4,12 +4,12 @@
 
   angular
     .module('events')
-    .factory('EventsService', EventsService);
+    .factory('CurrentEventsService', CurrentEventsService);
 
-  EventsService.$inject = ['$resource'];
+  CurrentEventsService.$inject = ['$resource'];
 
-  function EventsService($resource) {
-    return $resource('api/events/:eventId', {
+  function CurrentEventsService($resource) {
+    return $resource('api/events/current/:eventId', {
       eventId: '@_id'
     }, {
       update: {
