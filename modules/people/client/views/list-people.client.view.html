@@ -3,20 +3,40 @@
     <h1>Lista de Personas</h1>
   </div>
   <a class="btn btn-primary" data-ui-sref="people.create">Nueva Persona</a>
-  <div class="list-group">
-    <a data-ng-repeat="person in vm.people"
-       data-ui-sref="people.edit({ personId: person._id })"
-       class="list-group-item">
-      <small class="list-group-item-text">
-        Creado en
-        <span data-ng-bind="person.created | date:'mediumDate'"></span>
-        por
-        <span data-ng-if="person.user" data-ng-bind="person.user.displayName"></span>
-        <span data-ng-if="!person.user">Deleted User</span>
-      </small>
-      <h4 class="list-group-item-heading" data-ng-bind="person.name"></h4>
+  <br /><br />
+  <div id="content" data-ng-if="vm.people.length">
+    <br />
+    <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
+    <br />
+    <div id="exportable">
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Primer Apellido</th>
+          <th>Segundo Apellido</th>
+          <th>Tipo de Persona</th>
+          <th>Edad</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="person in vm.people | orderBy:['person.firstName', 'person.lastName', 'person.secondLastName'] | filter: vm.searchFilter">
+          <td>{{person.firstName}}</td>
+          <td>{{person.lastName}}</td>
+          <td>{{person.secondLastName}}</td>
+          <td>{{person.personType}}</td>
+          <td>{{person.age}}</td>
+          <td>    
+            <a data-ui-sref="people.view({ personId: person._id})">Ver..</a>    
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <a href="" class="glyphicon glyphicon-save pull-right" ng-click="vm.exportToExcel()">
+      Exportar
     </a>
-  </div>
+  </div>   
   <div class="alert alert-warning text-center" data-ng-if="vm.people.$resolved && !vm.people.length">
     No hay ninguna persona creada <a data-ui-sref="people.create">Crear una</a>?
   </div>

@@ -27,11 +27,17 @@
       vm.event = event;
     }
 
-    vm.getStatusClass = function(receipt) {
-      if (receipt.balanceDue === 0) {
+    vm.getTotalClass = function(value) {
+      if (value >= 0) {
         return 'success';
-      } else if (receipt.balanceDue > 0) {
-        return 'warning';
+      } else {
+        return 'danger';
+      }
+    };
+
+    vm.getStatusClass = function(receipt) {
+      if (receipt.paymentAmount >= 0) {
+        return 'success';
       } else {
         return 'danger';
       }

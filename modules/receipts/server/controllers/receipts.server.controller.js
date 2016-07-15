@@ -83,6 +83,7 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
   Receipt.find().sort('-created')
     .populate('event')
+    .populate('eventRegistration', 'registrationNumber')
     .populate('user', 'displayName').exec(function(err, receipts) {
       if (err) {
         return res.status(400).send({

@@ -25,6 +25,13 @@
     function setEvent(event) {
       vm.event = event;
     }
+    vm.getTotalClass = function(value) {
+      if (value >= 0) {
+        return 'success';
+      } else {
+        return 'danger';
+      }
+    };
 
     vm.hasPendingPayment = function(eventRegistration) {
       return eventRegistration.balanceAmount > 0;

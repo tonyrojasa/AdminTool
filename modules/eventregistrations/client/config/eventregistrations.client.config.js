@@ -18,7 +18,7 @@
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'eventregistrations', {
-      title: 'Lista de Inscripciones',
+      title: 'Inscripciones',
       state: 'eventregistrations.list'
     });
 

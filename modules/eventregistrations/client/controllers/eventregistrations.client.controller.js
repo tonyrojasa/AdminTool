@@ -26,6 +26,7 @@
     vm.editMode = vm.eventregistration._id ? true : false;
     vm.setEvent = setEvent;
     vm.setEventPeopleGroup = setEventPeopleGroup;
+    loadDates();
 
     if (vm.eventregistration._id) {
       vm.person = eventregistration.person;
@@ -41,6 +42,11 @@
     function loadDates() {
       if (vm.person.birthDate) {
         vm.person.birthDate = new Date(vm.person.birthDate);
+      }
+      if (vm.eventregistration.registrationDate) {
+        vm.eventregistration.registrationDate = new Date(vm.eventregistration.registrationDate);
+      } else {
+        vm.eventregistration.registrationDate = new Date();
       }
     }
 

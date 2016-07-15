@@ -24,10 +24,16 @@
 
     vm.format = 'dd-MMM-yyyy';
 
+    if (vm.event.startDate) {
+      vm.event.startDate = new Date(vm.event.startDate);
+    }
+    if (vm.event.endDate) {
+      vm.event.endDate = new Date(vm.event.endDate);
+    }
+
     vm.organizations = OrganizationsService.query();
     vm.setOrganization = function(organization) {
       vm.event.organization = organization;
-      vm.selectedOrganizationName = organization.name;
     };
 
     // Remove existing Event

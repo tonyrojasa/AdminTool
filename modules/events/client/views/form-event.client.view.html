@@ -2,6 +2,12 @@
   <div class="page-header">
     <h1>{{vm.event._id ? 'Editar Evento' : 'Nuevo Evento'}}</h1>
   </div>
+  <div class="pull-left">
+     <a class="btn btn-secondary" data-ui-sref="events.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
+    </a>
+  </div>
   <div class="col-md-12">
     <form name="vm.form.eventForm" class="form-horizontal" ng-submit="vm.save(vm.form.eventForm.$valid)" novalidate>
       <fieldset>
@@ -11,7 +17,7 @@
         <div class="dropdown" id="organizationDropdown" uib-dropdown>
           <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
             <span ng-if="!vm.event.organization">-- Seleccione uno --</span>
-            {{vm.selectedOrganizationName}}
+            {{vm.event.organization.name}}
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">

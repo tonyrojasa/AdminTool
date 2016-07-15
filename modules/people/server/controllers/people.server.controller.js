@@ -81,15 +81,18 @@ exports.delete = function(req, res) {
  * List of People
  */
 exports.list = function(req, res) {
-  Person.find().sort('-created').populate('user', 'displayName').exec(function(err, people) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(people);
-    }
-  });
+  Person.find().sort('-created')
+    .populate('organization', 'name')
+    .populate('user', 'displayName')
+    .exec(function(err, people) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(people);
+      }
+    });
 };
 
 /**
@@ -103,15 +106,18 @@ exports.personByID = function(req, res, next, id) {
     });
   }
 
-  Person.findById(id).populate('user', 'displayName').exec(function (err, person) {
-    if (err) {
-      return next(err);
-    } else if (!person) {
-      return res.status(404).send({
-        message: 'No Person with that identifier has been found'
-      });
-    }
-    req.person = person;
-    next();
-  });
+  Person.findById(id)
+    .populate('user', 'displayName')
+    .populate('organization', 'name')
+    .exec(function(err, person) {
+      if (err) {
+        return next(err);
+      } else if (!person) {
+        return res.status(404).send({
+          message: 'No Person with that identifier has been found'
+        });
+      }
+      req.person = person;
+      next();
+    });
 };

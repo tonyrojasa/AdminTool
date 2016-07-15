@@ -26,12 +26,23 @@
     vm.save = save;
     vm.initReceipt = initReceipt;
     vm.onIsDebitClicked = onIsDebitClicked;
+    vm.calculateBalanceDue = calculateBalanceDue;
 
     function onIsDebitClicked() {
-      if (vm.receipt.isDebit) {
+      if (vm.receipt.isDebit && !vm.isEventRegistrationPayment) {
         vm.receipt.currentBalance = 0;
-        vm.receipt.balanceDue = 0;
       }
+      vm.receipt.paymentAmount = '';
+      vm.receipt.balanceDue = '';
+    }
+
+    function calculateBalanceDue() {
+      if (vm.receipt.isDebit && vm.receipt.paymentAmount > 0) {
+        vm.receipt.paymentAmount = -vm.receipt.paymentAmount;
+      }
+
+      vm.receipt.balanceDue = vm.receipt.currentBalance - vm.receipt.paymentAmount;
+      return vm.receipt.balanceDue;
     }
 
     function initReceipt() {
@@ -93,7 +104,7 @@
     // Save EventRegistration (if null only save receipt)
     function saveEventRegistration() {
       if (vm.isEventRegistrationPayment) {
-        vm.eventregistration.balanceAmount = vm.receipt.balanceDue;
+        vm.eventregistration.balanceAmount = vm.calculateBalanceDue();
         vm.eventregistration.$update(successCallback, errorCallback);
       } else {
         saveReceipt();

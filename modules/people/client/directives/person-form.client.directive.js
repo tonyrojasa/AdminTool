@@ -17,14 +17,6 @@
         error: '='
       },
       link: function postLink(scope, element, attrs) {
-        if (scope.person && scope.person._id) {
-          OrganizationsService.query({
-            id: scope.person.organization
-          }, function(data) {
-            scope.selectedOrganizationName = data[0].name;
-          });
-        }
-
         if (scope.person.birthDate) {
           scope.person.birthDate = new Date(scope.person.birthDate);
         }
@@ -32,7 +24,6 @@
         scope.organizations = OrganizationsService.query();
         scope.setOrganization = function(organization) {
           scope.person.organization = organization;
-          scope.selectedOrganizationName = organization.name;
         };
 
         scope.personTypes = ['Encuentrista', 'Lider'];

@@ -4,7 +4,7 @@
   <div class="dropdown" id="organizationDropdown" uib-dropdown>
     <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
       <span ng-if="!person.organization">-- Seleccione uno --</span>
-      {{selectedOrganizationName}}
+      {{person.organization.name}}
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu" ng-if="organizations">
@@ -62,15 +62,15 @@
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="mobilePhone">Teléfono celular</label>
-  <input name="mobilePhone" type="text" ng-model="person.mobilePhone" id="mobilePhone" class="form-control" placeholder="Teléfono celular">
+  <input name="mobilePhone" ui-mask="9999-9999" ng-model="person.mobilePhone" id="mobilePhone" class="form-control">
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="homePhone">Teléfono casa</label>
-  <input name="homePhone" type="text" ng-model="person.homePhone" id="homePhone" class="form-control" placeholder="Teléfono casa">
+  <input name="homePhone" ng-model="person.homePhone" ui-mask="9999-9999"  id="homePhone" class="form-control" >
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="otherPhone">Teléfono (otro)</label>
-  <input name="otherPhone" type="text" ng-model="person.otherPhone" id="otherPhone" class="form-control" placeholder="Teléfono (otro)">
+  <input name="otherPhone" ui-mask="9999-9999" ng-model="person.otherPhone" id="otherPhone" class="form-control">
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="address">Dirección *</label>

@@ -118,15 +118,18 @@ exports.eventByID = function(req, res, next, id) {
     });
   }
 
-  Event.findById(id).populate('user', 'displayName').exec(function(err, event) {
-    if (err) {
-      return next(err);
-    } else if (!event) {
-      return res.status(404).send({
-        message: 'No Event with that identifier has been found'
-      });
-    }
-    req.event = event;
-    next();
-  });
+  Event.findById(id)
+    .populate('user', 'displayName')
+    .populate('organization', 'name')
+    .exec(function(err, event) {
+      if (err) {
+        return next(err);
+      } else if (!event) {
+        return res.status(404).send({
+          message: 'No Event with that identifier has been found'
+        });
+      }
+      req.event = event;
+      next();
+    });
 };

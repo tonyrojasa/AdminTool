@@ -56,6 +56,13 @@
           </td>
         </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5"></td>            
+            <td align="right"><b>Total:</b></td>
+            <td ng-class="vm.getTotalClass(vm.eventregistrations | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'balanceAmount')">{{vm.eventregistrations | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'balanceAmount' }}</td>
+          </tr>
+        </tfoot>
       </table>
     </div>
     <a href="" class="glyphicon glyphicon-save pull-right" ng-click="vm.exportToExcel()">
