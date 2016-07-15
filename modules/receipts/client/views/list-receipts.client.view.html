@@ -47,7 +47,7 @@
           <td>{{receipt.paymentOf}}</td>
           <td>{{receipt.paymentDate | date:'dd-MMM-yyyy'}}</td>
           <td>{{receipt.receivedFrom}}</td>
-          <td>{{receipt.paymentAmount}}</td>{{vm.addToTotal(receipt.paymentAmount)}}
+          <td>{{receipt.paymentAmount | currency:''}}</td>{{vm.addToTotal(receipt.paymentAmount)}}
           <td>    
             <a data-ui-sref="receipts.view({ receiptId: receipt._id })">Detalles</a>    
           </td>
@@ -57,14 +57,12 @@
           <tr>
             <td colspan="5"></td>            
             <td align="right"><b>Total:</b></td>
-            <td ng-class="vm.getTotalClass(vm.receipts | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'paymentAmount')">{{vm.receipts | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'paymentAmount' }}</td>
+            <td ng-class="vm.getTotalClass(vm.receipts | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'paymentAmount')">{{vm.receipts | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'paymentAmount'  | currency:''}}</td>
           </tr>
         </tfoot>
       </table>    
-    </div>  
-    <a href="" class="glyphicon glyphicon-save pull-right" ng-click="vm.exportToExcel()">
-      Exportar
-    </a>
+    </div> 
+    <export-to-file link-text="Exportar" element-id="exportable" format="excel" file-name="RECIBOS"></export-to-file> 
   </div>   
   <div class="alert alert-warning text-center" data-ng-if="vm.receipts.$resolved && !vm.receipts.length">
     No hay recibos creados <a data-ui-sref="receipts.create">Crear uno</a>?

@@ -5,22 +5,13 @@
     .module('receipts')
     .controller('ReceiptsListController', ReceiptsListController);
 
-  ReceiptsListController.$inject = ['ReceiptsService', '$state', 'CurrentEventsService', 'FileSaver', 'Blob'];
+  ReceiptsListController.$inject = ['ReceiptsService', '$state', 'CurrentEventsService'];
 
-  function ReceiptsListController(ReceiptsService, $state, CurrentEventsService, FileSaver, Blob) {
+  function ReceiptsListController(ReceiptsService, $state, CurrentEventsService) {
     var vm = this;
     vm.events = CurrentEventsService.query();
     vm.receipts = ReceiptsService.query();
     vm.setEvent = setEvent;
-    vm.exportToExcel = exportToExcel;
-
-    function exportToExcel() {
-      debugger;
-      var data = new Blob([document.getElementById('exportable').innerHTML], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'
-      });
-      FileSaver.saveAs(data, 'RECIBOS.xls');
-    }
 
     //set receipt event
     function setEvent(event) {

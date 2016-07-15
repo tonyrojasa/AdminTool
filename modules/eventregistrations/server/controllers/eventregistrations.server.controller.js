@@ -81,16 +81,25 @@ exports.delete = function(req, res) {
  * List of Eventregistrations
  */
 exports.list = function(req, res) {
-  Eventregistration.find().sort('-created').populate('user', 'displayName')
-  .populate('person').populate('event', 'name').populate('eventPeopleGroup', 'name').exec(function(err, eventregistrations) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(eventregistrations);
-    }
-  });
+  Eventregistration.find().sort('-created')
+    .populate('user', 'displayName')
+    .populate({
+      path: 'person',
+      populate: {
+        path: 'personType'
+      }
+    })
+    .populate('event', 'name')
+    .populate('eventPeopleGroup', 'name')
+    .exec(function(err, eventregistrations) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(eventregistrations);
+      }
+    });
 };
 
 /**
@@ -105,19 +114,24 @@ exports.eventregistrationByID = function(req, res, next, id) {
   }
 
   Eventregistration.findById(id).populate('user', 'displayName')
-  .populate('organization')
-  .populate('person')
-  .populate('event')
-  .populate('eventPeopleGroup')
-  .exec(function (err, eventregistration) {
-    if (err) {
-      return next(err);
-    } else if (!eventregistration) {
-      return res.status(404).send({
-        message: 'No Eventregistration with that identifier has been found'
-      });
-    }
-    req.eventregistration = eventregistration;
-    next();
-  });
+    .populate('organization')
+    .populate({
+      path: 'person',
+      populate: {
+        path: 'personType'
+      }
+    })
+    .populate('event')
+    .populate('eventPeopleGroup')
+    .exec(function(err, eventregistration) {
+      if (err) {
+        return next(err);
+      } else if (!eventregistration) {
+        return res.status(404).send({
+          message: 'No Eventregistration with that identifier has been found'
+        });
+      }
+      req.eventregistration = eventregistration;
+      next();
+    });
 };

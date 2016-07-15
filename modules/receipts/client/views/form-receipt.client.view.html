@@ -16,11 +16,11 @@
   <div class="col-md-12">
     <form name="vm.form.receiptForm" class="form-horizontal" ng-submit="vm.save(vm.form.receiptForm.$valid)" novalidate>
       <fieldset>
-        <div class="form-group" show-errors ng-click="vm.onIsDebitClicked()">  
+        <div class="form-group" show-errors>  
           <input name="isDebit" type="hidden" ng-model="vm.receipt.isDebit" id="isDebit" class="form-control">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="vm.receipt.isDebit">
+              <input type="checkbox" ng-model="vm.receipt.isDebit" ng-click="vm.onIsDebitClicked()" ng-disabled="vm.receipt._id">
               <b>Entrada de dinero</b>
             </label>
           </div>
@@ -29,22 +29,26 @@
           <label class="control-label" for="paymentDate">Fecha de pago *</label>
           <br />
           <input name="paymentDate" type="hidden" ng-model="vm.receipt.paymentDate" id="paymentDate" class="form-control" required>
-          <datetimepicker 
-            ng-model="vm.receipt.paymentDate" 
-            hidden-time="true" 
-            date-format="dd-MMM-yyyy" 
-            current-text="Hoy"
-            clear-text="Limpiar"
-            close-text="Cerrar" />           
+          <input name="paymentDate" type="text" value="{{vm.receipt.paymentDate | date:'mediumDate'}}" id="paymentDate" class="form-control" ng-if="vm.receipt._id" ng-disabled="true">
+          <div ng-if="!vm.receipt._id">
+              <datetimepicker 
+                ng-model="vm.receipt.paymentDate" 
+                hidden-time="true" 
+                date-format="dd-MMM-yyyy" 
+                current-text="Hoy"
+                clear-text="Limpiar"
+                close-text="Cerrar"> 
+              </datetimepicker>    
+            </div>      
           <div ng-messages="vm.form.paymentDate.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Fecha de pago es requerido.</p>
+            <p class="help-block error-text" ng-message="required" >Fecha de pago es requerido.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="event">Evento *</label>
           <input name="event" type="hidden" ng-model="vm.receipt.event" id="event" class="form-control" placeholder="Evento" required>
           <div class="dropdown" id="eventDropdown" uib-dropdown>
-            <button ng-disabled="vm.isEventRegistrationPayment" class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+            <button ng-disabled="vm.isEventRegistrationPayment || vm.receipt._id" class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
               <span ng-if="!vm.receipt.event">-- Seleccione uno --</span>
               {{vm.receipt.event.name}}
               <span class="caret"></span>
@@ -61,11 +65,11 @@
         </div>
         <div ng-if="vm.isEventRegistrationPayment" class="form-group" show-errors>
           <label class="control-label" for="eventPeopleGrupo">Grupo</label>
-          <input ng-disabled="vm.isEventRegistrationPayment" name="eventPeopleGrupo" type="text" ng-model="vm.eventregistration.eventPeopleGroup.name" id="eventPeopleGrupo" class="form-control">
+          <input ng-disabled="vm.isEventRegistrationPayment" name="eventPeopleGrupo" type="text" ng-model="vm.eventregistration.eventPeopleGroup.name" id="eventPeopleGrupo" class="form-control"  ng-disabled="vm.receipt._id">
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="receivedFrom">Recibido de *</label>
-          <input name="receivedFrom" ng-disabled="vm.isEventRegistrationPayment" type="text" ng-model="vm.receipt.receivedFrom" id="receivedFrom" class="form-control" placeholder="Recibido de" required>
+          <input name="receivedFrom" ng-disabled="vm.isEventRegistrationPayment || vm.receipt._id" type="text" ng-model="vm.receipt.receivedFrom" id="receivedFrom" class="form-control" placeholder="Recibido de" required>
           <div ng-messages="vm.form.receiptForm.receivedFrom.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Recibido de es requerido.</p>
           </div>
@@ -100,7 +104,7 @@
           <label class="control-label" for="currentBalance">Saldo actual *</label>
           <div class="input-group"> 
             <span class="input-group-addon">₡</span>
-            <input type="number" ng-disabled="vm.isEventRegistrationPayment || vm.receipt.isDebit" name="currentBalance" type="number" ng-model="vm.receipt.currentBalance" ng-change="vm.calculateBalanceDue()" id="currentBalance" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Saldo actual" required>
+            <input type="number" ng-disabled="vm.isEventRegistrationPayment || vm.receipt.isDebit || vm.receipt._id" name="currentBalance" type="number" ng-model="vm.receipt.currentBalance" ng-change="vm.calculateBalanceDue()" id="currentBalance" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Saldo actual" required>
           </div>         
           <div ng-messages="vm.form.receiptForm.currentBalance.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Saldo actual es requerido.</p>
@@ -110,7 +114,7 @@
           <label class="control-label" for="paymentAmount">Abono (monto del pago) *</label>
           <div class="input-group"> 
             <span class="input-group-addon">₡</span>
-            <input name="paymentAmount" type="number" ng-model="vm.receipt.paymentAmount" ng-change="vm.calculateBalanceDue()" id="paymentAmount" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Abono" required>
+            <input name="paymentAmount" type="number" ng-model="vm.receipt.paymentAmount" ng-change="vm.calculateBalanceDue()" id="paymentAmount" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Abono" required ng-disabled="vm.receipt._id">
           </div>
           <div ng-messages="vm.form.receiptForm.paymentAmount.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Abono es requerido.</p>

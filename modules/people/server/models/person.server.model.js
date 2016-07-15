@@ -18,15 +18,19 @@ var PersonSchema = new Schema({
   },
   serviceAcademyClass: {
     type: Schema.ObjectId,
-    ref: 'ServiceAcademyClass'
+    ref: 'Serviceacademyclass'
   },
   location: {
     type: Schema.ObjectId,
-    ref: 'Location'
+    ref: 'location'
   },
   contactInfo: {
     type: Schema.ObjectId,
-    ref: 'ContactInfo'
+    ref: 'Contactifo'
+  },
+  personType: {
+    type: Schema.ObjectId,
+    ref: 'Persontype'
   },
   personId: {
     type: Number
@@ -74,10 +78,6 @@ var PersonSchema = new Schema({
   address: {
     type: String,
     required: 'Please fill address',
-    trim: true
-  },
-  personType: {
-    type: String,
     trim: true
   },
   birthDate: {

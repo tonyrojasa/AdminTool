@@ -46,8 +46,8 @@
           <td>{{eventRegistration.registrationDate | date:'dd-MMM-yyyy'}}</td>
           <td>{{eventRegistration.eventPeopleGroup.name}}</td>
           <td>{{eventRegistration.person.firstName}} {{eventRegistration.person.lastName}} {{eventRegistration.person.secondLastName}}</td>
-          <td>{{eventRegistration.person.personType}}</td>
-          <td>{{eventRegistration.balanceAmount}}</td>
+          <td>{{eventRegistration.person.personType.name}}</td>
+          <td>{{eventRegistration.balanceAmount | currency:''}}</td>
           <td>    
             <a data-ui-sref="eventregistrations.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })">Editar</a>    
           </td>
@@ -60,14 +60,12 @@
           <tr>
             <td colspan="5"></td>            
             <td align="right"><b>Total:</b></td>
-            <td ng-class="vm.getTotalClass(vm.eventregistrations | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'balanceAmount')">{{vm.eventregistrations | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'balanceAmount' }}</td>
+            <td ng-class="vm.getTotalClass(vm.eventregistrations | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'balanceAmount')">{{vm.eventregistrations | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'balanceAmount'  | currency:''}}</td>
           </tr>
         </tfoot>
       </table>
     </div>
-    <a href="" class="glyphicon glyphicon-save pull-right" ng-click="vm.exportToExcel()">
-      Exportar
-    </a>
+    <export-to-file link-text="Exportar" element-id="exportable" format="excel" file-name="INSCRIPCIONES"></export-to-file>
   </div>   
   <div class="alert alert-warning text-center" data-ng-if="vm.eventregistrations.$resolved && !vm.eventregistrations.length">
     No Eventregistrations yet, why don't you <a data-ui-sref="eventregistrations.create">create one</a>?

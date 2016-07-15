@@ -85,12 +85,12 @@
   <div class="dropdown" id="personTypeDropdown" uib-dropdown>
     <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
       <span ng-if="!person.personType">-- Seleccione uno --</span>
-      {{person.personType}}
+      {{person.personType.name}}
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
       <li ng-repeat="personType in personTypes">
-        <a ng-click="setPersonType(personType)">{{personType}}</a>
+        <a ng-click="setPersonType(personType)">{{personType.name}}</a>
       </li>
     </ul>
   </div>          

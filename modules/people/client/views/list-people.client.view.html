@@ -24,18 +24,16 @@
           <td>{{person.firstName}}</td>
           <td>{{person.lastName}}</td>
           <td>{{person.secondLastName}}</td>
-          <td>{{person.personType}}</td>
+          <td>{{person.personType.name}}</td>
           <td>{{person.age}}</td>
           <td>    
-            <a data-ui-sref="people.view({ personId: person._id})">Ver..</a>    
+            <a data-ui-sref="people.view({ personId: person._id})">Detalles</a>    
           </td>
         </tr>
         </tbody>
       </table>
-    </div>
-    <a href="" class="glyphicon glyphicon-save pull-right" ng-click="vm.exportToExcel()">
-      Exportar
-    </a>
+    </div>    
+    <export-to-file link-text="Exportar" element-id="exportable" format="excel" file-name="PERSONAS"></export-to-file> 
   </div>   
   <div class="alert alert-warning text-center" data-ng-if="vm.people.$resolved && !vm.people.length">
     No hay ninguna persona creada <a data-ui-sref="people.create">Crear una</a>?

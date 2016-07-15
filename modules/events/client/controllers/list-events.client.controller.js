@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -9,11 +9,6 @@
 
   function EventsListController(EventsService) {
     var vm = this;
-
     vm.events = EventsService.query();
-
-    vm.filterEventsByDate = function (date) {
-		//vm.events = EventsService.query({startDate: date});
-    };
   }
 })();

@@ -5,9 +5,9 @@
     .module('people')
     .directive('personForm', personForm);
 
-  personForm.$inject = ['$rootScope', 'OrganizationsService'];
+  personForm.$inject = ['$rootScope', 'OrganizationsService', 'PersontypesService'];
 
-  function personForm($rootScope, OrganizationsService) {
+  function personForm($rootScope, OrganizationsService, PersontypesService) {
     return {
       templateUrl: 'modules/people/client/views/person-form.client.view.html',
       restrict: 'E',
@@ -26,7 +26,7 @@
           scope.person.organization = organization;
         };
 
-        scope.personTypes = ['Encuentrista', 'Lider'];
+        scope.personTypes = PersontypesService.query();
         scope.setPersonType = function(personType) {
           scope.person.personType = personType;
         };

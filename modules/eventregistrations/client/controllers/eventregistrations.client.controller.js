@@ -40,10 +40,10 @@
     }
 
     function loadDates() {
-      if (vm.person.birthDate) {
+      if (vm.person && vm.person.birthDate) {
         vm.person.birthDate = new Date(vm.person.birthDate);
       }
-      if (vm.eventregistration.registrationDate) {
+      if (vm.eventregistration && vm.eventregistration.registrationDate) {
         vm.eventregistration.registrationDate = new Date(vm.eventregistration.registrationDate);
       } else {
         vm.eventregistration.registrationDate = new Date();

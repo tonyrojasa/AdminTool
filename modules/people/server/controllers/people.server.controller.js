@@ -83,6 +83,7 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
   Person.find().sort('-created')
     .populate('organization', 'name')
+    .populate('personType', 'name')
     .populate('user', 'displayName')
     .exec(function(err, people) {
       if (err) {
@@ -108,6 +109,7 @@ exports.personByID = function(req, res, next, id) {
 
   Person.findById(id)
     .populate('user', 'displayName')
+    .populate('personType', 'name')
     .populate('organization', 'name')
     .exec(function(err, person) {
       if (err) {
