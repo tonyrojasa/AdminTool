@@ -2,6 +2,13 @@
   <div class="page-header">
     <h1 data-ng-bind="vm.organization.name"></h1>
   </div>
+  <div class="pull-left">
+     <a class="btn btn-secondary" data-ui-sref="organizations.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
+    </a>
+  </div>
+  <br /><br />
   <div class="pull-right">
     <a class="btn btn-primary" data-ui-sref="organizations.edit({ organizationId: vm.organization._id })">
       <i class="glyphicon glyphicon-edit"></i>
@@ -23,9 +30,3 @@
   <p class="lead" data-ng-bind="vm.organization.description"></p>
   <p class="lead" data-ng-if="!vm.organization.description.length"> No hay descripción para esta organización</p>
 </section>
-<div class="pull-left">
-   <a class="btn btn-secondary" data-ui-sref="organizations.list()">
-    <i class="glyphicon glyphicon-arrow-left"></i>
-    Regresar
-  </a>
-</div>

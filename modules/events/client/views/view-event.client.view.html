@@ -2,6 +2,13 @@
   <div class="page-header">
     <h1 data-ng-bind="vm.event.name"></h1>
   </div>
+  <div class="pull-left">
+     <a class="btn btn-secondary" data-ui-sref="events.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
+    </a>
+  </div>
+  <br /><br />
   <div class="pull-right">
     <a class="btn btn-primary" data-ui-sref="events.edit({ eventId: vm.event._id })">
       <i class="glyphicon glyphicon-edit"></i>
@@ -27,9 +34,3 @@
   Fecha final: <p class="lead" data-ng-bind="vm.event.endDate | date:'longDate'"></p>  
   Precio por persona: <p>₡ <span class="lead" data-ng-bind="vm.event.price"></span></p>
 </section>
-<div class="pull-left">
-   <a class="btn btn-secondary" data-ui-sref="events.list()">
-    <i class="glyphicon glyphicon-arrow-left"></i>
-    Regresar
-  </a>
-</div>

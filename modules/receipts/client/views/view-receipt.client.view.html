@@ -3,7 +3,7 @@
   <span class="sr-only">Recibo Creado:</span>
   {{vm.successMessage}}
 </div>
-<section>
+<section class="row">
   <div class="page-header">
     <h1># de Recibo: {{vm.receipt.receiptNumber}}</h1>
       <small>
@@ -17,7 +17,7 @@
         </em>
       </small>
   </div>  
-  <div class="pull-left">
+  <div class="col-md-6 pull-left">
     <a class="btn btn-secondary" ng-if="vm.eventregistration" data-ui-sref="eventregistrations.list()">
       <i class="glyphicon glyphicon-arrow-left"></i>
       Inscripciones
@@ -27,7 +27,7 @@
       Recibos
     </a>
   </div>
-  <div class="pull-right">
+  <div class="col-md-6 pull-rigth">
     <a class="btn btn-primary" data-ng-show="vm.receipt.isCurrentUserOwner" data-ui-sref="receipts.edit({ receiptId: vm.receipt._id })">
       <i class="glyphicon glyphicon-edit"></i>
       Editar
@@ -41,7 +41,6 @@
     </a>
   </div>
 </section>
-<br /><br />
 <section>
   <div id="receiptContent" class="col-md-12">
     <fieldset>
