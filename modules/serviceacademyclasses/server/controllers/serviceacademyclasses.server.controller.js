@@ -81,15 +81,18 @@ exports.delete = function(req, res) {
  * List of Serviceacademyclasses
  */
 exports.list = function(req, res) {
-  Serviceacademyclass.find().sort('-created').populate('user', 'displayName').exec(function(err, serviceacademyclasses) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(serviceacademyclasses);
-    }
-  });
+  Serviceacademyclass.find().sort('-created')
+    .populate('organization', 'name')
+    .populate('user', 'displayName')
+    .exec(function(err, serviceacademyclasses) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(serviceacademyclasses);
+      }
+    });
 };
 
 /**

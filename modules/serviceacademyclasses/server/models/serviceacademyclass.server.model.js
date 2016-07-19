@@ -10,6 +10,10 @@ var mongoose = require('mongoose'),
  * Serviceacademyclass Schema
  */
 var ServiceacademyclassSchema = new Schema({
+  organization: {
+    type: Schema.ObjectId,
+    ref: 'Organization'
+  },
   name: {
     type: String,
     default: '',

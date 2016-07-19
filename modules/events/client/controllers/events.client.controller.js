@@ -26,10 +26,15 @@
 
     if (vm.event.startDate) {
       vm.event.startDate = new Date(vm.event.startDate);
+    } else {
+      vm.event.startDate = new Date();
     }
     if (vm.event.endDate) {
       vm.event.endDate = new Date(vm.event.endDate);
+    } else {
+      vm.event.endDate = new Date();
     }
+
 
     vm.organizations = OrganizationsService.query();
     vm.setOrganization = function(organization) {
