@@ -16,13 +16,13 @@
 
     function parseSchedule(sheduleArray) {
       var scheduleValue = sheduleArray.join(', ');
-      scheduleValue = scheduleValue.replace('L', 'Lunes');
-      scheduleValue = scheduleValue.replace('K', 'Martes');
-      scheduleValue = scheduleValue.replace('M', 'Miercoles');
-      scheduleValue = scheduleValue.replace('J', 'Jueves');
-      scheduleValue = scheduleValue.replace('V', 'Viernes');
-      scheduleValue = scheduleValue.replace('S', 'Sábado');
-      scheduleValue = scheduleValue.replace('D', 'Domingo');
+      // scheduleValue = scheduleValue.replace('L', 'Lunes');
+      // scheduleValue = scheduleValue.replace('K', 'Martes');
+      // scheduleValue = scheduleValue.replace('M', 'Miercoles');
+      // scheduleValue = scheduleValue.replace('J', 'Jueves');
+      // scheduleValue = scheduleValue.replace('V', 'Viernes');
+      // scheduleValue = scheduleValue.replace('S', 'Sábado');
+      // scheduleValue = scheduleValue.replace('D', 'Domingo');
 
       return scheduleValue;
     }
