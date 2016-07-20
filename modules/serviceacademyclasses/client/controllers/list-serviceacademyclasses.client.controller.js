@@ -15,15 +15,34 @@
     vm.parseSchedule = parseSchedule;
 
     function parseSchedule(sheduleArray) {
+      _.forEach(sheduleArray,
+        function(value, key) {
+          debugger;
+          switch (value) {
+            case "L":
+              sheduleArray[key] = "Lunes";
+              break;
+            case "K":
+              sheduleArray[key] = "Martes";
+              break;
+            case "M":
+              sheduleArray[key] = "Miercoles";
+              break;
+            case "J":
+              sheduleArray[key] = "Jueves";
+              break;
+            case "V":
+              sheduleArray[key] = "Viernes";
+              break;
+            case "S":
+              sheduleArray[key] = "Sábado";
+              break;
+            case "D":
+              sheduleArray[key] = "Domingo";
+              break;
+          }
+        });
       var scheduleValue = sheduleArray.join(', ');
-      // scheduleValue = scheduleValue.replace('L', 'Lunes');
-      // scheduleValue = scheduleValue.replace('K', 'Martes');
-      // scheduleValue = scheduleValue.replace('M', 'Miercoles');
-      // scheduleValue = scheduleValue.replace('J', 'Jueves');
-      // scheduleValue = scheduleValue.replace('V', 'Viernes');
-      // scheduleValue = scheduleValue.replace('S', 'Sábado');
-      // scheduleValue = scheduleValue.replace('D', 'Domingo');
-
       return scheduleValue;
     }
 

@@ -6,9 +6,9 @@
     .module('serviceacademyclasses')
     .controller('ServiceacademyclassesController', ServiceacademyclassesController);
 
-  ServiceacademyclassesController.$inject = ['$scope', '$state', 'Authentication', 'serviceacademyclassResolve', 'OrganizationsService'];
+  ServiceacademyclassesController.$inject = ['_', '$scope', '$state', 'Authentication', 'serviceacademyclassResolve', 'OrganizationsService'];
 
-  function ServiceacademyclassesController($scope, $state, Authentication, serviceacademyclass, OrganizationsService) {
+  function ServiceacademyclassesController(_, $scope, $state, Authentication, serviceacademyclass, OrganizationsService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -17,11 +17,53 @@
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
+    vm.parseSchedule = parseSchedule;
 
     vm.organizations = OrganizationsService.query();
     vm.setOrganization = function(organization) {
       vm.serviceacademyclass.organization = organization;
     };
+
+    vm.levels = [{
+      name: 'Nivel 1',
+      value: 1
+    }, {
+      name: 'Nivel 2',
+      value: 2
+    }, {
+      name: 'Nivel 3',
+      value: 2
+    }];
+
+    vm.schedules = [{
+      name: 'Lunes',
+      value: 'L',
+      selected: false
+    }, {
+      name: 'Martes',
+      value: 'K',
+      selected: false
+    }, {
+      name: 'Miercoles',
+      value: 'M',
+      selected: false
+    }, {
+      name: 'Jueves',
+      value: 'J',
+      selected: false
+    }, {
+      name: 'Viernes',
+      value: 'V',
+      selected: false
+    }, {
+      name: 'Sábado',
+      value: 'S',
+      selected: false
+    }, {
+      name: 'Domingo',
+      value: 'D',
+      selected: false
+    }];
 
     if (!vm.serviceacademyclass.schedule) {
       vm.serviceacademyclass.schedule = [];
@@ -38,40 +80,49 @@
       vm.serviceacademyclass.endDate = new Date();
     }
 
+    if (vm.serviceacademyclass.schedule) {
+      _.forEach(vm.serviceacademyclass.schedule, function(value, key) {
+        debugger;
+        _.find(vm.schedules, function(o) {
+          if (o.value === value) {
+            o.selected = true;
+            return true;
+          };
+        });
+      });
+    }
 
-    vm.levels = [{
-      name: 'Nivel 1',
-      value: 1
-    }, {
-      name: 'Nivel 2',
-      value: 2
-    }, {
-      name: 'Nivel 3',
-      value: 2
-    }];
-
-    vm.schedules = [{
-      name: 'Lunes',
-      value: 'L'
-    }, {
-      name: 'Martes',
-      value: 'K'
-    }, {
-      name: 'Miercoles',
-      value: 'M'
-    }, {
-      name: 'Jueves',
-      value: 'J'
-    }, {
-      name: 'Viernes',
-      value: 'V'
-    }, {
-      name: 'Sábado',
-      value: 'S'
-    }, {
-      name: 'Domingo',
-      value: 'D'
-    }];
+    function parseSchedule(sheduleArray) {
+      _.forEach(sheduleArray,
+        function(value, key) {
+          debugger;
+          switch (value) {
+            case "L":
+              sheduleArray[key] = "Lunes";
+              break;
+            case "K":
+              sheduleArray[key] = "Martes";
+              break;
+            case "M":
+              sheduleArray[key] = "Miercoles";
+              break;
+            case "J":
+              sheduleArray[key] = "Jueves";
+              break;
+            case "V":
+              sheduleArray[key] = "Viernes";
+              break;
+            case "S":
+              sheduleArray[key] = "Sábado";
+              break;
+            case "D":
+              sheduleArray[key] = "Domingo";
+              break;
+          }
+        });
+      var scheduleValue = sheduleArray.join(', ');
+      return scheduleValue;
+    }
 
     // toggle selection for a given schedule by name
     vm.toggleScheduleSelection = function toggleScheduleSelection(scheduleValue) {

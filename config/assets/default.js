@@ -13,6 +13,7 @@ module.exports = {
       js: [
         // bower:js
         'public/lib/angular/angular.js',
+        'public/lib/angular-i18n/angular-locale_es-cr.js',
         'public/lib/angular-resource/angular-resource.js',
         'public/lib/angular-animate/angular-animate.js',
         'public/lib/angular-messages/angular-messages.js',

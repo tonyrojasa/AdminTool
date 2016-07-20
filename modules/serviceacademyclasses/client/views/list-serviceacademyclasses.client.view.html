@@ -31,8 +31,7 @@
         <tr>
           <th>Nombre</th>
           <th>Nivel</th>
-          <th>Fecha Inicio</th>
-          <th>Fecha Final</th>
+          <th>Inicio - Final</th>
           <th>Horario</th>
           <th>Organización</th>
         </tr>
@@ -41,8 +40,7 @@
         <tr ng-repeat="serviceacademyclass in vm.serviceacademyclasses | orderBy:['startDate', 'level', 'name'] | filter: vm.searchFilter | filter: vm.organization.name" class="active">
           <td>{{serviceacademyclass.name}}</td>
           <td>{{serviceacademyclass.level}}</td>
-          <td>{{serviceacademyclass.startDate | date:'mediumDate'}}</td>
-          <td>{{serviceacademyclass.endDate | date:'mediumDate'}}</td>
+          <td>{{serviceacademyclass.startDate | date:'LLLL'}} - {{serviceacademyclass.endDate | date:'LLLL'}}</td>
           <td>{{vm.parseSchedule(serviceacademyclass.schedule)}}</td>
           <td>{{serviceacademyclass.organization.name}}</td>
           <td>    

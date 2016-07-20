@@ -121,15 +121,18 @@ exports.serviceacademyclassByID = function(req, res, next, id) {
     });
   }
 
-  Serviceacademyclass.findById(id).populate('user', 'displayName').exec(function(err, serviceacademyclass) {
-    if (err) {
-      return next(err);
-    } else if (!serviceacademyclass) {
-      return res.status(404).send({
-        message: 'No Serviceacademyclass with that identifier has been found'
-      });
-    }
-    req.serviceacademyclass = serviceacademyclass;
-    next();
-  });
+  Serviceacademyclass.findById(id)
+    .populate('organization', 'name')
+    .populate('user', 'displayName')
+    .exec(function(err, serviceacademyclass) {
+      if (err) {
+        return next(err);
+      } else if (!serviceacademyclass) {
+        return res.status(404).send({
+          message: 'No Serviceacademyclass with that identifier has been found'
+        });
+      }
+      req.serviceacademyclass = serviceacademyclass;
+      next();
+    });
 };

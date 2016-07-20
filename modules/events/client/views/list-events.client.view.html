@@ -24,7 +24,7 @@
           <td>{{event.name}}</td>
           <td>{{event.startDate | date:'mediumDate'}}</td>
           <td>{{event.endDate | date:'mediumDate'}}</td>
-          <td>{{event.price | currency:''}}</td>
+          <td>{{event.price | currency}}</td>
           <td>    
             <a data-ui-sref="events.view({ eventId: event._id})">Detalles</a>    
           </td>

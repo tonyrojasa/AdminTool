@@ -2,6 +2,13 @@
   <div class="page-header">
     <h1>{{vm.serviceacademyclass._id ? 'Editar Academia' : 'Nueva Academia'}}</h1>
   </div>
+  <div class="pull-left">
+     <a class="btn btn-secondary" data-ui-sref="serviceacademyclasses.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
+    </a>
+  </div>
+  <br /><br />
   <div class="col-md-12">
     <form name="vm.form.serviceacademyclassForm" class="form-horizontal" ng-submit="vm.save(vm.form.serviceacademyclassForm.$valid)" novalidate>
       <fieldset>
@@ -75,14 +82,11 @@
             <p class="help-block error-text" ng-message="required">Nivel es requerido.</p>
           </div>
         </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-default">{{vm.serviceacademyclass._id ? 'Actualizar' : 'Crear'}}</button>
-        </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="price">Horario</label>
           <div class="controls">
             <label class="checkbox-inline" ng-repeat="schedule in vm.schedules">
-              <input type="checkbox" ng-click="vm.toggleScheduleSelection(schedule.value)"/>{{schedule.name}}
+              <input type="checkbox" ng-checked="schedule.selected" ng-click="vm.toggleScheduleSelection(schedule.value)"/>{{schedule.name}}
             </label>
           </div>
         </div>        
