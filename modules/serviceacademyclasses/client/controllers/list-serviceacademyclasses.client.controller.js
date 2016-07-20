@@ -11,13 +11,13 @@
     var vm = this;
     vm.serviceacademyclasses = ServiceacademyclassesService.query();
     vm.organizations = OrganizationsService.query();
+    vm.getStatusClass = getStatusClass;
     vm.setOrganization = setOrganization;
     vm.parseSchedule = parseSchedule;
 
     function parseSchedule(sheduleArray) {
       _.forEach(sheduleArray,
         function(value, key) {
-          debugger;
           switch (value) {
             case "L":
               sheduleArray[key] = "Lunes";
@@ -48,6 +48,17 @@
 
     function setOrganization(organization) {
       vm.organization = organization;
+    }
+
+    function getStatusClass(serviceacademyclass) {
+      debugger;
+      var endDate = new Date(serviceacademyclass.endDate);
+      var today = new Date();
+      if (endDate > today) {
+        return 'success';
+      } else {
+        return 'danger';
+      }
     }
 
   }

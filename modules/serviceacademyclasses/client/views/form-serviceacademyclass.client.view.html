@@ -75,19 +75,23 @@
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label class="control-label" for="price">Nivel *</label>
-          <input name="price" type="hidden" ng-model="vm.serviceacademyclass.level" id="level" required>
+          <label class="control-label" for="level">Nivel *</label>
+          <input name="level" type="hidden" ng-model="vm.serviceacademyclass.level" id="level" required>
           <select class="form-control" ng-model="vm.serviceacademyclass.level" ng-options="o.value as o.name for o in vm.levels"></select>
           <div ng-messages="vm.form.serviceacademyclassForm.level.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Nivel es requerido.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label class="control-label" for="price">Horario</label>
+          <label class="control-label" for="schedule">Horario</label>
+          <input name="selectedSchedule" type="hidden" ng-model="vm.selectedSchedule" id="selectedSchedule" required>
           <div class="controls">
             <label class="checkbox-inline" ng-repeat="schedule in vm.schedules">
               <input type="checkbox" ng-checked="schedule.selected" ng-click="vm.toggleScheduleSelection(schedule.value)"/>{{schedule.name}}
             </label>
+          </div>
+          <div ng-messages="vm.form.serviceacademyclassForm.selectedSchedule.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Horario es requerido.</p>
           </div>
         </div>        
         <div ng-show="vm.error" class="text-danger">

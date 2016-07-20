@@ -9,13 +9,11 @@
     </a>
   </div>
   <br /><br />
-  <div class="pull-right"
-       data-ng-show="vm.serviceacademyclass.isCurrentUserOwner">
-    <a class="btn btn-primary"
-       data-ui-sref="serviceacademyclasses.edit({ serviceacademyclassId: vm.serviceacademyclass._id })">
+  <div class="pull-right">
+    <a class="btn btn-primary" data-ui-sref="serviceacademyclasses.edit({ serviceacademyclassId: vm.serviceacademyclass._id })">
       <i class="glyphicon glyphicon-edit"></i>
     </a>
-    <a class="btn btn-primary" data-ng-click="vm.remove()">
+    <a class="btn btn-primary" data-ng-show="vm.serviceacademyclass.isCurrentUserOwner" data-ng-click="vm.remove()">
       <i class="glyphicon glyphicon-trash"></i>
     </a>
   </div>
@@ -30,10 +28,10 @@
     </em>
   </small>  
   <br/>
-  Descripción: <p class="lead" data-ng-bind="vm.serviceacademyclass.description"></p>
-  Organización: <p class="lead" data-ng-bind="vm.serviceacademyclass.organization.name"></p>
-  Nivel: <p class="lead" data-ng-bind="vm.serviceacademyclass.level"></p>
-  Fecha de inicio: <p class="lead" data-ng-bind="vm.serviceacademyclass.startDate | date:'longDate'"></p>
-  Fecha final: <p class="lead" data-ng-bind="vm.serviceacademyclass.endDate | date:'longDate'"></p>  
-  Horario: <p class="lead">{{vm.parseSchedule(vm.serviceacademyclass.schedule)}}</p>
+  <b>Descripción:</b> <p class="lead" data-ng-bind="vm.serviceacademyclass.description"></p>
+  <b>Organización:</b> <p class="lead" data-ng-bind="vm.serviceacademyclass.organization.name"></p>
+  <b>Nivel:</b> <p class="lead" data-ng-bind="vm.serviceacademyclass.level"></p>
+  <b>Fecha de inicio:</b> <p class="lead" data-ng-bind="vm.serviceacademyclass.startDate | date:'longDate'"></p>
+  <b>Fecha final:</b> <p class="lead" data-ng-bind="vm.serviceacademyclass.endDate | date:'longDate'"></p>  
+  <b>Horario:</b> <p class="lead">{{vm.parseSchedule(vm.serviceacademyclass.schedule)}}</p>
 </section>

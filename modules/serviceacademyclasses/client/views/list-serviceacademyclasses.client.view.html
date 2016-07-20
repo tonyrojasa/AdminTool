@@ -37,7 +37,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="serviceacademyclass in vm.serviceacademyclasses | orderBy:['startDate', 'level', 'name'] | filter: vm.searchFilter | filter: vm.organization.name" class="active">
+        <tr ng-repeat="serviceacademyclass in vm.serviceacademyclasses | orderBy:['startDate','endDate', 'level', 'name']:true | filter: vm.searchFilter | filter: vm.organization.name" ng-class="vm.getStatusClass(serviceacademyclass)">
           <td>{{serviceacademyclass.name}}</td>
           <td>{{serviceacademyclass.level}}</td>
           <td>{{serviceacademyclass.startDate | date:'LLLL'}} - {{serviceacademyclass.endDate | date:'LLLL'}}</td>
