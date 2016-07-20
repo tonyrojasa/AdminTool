@@ -17,6 +17,10 @@ module.exports = function(app) {
     .put(students.update)
     .delete(students.delete);
 
+  app.route('/api/serviceacademyclasses/:serviceacademyclassId/students').all(studentsPolicy.isAllowed)
+    .get(students.listAcademyStudents);
+
   // Finish by binding the Student middleware
   app.param('studentId', students.studentByID);
+  app.param('serviceacademyclassId', students.listAcademyStudents);
 };

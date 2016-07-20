@@ -93,6 +93,29 @@ exports.list = function(req, res) {
 };
 
 /**
+ * List of Students that belongs to given serviceacademyclass id
+ */
+exports.listAcademyStudents = function(req, res, next, id) {
+  debugger;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({
+      message: 'serviceacademyclassId is invalid'
+    });
+  }
+
+  Student.where('serviceAcademyClass').equals(id).populate('user', 'displayName').exec(function(err, students) {
+    if (err) {
+      return next(err);
+    } else {
+      if (students.length > 0) {
+        res.jsonp(students);
+      }
+      next();
+    }
+  });
+};
+
+/**
  * Student middleware
  */
 exports.studentByID = function(req, res, next, id) {

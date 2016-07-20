@@ -51,7 +51,6 @@
     }
 
     function getStatusClass(serviceacademyclass) {
-      debugger;
       var endDate = new Date(serviceacademyclass.endDate);
       var today = new Date();
       if (endDate > today) {

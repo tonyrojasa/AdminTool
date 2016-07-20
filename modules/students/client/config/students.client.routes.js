@@ -60,7 +60,17 @@
         data: {
           pageTitle: 'Student {{ articleResolve.name }}'
         }
-      });
+      })
+
+    .state('students.viewAcademyStudents', {
+      url: '/serviceacademyclasses/:serviceacademyclassId/students',
+      templateUrl: 'modules/students/client/views/academy-students.client.view.html',
+      controller: 'AcademyStudentsController',
+      controllerAs: 'vm',
+      data: {
+        pageTitle: 'Serviceacademyclass {{ articleResolve.name }}'
+      }
+    });
   }
 
   getStudent.$inject = ['$stateParams', 'StudentsService'];

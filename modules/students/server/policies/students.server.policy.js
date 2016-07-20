@@ -11,7 +11,7 @@ acl = new acl(new acl.memoryBackend());
 /**
  * Invoke Students Permissions
  */
-exports.invokeRolesPolicies = function () {
+exports.invokeRolesPolicies = function() {
   acl.allow([{
     roles: ['admin'],
     allows: [{
@@ -19,6 +19,9 @@ exports.invokeRolesPolicies = function () {
       permissions: '*'
     }, {
       resources: '/api/students/:studentId',
+      permissions: '*'
+    }, {
+      resources: '/api/serviceacademyclasses/:serviceacademyclassId/students',
       permissions: '*'
     }]
   }, {
@@ -28,6 +31,9 @@ exports.invokeRolesPolicies = function () {
       permissions: ['get', 'post']
     }, {
       resources: '/api/students/:studentId',
+      permissions: ['get']
+    }, {
+      resources: '/api/serviceacademyclasses/:serviceacademyclassId/students',
       permissions: ['get']
     }]
   }, {
@@ -45,7 +51,7 @@ exports.invokeRolesPolicies = function () {
 /**
  * Check If Students Policy Allows
  */
-exports.isAllowed = function (req, res, next) {
+exports.isAllowed = function(req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
   // If an Student is being processed and the current user created it then allow any manipulation
@@ -54,7 +60,7 @@ exports.isAllowed = function (req, res, next) {
   }
 
   // Check for user roles
-  acl.areAnyRolesAllowed(roles, req.route.path, req.method.toLowerCase(), function (err, isAllowed) {
+  acl.areAnyRolesAllowed(roles, req.route.path, req.method.toLowerCase(), function(err, isAllowed) {
     if (err) {
       // An authorization error occurred
       return res.status(500).send('Unexpected authorization error');

@@ -35,6 +35,12 @@ exports.invokeRolesPolicies = function() {
     }, {
       resources: '/api/events/:eventId',
       permissions: ['get']
+    }, {
+      resources: '/api/events/current',
+      permissions: ['get']
+    }, {
+      resources: '/api/events/current/:eventId',
+      permissions: ['get']
     }]
   }, {
     roles: ['guest'],
