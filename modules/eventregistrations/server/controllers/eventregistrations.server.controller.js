@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * Module dependencies.
  */
@@ -44,9 +45,9 @@ exports.read = function(req, res) {
  * Update a Eventregistration
  */
 exports.update = function(req, res) {
-  var eventregistration = req.eventregistration ;
+  var eventregistration = req.eventregistration;
 
-  eventregistration = _.extend(eventregistration , req.body);
+  eventregistration = _.extend(eventregistration, req.body);
 
   eventregistration.save(function(err) {
     if (err) {
@@ -63,7 +64,7 @@ exports.update = function(req, res) {
  * Delete an Eventregistration
  */
 exports.delete = function(req, res) {
-  var eventregistration = req.eventregistration ;
+  var eventregistration = req.eventregistration;
 
   eventregistration.remove(function(err) {
     if (err) {
@@ -79,16 +80,26 @@ exports.delete = function(req, res) {
 /**
  * List of Eventregistrations
  */
-exports.list = function(req, res) { 
-  Eventregistration.find().sort('-created').populate('user', 'displayName').exec(function(err, eventregistrations) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(eventregistrations);
-    }
-  });
+exports.list = function(req, res) {
+  Eventregistration.find().sort('-created')
+    .populate('user', 'displayName')
+    .populate({
+      path: 'person',
+      populate: {
+        path: 'personType'
+      }
+    })
+    .populate('event', 'name')
+    .populate('eventPeopleGroup', 'name')
+    .exec(function(err, eventregistrations) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(eventregistrations);
+      }
+    });
 };
 
 /**
@@ -102,15 +113,25 @@ exports.eventregistrationByID = function(req, res, next, id) {
     });
   }
 
-  Eventregistration.findById(id).populate('user', 'displayName').exec(function (err, eventregistration) {
-    if (err) {
-      return next(err);
-    } else if (!eventregistration) {
-      return res.status(404).send({
-        message: 'No Eventregistration with that identifier has been found'
-      });
-    }
-    req.eventregistration = eventregistration;
-    next();
-  });
+  Eventregistration.findById(id).populate('user', 'displayName')
+    .populate('organization')
+    .populate({
+      path: 'person',
+      populate: {
+        path: 'personType'
+      }
+    })
+    .populate('event')
+    .populate('eventPeopleGroup')
+    .exec(function(err, eventregistration) {
+      if (err) {
+        return next(err);
+      } else if (!eventregistration) {
+        return res.status(404).send({
+          message: 'No Eventregistration with that identifier has been found'
+        });
+      }
+      req.eventregistration = eventregistration;
+      next();
+    });
 };

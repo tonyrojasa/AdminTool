@@ -1,0 +1,35 @@
+<section>
+  <div class="page-header">
+    <h1 data-ng-bind="vm.event.name"></h1>
+  </div>
+  <div class="pull-left">
+     <a class="btn btn-secondary" data-ui-sref="events.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
+    </a>
+  </div>
+  <br /><br />
+  <div class="pull-right">
+    <a class="btn btn-primary" data-ui-sref="events.edit({ eventId: vm.event._id })">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a data-ng-show="vm.event.isCurrentUserOwner" class="btn btn-primary" data-ng-click="vm.remove()">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <small>
+    <em class="text-muted">
+      Creado en
+      <span data-ng-bind="vm.event.created | date:'mediumDate'"></span>
+      por
+      <span data-ng-if="vm.event.user"
+            data-ng-bind="vm.event.user.displayName"></span>
+      <span data-ng-if="!vm.event.user">Deleted User</span>
+    </em>
+  </small>
+  <p class="lead" data-ng-bind="vm.event.description"></p>
+  <p class="lead" data-ng-if="!vm.event.description.length"> No hay descripción para este evento.</p>  
+  Fecha de inicio: <p class="lead" data-ng-bind="vm.event.startDate | date:'longDate'"></p>
+  Fecha final: <p class="lead" data-ng-bind="vm.event.endDate | date:'longDate'"></p>  
+  Precio por persona: <p>₡ <span class="lead" data-ng-bind="vm.event.price"></span></p>
+</section>

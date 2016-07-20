@@ -11,7 +11,7 @@ var cfMongoUrl = (function() {
   }
 }());
 
-var getCred = function (serviceName, credProp) {
+var getCred = function(serviceName, credProp) {
   return appEnv.getService(serviceName) ?
     appEnv.getService(serviceName).credentials[credProp] : undefined;
 };
@@ -33,18 +33,18 @@ module.exports = {
     options: {}
   },
   facebook: {
-    clientID: getCred('mean-facebook', 'id') || 'APP_ID',
-    clientSecret: getCred('mean-facebook', 'secret') || 'APP_SECRET',
+    clientID: getCred('mean-facebook', 'id') || '1352435898107058',
+    clientSecret: getCred('mean-facebook', 'secret') || 'bc0e8c87e4bc98ed073a0b4109700eda',
     callbackURL: '/api/auth/facebook/callback'
   },
   twitter: {
-    clientID: getCred('mean-twitter', 'key') || 'CONSUMER_KEY',
-    clientSecret: getCred('mean-twitter', 'secret') || 'CONSUMER_SECRET',
+    clientID: getCred('mean-twitter', 'key') || 'VGC5JCT5OJsUOIe0BZsR1e0IA',
+    clientSecret: getCred('mean-twitter', 'secret') || '7VM6QEId6qLpvKiaWdqRfRLOcJyFkKyRO7NjikEdJLV9XpLEhH',
     callbackURL: '/api/auth/twitter/callback'
   },
   google: {
-    clientID: getCred('mean-google', 'id') || 'APP_ID',
-    clientSecret: getCred('mean-google', 'secret') || 'APP_SECRET',
+    clientID: getCred('mean-google', 'id') || '634322409918-ijcbj102ccuircqlq4t9itklcnao1dgg.apps.googleusercontent.com',
+    clientSecret: getCred('mean-google', 'secret') || 'qhsRTYBIT8yZdo2ykNhbsNJ9',
     callbackURL: '/api/auth/google/callback'
   },
   linkedin: {

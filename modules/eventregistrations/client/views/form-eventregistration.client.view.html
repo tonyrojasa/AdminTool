@@ -1,19 +1,93 @@
 <section>
   <div class="page-header">
-    <h1>{{vm.eventregistration._id ? 'Edit Eventregistration' : 'New Eventregistration'}}</h1>
+    <h1>{{vm.eventregistration._id ? 'Editar' : 'Nueva Inscripción'}}</h1>
+    <h2 ng-if="vm.eventregistration._id"># de Inscripción: {{vm.eventregistration.registrationNumber}}</h2>
+      <small ng-if="vm.eventregistration._id">
+        <em class="text-muted">
+          Creado en
+          <span data-ng-bind="vm.eventregistration.created | date:'mediumDate'"></span>
+          Por
+          <span data-ng-if="vm.eventregistration.user"
+                data-ng-bind="vm.eventregistration.user.displayName"></span>
+          <span data-ng-if="!vm.eventregistration.user">Deleted User</span>
+        </em>
+      </small>
+  </div>  
+  <div class="pull-left">
+     <a class="btn btn-secondary"
+       data-ui-sref="eventregistrations.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
+    </a>
   </div>
+  <br /><br />
   <div class="col-md-12">
     <form name="vm.form.eventregistrationForm" class="form-horizontal" ng-submit="vm.save(vm.form.eventregistrationForm.$valid)" novalidate>
-      <fieldset>
+      <fieldset>    
         <div class="form-group" show-errors>
-          <label class="control-label" for="name">Name</label>
-          <input name="name" type="text" ng-model="vm.eventregistration.name" id="name" class="form-control" placeholder="Name" required>
-          <div ng-messages="vm.form.eventregistrationForm.name.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Eventregistration name is required.</p>
+          <label class="control-label" for="event">Evento *</label>
+          <input name="event" type="hidden" ng-model="vm.eventregistration.event" id="event" class="form-control" placeholder="Organización" required>
+          <div class="dropdown" id="eventDropdown" uib-dropdown>
+            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+              <span ng-if="!vm.eventregistration.event">-- Seleccione uno --</span>
+              {{vm.eventregistration.event.name}}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" ng-if="vm.events">
+              <li data-ng-repeat="event in vm.events | orderBy:'name'">
+                <a ng-click="vm.setEvent(event)">{{event.name}}</a>
+              </li>
+            </ul>
+          </div> 
+          <div ng-messages="vm.form.eventregistrationForm.event.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Evento es requerido.</p>
           </div>
         </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="event">Grupo *</label>
+          <input name="eventPeopleGroup" type="hidden" ng-model="vm.eventregistration.eventPeopleGroup" id="eventPeopleGroup" class="form-control" placeholder="Grupo de Persona" required>
+          <div class="dropdown" id="eventPeopleGroupDropdown" uib-dropdown>
+            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+              <span ng-if="!vm.eventregistration.eventPeopleGroup">-- Seleccione uno --</span>
+              {{vm.eventregistration.eventPeopleGroup.name}}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" ng-if="vm.eventPeopleGroups">
+              <li data-ng-repeat="eventPeopleGroup in vm.eventPeopleGroups | orderBy:'name'">
+                <a ng-click="vm.setEventPeopleGroup(eventPeopleGroup)">{{eventPeopleGroup.name}}</a>
+              </li>
+            </ul>
+          </div> 
+          <div ng-messages="vm.form.eventregistrationForm.eventPeopleGroup.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Grupo es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="registrationDate">Fecha de inscripción *</label>
+          <br />
+          <input name="registrationDate" type="hidden" ng-model="vm.eventregistration.registrationDate" id="registrationDate" class="form-control" required>
+          <input name="registrationDate" ng-if="vm.editMode" type="text" value="{{vm.eventregistration.registrationDate | date:'dd-MMM-yyyy'}}" id="registrationDate" class="form-control" ng-disabled="true" required>
+          <datetimepicker ng-if="!vm.editMode"
+            ng-model="vm.eventregistration.registrationDate" 
+            hidden-time="true" 
+            date-format="dd-MMM-yyyy" 
+            current-text="Hoy"
+            clear-text="Limpiar"
+            close-text="Cerrar" />           
+          <div ng-messages="vm.form.eventForm.registrationDate.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Fecha de inscripción es requerido.</p>
+          </div>
+        </div>
+         <div class="form-group" show-errors>
+          <label class="control-label" for="balanceAmount">Saldo *</label>
+          <input name="balanceAmount" type="text" ng-model="vm.eventregistration.balanceAmount" id="balanceAmount" class="form-control" placeholder="Saldo adeudado" required ng-disabled="vm.eventregistration._id" >
+          <div ng-messages="vm.form.eventregistrationForm.balanceAmount.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Saldo es un campo requerido.</p>
+          </div>
+        </div>
+        <person-form person="vm.person" form="vm.form" error="vm.error"></person-form>
         <div class="form-group">
-          <button type="submit" class="btn btn-default">{{vm.eventregistration._id ? 'Update' : 'Create'}}</button>
+          <button type="submit" class="btn btn-default">{{vm.eventregistration._id ? 'Actualizar' : 'Crear'}}</button>
         </div>
         <div ng-show="vm.error" class="text-danger">
           <strong ng-bind="vm.error"></strong>

@@ -1,0 +1,33 @@
+<section>
+  <div class="page-header">
+    <h1 data-ng-bind="vm.persontype.name"></h1>
+  </div>
+  <div class="pull-left">
+     <a class="btn btn-secondary" data-ui-sref="persontypes.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
+    </a>
+  </div>
+  <br /><br />
+  <div class="pull-right">
+    <a class="btn btn-primary" data-ui-sref="persontypes.edit({ persontypeId: vm.persontype._id })">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn btn-primary" data-ng-show="vm.persontype.isCurrentUserOwner" data-ng-click="vm.remove()">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <small>
+    <em class="text-muted">
+      Creado en
+      <span data-ng-bind="vm.persontype.created | date:'mediumDate'"></span>
+      por
+      <span data-ng-if="vm.persontype.user"
+            data-ng-bind="vm.persontype.user.displayName"></span>
+      <span data-ng-if="!vm.persontype.user">Deleted User</span>
+    </em>
+  </small>
+  <p class="lead" data-ng-bind="vm.persontype.description"></p>
+  <p class="lead" data-ng-if="!vm.persontype.description.length"> No hay descripción para este tipo de persona.</p>
+</section>
+

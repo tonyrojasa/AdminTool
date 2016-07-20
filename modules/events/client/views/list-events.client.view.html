@@ -1,0 +1,39 @@
+<section>
+  <div class="page-header">
+    <h1>Lista de Eventos</h1>
+  </div>
+  <a class="btn btn-primary" data-ui-sref="events.create">Nuevo Evento</a>
+  <br/><br/>
+  <div id="content" data-ng-if="vm.events.length">
+    <br />
+    <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
+    <br />
+    <div id="exportable">
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Final</th>
+          <th>Precio ₡</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="event in vm.events | orderBy:['startDate', 'name'] | filter: vm.searchFilter" class="active">
+          <td>{{event.name}}</td>
+          <td>{{event.startDate | date:'mediumDate'}}</td>
+          <td>{{event.endDate | date:'mediumDate'}}</td>
+          <td>{{event.price | currency}}</td>
+          <td>    
+            <a data-ui-sref="events.view({ eventId: event._id})">Detalles</a>    
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>   
+  <div class="alert alert-warning text-center" data-ng-if="vm.people.$resolved && !vm.people.length">
+    No hay ninguna persona creada <a data-ui-sref="people.create">Crear una</a>?
+  </div>
+</section>

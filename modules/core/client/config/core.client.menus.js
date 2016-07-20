@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -20,22 +20,22 @@
     });
 
     menuService.addSubMenuItem('account', 'settings', {
-      title: 'Edit Profile',
+      title: 'Editar Perfil',
       state: 'settings.profile'
     });
 
     menuService.addSubMenuItem('account', 'settings', {
-      title: 'Edit Profile Picture',
+      title: 'Editar Foto de Perfil',
       state: 'settings.picture'
     });
 
     menuService.addSubMenuItem('account', 'settings', {
-      title: 'Change Password',
+      title: 'Cambiar Contraseña',
       state: 'settings.password'
     });
 
     menuService.addSubMenuItem('account', 'settings', {
-      title: 'Manage Social Accounts',
+      title: 'Administrar Redes Sociales',
       state: 'settings.accounts'
     });
   }

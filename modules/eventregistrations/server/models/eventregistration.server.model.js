@@ -5,34 +5,23 @@
  */
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
+var autoIncrement = require('mongoose-auto-increment');
 
 /**
  * Eventregistration Schema
  */
 var EventregistrationSchema = new Schema({
-  name: {
-    type: String,
-    default: '',
-    required: 'Please fill Eventregistration name',
-    trim: true
+  registrationNumber: {
+    type: Number
   },
-  eventGroup: {
-    type: String,
-    default: '',
+  eventPeopleGroup: {
     required: 'Please select the event group',
-    trim: true
+    type: Schema.ObjectId,
+    ref: 'Eventpeoplegroup'
   },
-  personname: {
-    type: String,
-    default: '',
-    required: 'Please fill Eventregistration name',
-    trim: true
-  },
-  email: {
-    type: String,
-    default: '',
-    required: 'Please fill email address',
-    trim: true
+  event: {
+    type: Schema.ObjectId,
+    ref: 'Event'
   },
   person: {
     type: Schema.ObjectId,
@@ -42,22 +31,20 @@ var EventregistrationSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  shirtSize: {
-    type: String,
-    default: '',
-    required: 'Please fill t-shirt size',
-    trim: true
-  },
   sponsorship: {
     sponsorRequired: Boolean,
     sponsor: {
-        type: Schema.ObjectId,
-        ref: 'Person'
+      type: Schema.ObjectId,
+      ref: 'Person'
     },
     percentage: Number,
     comments: String
   },
-  balanceAmount:{
+  assignedSector: {
+    type: String,
+    default: ''
+  },
+  balanceAmount: {
     type: Number,
     default: '',
     required: 'Please fill balance amount'
@@ -72,4 +59,11 @@ var EventregistrationSchema = new Schema({
   }
 });
 
+autoIncrement.initialize(mongoose.connection);
+EventregistrationSchema.plugin(autoIncrement.plugin, {
+  model: 'Eventregistration',
+  field: 'registrationNumber',
+  startAt: 1,
+  incrementBy: 1
+});
 mongoose.model('Eventregistration', EventregistrationSchema);

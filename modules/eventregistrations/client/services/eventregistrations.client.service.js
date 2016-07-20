@@ -1,4 +1,4 @@
-//Eventregistrations service used to communicate Eventregistrations REST endpoints
+// Eventregistrations service used to communicate Eventregistrations REST endpoints
 (function () {
   'use strict';
 

@@ -1,0 +1,70 @@
+<section>
+  <div class="page-header">
+    <h1>Recibos</h1>
+  </div>
+  <a class="btn btn-primary" data-ui-sref="receipts.create">Nuevo Recibo</a>
+  <br/> <br/>
+  <div id="content" data-ng-if="vm.receipts.length">
+    <br />
+    <div class="form-group">
+      <div class="dropdown" id="eventDropdown" uib-dropdown>
+        <label class="control-label" for="event">Evento: </label>
+        <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+          <span ng-if="!vm.event">-- Todos --</span>
+          {{vm.event.name}}
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" ng-if="vm.events">
+          <li>
+            <a ng-click="vm.setEvent()">-- Todos --</a>
+          </li>
+          <li data-ng-repeat="event in vm.events | orderBy:'name'">
+            <a ng-click="vm.setEvent(event)">{{event.name}}</a>
+          </li>
+        </ul>
+      </div> 
+    </div>
+    <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
+    <br />
+    <div id="exportable">
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+          <th># Inscripción</th>
+          <th># Recibo</th>
+          <th>Evento</th>
+          <th>Por concepto de</th>
+          <th>Fecha de pago</th>
+          <th>Recibido de</th>
+          <th>Mondo del pago ₡</th>
+        </tr>
+        </thead>        
+        <tbody>
+        <tr ng-class="vm.getStatusClass(receipt)" ng-repeat="receipt in vm.receipts | orderBy:['receivedFrom', 'paymentDate'] | filter : vm.searchFilter | filter: vm.event.name">
+          <td>{{receipt.eventRegistration.registrationNumber}}</td>
+          <td>{{receipt.receiptNumber}}</td>          
+          <td>{{receipt.event.name}}</td>
+          <td>{{receipt.paymentOf}}</td>
+          <td>{{receipt.paymentDate | date:'dd-MMM-yyyy'}}</td>
+          <td>{{receipt.receivedFrom}}</td>
+          <td>{{receipt.paymentAmount | currency:''}}</td>{{vm.addToTotal(receipt.paymentAmount)}}
+          <td>    
+            <a data-ui-sref="receipts.view({ receiptId: receipt._id })">Detalles</a>    
+          </td>
+        </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5"></td>            
+            <td align="right"><b>Total:</b></td>
+            <td ng-class="vm.getTotalClass(vm.receipts | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'paymentAmount')">{{vm.receipts | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'paymentAmount'  | currency:''}}</td>
+          </tr>
+        </tfoot>
+      </table>    
+    </div> 
+    <export-to-file link-text="Exportar" element-id="exportable" format="excel" file-name="RECIBOS"></export-to-file> 
+  </div>   
+  <div class="alert alert-warning text-center" data-ng-if="vm.receipts.$resolved && !vm.receipts.length">
+    No hay recibos creados <a data-ui-sref="receipts.create">Crear uno</a>?
+  </div>
+</section>

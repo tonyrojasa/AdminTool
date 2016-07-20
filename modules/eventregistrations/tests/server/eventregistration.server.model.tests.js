@@ -27,7 +27,7 @@ describe('Eventregistration Model Unit Tests:', function() {
       password: 'password'
     });
 
-    user.save(function() { 
+    user.save(function() {
       eventregistration = new Eventregistration({
         name: 'Eventregistration Name',
         user: user
@@ -46,7 +46,7 @@ describe('Eventregistration Model Unit Tests:', function() {
       });
     });
 
-    it('should be able to show an error when try to save without name', function(done) { 
+    it('should be able to show an error when try to save without name', function(done) {
       eventregistration.name = '';
 
       return eventregistration.save(function(err) {
@@ -56,10 +56,10 @@ describe('Eventregistration Model Unit Tests:', function() {
     });
   });
 
-  afterEach(function(done) { 
-    Eventregistration.remove().exec(function(){
-      User.remove().exec(function(){
-        done();  
+  afterEach(function(done) {
+    Eventregistration.remove().exec(function() {
+      User.remove().exec(function() {
+        done();
       });
     });
   });

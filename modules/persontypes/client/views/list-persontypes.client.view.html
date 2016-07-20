@@ -1,0 +1,25 @@
+<section>
+  <div class="page-header">
+    <h1>Tipos de Persona</h1>
+  </div>
+  <a class="btn btn-primary" data-ui-sref="persontypes.create">Nuevo Tipo de Persona</a>
+  <br/><br/>
+  <div class="list-group">
+    <a data-ng-repeat="persontype in vm.persontypes"
+       data-ui-sref="persontypes.view({ persontypeId: persontype._id })"
+       class="list-group-item">
+      <small class="list-group-item-text">
+        Creado en
+        <span data-ng-bind="persontype.created | date:'mediumDate'"></span>
+        por
+        <span data-ng-if="persontype.user" data-ng-bind="persontype.user.displayName"></span>
+        <span data-ng-if="!persontype.user">Deleted User</span>
+      </small>
+      <h4 class="list-group-item-heading" data-ng-bind="persontype.name"></h4>      
+      <p class="list-group-item-text" ng-bind="persontype.description"></p>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="vm.persontypes.$resolved && !vm.persontypes.length">
+    No hay tipos de persona creados <a data-ui-sref="persontypes.create">Crear</a>?
+  </div>
+</section>

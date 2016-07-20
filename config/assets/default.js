@@ -6,19 +6,27 @@ module.exports = {
       css: [
         // bower:css
         'public/lib/bootstrap/dist/css/bootstrap.css',
-        'public/lib/bootstrap/dist/css/bootstrap-theme.css'
+        'public/lib/bootstrap/dist/css/bootstrap-theme.css',
+        'public/lib/angular-ui-bootstrap-datetimepicker/datetimepicker.css'
         // endbower
       ],
       js: [
         // bower:js
         'public/lib/angular/angular.js',
+        'public/lib/angular-i18n/angular-locale_es-cr.js',
         'public/lib/angular-resource/angular-resource.js',
         'public/lib/angular-animate/angular-animate.js',
         'public/lib/angular-messages/angular-messages.js',
         'public/lib/angular-ui-router/release/angular-ui-router.js',
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
         'public/lib/angular-file-upload/dist/angular-file-upload.js',
-        'public/lib/owasp-password-strength-test/owasp-password-strength-test.js'
+        'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
+        'public/lib/angular-ui-bootstrap-datetimepicker/datetimepicker.js',
+        'public/lib/angular-file-upload/angular-file-upload.js',
+        'public/lib/moment/min/moment.min.js',
+        'public/lib/angular-file-saver/dist/angular-file-saver.bundle.js',
+        'public/lib/angular-ui-mask/dist/mask.js',
+        'public/lib/lodash/lodash.js'
         // endbower
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']

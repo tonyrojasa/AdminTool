@@ -6,7 +6,7 @@
     var $scope,
       EventregistrationsService;
 
-    //We can start by loading the main application module
+    // We can start by loading the main application module
     beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
     // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
@@ -53,7 +53,7 @@
             name: 'Eventregistration Name'
           });
 
-          //Initialize Controller
+          // Initialize Controller
           EventregistrationsController = $controller('EventregistrationsController as vm', {
             $scope: $scope,
             eventregistrationResolve: mockEventregistration
@@ -100,7 +100,7 @@
           // create mock Eventregistration
           mockEventregistration = new EventregistrationsService();
 
-          //Initialize Controller
+          // Initialize Controller
           EventregistrationsController = $controller('EventregistrationsController as vm', {
             $scope: $scope,
             eventregistrationResolve: mockEventregistration
@@ -149,7 +149,7 @@
             name: 'Eventregistration Name'
           });
 
-          //Initialize Controller
+          // Initialize Controller
           EventregistrationsController = $controller('EventregistrationsController as vm', {
             $scope: $scope,
             eventregistrationResolve: mockEventregistration
