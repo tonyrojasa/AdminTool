@@ -19,6 +19,9 @@
         templateUrl: 'modules/students/client/views/list-students.client.view.html',
         controller: 'StudentsListController',
         controllerAs: 'vm',
+        resolve: {
+          serviceacademyclassResolve: getServiceacademyclass
+        },
         data: {
           pageTitle: 'Students List'
         }
@@ -29,7 +32,8 @@
         controller: 'StudentsController',
         controllerAs: 'vm',
         resolve: {
-          studentResolve: newStudent
+          studentResolve: newStudent,
+          serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
           roles: ['user', 'admin'],
@@ -42,7 +46,8 @@
         controller: 'StudentsController',
         controllerAs: 'vm',
         resolve: {
-          studentResolve: getStudent
+          studentResolve: getStudent,
+          serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
           roles: ['user', 'admin'],
@@ -61,16 +66,18 @@
           pageTitle: 'Student {{ articleResolve.name }}'
         }
       })
-
-    .state('students.viewAcademyStudents', {
-      url: '/serviceacademyclasses/:serviceacademyclassId/students',
-      templateUrl: 'modules/students/client/views/academy-students.client.view.html',
-      controller: 'AcademyStudentsController',
-      controllerAs: 'vm',
-      data: {
-        pageTitle: 'Serviceacademyclass {{ articleResolve.name }}'
-      }
-    });
+      .state('students.listAcademyStudents', {
+        url: '/serviceacademyclasses/:serviceacademyclassId/students',
+        templateUrl: 'modules/students/client/views/list-students.client.view.html',
+        controller: 'StudentsListController',
+        controllerAs: 'vm',
+        resolve: {
+          serviceacademyclassResolve: getServiceacademyclass
+        },
+        data: {
+          pageTitle: 'Estudiantes de Academia {{ articleResolve.name }}'
+        }
+      });
   }
 
   getStudent.$inject = ['$stateParams', 'StudentsService'];
@@ -85,5 +92,15 @@
 
   function newStudent(StudentsService) {
     return new StudentsService();
+  }
+
+  getServiceacademyclass.$inject = ['$stateParams', 'ServiceacademyclassesService'];
+
+  function getServiceacademyclass($stateParams, ServiceacademyclassesService) {
+    if ($stateParams.serviceacademyclassId) {
+      return ServiceacademyclassesService.get({
+        serviceacademyclassId: $stateParams.serviceacademyclassId
+      }).$promise;
+    }
   }
 })();

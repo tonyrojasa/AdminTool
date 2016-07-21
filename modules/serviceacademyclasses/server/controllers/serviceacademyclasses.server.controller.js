@@ -99,7 +99,7 @@ exports.list = function(req, res) {
  * List of Current Serviceacademyclasses (startDate is >= Today)
  */
 exports.listAllCurrent = function(req, res) {
-  Serviceacademyclass.where('startDate').gte(new Date()).sort('-created').populate('user', 'displayName').exec(function(err, serviceacademyclasses) {
+  Serviceacademyclass.where('endDate').gte(new Date()).sort('-created').populate('user', 'displayName').exec(function(err, serviceacademyclasses) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

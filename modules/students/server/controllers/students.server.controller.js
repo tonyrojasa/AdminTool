@@ -81,38 +81,19 @@ exports.delete = function(req, res) {
  * List of Students
  */
 exports.list = function(req, res) {
-  Student.find().sort('-created').populate('user', 'displayName').exec(function(err, students) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(students);
-    }
-  });
-};
-
-/**
- * List of Students that belongs to given serviceacademyclass id
- */
-exports.listAcademyStudents = function(req, res, next, id) {
-  debugger;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'serviceacademyclassId is invalid'
-    });
-  }
-
-  Student.where('serviceAcademyClass').equals(id).populate('user', 'displayName').exec(function(err, students) {
-    if (err) {
-      return next(err);
-    } else {
-      if (students.length > 0) {
+  Student.find().sort('-created')
+    .populate('person')
+    .populate('serviceAcademyClass')
+    .populate('user', 'displayName')
+    .exec(function(err, students) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
         res.jsonp(students);
       }
-      next();
-    }
-  });
+    });
 };
 
 /**
@@ -126,15 +107,19 @@ exports.studentByID = function(req, res, next, id) {
     });
   }
 
-  Student.findById(id).populate('user', 'displayName').exec(function(err, student) {
-    if (err) {
-      return next(err);
-    } else if (!student) {
-      return res.status(404).send({
-        message: 'No Student with that identifier has been found'
-      });
-    }
-    req.student = student;
-    next();
-  });
+  Student.findById(id)
+    .populate('person')
+    .populate('serviceAcademyClass')
+    .populate('user', 'displayName')
+    .exec(function(err, student) {
+      if (err) {
+        return next(err);
+      } else if (!student) {
+        return res.status(404).send({
+          message: 'No Student with that identifier has been found'
+        });
+      }
+      req.student = student;
+      next();
+    });
 };

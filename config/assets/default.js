@@ -7,7 +7,8 @@ module.exports = {
         // bower:css
         'public/lib/bootstrap/dist/css/bootstrap.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-        'public/lib/angular-ui-bootstrap-datetimepicker/datetimepicker.css'
+        'public/lib/angular-ui-bootstrap-datetimepicker/datetimepicker.css',
+        'public/lib/angular-ui-select/dist/select.css'
         // endbower
       ],
       js: [
@@ -26,7 +27,9 @@ module.exports = {
         'public/lib/moment/min/moment.min.js',
         'public/lib/angular-file-saver/dist/angular-file-saver.bundle.js',
         'public/lib/angular-ui-mask/dist/mask.js',
-        'public/lib/lodash/lodash.js'
+        'public/lib/lodash/lodash.js',
+        'public/lib/angular-ui-select/dist/select.js',
+        'public/lib/angular-sanitize/angular-sanitize.js'
         // endbower
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']

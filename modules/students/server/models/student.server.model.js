@@ -13,7 +13,8 @@ var StudentSchema = new Schema({
   person: {
     type: Schema.ObjectId,
     required: 'Please fill student',
-    ref: 'Person'
+    ref: 'Person',
+    unique: true
   },
   serviceAcademyClass: {
     type: Schema.ObjectId,
@@ -33,4 +34,10 @@ var StudentSchema = new Schema({
   }
 });
 
+StudentSchema.index({
+  person: 1,
+  serviceAcademyClass: 1
+}, {
+  unique: true
+});
 mongoose.model('Student', StudentSchema);

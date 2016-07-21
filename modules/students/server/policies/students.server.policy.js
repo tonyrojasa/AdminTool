@@ -20,9 +20,6 @@ exports.invokeRolesPolicies = function() {
     }, {
       resources: '/api/students/:studentId',
       permissions: '*'
-    }, {
-      resources: '/api/serviceacademyclasses/:serviceacademyclassId/students',
-      permissions: '*'
     }]
   }, {
     roles: ['user'],
@@ -31,9 +28,6 @@ exports.invokeRolesPolicies = function() {
       permissions: ['get', 'post']
     }, {
       resources: '/api/students/:studentId',
-      permissions: ['get']
-    }, {
-      resources: '/api/serviceacademyclasses/:serviceacademyclassId/students',
       permissions: ['get']
     }]
   }, {

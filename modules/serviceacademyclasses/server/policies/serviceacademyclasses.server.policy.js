@@ -35,6 +35,12 @@ exports.invokeRolesPolicies = function() {
     }, {
       resources: '/api/serviceacademyclasses/:serviceacademyclassId',
       permissions: ['get']
+    }, {
+      resources: '/api/serviceacademyclasses/current',
+      permissions: 'get'
+    }, {
+      resources: '/api/serviceacademyclasses/current/:serviceacademyclassId',
+      permissions: 'get'
     }]
   }, {
     roles: ['guest'],
