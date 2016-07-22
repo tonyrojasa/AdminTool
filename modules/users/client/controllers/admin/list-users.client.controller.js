@@ -12,6 +12,30 @@
     vm.buildPager = buildPager;
     vm.figureOutItemsToDisplay = figureOutItemsToDisplay;
     vm.pageChanged = pageChanged;
+    
+    vm.parseRoles = function(roleArray) {
+      _.forEach(roleArray,
+        function(value, key) {
+          switch (value) {
+            case "admin":
+              roleArray[key] = "Administrador";
+              break;
+            case "user":
+              roleArray[key] = "Usuario estándar";
+              break;
+            case "inscriptor":
+              roleArray[key] = "Inscriptor de eventos";
+              break;
+            case "teacher":
+              roleArray[key] = "Profesor";
+              break;
+            case "student":
+              roleArray[key] = "Estudiante";
+          }
+        });
+      var roleValue = roleArray.join(', ');
+      return roleValue;
+    };
 
     AdminService.query(function (data) {
       vm.users = data;

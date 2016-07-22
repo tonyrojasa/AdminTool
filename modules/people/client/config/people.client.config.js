@@ -11,7 +11,8 @@
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'maintenance', {
       title: 'Personas',
-      state: 'people.list'
+      state: 'people.list',
+      roles: ['admin', 'inscriptor', 'teacher']
     });
   }
 })();

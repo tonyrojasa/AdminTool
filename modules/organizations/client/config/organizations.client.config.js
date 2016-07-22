@@ -11,7 +11,8 @@
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'maintenance', {
       title: 'Organizaciones',
-      state: 'organizations.list'
+      state: 'organizations.list',
+      roles: ['admin']
     });
   }
 })();

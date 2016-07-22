@@ -20,6 +20,7 @@
         controller: 'ReceiptsListController',
         controllerAs: 'vm',
         data: {
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Receipts List'
         }
       })
@@ -33,7 +34,7 @@
           eventregistrationResolve: getEventregistration
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Receipts Create'
         }
       })
@@ -47,7 +48,7 @@
           eventregistrationResolve: getEventregistration
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Receipts Create'
         }
       })
@@ -61,7 +62,7 @@
           eventregistrationResolve: getEventregistration
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Edit Receipt {{ receiptResolve.name }}'
         }
       })

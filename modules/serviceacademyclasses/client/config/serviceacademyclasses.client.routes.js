@@ -20,6 +20,7 @@
         controller: 'ServiceacademyclassesListController',
         controllerAs: 'vm',
         data: {
+          roles: ['admin', 'teacher', 'student'],
           pageTitle: 'Serviceacademyclasses List'
         }
       })
@@ -32,7 +33,7 @@
           serviceacademyclassResolve: newServiceacademyclass
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'teacher'],
           pageTitle: 'Serviceacademyclasses Create'
         }
       })
@@ -45,7 +46,7 @@
           serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'teacher'],
           pageTitle: 'Edit Serviceacademyclass {{ serviceacademyclassResolve.name }}'
         }
       })
@@ -58,6 +59,7 @@
           serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
+          roles: ['admin', 'teacher', 'student'],
           pageTitle: 'Serviceacademyclass {{ articleResolve.name }}'
         }
       });

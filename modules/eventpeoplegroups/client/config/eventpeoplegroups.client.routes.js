@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -20,6 +20,7 @@
         controller: 'EventpeoplegroupsListController',
         controllerAs: 'vm',
         data: {
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Eventpeoplegroups List'
         }
       })
@@ -32,7 +33,7 @@
           eventpeoplegroupResolve: newEventpeoplegroup
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Eventpeoplegroups Create'
         }
       })
@@ -45,7 +46,7 @@
           eventpeoplegroupResolve: getEventpeoplegroup
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Edit Eventpeoplegroup {{ eventpeoplegroupResolve.name }}'
         }
       })
@@ -58,6 +59,7 @@
           eventpeoplegroupResolve: getEventpeoplegroup
         },
         data: {
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Eventpeoplegroup {{ articleResolve.name }}'
         }
       });

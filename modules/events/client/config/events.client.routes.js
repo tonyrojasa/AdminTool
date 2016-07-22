@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -20,6 +20,7 @@
         controller: 'EventsListController',
         controllerAs: 'vm',
         data: {
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Events List'
         }
       })
@@ -32,7 +33,7 @@
           eventResolve: newEvent
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Events Create'
         }
       })
@@ -45,7 +46,7 @@
           eventResolve: getEvent
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Edit Event {{ eventResolve.name }}'
         }
       })
@@ -58,6 +59,7 @@
           eventResolve: getEvent
         },
         data: {
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Event {{ articleResolve.name }}'
         }
       });

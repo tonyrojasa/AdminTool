@@ -57,7 +57,7 @@
 
       function errorCallback(res) {
         vm.error = res.data.message;
-        if (vm.error === 'Person already exists') {
+        if (vm.error === 'Person_1_serviceAcademyClass already exists') {
           vm.error = 'Ya existe este estudiante en la academia seleccionada.';
         }
       }

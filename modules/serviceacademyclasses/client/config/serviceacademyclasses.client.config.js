@@ -13,20 +13,21 @@
       title: 'Academias',
       state: 'serviceacademyclasses',
       type: 'dropdown',
-      roles: ['*']
+      roles: ['admin', 'teacher', 'student']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'serviceacademyclasses', {
       title: 'Lista de Academias',
-      state: 'serviceacademyclasses.list'
+      state: 'serviceacademyclasses.list',
+      roles: ['admin', 'teacher', 'student']
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'serviceacademyclasses', {
       title: 'Crear Academia',
       state: 'serviceacademyclasses.create',
-      roles: ['user', 'admin']
+      roles: ['admin', 'teacher', 'student']
     });
   }
 })();

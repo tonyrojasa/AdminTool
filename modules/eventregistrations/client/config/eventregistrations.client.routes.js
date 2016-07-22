@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -20,6 +20,7 @@
         controller: 'EventregistrationsListController',
         controllerAs: 'vm',
         data: {
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Eventregistrations List'
         }
       })
@@ -33,13 +34,15 @@
           personResolve: newPerson
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Eventregistrations Create'
         }
       })
       .state('eventregistrations.edit', {
         url: '/:eventregistrationId/edit',
-        params: { 'personId': null },
+        params: {
+          'personId': null
+        },
         templateUrl: 'modules/eventregistrations/client/views/form-eventregistration.client.view.html',
         controller: 'EventregistrationsController',
         controllerAs: 'vm',
@@ -48,7 +51,7 @@
           personResolve: getPerson
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Edit Eventregistration {{ eventregistrationResolve.name }}'
         }
       })
@@ -62,6 +65,7 @@
           personResolve: newPerson
         },
         data: {
+          roles: ['admin', 'inscriptor'],
           pageTitle: 'Eventregistration {{ articleResolve.name }}'
         }
       });

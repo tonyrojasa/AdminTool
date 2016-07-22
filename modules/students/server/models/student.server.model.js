@@ -13,8 +13,7 @@ var StudentSchema = new Schema({
   person: {
     type: Schema.ObjectId,
     required: 'Please fill student',
-    ref: 'Person',
-    unique: true
+    ref: 'Person'
   },
   serviceAcademyClass: {
     type: Schema.ObjectId,

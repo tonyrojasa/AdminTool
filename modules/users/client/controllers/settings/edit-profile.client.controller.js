@@ -13,18 +13,6 @@
     vm.user = Authentication.user;
     vm.updateUserProfile = updateUserProfile;
 
-    vm.setUserRole = function(role) {
-      vm.user.roles = [role];
-    };
-    vm.getUserRoleName = function(role) {
-      switch (role) {
-        case 'admin':
-          return 'Administrador';
-        case 'user':
-          return 'Usuario';
-      }
-    };
-
     // Update a user profile
     function updateUserProfile(isValid) {
       vm.success = vm.error = null;

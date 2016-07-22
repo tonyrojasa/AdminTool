@@ -23,6 +23,7 @@
           serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
+          roles: ['admin', 'teacher', 'student'],
           pageTitle: 'Students List'
         }
       })
@@ -36,7 +37,7 @@
           serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'teacher', 'student'],
           pageTitle: 'Students Create'
         }
       })
@@ -50,7 +51,7 @@
           serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'teacher', 'student'],
           pageTitle: 'Edit Student {{ studentResolve.name }}'
         }
       })
@@ -63,6 +64,7 @@
           studentResolve: getStudent
         },
         data: {
+          roles: ['admin', 'teacher', 'student'],
           pageTitle: 'Student {{ articleResolve.name }}'
         }
       })
@@ -75,6 +77,7 @@
           serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
+          roles: ['admin', 'teacher', 'student'],
           pageTitle: 'Estudiantes de Academia {{ articleResolve.name }}'
         }
       });

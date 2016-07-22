@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -20,6 +20,7 @@
         controller: 'PeopleListController',
         controllerAs: 'vm',
         data: {
+          roles: ['admin', 'inscriptor', 'teacher'],
           pageTitle: 'Lista de Personas'
         }
       })
@@ -32,7 +33,7 @@
           personResolve: newPerson
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor', 'teacher'],
           pageTitle: 'Crear Persona'
         }
       })
@@ -45,7 +46,7 @@
           personResolve: getPerson
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor', 'teacher'],
           pageTitle: 'Editar Persona: {{ personResolve.name }}'
         }
       })
@@ -58,6 +59,7 @@
           personResolve: getPerson
         },
         data: {
+          roles: ['admin', 'inscriptor', 'teacher'],
           pageTitle: 'Persona: {{ articleResolve.name }}'
         }
       });

@@ -12,7 +12,8 @@
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'maintenance', {
       title: 'Tipos de Persona',
-      state: 'persontypes.list'
+      state: 'persontypes.list',
+      roles: ['admin', 'inscriptor', 'teacher']
     });
 
   }

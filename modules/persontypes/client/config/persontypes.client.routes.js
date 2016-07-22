@@ -20,6 +20,7 @@
         controller: 'PersontypesListController',
         controllerAs: 'vm',
         data: {
+          roles: ['admin', 'inscriptor', 'teacher'],
           pageTitle: 'Persontypes List'
         }
       })
@@ -32,7 +33,7 @@
           persontypeResolve: newPersontype
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor', 'teacher'],
           pageTitle: 'Persontypes Create'
         }
       })
@@ -45,7 +46,7 @@
           persontypeResolve: getPersontype
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor', 'teacher'],
           pageTitle: 'Edit Persontype {{ persontypeResolve.name }}'
         }
       })
@@ -58,6 +59,7 @@
           persontypeResolve: getPersontype
         },
         data: {
+          roles: ['admin', 'inscriptor', 'teacher'],
           pageTitle: 'Persontype {{ articleResolve.name }}'
         }
       });

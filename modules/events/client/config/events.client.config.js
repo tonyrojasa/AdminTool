@@ -11,12 +11,14 @@
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'maintenance', {
       title: 'Eventos',
-      state: 'events.list'
+      state: 'events.list',
+      roles: ['admin', 'inscriptor']
     });
 
     Menus.addSubMenuItem('topbar', 'eventregistrations', {
       title: 'Eventos',
-      state: 'events.list'
+      state: 'events.list',
+      roles: ['admin', 'inscriptor']
     });
   }
 })();

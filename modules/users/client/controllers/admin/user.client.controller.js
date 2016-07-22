@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -15,6 +15,87 @@
     vm.remove = remove;
     vm.update = update;
 
+    vm.roles = [{
+      name: 'Administrador',
+      value: 'admin',
+      selected: false
+    }, {
+      name: 'Usuario estándar',
+      value: 'user',
+      selected: false
+    }, {
+      name: 'Inscriptor',
+      value: 'inscriptor',
+      selected: false
+    }, {
+      name: 'Profesor',
+      value: 'teacher',
+      selected: false
+    }, {
+      name: 'Estudiante',
+      value: 'student',
+      selected: false
+    }];
+
+    if (!vm.user.roles) {
+      vm.user.roles = [];
+    } else {
+      vm.selectedRole = vm.user.roles;
+    }
+
+    //check roles when edit mode
+    if (vm.user.roles) {
+      _.forEach(vm.user.roles, function(value, key) {
+        _.find(vm.roles, function(o) {
+          if (o.value === value) {
+            o.selected = true;
+            return true;
+          }
+        });
+      });
+    }
+
+
+    vm.parseRoles = function(roleArray) {
+      _.forEach(roleArray,
+        function(value, key) {
+          switch (value) {
+            case "admin":
+              roleArray[key] = "Administrador";
+              break;
+            case "user":
+              roleArray[key] = "Usuario estándar";
+              break;
+            case "inscriptor":
+              roleArray[key] = "Inscriptor de eventos";
+              break;
+            case "teacher":
+              roleArray[key] = "Profesor";
+              break;
+            case "student":
+              roleArray[key] = "Estudiante";
+          }
+        });
+      var roleValue = roleArray.join(', ');
+      return roleValue;
+    };
+
+    // toggle selection for a given role by name
+    vm.toggleRoleSelection = function toggleRoleSelection(roleValue) {
+      var idx = vm.user.roles.indexOf(roleValue);
+      // is currently selected
+      if (idx > -1) {
+        vm.user.roles.splice(idx, 1);
+      } else { // is newly selected
+        vm.user.roles.push(roleValue);
+      }
+      if (vm.user.roles.length > 0) {
+        vm.selectedRole = vm.user.roles;
+      } else {
+        vm.selectedRole = null;
+      }
+    };
+
     function remove(user) {
       if ($window.confirm('Are you sure you want to delete this user?')) {
         if (user) {
@@ -22,7 +103,7 @@
 
           vm.users.splice(vm.users.indexOf(user), 1);
         } else {
-          vm.user.$remove(function () {
+          vm.user.$remove(function() {
             $state.go('admin.users');
           });
         }
@@ -38,11 +119,11 @@
 
       var user = vm.user;
 
-      user.$update(function () {
+      user.$update(function() {
         $state.go('admin.user', {
           userId: user._id
         });
-      }, function (errorResponse) {
+      }, function(errorResponse) {
         vm.error = errorResponse.data.message;
       });
     }

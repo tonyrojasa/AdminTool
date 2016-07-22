@@ -20,8 +20,7 @@ exports.update = function(req, res) {
   var user = req.user;
 
   // For security measurement we remove the roles from the req.body object
-  //TODO: uncomment the following line once its fully implemented
-  //delete req.body.roles;
+  delete req.body.roles;
 
   // For security measurement do not use _id from the req.body object
   delete req.body._id;

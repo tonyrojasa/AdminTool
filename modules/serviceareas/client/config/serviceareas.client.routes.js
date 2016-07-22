@@ -20,6 +20,7 @@
         controller: 'ServiceareasListController',
         controllerAs: 'vm',
         data: {
+          roles: ['admin', 'inscriptor', 'teacher'],
           pageTitle: 'Serviceareas List'
         }
       })
@@ -32,7 +33,7 @@
           serviceareaResolve: newServicearea
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor', 'teacher'],
           pageTitle: 'Serviceareas Create'
         }
       })
@@ -45,7 +46,7 @@
           serviceareaResolve: getServicearea
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin', 'inscriptor', 'teacher'],
           pageTitle: 'Edit Servicearea {{ serviceareaResolve.name }}'
         }
       })
@@ -58,6 +59,7 @@
           serviceareaResolve: getServicearea
         },
         data: {
+          roles: ['admin', 'inscriptor', 'teacher'],
           pageTitle: 'Servicearea {{ articleResolve.name }}'
         }
       });
