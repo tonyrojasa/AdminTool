@@ -2,7 +2,7 @@
   <div class="page-header">
     <h1>{{vm.person.firstName}} {{vm.person.lastName}} {{vm.person.secondLastName}}</h1>
   </div>
-  <div class="pull-right" data-ng-show="vm.person.isCurrentUserOwner">
+  <div class="pull-right">
     <a class="btn btn-primary" data-ui-sref="people.edit({ personId: vm.person._id })">
       <i class="glyphicon glyphicon-edit"> Editar</i>
     </a>
@@ -73,6 +73,10 @@
     <div class="form-group">
       <label class="control-label" for="personType">Tipo de Persona</label>
       <input name="personType" type="text" ng-model="vm.person.personType.name" id="personType" class="form-control" placeholder="Tipo de Persona" ng-disabled="true">   
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="serviceArea">Área de Servicio</label>
+      <input name="serviceArea" type="text" ng-model="vm.person.serviceArea.name" id="serviceArea" class="form-control" placeholder="Tipo de Persona" ng-disabled="true">   
     </div>
     <div class="form-group">
       <label class="control-label" for="birthDate">Fecha de Nacimiento</label>

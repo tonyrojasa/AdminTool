@@ -19,6 +19,7 @@
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'receipts', {
       title: 'Lista de Recibos',
+      state: 'receipts.list',
       roles: ['admin', 'inscriptor']
     });
 

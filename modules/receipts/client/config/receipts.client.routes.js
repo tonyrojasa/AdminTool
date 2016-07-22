@@ -79,6 +79,7 @@
           eventregistrationResolve: getEventregistration
         },
         data: {
+          roles: ['*'],
           pageTitle: 'Receipt {{ articleResolve.name }}'
         }
       });

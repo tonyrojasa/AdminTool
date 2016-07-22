@@ -5,9 +5,9 @@
     .module('people')
     .directive('personForm', personForm);
 
-  personForm.$inject = ['$rootScope', 'OrganizationsService', 'PersontypesService'];
+  personForm.$inject = ['$rootScope', 'OrganizationsService', 'PersontypesService', 'ServiceareasService'];
 
-  function personForm($rootScope, OrganizationsService, PersontypesService) {
+  function personForm($rootScope, OrganizationsService, PersontypesService, ServiceareasService) {
     return {
       templateUrl: 'modules/people/client/views/person-form.client.view.html',
       restrict: 'E',
@@ -29,6 +29,11 @@
         scope.personTypes = PersontypesService.query();
         scope.setPersonType = function(personType) {
           scope.person.personType = personType;
+        };
+
+        scope.serviceAreas = ServiceareasService.query();
+        scope.setServiceArea = function(serviceArea) {
+          scope.person.serviceArea = serviceArea;
         };
 
         scope.maritalStatuses = ['Soltero(a)', 'Comprometido(a)', 'Casado(a)', 'Unión Libre', 'Divorciado(a)', 'Viudo(a)'];

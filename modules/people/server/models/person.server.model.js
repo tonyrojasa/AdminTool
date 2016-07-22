@@ -20,6 +20,10 @@ var PersonSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Serviceacademyclass'
   },
+  serviceArea: {
+    type: Schema.ObjectId,
+    ref: 'Servicearea'
+  },
   location: {
     type: Schema.ObjectId,
     ref: 'location'
