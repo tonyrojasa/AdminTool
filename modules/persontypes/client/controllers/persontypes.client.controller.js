@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   // Persontypes controller
@@ -8,7 +8,7 @@
 
   PersontypesController.$inject = ['$scope', '$state', 'Authentication', 'persontypeResolve'];
 
-  function PersontypesController ($scope, $state, Authentication, persontype) {
+  function PersontypesController($scope, $state, Authentication, persontype) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -47,6 +47,9 @@
 
       function errorCallback(res) {
         vm.error = res.data.message;
+        if (vm.error === 'Name already exists') {
+          vm.error = 'Ya existe un Tipo de persona con este nombre';
+        }
       }
     }
   }

@@ -12,9 +12,9 @@
     <form name="vm.form.persontypeForm" class="form-horizontal" ng-submit="vm.save(vm.form.persontypeForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
-          <label class="control-label" for="name">Nombre</label>
-          <input name="name" type="text" ng-model="vm.persontype.name" id="name" class="form-control" placeholder="Nombre" required>
-          <div ng-messages="vm.form.persontypeForm.name.$error" role="alert">
+          <label class="control-label" for="personTypeName">Nombre</label>
+          <input name="personTypeName" type="text" ng-model="vm.persontype.name" id="personTypeName" class="form-control" placeholder="Nombre" required>
+          <div ng-messages="vm.form.persontypeForm.personTypeName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Nombre es requerido.</p>
           </div>
         </div>

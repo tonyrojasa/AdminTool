@@ -13,15 +13,15 @@
     <form name="vm.form.serviceareaForm" class="form-horizontal" ng-submit="vm.save(vm.form.serviceareaForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
-          <label class="control-label" for="name">Name</label>
-          <input name="name" type="text" ng-model="vm.servicearea.name" id="name" class="form-control" placeholder="Name" required>
-          <div ng-messages="vm.form.serviceareaForm.name.$error" role="alert">
+          <label class="control-label" for="serviceAreaName">Name</label>
+          <input name="serviceAreaName" type="text" ng-model="vm.servicearea.name" id="serviceAreaName" class="form-control" placeholder="Name" required>
+          <div ng-messages="vm.form.serviceareaForm.serviceAreaName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Nombre es requerido.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="description">Descripción</label>
-          <input name="description" type="text" ng-model="vm.servicearea.description" id="description" class="form-control" placeholder="Descripción">
+          <textarea name="description" type="text" ng-model="vm.servicearea.description" id="description" class="form-control" cols="30" rows="10" placeholder="Descripción"></textarea>
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-default">{{vm.servicearea._id ? 'Actualizar' : 'Crear'}}</button>

@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   // Serviceareas controller
@@ -8,7 +8,7 @@
 
   ServiceareasController.$inject = ['$scope', '$state', 'Authentication', 'serviceareaResolve'];
 
-  function ServiceareasController ($scope, $state, Authentication, servicearea) {
+  function ServiceareasController($scope, $state, Authentication, servicearea) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -47,6 +47,9 @@
 
       function errorCallback(res) {
         vm.error = res.data.message;
+        if (vm.error === 'Name already exists') {
+          vm.error = 'Ya existe un Área de servicio con este nombre';
+        }
       }
     }
   }

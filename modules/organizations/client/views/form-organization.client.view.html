@@ -13,9 +13,9 @@
     <form name="vm.form.organizationForm" class="form-horizontal" ng-submit="vm.save(vm.form.organizationForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
-          <label class="control-label" for="name">Nombre</label>
-          <input name="name" type="text" ng-model="vm.organization.name" id="name" class="form-control" placeholder="Name" required>
-          <div ng-messages="vm.form.organizationForm.name.$error" role="alert">
+          <label class="control-label" for="orgName">Nombre</label>
+          <input name="orgName" type="text" ng-model="vm.organization.name" id="orgName" class="form-control" placeholder="Nombre" required>
+          <div ng-messages="vm.form.organizationForm.orgName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Nombre es requerido.</p>
           </div>
         </div>

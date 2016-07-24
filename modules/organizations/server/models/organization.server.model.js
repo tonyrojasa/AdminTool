@@ -14,7 +14,8 @@ var OrganizationSchema = new Schema({
     type: String,
     default: '',
     required: 'Please fill Organization name',
-    trim: true
+    trim: true,
+    unique: true
   },
   description: {
     type: String,
@@ -28,6 +29,12 @@ var OrganizationSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   }
+});
+
+OrganizationSchema.pre('validate', function(next) {
+  // capitalize and lower case the other characters
+  this.name = this.name.charAt(0).toUpperCase() + this.name.slice(1).toLowerCase();
+  next();
 });
 
 mongoose.model('Organization', OrganizationSchema);

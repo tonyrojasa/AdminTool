@@ -32,15 +32,15 @@
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label class="control-label" for="name">Nombre *</label>
-          <input name="name" type="text" ng-model="vm.serviceacademyclass.name" id="name" class="form-control" placeholder="Name" required>
-          <div ng-messages="vm.form.serviceacademyclassForm.name.$error" role="alert">
+          <label class="control-label" for="serviceacademyclassName">Nombre *</label>
+          <input name="serviceacademyclassName" type="text" ng-model="vm.serviceacademyclass.name" id="serviceacademyclassName" class="form-control" placeholder="Name" required>
+          <div ng-messages="vm.form.serviceacademyclassForm.serviceacademyclassName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Nombre es requerido.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="description">Descripción</label>
-          <input name="description" type="text" ng-model="vm.serviceacademyclass.description" id="description" class="form-control" placeholder="Descripción">
+          <textarea name="description" type="text" ng-model="vm.serviceacademyclass.description" id="description" class="form-control" placeholder="Descripción"></textarea>
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="startDate">Fecha de inicio *</label>
