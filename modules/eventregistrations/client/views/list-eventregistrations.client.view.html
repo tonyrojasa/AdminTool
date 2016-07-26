@@ -2,7 +2,8 @@
   <div class="page-header">
     <h1>Lista de Inscritos</h1>
   </div>
-  <a class="btn btn-primary" data-ui-sref="eventregistrations.create">Nueva Inscripción</a>
+  <a class="btn btn-primary" data-ui-sref="eventregistrations.create">Nuevo Miembro</a>
+  <a class="btn btn-primary" data-ui-sref="eventregistrations.create({newMember:false})">Miembro Existente</a>
   <br /><br />
   <div id="content" data-ng-if="vm.eventregistrations.length">
     <br />

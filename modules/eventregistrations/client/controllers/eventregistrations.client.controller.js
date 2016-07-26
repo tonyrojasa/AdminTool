@@ -6,27 +6,38 @@
     .module('eventregistrations')
     .controller('EventregistrationsController', EventregistrationsController);
 
-  EventregistrationsController.$inject = ['$scope', '$state', 'Authentication',
+  EventregistrationsController.$inject = ['$scope', '$state', '$stateParams', 'Authentication',
     'eventregistrationResolve', 'EventsService', 'EventpeoplegroupsService', 'personResolve', 'PeopleService'
   ];
 
-  function EventregistrationsController($scope, $state, Authentication, eventregistration,
+  function EventregistrationsController($scope, $state, $stateParams, Authentication, eventregistration,
     EventsService, EventpeoplegroupsService, person, PeopleService) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.eventregistration = eventregistration;
-    vm.person = person;
     vm.error = null;
     vm.form = {};
     vm.events = EventsService.query();
     vm.eventPeopleGroups = EventpeoplegroupsService.query();
+    vm.people = PeopleService.query();
     vm.remove = remove;
     vm.save = save;
     vm.editMode = vm.eventregistration._id ? true : false;
     vm.setEvent = setEvent;
     vm.setEventPeopleGroup = setEventPeopleGroup;
+    vm.isNewMemberRegistration = isNewMemberRegistration;
     loadDates();
+
+    if (!vm.isNewMemberRegistration()) {
+      vm.person = undefined;
+    } else {
+      vm.person = person;
+    }
+
+    function isNewMemberRegistration() {
+      return ($stateParams.newMember === 'true');
+    }
 
     if (vm.eventregistration._id) {
       vm.person = eventregistration.person;

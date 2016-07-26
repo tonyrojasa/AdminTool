@@ -25,7 +25,10 @@
         }
       })
       .state('eventregistrations.create', {
-        url: '/create',
+        url: '/create/:newMember',
+        params: {
+          newMember: 'true'
+        },
         templateUrl: 'modules/eventregistrations/client/views/form-eventregistration.client.view.html',
         controller: 'EventregistrationsController',
         controllerAs: 'vm',
