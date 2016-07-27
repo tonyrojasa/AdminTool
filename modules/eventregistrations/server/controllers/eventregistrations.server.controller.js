@@ -103,6 +103,32 @@ exports.list = function(req, res) {
 };
 
 /**
+ * List of Eventregistrations by eventId
+ */
+exports.listByEventId = function(req, res) {
+  var eventId = req.params.eventId;
+  Eventregistration.where('event', eventId).sort('-created')
+    .populate('user', 'displayName')
+    .populate({
+      path: 'person',
+      populate: {
+        path: 'personType'
+      }
+    })
+    .populate('event', 'name')
+    .populate('eventPeopleGroup', 'name')
+    .exec(function(err, eventregistrations) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(eventregistrations);
+      }
+    });
+};
+
+/**
  * Eventregistration middleware
  */
 exports.eventregistrationByID = function(req, res, next, id) {

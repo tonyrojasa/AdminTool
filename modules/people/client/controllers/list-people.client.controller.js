@@ -24,5 +24,19 @@
     function setServiceArea(serviceArea) {
       vm.serviceArea = serviceArea;
     }
+
+    vm.getServiceAreaNames = getServiceAreaNames;
+
+    function getServiceAreaNames(serviceAreaArray) {
+      if (serviceAreaArray && serviceAreaArray.length > 0) {
+        var parsedServiceAreasArray = [];
+        for (var index in serviceAreaArray) {
+          if (serviceAreaArray[index].name) {
+            parsedServiceAreasArray.push(serviceAreaArray[index].name);
+          }
+        }
+        return parsedServiceAreasArray.join(', ');
+      }
+    }
   }
 })();

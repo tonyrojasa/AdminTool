@@ -7,11 +7,12 @@
     .controller('EventregistrationsController', EventregistrationsController);
 
   EventregistrationsController.$inject = ['$scope', '$state', '$stateParams', 'Authentication',
-    'eventregistrationResolve', 'EventsService', 'EventpeoplegroupsService', 'personResolve', 'PeopleService'
+    'eventregistrationResolve', 'EventsService', 'EventpeoplegroupsService', 'personResolve',
+    'PeopleService', 'EventregistrationsByEventService'
   ];
 
   function EventregistrationsController($scope, $state, $stateParams, Authentication, eventregistration,
-    EventsService, EventpeoplegroupsService, person, PeopleService) {
+    EventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -20,7 +21,6 @@
     vm.form = {};
     vm.events = EventsService.query();
     vm.eventPeopleGroups = EventpeoplegroupsService.query();
-    vm.people = PeopleService.query();
     vm.remove = remove;
     vm.save = save;
     vm.editMode = vm.eventregistration._id ? true : false;
@@ -36,7 +36,11 @@
     }
 
     function isNewMemberRegistration() {
-      return ($stateParams.newMember === 'true');
+      if ($stateParams.newMember === 'true') {
+        return true;
+      } else {
+        return false;
+      }
     }
 
     if (vm.eventregistration._id) {
@@ -70,6 +74,22 @@
     function setEvent(event) {
       vm.eventregistration.event = event;
       vm.eventregistration.balanceAmount = event.price;
+      debugger;
+      if (!vm.isNewMemberRegistration()) {
+        var people = PeopleService.query();
+        vm.eventRegistrations = EventregistrationsByEventService.query({
+          'eventId': event._id
+        }, function(data) {
+          filterPeopleListBySelectedEvent(people, data);
+        });
+      }
+    }
+
+    function filterPeopleListBySelectedEvent(people, eventPeople) {
+      var registeredPeopleInSelectedEvent = _.map(eventPeople, function(item) {
+        return item.person;
+      });
+      vm.people = _.differenceBy(people, registeredPeopleInSelectedEvent, '_id');
     }
 
     // Remove existing Eventregistration

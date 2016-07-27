@@ -24,6 +24,23 @@
     <p class="help-block error-text" ng-message="required">Información de Contacto es requerido.</p>
   </div>
 </div> -->
+<div class="form-group" show-errors> 
+  <label class="control-label" for="maleSex">Sexo *</label>
+  <input name="isFemale" type="hidden" ng-model="person.isFemale" id="isFemale" class="form-control" placeholder="Sexo" required> 
+  <div class="radio">
+    <label>
+      <input type="radio" class="radio-inline" ng-click="person.isFemale = false" name="sex" ng-checked="!person.isFemale">
+      <b>Masculino</b>
+    </label>
+    <label>
+      <input type="radio" class="radio-inline" ng-click="person.isFemale = true" name="sex" ng-checked="person.isFemale">
+      <b>Femenino</b>
+    </label>
+  </div>
+  <div ng-messages="form.isFemale.$error" role="alert">{{form.isFemale}}
+    <p class="help-block error-text" ng-message="required">Sexo es requerido.</p>
+  </div>
+</div>
 <div class="form-group" show-errors>
   <label class="control-label" for="personId">Identificación (cedula)</label>
   <input name="personId" type="text" ng-model="person.personId" id="personId" class="form-control" placeholder="Identificación">
@@ -91,24 +108,18 @@
     <p class="help-block error-text" ng-message="required">Tipo de Persona es requerido</p>
   </div>
 </div>
-<div class="form-group" show-errors>
+<div class="form-group">
   <label class="control-label" for="organization">Área de Servicio</label>
-  <input name="organization" type="hidden" ng-model="person.organization" id="organization" class="form-control" placeholder="Organización">
-  <div class="dropdown" id="organizationDropdown" uib-dropdown>
-    <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
-      <span ng-if="!person.serviceArea">-- Seleccione uno --</span>
-      {{person.serviceArea.name}}
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu" ng-if="organizations">
-      <li>
-        <a ng-click="setServiceArea()">-- Seleccione uno --</a>
-      </li>
-      <li data-ng-repeat="serviceArea in serviceAreas | orderBy:'name'">
-        <a ng-click="setServiceArea(serviceArea)">{{serviceArea.name}}</a>
-      </li>
-    </ul>
-  </div>
+  <div class="select2-bootstrap-append">
+    <ui-select multiple ng-model="person.serviceArea">
+      <ui-select-match  placeholder="Seleccione a las que pertenece...">
+            <span>{{$item.name}}</span>
+        </ui-select-match>
+        <ui-select-choices repeat="item in (serviceAreas | filter: $select.search | filter:filterAlreadyAdded) track by item._id">
+            <div ng-bind-html="item.name | highlight: $select.search"></div>
+        </ui-select-choices>
+    </ui-select> 
+  </div>  
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="birthDate">Fecha de Nacimiento</label>

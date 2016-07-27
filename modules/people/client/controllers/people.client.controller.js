@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   // People controller
@@ -6,9 +6,9 @@
     .module('people')
     .controller('PeopleController', PeopleController);
 
-  PeopleController.$inject = ['$scope', '$state', 'Authentication', 'personResolve'];
+  PeopleController.$inject = ['_', '$scope', '$state', 'Authentication', 'personResolve'];
 
-  function PeopleController ($scope, $state, Authentication, person) {
+  function PeopleController(_, $scope, $state, Authentication, person) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -17,6 +17,21 @@
     vm.error = null;
     vm.remove = remove;
     vm.save = save;
+
+    vm.getServiceAreaNames = getServiceAreaNames;
+
+    function getServiceAreaNames(serviceAreaArray) {
+      if (serviceAreaArray && serviceAreaArray.length > 0) {
+        var parsedServiceAreasArray = [];
+        for (var index in serviceAreaArray) {
+          if (serviceAreaArray[index].name) {
+            parsedServiceAreasArray.push(serviceAreaArray[index].name);
+          }
+        }
+        return parsedServiceAreasArray.join(', ');
+      }
+    }
+
 
     // Remove existing Person
     function remove() {
@@ -27,6 +42,7 @@
 
     // Save Person
     function save(isValid) {
+      debugger;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.personForm');
         return false;

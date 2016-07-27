@@ -42,8 +42,9 @@
         }
       })
       .state('eventregistrations.edit', {
-        url: '/:eventregistrationId/edit',
+        url: '/:eventregistrationId/edit:newMember',
         params: {
+          'newMember': 'true',
           'personId': null
         },
         templateUrl: 'modules/eventregistrations/client/views/form-eventregistration.client.view.html',

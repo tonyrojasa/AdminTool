@@ -34,6 +34,19 @@
       <label class="control-label" for="organization">Organización</label>
       <input name="organization" type="text" ng-model="vm.person.organization.name" id="organization" class="form-control" placeholder="Organización" ng-disabled="true">
     </div>
+    <div class="form-group"> 
+    <label class="control-label" for="maleSex">Sexo *</label>
+    <div>
+      <label>
+        <input type="radio" class="radio-inline" name="sex" ng-checked="!vm.person.isFemale" ng-disabled="true">
+        <b>Masculino</b>
+      </label>
+      <label>
+        <input type="radio" class="radio-inline" name="sex" ng-checked="vm.person.isFemale" ng-disabled="true"></label>
+        <b>Femenino</b>
+      </label>
+    </div>
+  </div>
     <div class="form-group">
       <label class="control-label" for="personId">Identificación (cedula)</label>
       <input name="personId" type="text" ng-model="vm.person.personId" id="personId" class="form-control" placeholder="Identificación" ng-disabled="true">
@@ -76,7 +89,7 @@
     </div>
     <div class="form-group">
       <label class="control-label" for="serviceArea">Área de Servicio</label>
-      <input name="serviceArea" type="text" ng-model="vm.person.serviceArea.name" id="serviceArea" class="form-control" placeholder="Tipo de Persona" ng-disabled="true">   
+      <input name="serviceArea" type="text" value="{{vm.getServiceAreaNames(vm.person.serviceArea)}}" id="serviceArea" class="form-control" placeholder="Área de Servicio" ng-disabled="true">
     </div>
     <div class="form-group">
       <label class="control-label" for="birthDate">Fecha de Nacimiento</label>

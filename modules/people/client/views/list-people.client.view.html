@@ -52,7 +52,7 @@
           <th>Primer Apellido</th>
           <th>Segundo Apellido</th>
           <th>Tipo de Persona</th>
-          <th>Área de Servicio</th>
+          <th>Áreas de Servicio</th>
           <th>Edad</th>
         </tr>
         </thead>
@@ -62,7 +62,7 @@
           <td>{{person.lastName}}</td>
           <td>{{person.secondLastName}}</td>
           <td>{{person.personType.name}}</td>
-          <td>{{person.serviceArea.name}}</td>
+          <td>{{vm.getServiceAreaNames(person.serviceArea)}}</td>
           <td>{{person.age}}</td>
           <td>    
             <a data-ui-sref="people.view({ personId: person._id})">Detalles</a>    

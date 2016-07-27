@@ -53,7 +53,7 @@
             <a data-ui-sref="eventregistrations.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })">Editar</a>    
           </td>
           <td>    
-            <a ng-if="vm.hasPendingPayment(eventRegistration)" data-ui-sref="receipts.createFromEventRegistration({ eventregistrationId: eventRegistration._id })">Realizar Pago</a>    
+            <a ng-if="vm.hasPendingPayment(eventRegistration) || vm.authentication.isUserAdmin()" data-ui-sref="receipts.createFromEventRegistration({ eventregistrationId: eventRegistration._id })">Realizar Pago</a>    
           </td>
         </tr>
         </tbody>

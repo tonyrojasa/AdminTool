@@ -20,10 +20,10 @@ var PersonSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Serviceacademyclass'
   },
-  serviceArea: {
+  serviceArea: [{
     type: Schema.ObjectId,
     ref: 'Servicearea'
-  },
+  }],
   location: {
     type: Schema.ObjectId,
     ref: 'location'
@@ -97,6 +97,10 @@ var PersonSchema = new Schema({
     type: String,
     required: 'Please fill maritalStatus',
     trim: true
+  },
+  isFemale: {
+    type: Boolean,
+    required: 'Please fill isFemale sex'
   },
   grade: {
     type: String,

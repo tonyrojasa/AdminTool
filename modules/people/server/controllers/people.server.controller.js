@@ -84,7 +84,7 @@ exports.list = function(req, res) {
   Person.find().sort('-created')
     .populate('organization', 'name')
     .populate('personType', 'name')
-    .populate('serviceArea', 'name')
+    .populate('serviceArea')
     .populate('user', 'displayName')
     .exec(function(err, people) {
       if (err) {
@@ -111,7 +111,7 @@ exports.personByID = function(req, res, next, id) {
   Person.findById(id)
     .populate('user', 'displayName')
     .populate('personType', 'name')
-    .populate('serviceArea', 'name')
+    .populate('serviceArea')
     .populate('organization', 'name')
     .exec(function(err, person) {
       if (err) {
