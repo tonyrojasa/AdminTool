@@ -12,7 +12,7 @@
     Menus.addSubMenuItem('topbar', 'maintenance', {
       title: 'Áreas de Servicio',
       state: 'serviceareas.list',
-      roles: ['admin', 'inscriptor', 'teacher']
+      roles: ['admin', 'inscriptor', 'teacher', 'user']
     });
   }
 })();

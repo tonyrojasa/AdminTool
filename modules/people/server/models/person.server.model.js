@@ -100,6 +100,7 @@ var PersonSchema = new Schema({
   },
   isFemale: {
     type: Boolean,
+    default: false,
     required: 'Please fill isFemale sex'
   },
   grade: {

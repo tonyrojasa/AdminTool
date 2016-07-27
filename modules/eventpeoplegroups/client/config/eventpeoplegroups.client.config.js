@@ -13,7 +13,7 @@
     Menus.addSubMenuItem('topbar', 'maintenance', {
       title: 'Grupo de Personas',
       state: 'eventpeoplegroups.list',
-      roles: ['admin', 'inscriptor']
+      roles: ['admin', 'inscriptor', 'user']
     });
   }
 })();

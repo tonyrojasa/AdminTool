@@ -13,14 +13,14 @@
       title: 'Recibos',
       state: 'receipts',
       type: 'dropdown',
-      roles: ['admin', 'inscriptor']
+      roles: ['admin', 'inscriptor', 'user']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'receipts', {
       title: 'Lista de Recibos',
       state: 'receipts.list',
-      roles: ['admin', 'inscriptor']
+      roles: ['admin', 'inscriptor', 'user']
     });
 
     // Add the dropdown create item

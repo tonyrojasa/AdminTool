@@ -13,7 +13,7 @@
     Menus.addSubMenuItem('topbar', 'maintenance', {
       title: 'Tipos de Persona',
       state: 'persontypes.list',
-      roles: ['admin', 'inscriptor', 'teacher']
+      roles: ['admin', 'inscriptor', 'teacher', 'user']
     });
 
   }

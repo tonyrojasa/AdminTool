@@ -20,7 +20,7 @@
         controller: 'PeopleListController',
         controllerAs: 'vm',
         data: {
-          roles: ['admin', 'inscriptor', 'teacher'],
+          roles: ['admin', 'inscriptor', 'teacher', 'user'],
           pageTitle: 'Lista de Personas'
         }
       })
@@ -60,7 +60,7 @@
         },
         data: {
           roles: ['admin', 'inscriptor', 'teacher'],
-          pageTitle: 'Persona: {{ articleResolve.name }}'
+          pageTitle: 'Persona {{ articleResolve.name }}'
         }
       });
   }

@@ -23,8 +23,8 @@
           serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
-          roles: ['admin', 'teacher', 'student'],
-          pageTitle: 'Students List'
+          roles: ['admin', 'teacher', 'student', 'user'],
+          pageTitle: 'Lista de Estudiantes'
         }
       })
       .state('students.create', {
@@ -38,7 +38,7 @@
         },
         data: {
           roles: ['admin', 'teacher', 'student'],
-          pageTitle: 'Students Create'
+          pageTitle: 'Crear Estudiante'
         }
       })
       .state('students.edit', {
@@ -52,7 +52,7 @@
         },
         data: {
           roles: ['admin', 'teacher', 'student'],
-          pageTitle: 'Edit Student {{ studentResolve.name }}'
+          pageTitle: 'Editar Estudiante {{ studentResolve.name }}'
         }
       })
       .state('students.view', {
@@ -65,11 +65,11 @@
         },
         data: {
           roles: ['admin', 'teacher', 'student'],
-          pageTitle: 'Student {{ articleResolve.name }}'
+          pageTitle: 'Estudiante {{ articleResolve.name }}'
         }
       })
       .state('students.listAcademyStudents', {
-        url: '/serviceacademyclasses/:serviceacademyclassId/students',
+        url: '/serviceacademyclasses/:serviceacademyclassId',
         templateUrl: 'modules/students/client/views/list-students.client.view.html',
         controller: 'StudentsListController',
         controllerAs: 'vm',
@@ -77,7 +77,7 @@
           serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
-          roles: ['admin', 'teacher', 'student'],
+          roles: ['admin', 'teacher', 'student', 'user'],
           pageTitle: 'Estudiantes de Academia {{ articleResolve.name }}'
         }
       });

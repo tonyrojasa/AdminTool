@@ -20,8 +20,12 @@
       value: 'admin',
       selected: false
     }, {
-      name: 'Usuario estándar',
+      name: 'Estándar',
       value: 'user',
+      selected: false
+    }, {
+      name: 'Invitado',
+      value: 'guest',
       selected: false
     }, {
       name: 'Inscriptor',
@@ -64,7 +68,10 @@
               roleArray[key] = "Administrador";
               break;
             case "user":
-              roleArray[key] = "Usuario estándar";
+              roleArray[key] = "Estándar";
+              break;
+            case "guest":
+              roleArray[key] = "Invitado";
               break;
             case "inscriptor":
               roleArray[key] = "Inscriptor de eventos";

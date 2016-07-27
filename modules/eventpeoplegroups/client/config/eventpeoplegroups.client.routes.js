@@ -20,8 +20,8 @@
         controller: 'EventpeoplegroupsListController',
         controllerAs: 'vm',
         data: {
-          roles: ['admin', 'inscriptor'],
-          pageTitle: 'Eventpeoplegroups List'
+          roles: ['admin', 'inscriptor', 'user'],
+          pageTitle: 'Lista de Grupo de Personas'
         }
       })
       .state('eventpeoplegroups.create', {
@@ -34,7 +34,7 @@
         },
         data: {
           roles: ['admin', 'inscriptor'],
-          pageTitle: 'Eventpeoplegroups Create'
+          pageTitle: 'Crear Grupo de Personas'
         }
       })
       .state('eventpeoplegroups.edit', {
@@ -47,7 +47,7 @@
         },
         data: {
           roles: ['admin', 'inscriptor'],
-          pageTitle: 'Edit Eventpeoplegroup {{ eventpeoplegroupResolve.name }}'
+          pageTitle: 'Editar Grupo de Personas - {{ eventpeoplegroupResolve.name }}'
         }
       })
       .state('eventpeoplegroups.view', {
@@ -60,7 +60,7 @@
         },
         data: {
           roles: ['admin', 'inscriptor'],
-          pageTitle: 'Eventpeoplegroup {{ articleResolve.name }}'
+          pageTitle: 'Grupo de Personas {{ articleResolve.name }}'
         }
       });
   }

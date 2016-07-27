@@ -12,13 +12,13 @@
       title: 'Administración',
       state: 'admin',
       type: 'dropdown',
-      roles: ['admin', 'inscriptor', 'teacher']
+      roles: ['admin']
     });
     menuService.addMenuItem('topbar', {
       title: 'Manteimiento',
       state: 'maintenance',
       type: 'dropdown',
-      roles: ['admin', 'inscriptor', 'teacher']
+      roles: ['admin', 'inscriptor', 'teacher', 'user']
     });
   }
 }());

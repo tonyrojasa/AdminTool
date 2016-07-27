@@ -13,21 +13,14 @@
       title: 'Inscripciones',
       state: 'eventregistrations',
       type: 'dropdown',
-      roles: ['admin', 'inscriptor']
+      roles: ['admin', 'inscriptor', 'user']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'eventregistrations', {
       title: 'Inscripciones',
       state: 'eventregistrations.list',
-      roles: ['admin', 'inscriptor']
-    });
-
-    // Add the dropdown create item
-    Menus.addSubMenuItem('topbar', 'eventregistrations', {
-      title: 'Crear Inscripción',
-      state: 'eventregistrations.create',
-      roles: ['admin', 'inscriptor']
+      roles: ['admin', 'inscriptor', 'user']
     });
   }
 })();

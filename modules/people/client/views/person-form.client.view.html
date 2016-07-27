@@ -29,7 +29,8 @@
   <input name="isFemale" type="hidden" ng-model="person.isFemale" id="isFemale" class="form-control" placeholder="Sexo" required> 
   <div class="radio">
     <label>
-      <input type="radio" class="radio-inline" ng-click="person.isFemale = false" name="sex" ng-checked="!person.isFemale">
+      <input type="radio" class="radio-inline" ng-click="person.isFemale = false" name="sex" 
+      ng-checked="{{person.isFemale === true ? !person.isFemale : true}}">
       <b>Masculino</b>
     </label>
     <label>
@@ -37,7 +38,7 @@
       <b>Femenino</b>
     </label>
   </div>
-  <div ng-messages="form.isFemale.$error" role="alert">{{form.isFemale}}
+  <div ng-messages="form.isFemale.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Sexo es requerido.</p>
   </div>
 </div>

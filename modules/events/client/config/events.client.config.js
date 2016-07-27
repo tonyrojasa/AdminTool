@@ -12,13 +12,13 @@
     Menus.addSubMenuItem('topbar', 'maintenance', {
       title: 'Eventos',
       state: 'events.list',
-      roles: ['admin', 'inscriptor']
+      roles: ['admin', 'inscriptor', 'user']
     });
 
     Menus.addSubMenuItem('topbar', 'eventregistrations', {
       title: 'Eventos',
       state: 'events.list',
-      roles: ['admin', 'inscriptor']
+      roles: ['admin', 'inscriptor', 'user']
     });
   }
 })();

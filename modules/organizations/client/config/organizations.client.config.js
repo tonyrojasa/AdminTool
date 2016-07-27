@@ -12,7 +12,7 @@
     Menus.addSubMenuItem('topbar', 'maintenance', {
       title: 'Organizaciones',
       state: 'organizations.list',
-      roles: ['admin']
+      roles: ['admin', 'user']
     });
   }
 })();

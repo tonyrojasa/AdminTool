@@ -20,7 +20,7 @@
         controller: 'OrganizationsListController',
         controllerAs: 'vm',
         data: {
-          roles: ['admin'],
+          roles: ['admin', 'user'],
           pageTitle: 'Lista de Organizaciones'
         }
       })
@@ -60,7 +60,7 @@
         },
         data: {
           roles: ['admin'],
-          pageTitle: 'Organización: {{ articleResolve.name }}'
+          pageTitle: 'Organización {{ articleResolve.name }}'
         }
       });
   }

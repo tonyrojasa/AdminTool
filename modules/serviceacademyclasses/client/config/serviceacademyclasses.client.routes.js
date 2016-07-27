@@ -20,8 +20,8 @@
         controller: 'ServiceacademyclassesListController',
         controllerAs: 'vm',
         data: {
-          roles: ['admin', 'teacher', 'student'],
-          pageTitle: 'Serviceacademyclasses List'
+          roles: ['admin', 'teacher', 'student', 'user'],
+          pageTitle: 'Lista de Academias'
         }
       })
       .state('serviceacademyclasses.create', {
@@ -34,7 +34,7 @@
         },
         data: {
           roles: ['admin', 'teacher'],
-          pageTitle: 'Serviceacademyclasses Create'
+          pageTitle: 'Crear Academia'
         }
       })
       .state('serviceacademyclasses.edit', {
@@ -47,7 +47,7 @@
         },
         data: {
           roles: ['admin', 'teacher'],
-          pageTitle: 'Edit Serviceacademyclass {{ serviceacademyclassResolve.name }}'
+          pageTitle: 'Editar Academia {{ serviceacademyclassResolve.name }}'
         }
       })
       .state('serviceacademyclasses.view', {
@@ -60,7 +60,7 @@
         },
         data: {
           roles: ['admin', 'teacher', 'student'],
-          pageTitle: 'Serviceacademyclass {{ articleResolve.name }}'
+          pageTitle: 'Academia {{ articleResolve.name }}'
         }
       });
   }

@@ -12,7 +12,7 @@
     Menus.addSubMenuItem('topbar', 'maintenance', {
       title: 'Personas',
       state: 'people.list',
-      roles: ['admin', 'inscriptor', 'teacher']
+      roles: ['admin', 'inscriptor', 'teacher', 'user']
     });
   }
 })();

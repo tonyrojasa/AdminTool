@@ -20,8 +20,8 @@
         controller: 'EventsListController',
         controllerAs: 'vm',
         data: {
-          roles: ['admin', 'inscriptor'],
-          pageTitle: 'Events List'
+          roles: ['admin', 'inscriptor', 'user'],
+          pageTitle: 'Lista de Eventos'
         }
       })
       .state('events.create', {
@@ -34,7 +34,7 @@
         },
         data: {
           roles: ['admin', 'inscriptor'],
-          pageTitle: 'Events Create'
+          pageTitle: 'Crear Evento'
         }
       })
       .state('events.edit', {
@@ -47,7 +47,7 @@
         },
         data: {
           roles: ['admin', 'inscriptor'],
-          pageTitle: 'Edit Event {{ eventResolve.name }}'
+          pageTitle: 'Editar Evento - {{ eventResolve.name }}'
         }
       })
       .state('events.view', {
@@ -60,7 +60,7 @@
         },
         data: {
           roles: ['admin', 'inscriptor'],
-          pageTitle: 'Event {{ articleResolve.name }}'
+          pageTitle: 'Evento {{ articleResolve.name }}'
         }
       });
   }

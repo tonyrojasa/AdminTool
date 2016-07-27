@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -12,7 +12,7 @@
     vm.buildPager = buildPager;
     vm.figureOutItemsToDisplay = figureOutItemsToDisplay;
     vm.pageChanged = pageChanged;
-    
+
     vm.parseRoles = function(roleArray) {
       _.forEach(roleArray,
         function(value, key) {
@@ -21,7 +21,10 @@
               roleArray[key] = "Administrador";
               break;
             case "user":
-              roleArray[key] = "Usuario estándar";
+              roleArray[key] = "Estándar";
+              break;
+            case "guest":
+              roleArray[key] = "Invitado";
               break;
             case "inscriptor":
               roleArray[key] = "Inscriptor de eventos";
@@ -37,7 +40,7 @@
       return roleValue;
     };
 
-    AdminService.query(function (data) {
+    AdminService.query(function(data) {
       vm.users = data;
       vm.buildPager();
     });

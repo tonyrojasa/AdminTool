@@ -22,7 +22,7 @@ exports.invokeRolesPolicies = function() {
       permissions: '*'
     }]
   }, {
-    roles: ['admin', 'inscriptor'],
+    roles: ['inscriptor'],
     allows: [{
       resources: '/api/receipts',
       permissions: ['get', 'post']
@@ -31,7 +31,7 @@ exports.invokeRolesPolicies = function() {
       permissions: ['get']
     }]
   }, {
-    roles: ['*'],
+    roles: ['guest', 'user', 'teacher', 'student'],
     allows: [{
       resources: '/api/receipts',
       permissions: ['get']

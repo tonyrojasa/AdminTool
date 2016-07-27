@@ -13,7 +13,7 @@
     Menus.addSubMenuItem('topbar', 'serviceacademyclasses', {
       title: 'Estudiantes',
       state: 'students.list',
-      roles: ['admin', 'teacher', 'student']
+      roles: ['admin', 'teacher', 'student', 'user']
     });
   }
 })();

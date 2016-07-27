@@ -28,13 +28,13 @@ exports.invokeRolesPolicies = function() {
       permissions: '*'
     }]
   }, {
-    roles: ['user'],
+    roles: ['teacher'],
     allows: [{
       resources: '/api/serviceacademyclasses',
-      permissions: ['get', 'post']
+      permissions: ['get', 'post', 'patch', 'put']
     }, {
       resources: '/api/serviceacademyclasses/:serviceacademyclassId',
-      permissions: ['get']
+      permissions: ['get', 'post', 'patch', 'put']
     }, {
       resources: '/api/serviceacademyclasses/current',
       permissions: 'get'
@@ -43,7 +43,7 @@ exports.invokeRolesPolicies = function() {
       permissions: 'get'
     }]
   }, {
-    roles: ['guest'],
+    roles: ['guest', 'user', 'student'],
     allows: [{
       resources: '/api/serviceacademyclasses',
       permissions: ['get']

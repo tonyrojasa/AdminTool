@@ -25,24 +25,27 @@ exports.invokeRolesPolicies = function() {
       permissions: '*'
     }]
   }, {
-    roles: ['user'],
+    roles: ['inscriptor'],
     allows: [{
       resources: '/api/eventregistrations',
-      permissions: ['get', 'post']
+      permissions: ['get', 'post', 'patch', 'put']
     }, {
       resources: '/api/eventregistrations/:eventregistrationId',
-      permissions: ['get']
+      permissions: ['get', 'post', 'patch', 'put']
     }, {
       resources: '/api/eventregistrations/event/:eventId',
       permissions: ['get']
     }]
   }, {
-    roles: ['guest'],
+    roles: ['guest', 'user', 'teacher', 'student'],
     allows: [{
       resources: '/api/eventregistrations',
       permissions: ['get']
     }, {
       resources: '/api/eventregistrations/:eventregistrationId',
+      permissions: ['get']
+    }, {
+      resources: '/api/eventregistrations/event/:eventId',
       permissions: ['get']
     }]
   }]);

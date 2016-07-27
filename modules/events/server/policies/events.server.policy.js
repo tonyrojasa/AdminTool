@@ -28,10 +28,25 @@ exports.invokeRolesPolicies = function() {
       permissions: '*'
     }]
   }, {
-    roles: ['user'],
+    roles: ['inscriptor'],
     allows: [{
       resources: '/api/events',
-      permissions: ['get', 'post']
+      permissions: ['get', 'post', 'patch', 'put']
+    }, {
+      resources: '/api/events/:eventId',
+      permissions: ['get', 'post', 'patch', 'put']
+    }, {
+      resources: '/api/events/current',
+      permissions: ['get', 'post', 'patch', 'put']
+    }, {
+      resources: '/api/events/current/:eventId',
+      permissions: ['get', 'post', 'patch', 'put']
+    }]
+  }, {
+    roles: ['guest', 'user'],
+    allows: [{
+      resources: '/api/events',
+      permissions: ['get']
     }, {
       resources: '/api/events/:eventId',
       permissions: ['get']
@@ -40,15 +55,6 @@ exports.invokeRolesPolicies = function() {
       permissions: ['get']
     }, {
       resources: '/api/events/current/:eventId',
-      permissions: ['get']
-    }]
-  }, {
-    roles: ['guest'],
-    allows: [{
-      resources: '/api/events',
-      permissions: ['get']
-    }, {
-      resources: '/api/events/:eventId',
       permissions: ['get']
     }]
   }]);

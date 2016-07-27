@@ -13,14 +13,14 @@
       title: 'Academias',
       state: 'serviceacademyclasses',
       type: 'dropdown',
-      roles: ['admin', 'teacher', 'student']
+      roles: ['admin', 'teacher', 'student', 'user']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'serviceacademyclasses', {
       title: 'Lista de Academias',
       state: 'serviceacademyclasses.list',
-      roles: ['admin', 'teacher', 'student']
+      roles: ['admin', 'teacher', 'student', 'user']
     });
 
     // Add the dropdown create item
