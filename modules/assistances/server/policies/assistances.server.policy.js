@@ -9,56 +9,47 @@ var acl = require('acl');
 acl = new acl(new acl.memoryBackend());
 
 /**
- * Invoke Students Permissions
+ * Invoke Assistances Permissions
  */
 exports.invokeRolesPolicies = function() {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/api/students',
+      resources: '/api/assistances',
       permissions: '*'
     }, {
-      resources: '/api/students/:studentId',
-      permissions: '*'
-    }, {
-      resources: '/api/students/serviceacademyclass/:serviceacademyclassId',
+      resources: '/api/assistances/:assistanceId',
       permissions: '*'
     }]
   }, {
     roles: ['teacher'],
     allows: [{
-      resources: '/api/students',
+      resources: '/api/assistances',
       permissions: ['get', 'post', 'patch', 'put']
     }, {
-      resources: '/api/students/:studentId',
+      resources: '/api/assistances/:assistanceId',
       permissions: ['get', 'post', 'patch', 'put']
-    }, {
-      resources: '/api/students/serviceacademyclass/:serviceacademyclassId',
-      permissions: ['get']
     }]
   }, {
     roles: ['guest', 'user', 'student'],
     allows: [{
-      resources: '/api/students',
+      resources: '/api/assistances',
       permissions: ['get']
     }, {
-      resources: '/api/students/:studentId',
-      permissions: ['get']
-    }, {
-      resources: '/api/students/serviceacademyclass/:serviceacademyclassId',
+      resources: '/api/assistances/:assistanceId',
       permissions: ['get']
     }]
   }]);
 };
 
 /**
- * Check If Students Policy Allows
+ * Check If Assistances Policy Allows
  */
 exports.isAllowed = function(req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
-  // If an Student is being processed and the current user created it then allow any manipulation
-  if (req.student && req.user && req.student.user && req.student.user.id === req.user.id) {
+  // If an Assistance is being processed and the current user created it then allow any manipulation
+  if (req.assistance && req.user && req.assistance.user && req.assistance.user.id === req.user.id) {
     return next();
   }
 

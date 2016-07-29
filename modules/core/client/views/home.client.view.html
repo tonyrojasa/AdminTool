@@ -10,14 +10,15 @@
        <h5 class="text-muted">
         versión beta 1
       </h5>
-    </div>  
-    <span class="text-muted">Accesos directos:</span>
-    <div class="form-group" ng-if="vm.authentication.user">
-      <a class="btn btn-primary btn-xs" data-ui-sref="events.list">Eventos</a>
-      <a class="btn btn-primary btn-xs" data-ui-sref="eventregistrations.list">Inscripciones</a>
-      <a class="btn btn-primary btn-xs" data-ui-sref="serviceacademyclasses.list">Academias</a>
+    </div> 
+    <div class="row" ng-show="vm.authentication.user">    
+      <span class="text-muted">Accesos directos:</span>
+      <div class="form-group" ng-if="vm.authentication.user">
+        <a class="btn btn-primary btn-xs" data-ui-sref="events.list">Eventos</a>
+        <a class="btn btn-primary btn-xs" data-ui-sref="eventregistrations.list">Inscripciones</a>
+        <a class="btn btn-primary btn-xs" data-ui-sref="serviceacademyclasses.list">Academias</a>
+      </div> 
     </div>   
-    <br>
     <div class="row">
       <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
         <img alt="GeneracionDeCambioDC" class="img-responsive text-center" src="modules/core/client/img/brand/GDC logo Transparent.png" />

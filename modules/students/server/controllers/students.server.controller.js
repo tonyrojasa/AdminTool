@@ -97,6 +97,31 @@ exports.list = function(req, res) {
 };
 
 /**
+ * List of students by ServiceAcademyClassId
+ */
+exports.listByServiceAcademyClassId = function(req, res) {
+  var serviceacademyclassId = req.params.serviceacademyclassId;
+  Student.where('serviceAcademyClass', serviceacademyclassId).sort('-created')
+    .populate({
+      path: 'person',
+      populate: {
+        path: 'personType'
+      }
+    })
+    .populate('serviceAcademyClass')
+    .populate('user', 'displayName')
+    .exec(function(err, students) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(students);
+      }
+    });
+};
+
+/**
  * Student middleware
  */
 exports.studentByID = function(req, res, next, id) {

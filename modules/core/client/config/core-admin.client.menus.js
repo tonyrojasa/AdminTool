@@ -15,7 +15,7 @@
       roles: ['admin']
     });
     menuService.addMenuItem('topbar', {
-      title: 'Manteimiento',
+      title: 'Mantenimiento',
       state: 'maintenance',
       type: 'dropdown',
       roles: ['admin', 'inscriptor', 'teacher', 'user']

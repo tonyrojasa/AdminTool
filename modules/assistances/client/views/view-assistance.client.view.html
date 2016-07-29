@@ -1,0 +1,67 @@
+<section>
+  <div class="page-header">
+    <h1>Lista de Asistencia - {{vm.assistance.assistanceDate | date:'longDate'}}</h1>
+  </div>  
+  <div class="row">
+    <small class="col-md-12">
+      <em class="text-muted">
+        Creado en
+        <span data-ng-bind="vm.assistance.created | date:'mediumDate'"></span>
+        por
+        <span data-ng-if="vm.assistance.user"
+              data-ng-bind="vm.assistance.user.displayName"></span>
+        <span data-ng-if="!vm.assistance.user">Deleted User</span>
+      </em>
+    </small>
+  </div>
+  <div class="row">
+    <div class="pull-right"
+         data-ng-show="vm.assistance.isCurrentUserOwner">
+      <a class="btn btn-primary" data-ui-sref="assistances.edit({ assistanceId: vm.assistance._id })">
+        <i class="glyphicon glyphicon-edit"> Editar</i>
+      </a>
+      <a class="btn btn-primary" data-ng-click="vm.remove()">
+        <i class="glyphicon glyphicon-trash"> Eliminar</i>
+      </a>
+    </div>    
+    <div class="pull-left">
+       <a class="btn btn-secondary" data-ui-sref="assistances.list()">
+        <i class="glyphicon glyphicon-arrow-left"></i>
+        Regresar
+      </a>
+    </div>
+  </div>
+</section>
+<br />
+<section>
+  <div id="exportable" class="form-group" ng-if="vm.assistance.assistants.length"> 
+    <div class="form-group">
+      <label class="control-label" for="serviceAcademyClass">Academia</label>      
+      <p name="serviceAcademyClass" id="serviceAcademyClass">{{vm.assistance.serviceAcademyClass.name}}</p>
+    </div> 
+    <div class="form-group" nf-if="vm.assistance.event">
+      <label class="control-label" for="event">Evento</label>      
+      <p name="serviceAcademyClass" id="event">{{vm.assistance.event.name}}</p>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="description">Descripción</label>
+      <p name="assistanceDescription" id="description">{{vm.assistance.description}}</p>
+    </div>  
+    <table class="table table-condensed">
+      <thead>
+      <tr>
+        <th>Asistente</th>
+        <th>Tipo de persona</th>
+        <th>Estado</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="assistant in vm.assistance.assistants | orderBy:['status', 'person.firstName', 'person.lastName', 'person.secondLastName', 'person.personType.name']" ng-class="vm.getStatusClass(assistant)">
+        <td>{{assistant.person.firstName}} {{assistant.person.lastName}} {{assistant.person.secondLastName}}</td>
+        <td>{{assistant.person.personType.name}}</td>
+        <td>{{vm.getStatusName(assistant.status)}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

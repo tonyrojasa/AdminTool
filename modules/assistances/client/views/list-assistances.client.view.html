@@ -1,0 +1,60 @@
+<section>
+  <div class="page-header">
+    <h1>Listas de Asistencia</h1>
+  </div>
+  <a class="btn btn-primary" data-ui-sref="assistances.create">Nueva Lista de Asistencia</a>
+  <br/><br/>
+  <div id="content" data-ng-if="vm.assistances.length">
+    <br />
+    <div class="form-group">
+      <div class="dropdown" id="serviceAcademyClassDropdown" uib-dropdown>
+        <label class="control-label" for="serviceAcademyClass">Academia: </label>
+        <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+          <span ng-if="!vm.serviceAcademyClass">-- Todos --</span>
+          {{vm.serviceAcademyClass.name}}
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" ng-if="vm.serviceAcademyClasses">
+          <li>
+            <a ng-click="vm.setServiceAcademyClass()">-- Todos --</a>
+          </li>
+          <li data-ng-repeat="serviceAcademyClass in vm.serviceAcademyClasses | orderBy:'name'">
+            <a ng-click="vm.setServiceAcademyClass(serviceAcademyClass)">{{serviceAcademyClass.name}}</a>
+          </li>
+        </ul>
+      <a class="btn btn-secondary" data-ui-sref="serviceacademyclasses.list()">
+        <i class="glyphicon glyphicon-th-list"></i>
+        Lista de Academias
+      </a>
+      </div>
+    </div>    
+    <br />
+    <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
+    <br />
+    <div id="exportable">
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+          <th>Academia</th>
+          <!-- <th>Evento</th> -->
+          <th>Fecha de asistencia</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="assistance in vm.assistances | orderBy:['serviceAcademyClass.name', 'event.name'] | filter: vm.searchFilter | filter: vm.serviceAcademyClass.name" ng-class="vm.getStatusClass(assistance)">
+          <td>{{assistance.serviceAcademyClass.name}}</td>
+          <!-- <td>{{assistance.event.name}}</td> -->
+          <td>{{assistance.assistanceDate | date:'mediumDate'}}</td>
+          <td>
+            <a data-ui-sref="assistances.view({ assistanceId: assistance._id})">Asistentes</a>    
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="vm.assistances.$resolved && !vm.assistances.length">
+    No hay listas de asistencia <a data-ui-sref="assistances.create">Crear</a>?
+  </div>
+</section>

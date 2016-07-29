@@ -1,0 +1,92 @@
+<section>
+  <div class="page-header">
+    <h1>{{vm.assistance._id ? 'Editar Lista de Asistencia' : 'Nueva Listta de Asistencia'}}</h1>
+  </div>
+  <div class="col-md-12">
+    <a class="btn btn-secondary" data-ui-sref="assistances.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
+    </a>
+  </div>    
+  <div class="col-md-12">
+    <form name="vm.form.assistanceForm" class="form-horizontal" ng-submit="vm.save(vm.form.assistanceForm.$valid)" novalidate>
+      <fieldset>
+        <div class="form-group">
+          <div class="dropdown" id="serviceAcademyClassDropdown" uib-dropdown>
+            <label class="control-label" for="serviceAcademyClass">Academia: </label>
+            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+              <span ng-if="!vm.assistance.serviceAcademyClass">-- Todos --</span>
+              {{vm.assistance.serviceAcademyClass.name}}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" ng-if="vm.serviceAcademyClasses">
+              <li>
+                <a ng-click="vm.setServiceAcademyClass()">-- Todos --</a>
+              </li>
+              <li data-ng-repeat="serviceAcademyClass in vm.serviceAcademyClasses | orderBy:'name'">
+                <a ng-click="vm.setServiceAcademyClass(serviceAcademyClass)">{{serviceAcademyClass.name}}</a>
+              </li>
+            </ul>
+          <a class="btn btn-secondary" data-ui-sref="serviceacademyclasses.list()">
+            <i class="glyphicon glyphicon-th-list"></i>
+            Lista de Academias
+          </a>
+          </div>
+        </div>    
+        <div class="form-group" show-errors>
+          <label class="control-label" for="assistanceDate">Fecha de asistencia</label>
+          <br />
+          <input name="assistanceDate" type="hidden" ng-model="vm.assistance.assistanceDate" id="assistanceDate" class="form-control" required>
+          <datetimepicker 
+            ng-model="vm.assistance.assistanceDate" 
+            hidden-time="true" 
+            date-format="dd-MM-yyyy" 
+            date-options="vm.dateOptions"
+            current-text="Hoy"
+            clear-text="Limpiar"
+            close-text="Cerrar" />           
+          <div ng-messages="vm.form.eventForm.assistanceDate.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Fecha de asistencia es requerido.</p>
+          </div>
+        </div>      
+        <div class="form-group" show-errors>
+          <label class="control-label" for="description">Descripción</label>
+          <textarea name="assistanceDescription" data-ng-model="vm.assistance.description" id="description" class="form-control" cols="2" rows="2" placeholder="Descripción"></textarea>
+        </div>        
+        <div id="exportable" class="form-group" ng-if="vm.assistance.assistants.length">
+          <table class="table table-condensed">
+            <thead>
+            <tr>
+              <th>Asistente</th>
+              <th>Tipo de persona</th>
+              <th>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="assistant in vm.assistance.assistants | orderBy:['person.firstName', 'person.lastName', 'person.secondLastName', 'person.personType.name']" ng-class="vm.getStatusClass(assistant)">
+              <td>{{assistant.person.firstName}} {{assistant.person.lastName}} {{assistant.person.secondLastName}}</td>
+              <td>{{assistant.person.personType.name}}</td>
+              <td class="form-group" show-errors>
+                <select name="assistantStatus_{{assistant._id}}" id="assistantStatus_{{assistant._id}}" ng-model="assistant.status" class="form-control pull-left" style="width:auto;" required>
+                  <option value="early" class="danger">Presente</option>
+                  <option value="late">Tarde</option>
+                  <option value="absent" selected>Ausente</option>
+                </select>                
+                <div ng-messages="vm.form.assistanceForm['assistantStatus_'+assistant._id].$error" role="alert" class="pull-rigth">
+                  <span class="help-block error-text" ng-message="required"> * requerido</span>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="form-group">
+            <button type="submit" ng-disabled="!vm.assistance.assistants.length" class="btn btn-default">{{vm.assistance._id ? 'Actualizar' : 'Crear'}}</button>
+          </div>
+          <div ng-show="vm.error" class="text-danger">
+            <strong ng-bind="vm.error"></strong>
+          </div>
+      </fieldset>
+    </form>
+  </div>
+</section>
