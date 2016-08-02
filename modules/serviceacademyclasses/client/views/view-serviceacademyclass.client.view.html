@@ -36,5 +36,9 @@
   <b>Nivel:</b> <p class="lead" data-ng-bind="vm.serviceacademyclass.level"></p>
   <b>Fecha de inicio:</b> <p class="lead" data-ng-bind="vm.serviceacademyclass.startDate | date:'longDate'"></p>
   <b>Fecha final:</b> <p class="lead" data-ng-bind="vm.serviceacademyclass.endDate | date:'longDate'"></p>  
-  <b>Horario:</b> <p class="lead">{{vm.parseSchedule(vm.serviceacademyclass.schedule)}}</p>
+  <b>Horario:</b> <p class="lead">{{vm.parseSchedule(vm.serviceacademyclass.schedule)}}</p>  
+  <b>Profesor:</b> <p ng-show="vm.serviceacademyclass.teacher" class="lead">
+    {{vm.serviceacademyclass.teacher.firstName}} {{vm.serviceacademyclass.teacher.lastName}}
+    {{vm.serviceacademyclass.teacher.secondLastName}}</p>
+    <p ng-show="!vm.serviceacademyclass.teacher" class="lead">--No asignado--</p>
 </section>

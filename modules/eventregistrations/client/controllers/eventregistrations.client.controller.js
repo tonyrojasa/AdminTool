@@ -7,25 +7,24 @@
     .controller('EventregistrationsController', EventregistrationsController);
 
   EventregistrationsController.$inject = ['$scope', '$state', '$stateParams', 'Authentication',
-    'eventregistrationResolve', 'EventsService', 'EventpeoplegroupsService', 'personResolve',
+    'eventregistrationResolve', 'CurrentEventsService', 'EventpeoplegroupsService', 'personResolve',
     'PeopleService', 'EventregistrationsByEventService'
   ];
 
   function EventregistrationsController($scope, $state, $stateParams, Authentication, eventregistration,
-    EventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService) {
+    CurrentEventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.eventregistration = eventregistration;
     vm.error = null;
     vm.form = {};
-    vm.events = EventsService.query();
+    vm.events = CurrentEventsService.query();
     vm.eventPeopleGroups = EventpeoplegroupsService.query();
     vm.remove = remove;
     vm.save = save;
     vm.editMode = vm.eventregistration._id ? true : false;
     vm.setEvent = setEvent;
-    vm.setEventPeopleGroup = setEventPeopleGroup;
     vm.isNewMemberRegistration = isNewMemberRegistration;
     loadDates();
 
@@ -65,16 +64,11 @@
       }
     }
 
-    //set registration eventPeopleGroup
-    function setEventPeopleGroup(eventPeopleGroup) {
-      vm.eventregistration.eventPeopleGroup = eventPeopleGroup;
-    }
-
     //set registration event
     function setEvent(event) {
       vm.eventregistration.event = event;
       vm.eventregistration.balanceAmount = event.price;
-      debugger;
+
       if (!vm.isNewMemberRegistration()) {
         var people = PeopleService.query();
         vm.eventRegistrations = EventregistrationsByEventService.query({

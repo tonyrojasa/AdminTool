@@ -64,12 +64,12 @@ module.exports = {
     sandbox: false
   },
   mailer: {
-    from: getCred('mean-mail', 'from') || 'MAILER_FROM',
+    from: getCred('mean-mail', 'from') || 'juntagdc@gmail.com',
     options: {
-      service: getCred('mean-mail', 'service') || 'MAILER_SERVICE_PROVIDER',
+      service: getCred('mean-mail', 'service') || 'Gmail',
       auth: {
-        user: getCred('mean-mail', 'username') || 'MAILER_EMAIL_ID',
-        pass: getCred('mean-mail', 'password') || 'MAILER_PASSWORD'
+        user: getCred('mean-mail', 'username') || 'juntagdc',
+        pass: getCred('mean-mail', 'password') || 'GeneracionDC'
       }
     }
   },

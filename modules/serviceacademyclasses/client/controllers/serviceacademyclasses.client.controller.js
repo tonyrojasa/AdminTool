@@ -6,9 +6,12 @@
     .module('serviceacademyclasses')
     .controller('ServiceacademyclassesController', ServiceacademyclassesController);
 
-  ServiceacademyclassesController.$inject = ['_', '$scope', '$state', 'Authentication', 'serviceacademyclassResolve', 'OrganizationsService'];
+  ServiceacademyclassesController.$inject = ['_', '$scope', '$state', 'Authentication', 'serviceacademyclassResolve',
+    'OrganizationsService', 'PeopleService'
+  ];
 
-  function ServiceacademyclassesController(_, $scope, $state, Authentication, serviceacademyclass, OrganizationsService) {
+  function ServiceacademyclassesController(_, $scope, $state, Authentication, serviceacademyclass,
+    OrganizationsService, PeopleService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -21,6 +24,7 @@
     vm.isGtToday = isGtToday;
 
     vm.organizations = OrganizationsService.query();
+    vm.people = PeopleService.query();
     vm.setOrganization = function(organization) {
       vm.serviceacademyclass.organization = organization;
     };

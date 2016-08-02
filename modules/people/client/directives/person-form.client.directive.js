@@ -23,6 +23,10 @@
         if (!scope.person.serviceArea) {
           scope.person.serviceArea = [];
         }
+        if (!scope.person._id) {
+          scope.person.isFemale = false;
+        }
+
 
         scope.getServiceAreaNames = function() {
           if (scope.person && scope.person.serviceArea) {

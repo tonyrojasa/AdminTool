@@ -25,44 +25,50 @@
   <div class="col-md-12">
     <form name="vm.form.eventregistrationForm" class="form-horizontal" ng-submit="vm.save(vm.form.eventregistrationForm.$valid)" novalidate>
       <fieldset>    
-        <div class="form-group" show-errors>
-          <label class="control-label" for="event">Evento *</label>
-          <input name="event" type="hidden" ng-model="vm.eventregistration.event" id="event" class="form-control" placeholder="Organización" required>
-          <div class="dropdown" id="eventDropdown" uib-dropdown>
-            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
-              <span ng-if="!vm.eventregistration.event">-- Seleccione uno --</span>
-              {{vm.eventregistration.event.name}}
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu" ng-if="vm.events">
-              <li data-ng-repeat="event in vm.events | orderBy:'name'">
-                <a ng-click="vm.setEvent(event)">{{event.name}}</a>
-              </li>
-            </ul>
+        <div class="form-group" show-errors>        
+          <label class="control-label" for="event">Evento *</label>  
+          <input name="event" type="hidden" ng-model="vm.eventregistration.event" id="event" class="form-control" required>
+          <div class="input-group select2-bootstrap-append">
+            <ui-select ng-model="vm.eventregistration.event"  on-select="vm.setEvent(vm.eventregistration.event)">
+              <ui-select-match  placeholder="Seleccione el evento...">
+                    <span>{{$select.selected.name}}</span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (vm.events | filter: $select.search) track by item._id">
+                    <div ng-bind-html="item.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select> 
+            <span class="input-group-btn">
+              <button type="button" ng-click="vm.eventregistration.event = vm.person = undefined" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </span>  
           </div> 
           <div ng-messages="vm.form.eventregistrationForm.event.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Evento es requerido.</p>
           </div>
-        </div>
-        <div class="form-group" show-errors>
-          <label class="control-label" for="event">Grupo *</label>
-          <input name="eventPeopleGroup" type="hidden" ng-model="vm.eventregistration.eventPeopleGroup" id="eventPeopleGroup" class="form-control" placeholder="Grupo de Persona" required>
-          <div class="dropdown" id="eventPeopleGroupDropdown" uib-dropdown>
-            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
-              <span ng-if="!vm.eventregistration.eventPeopleGroup">-- Seleccione uno --</span>
-              {{vm.eventregistration.eventPeopleGroup.name}}
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu" ng-if="vm.eventPeopleGroups">
-              <li data-ng-repeat="eventPeopleGroup in vm.eventPeopleGroups | orderBy:'name'">
-                <a ng-click="vm.setEventPeopleGroup(eventPeopleGroup)">{{eventPeopleGroup.name}}</a>
-              </li>
-            </ul>
+        </div>   
+        <div class="form-group" show-errors>        
+          <label class="control-label" for="eventPeopleGroup">Grupo *</label>  
+          <input name="eventPeopleGroup" type="hidden" ng-model="vm.eventregistration.eventPeopleGroup" id="eventPeopleGroup" class="form-control" required>
+          <div class="input-group select2-bootstrap-append">
+            <ui-select ng-model="vm.eventregistration.eventPeopleGroup" >
+              <ui-select-match  placeholder="Seleccione el grupo...">
+                    <span>{{$select.selected.name}}</span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (vm.eventPeopleGroups | filter: $select.search) track by item._id">
+                    <div ng-bind-html="item.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select> 
+            <span class="input-group-btn">
+              <button type="button" ng-click="vm.eventregistration.eventPeopleGroup = undefined" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </span>  
           </div> 
           <div ng-messages="vm.form.eventregistrationForm.eventPeopleGroup.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Grupo es requerido.</p>
           </div>
-        </div>
+        </div>      
         <div class="form-group" show-errors>
           <label class="control-label" for="registrationDate">Fecha de inscripción *</label>
           <br />
@@ -92,8 +98,8 @@
         <div ng-if="!vm.isNewMemberRegistration()" class="form-group" show-errors>        
           <label class="control-label" for="person">Persona *</label>
           <input name="person" type="hidden" ng-model="vm.person" id="person" class="form-control" required>
-          <div class="input-group select2-bootstrap-append">
-            <ui-select ng-model="vm.person" ng-disabled="vm.eventregistration._id">
+          <div class="input-group">
+            <ui-select ng-model="vm.person" ng-disabled="vm.eventregistration._id || !vm.eventregistration.event">
               <ui-select-match  placeholder="Seleccione la persona...">
                     <span>{{$select.selected.firstName}} {{$select.selected.lastName}} {{$select.selected.secondLastName}}</span>
                 </ui-select-match>
@@ -102,14 +108,17 @@
                     <small ng-bind-html="item.personType.name | highlight: $select.search"></small>
                 </ui-select-choices>
             </ui-select> 
-            <span class="input-group-btn">
+            <span class="input-group-btn" ng-if="vm.eventregistration.event">
               <button type="button" ng-click="vm.person = undefined" class="btn btn-default">
                 <span class="glyphicon glyphicon-trash"></span>
               </button>
             </span>
-          </div>       
-          <div ng-messages="vm.form.person.$error.required" role="alert">
-            <p class="help-block error-text" ng-message="required">Estudiante es requerido.</p>
+          </div>  
+          <div class="input-group" ng-if="!vm.people.length && vm.eventregistration.event">
+            <strong>No hay personas pendientes de agregar al evento seleccionado.</strong>
+          </div>     
+          <div ng-messages="vm.form.person.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Persona es requerido.</p>
           </div>
         </div>
         <div class="form-group">

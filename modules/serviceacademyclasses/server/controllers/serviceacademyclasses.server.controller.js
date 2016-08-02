@@ -83,6 +83,7 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
   Serviceacademyclass.find().sort('-created')
     .populate('organization', 'name')
+    .populate('teacher')
     .populate('user', 'displayName')
     .exec(function(err, serviceacademyclasses) {
       if (err) {
@@ -123,6 +124,7 @@ exports.serviceacademyclassByID = function(req, res, next, id) {
 
   Serviceacademyclass.findById(id)
     .populate('organization', 'name')
+    .populate('teacher')
     .populate('user', 'displayName')
     .exec(function(err, serviceacademyclass) {
       if (err) {

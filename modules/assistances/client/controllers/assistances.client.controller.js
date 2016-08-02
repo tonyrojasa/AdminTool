@@ -66,15 +66,30 @@
     //set setServiceAcademyClass
     function setServiceAcademyClass(serviceAcademyClass) {
       vm.assistance.serviceAcademyClass = serviceAcademyClass;
-      loadServiceAcademyClassStudents(serviceAcademyClass._id);
+      if (serviceAcademyClass._id) {
+        loadServiceAcademyClassStudents(serviceAcademyClass._id);
+      }
     }
+
+    // $scope.$watch('vm.assistance.serviceAcademyClass', function(newSelected, oldSelected) {
+    //   if (newSelected && oldSelected) {
+    //     vm.assistance.assistants = null;
+    //   } else if (newSelected) {
+    //     loadServiceAcademyClassStudents(newSelected._id);
+    //   }
+    // })
+
 
     //load ServiceAcademyClass Students
     function loadServiceAcademyClassStudents(serviceAcademyClassId) {
       StudentsByServiceAcademyClass.query({
         'serviceacademyclassId': serviceAcademyClassId
       }, function(data) {
-        createServiceAcademyClassStudents(vm.assistance.assistants, data);
+        if (data.length > 0) {
+          createServiceAcademyClassStudents(vm.assistance.assistants, data);
+        } else {
+          vm.assistance.assistants = null;
+        }
       });
     }
 

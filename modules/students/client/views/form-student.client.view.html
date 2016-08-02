@@ -12,27 +12,32 @@
   <div class="col-md-12">
     <form name="vm.form.studentForm" class="form-horizontal" ng-submit="vm.save(vm.form.studentForm.$valid)" novalidate>
       <fieldset>
-        <div class="form-group" show-errors>
-          <div class="dropdown" id="serviceAcademyClassDropdown" uib-dropdown>
-            <label class="control-label" for="serviceAcademyClass">Academia *</label>
-            <input name="serviceAcademyClass" type="hidden" ng-model="vm.student.serviceAcademyClass" id="organization" class="form-control" placeholder="Organización" required>
-            <div class="dropdown" id="serviceAcademyClassDropdown" uib-dropdown>
-              <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
-                <span ng-if="!vm.student.serviceAcademyClass">-- Seleccione la Academia --</span>
-                {{vm.student.serviceAcademyClass.name}}
-                <span class="caret"></span>
+        <div class="form-group" show-errors>        
+          <label class="control-label" for="serviceAcademyClass">Academia</label>  
+           <a class="btn btn-secondary" data-ui-sref="serviceacademyclasses.list()">
+            <i class="glyphicon glyphicon-th-list"></i>
+            Lista de Academias
+          </a>   
+          <input name="serviceAcademyClass" type="hidden" ng-model="vm.student.serviceAcademyClass" id="serviceAcademyClass" class="form-control" required>
+          <div class="input-group">
+            <ui-select ng-model="vm.student.serviceAcademyClass">
+              <ui-select-match  placeholder="Seleccione la academia...">
+                    <span>{{$select.selected.name}}</span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (vm.serviceAcademyClasses | filter: $select.search) track by item._id">
+                    <div ng-bind-html="item.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select> 
+            <span class="input-group-btn">
+              <button type="button" ng-click="vm.student.serviceAcademyClass = undefined" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
               </button>
-              <ul class="dropdown-menu" role="menu" ng-if="vm.serviceAcademyClasses">
-                <li data-ng-repeat="serviceAcademyClass in vm.serviceAcademyClasses | orderBy:'name'">
-                  <a ng-click="vm.setServiceAcademyClass(serviceAcademyClass)">{{serviceAcademyClass.name}}</a>
-                </li>
-              </ul>
-            </div> 
+            </span>  
           </div> 
           <div ng-messages="vm.form.studentForm.serviceAcademyClass.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Academia es requerido.</p>
           </div>
-        </div>    
+        </div>
         <div class="form-group" show-errors>        
           <label class="control-label" for="student">Estudiante *</label>
           <input name="person" type="hidden" ng-model="vm.student.person" id="person" class="form-control" required>
@@ -52,7 +57,7 @@
               </button>
             </span>
             </div>          
-          <div ng-messages="vm.form.studentForm.person.$error.required" role="alert">
+          <div ng-messages="vm.form.studentForm.person.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Estudiante es requerido.</p>
           </div>
         </div>

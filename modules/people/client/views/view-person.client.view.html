@@ -154,6 +154,30 @@
         <label class="control-label" for="allergies">Alergias</label>
         <input name="allergies" type="text" ng-model="vm.person.medicalTreatment.allergies" id="allergies" class="form-control" placeholder="Alergias" ng-disabled="true">
       </div>
-    </div>  
+    </div> 
+    <div class="form-group">  
+      <input name="sponsorship" type="hidden" ng-model="vm.person.sponsorship.exists" id="sponsorship" class="form-control">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" ng-model="vm.person.sponsorship.exists" ng-disabled="true">
+          <b>Patrocinio</b>
+        </label>
+      </div>
+    </div>
+    <div ng-show="vm.person.sponsorship.exists">
+      <div class="form-group">
+        <label class="control-label" for="sponsorName">Nombre Patrocinador</label>
+        <input name="sponsorName" type="text" ng-model="vm.person.sponsorship.sponsorName" id="sponsorName" class="form-control" placeholder="Nombre del Patrocinador" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="sponsorPhoneNumber">Teléfono Patrocinador</label>
+        <input name="sponsorPhoneNumber" ui-mask="9999-9999" model-view-value="true" ng-model="vm.person.sponsorship.phoneNumber" id="sponsorPhoneNumber" class="form-control" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="sponsorshipComments">Comentarios del patrocinio</label>
+        <input name="sponsorshipComments" type="text" ng-model="vm.person.sponsorship.comments" id="sponsorshipComments" class="form-control" placeholder="Comentarios del patrocinio" ng-disabled="true" />
+      </div>  
+    </div>
+    <contact-info contacts="vm.person.contactInfo" readonly="true"></contact-info> 
   </div>
 </section>

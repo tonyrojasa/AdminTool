@@ -28,10 +28,20 @@ var PersonSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'location'
   },
-  contactInfo: {
-    type: Schema.ObjectId,
-    ref: 'Contactifo'
-  },
+  contactInfo: [{
+    personName: {
+      type: String
+    },
+    phoneNumber: {
+      type: String
+    },
+    homeAddress: {
+      type: String
+    },
+    relationship: {
+      type: String
+    }
+  }],
   personType: {
     type: Schema.ObjectId,
     ref: 'Persontype'
@@ -135,6 +145,25 @@ var PersonSchema = new Schema({
       trim: true
     },
     allergies: {
+      type: String,
+      trim: true
+    }
+  },
+  sponsorship: {
+    exists: {
+      type: Boolean,
+      default: false,
+      trim: true
+    },
+    sponsorName: {
+      type: String,
+      trim: true
+    },
+    phoneNumber: {
+      type: String,
+      trim: true
+    },
+    comments: {
       type: String,
       trim: true
     }

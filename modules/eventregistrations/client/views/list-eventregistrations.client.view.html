@@ -6,23 +6,22 @@
   <a class="btn btn-primary" data-ui-sref="eventregistrations.create({newMember:false})">Miembro Existente</a>
   <br /><br />
   <div id="content" data-ng-if="vm.eventregistrations.length">
-    <br />
-    <div class="form-group">
-      <div class="dropdown" id="eventDropdown" uib-dropdown>
-        <label class="control-label" for="event">Evento: </label>
-        <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
-          <span ng-if="!vm.event">-- Todos --</span>
-          {{vm.event.name}}
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu" ng-if="vm.events">
-          <li>
-            <a ng-click="vm.setEvent()">-- Todos --</a>
-          </li>
-          <li data-ng-repeat="event in vm.events | orderBy:'name'">
-            <a ng-click="vm.setEvent(event)">{{event.name}}</a>
-          </li>
-        </ul>
+    <div class="col-md-6 form-group">        
+      <label class="control-label" for="event">Evento: </label>  
+      <div class="input-group select2-bootstrap-append">
+        <ui-select ng-model="vm.event">
+          <ui-select-match  placeholder="Seleccione el tipo de persona...">
+                <span>{{$select.selected.name}}</span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (vm.events | filter: $select.search) track by item._id">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+            </ui-select-choices>
+        </ui-select> 
+        <span class="input-group-btn">
+          <button type="button" ng-click="vm.event = undefined" class="btn btn-default">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </span>  
       </div> 
     </div>
     <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
