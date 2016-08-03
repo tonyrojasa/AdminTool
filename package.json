@@ -1,6 +1,6 @@
 {
-  "name": "Iglesia Miel Admin",
-  "description": "Herramienta de Administracion de Iglesia Miel",
+  "name": "ChurchAdminTool",
+  "description": "Herramienta de Administracion de Iglesias",
   "version": "1.0.0-beta",
   "meanjs-version": "0.5.0-beta",
   "private": false,
