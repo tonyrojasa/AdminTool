@@ -5,9 +5,9 @@
     .module('people')
     .directive('personForm', personForm);
 
-  personForm.$inject = ['$rootScope', 'OrganizationsService', 'PersontypesService'];
+  personForm.$inject = ['$rootScope', 'OrganizationsService', 'PersontypesService', 'ServiceareasService'];
 
-  function personForm($rootScope, OrganizationsService, PersontypesService) {
+  function personForm($rootScope, OrganizationsService, PersontypesService, ServiceareasService) {
     return {
       templateUrl: 'modules/people/client/views/person-form.client.view.html',
       restrict: 'E',
@@ -20,6 +20,30 @@
         if (scope.person.birthDate) {
           scope.person.birthDate = new Date(scope.person.birthDate);
         }
+        if (!scope.person.serviceArea) {
+          scope.person.serviceArea = [];
+        }
+        if (!scope.person._id) {
+          scope.person.isFemale = false;
+        }
+
+
+        scope.getServiceAreaNames = function() {
+          if (scope.person && scope.person.serviceArea) {
+            var parsedServiceAreasArray = [];
+            for (var index in scope.person.serviceArea) {
+              if (scope.person.serviceArea[index].name) {
+                parsedServiceAreasArray.push(scope.person.serviceArea[index].name);
+              }
+            }
+            return parsedServiceAreasArray;
+          }
+        };
+
+        scope.filterAlreadyAdded = function(item) {
+          var serviceAreaNames = scope.getServiceAreaNames();
+          return (serviceAreaNames.indexOf(item.name) === -1);
+        };
 
         scope.organizations = OrganizationsService.query();
         scope.setOrganization = function(organization) {
@@ -29,6 +53,11 @@
         scope.personTypes = PersontypesService.query();
         scope.setPersonType = function(personType) {
           scope.person.personType = personType;
+        };
+
+        scope.serviceAreas = ServiceareasService.query();
+        scope.setServiceArea = function(serviceArea) {
+          scope.person.serviceArea = serviceArea;
         };
 
         scope.maritalStatuses = ['Soltero(a)', 'Comprometido(a)', 'Casado(a)', 'Unión Libre', 'Divorciado(a)', 'Viudo(a)'];

@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -20,7 +20,8 @@
         controller: 'EventpeoplegroupsListController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Eventpeoplegroups List'
+          roles: ['admin', 'inscriptor', 'user'],
+          pageTitle: 'Lista de Grupo de Personas'
         }
       })
       .state('eventpeoplegroups.create', {
@@ -32,8 +33,8 @@
           eventpeoplegroupResolve: newEventpeoplegroup
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Eventpeoplegroups Create'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Crear Grupo de Personas'
         }
       })
       .state('eventpeoplegroups.edit', {
@@ -45,8 +46,8 @@
           eventpeoplegroupResolve: getEventpeoplegroup
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Edit Eventpeoplegroup {{ eventpeoplegroupResolve.name }}'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Editar Grupo de Personas - {{ eventpeoplegroupResolve.name }}'
         }
       })
       .state('eventpeoplegroups.view', {
@@ -58,7 +59,8 @@
           eventpeoplegroupResolve: getEventpeoplegroup
         },
         data: {
-          pageTitle: 'Eventpeoplegroup {{ articleResolve.name }}'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Grupo de Personas {{ articleResolve.name }}'
         }
       });
   }

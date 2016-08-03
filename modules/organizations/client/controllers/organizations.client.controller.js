@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   // Organizations controller
@@ -8,7 +8,7 @@
 
   OrganizationsController.$inject = ['$scope', '$state', 'Authentication', 'organizationResolve'];
 
-  function OrganizationsController ($scope, $state, Authentication, organization) {
+  function OrganizationsController($scope, $state, Authentication, organization) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -47,6 +47,9 @@
 
       function errorCallback(res) {
         vm.error = res.data.message;
+        if (vm.error === 'Name already exists') {
+          vm.error = 'Ya existe una Organización con este nombre';
+        }
       }
     }
   }

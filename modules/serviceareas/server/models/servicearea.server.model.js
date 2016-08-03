@@ -14,7 +14,8 @@ var ServiceareaSchema = new Schema({
     type: String,
     default: '',
     required: 'Please fill Servicearea name',
-    trim: true
+    trim: true,
+    unique: true
   },
   description: {
     type: String,
@@ -29,6 +30,12 @@ var ServiceareaSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   }
+});
+
+ServiceareaSchema.pre('validate', function(next) {
+  // capitalize and lower case the other characters
+  this.name = this.name.charAt(0).toUpperCase() + this.name.slice(1).toLowerCase();
+  next();
 });
 
 mongoose.model('Servicearea', ServiceareaSchema);

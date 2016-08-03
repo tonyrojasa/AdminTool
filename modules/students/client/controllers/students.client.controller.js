@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   // Students controller
@@ -6,17 +6,28 @@
     .module('students')
     .controller('StudentsController', StudentsController);
 
-  StudentsController.$inject = ['$scope', '$state', 'Authentication', 'studentResolve'];
+  StudentsController.$inject = ['$scope', '$state', 'Authentication', 'studentResolve',
+    'CurrentServiceAcademyClassesService', 'PeopleService'
+  ];
 
-  function StudentsController ($scope, $state, Authentication, student) {
+  function StudentsController($scope, $state, Authentication, student,
+    CurrentServiceAcademyClassesService, PeopleService) {
     var vm = this;
-
     vm.authentication = Authentication;
     vm.student = student;
     vm.error = null;
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
+
+    vm.people = PeopleService.query();
+
+    vm.serviceAcademyClasses = CurrentServiceAcademyClassesService.query();
+    vm.setServiceAcademyClass = setServiceAcademyClass;
+    //set setServiceAcademyClass
+    function setServiceAcademyClass(serviceAcademyClass) {
+      vm.student.serviceAcademyClass = serviceAcademyClass;
+    }
 
     // Remove existing Student
     function remove() {
@@ -32,7 +43,6 @@
         return false;
       }
 
-      // TODO: move create/update logic to service
       if (vm.student._id) {
         vm.student.$update(successCallback, errorCallback);
       } else {
@@ -47,6 +57,9 @@
 
       function errorCallback(res) {
         vm.error = res.data.message;
+        if (vm.error === 'Person_1_serviceAcademyClass already exists') {
+          vm.error = 'Ya existe este estudiante en la academia seleccionada';
+        }
       }
     }
   }

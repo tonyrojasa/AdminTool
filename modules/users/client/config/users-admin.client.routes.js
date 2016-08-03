@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   // Setting up route
@@ -16,7 +16,7 @@
         controller: 'UserListController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Users List'
+          pageTitle: 'Lista de Usuarios'
         }
       })
       .state('admin.user', {
@@ -28,7 +28,7 @@
           userResolve: getUser
         },
         data: {
-          pageTitle: 'Edit {{ userResolve.displayName }}'
+          pageTitle: 'Detalles {{ userResolve.displayName }}'
         }
       })
       .state('admin.user-edit', {
@@ -40,7 +40,7 @@
           userResolve: getUser
         },
         data: {
-          pageTitle: 'Edit User {{ userResolve.displayName }}'
+          pageTitle: 'Editar Usuario {{ userResolve.displayName }}'
         }
       });
 

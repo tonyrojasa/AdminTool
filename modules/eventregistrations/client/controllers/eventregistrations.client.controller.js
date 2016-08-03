@@ -6,27 +6,41 @@
     .module('eventregistrations')
     .controller('EventregistrationsController', EventregistrationsController);
 
-  EventregistrationsController.$inject = ['$scope', '$state', 'Authentication',
-    'eventregistrationResolve', 'EventsService', 'EventpeoplegroupsService', 'personResolve', 'PeopleService'
+  EventregistrationsController.$inject = ['$scope', '$state', '$stateParams', 'Authentication',
+    'eventregistrationResolve', 'CurrentEventsService', 'EventpeoplegroupsService', 'personResolve',
+    'PeopleService', 'EventregistrationsByEventService'
   ];
 
-  function EventregistrationsController($scope, $state, Authentication, eventregistration,
-    EventsService, EventpeoplegroupsService, person, PeopleService) {
+  function EventregistrationsController($scope, $state, $stateParams, Authentication, eventregistration,
+    CurrentEventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.eventregistration = eventregistration;
-    vm.person = person;
     vm.error = null;
     vm.form = {};
-    vm.events = EventsService.query();
+    vm.events = CurrentEventsService.query();
     vm.eventPeopleGroups = EventpeoplegroupsService.query();
     vm.remove = remove;
     vm.save = save;
     vm.editMode = vm.eventregistration._id ? true : false;
     vm.setEvent = setEvent;
-    vm.setEventPeopleGroup = setEventPeopleGroup;
+    vm.isNewMemberRegistration = isNewMemberRegistration;
     loadDates();
+
+    if (!vm.isNewMemberRegistration()) {
+      vm.person = undefined;
+    } else {
+      vm.person = person;
+    }
+
+    function isNewMemberRegistration() {
+      if ($stateParams.newMember === 'true') {
+        return true;
+      } else {
+        return false;
+      }
+    }
 
     if (vm.eventregistration._id) {
       vm.person = eventregistration.person;
@@ -50,15 +64,26 @@
       }
     }
 
-    //set registration eventPeopleGroup
-    function setEventPeopleGroup(eventPeopleGroup) {
-      vm.eventregistration.eventPeopleGroup = eventPeopleGroup;
-    }
-
     //set registration event
     function setEvent(event) {
       vm.eventregistration.event = event;
       vm.eventregistration.balanceAmount = event.price;
+
+      if (!vm.isNewMemberRegistration()) {
+        var people = PeopleService.query();
+        vm.eventRegistrations = EventregistrationsByEventService.query({
+          'eventId': event._id
+        }, function(data) {
+          filterPeopleListBySelectedEvent(people, data);
+        });
+      }
+    }
+
+    function filterPeopleListBySelectedEvent(people, eventPeople) {
+      var registeredPeopleInSelectedEvent = _.map(eventPeople, function(item) {
+        return item.person;
+      });
+      vm.people = _.differenceBy(people, registeredPeopleInSelectedEvent, '_id');
     }
 
     // Remove existing Eventregistration

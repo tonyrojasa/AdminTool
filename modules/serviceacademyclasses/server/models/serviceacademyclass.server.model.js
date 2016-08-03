@@ -14,6 +14,10 @@ var ServiceacademyclassSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Organization'
   },
+  teacher: {
+    type: Schema.ObjectId,
+    ref: 'Person'
+  },
   name: {
     type: String,
     default: '',

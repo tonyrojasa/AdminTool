@@ -81,15 +81,44 @@ exports.delete = function(req, res) {
  * List of Students
  */
 exports.list = function(req, res) {
-  Student.find().sort('-created').populate('user', 'displayName').exec(function(err, students) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(students);
-    }
-  });
+  Student.find().sort('-created')
+    .populate('person')
+    .populate('serviceAcademyClass')
+    .populate('user', 'displayName')
+    .exec(function(err, students) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(students);
+      }
+    });
+};
+
+/**
+ * List of students by ServiceAcademyClassId
+ */
+exports.listByServiceAcademyClassId = function(req, res) {
+  var serviceacademyclassId = req.params.serviceacademyclassId;
+  Student.where('serviceAcademyClass', serviceacademyclassId).sort('-created')
+    .populate({
+      path: 'person',
+      populate: {
+        path: 'personType'
+      }
+    })
+    .populate('serviceAcademyClass')
+    .populate('user', 'displayName')
+    .exec(function(err, students) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(students);
+      }
+    });
 };
 
 /**
@@ -103,15 +132,19 @@ exports.studentByID = function(req, res, next, id) {
     });
   }
 
-  Student.findById(id).populate('user', 'displayName').exec(function(err, student) {
-    if (err) {
-      return next(err);
-    } else if (!student) {
-      return res.status(404).send({
-        message: 'No Student with that identifier has been found'
-      });
-    }
-    req.student = student;
-    next();
-  });
+  Student.findById(id)
+    .populate('person')
+    .populate('serviceAcademyClass')
+    .populate('user', 'displayName')
+    .exec(function(err, student) {
+      if (err) {
+        return next(err);
+      } else if (!student) {
+        return res.status(404).send({
+          message: 'No Student with that identifier has been found'
+        });
+      }
+      req.student = student;
+      next();
+    });
 };

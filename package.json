@@ -1,7 +1,7 @@
 {
-  "name": "admintool",
-  "description": "Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js",
-  "version": "0.5.0-beta",
+  "name": "Iglesia Miel Admin",
+  "description": "Herramienta de Administracion de Iglesia Miel",
+  "version": "1.0.0-beta",
   "meanjs-version": "0.5.0-beta",
   "private": false,
   "author": "tonyrojasa-org",

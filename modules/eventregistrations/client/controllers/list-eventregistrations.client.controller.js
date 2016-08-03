@@ -5,11 +5,12 @@
     .module('eventregistrations')
     .controller('EventregistrationsListController', EventregistrationsListController);
 
-  EventregistrationsListController.$inject = ['EventregistrationsService', 'CurrentEventsService'];
+  EventregistrationsListController.$inject = ['EventregistrationsService', 'EventsService', 'Authentication'];
 
-  function EventregistrationsListController(EventregistrationsService, CurrentEventsService) {
+  function EventregistrationsListController(EventregistrationsService, EventsService, Authentication) {
     var vm = this;
-    vm.events = CurrentEventsService.query();
+    vm.authentication = Authentication;
+    vm.events = EventsService.query();
     vm.eventregistrations = EventregistrationsService.query();
     vm.setEvent = setEvent;
 

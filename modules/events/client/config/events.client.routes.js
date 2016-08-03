@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -20,7 +20,8 @@
         controller: 'EventsListController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Events List'
+          roles: ['admin', 'inscriptor', 'user'],
+          pageTitle: 'Lista de Eventos'
         }
       })
       .state('events.create', {
@@ -32,8 +33,8 @@
           eventResolve: newEvent
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Events Create'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Crear Evento'
         }
       })
       .state('events.edit', {
@@ -45,8 +46,8 @@
           eventResolve: getEvent
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Edit Event {{ eventResolve.name }}'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Editar Evento - {{ eventResolve.name }}'
         }
       })
       .state('events.view', {
@@ -58,7 +59,8 @@
           eventResolve: getEvent
         },
         data: {
-          pageTitle: 'Event {{ articleResolve.name }}'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Evento {{ articleResolve.name }}'
         }
       });
   }

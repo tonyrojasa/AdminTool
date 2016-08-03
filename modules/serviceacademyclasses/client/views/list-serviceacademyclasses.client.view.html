@@ -5,22 +5,23 @@
   <a class="btn btn-primary" data-ui-sref="serviceacademyclasses.create">Nueva Academia</a>
   <br/><br/>
   <div id="content" data-ng-if="vm.serviceacademyclasses.length">
-    <div class="form-group">
-      <div class="dropdown" id="organizationDropdown" uib-dropdown>
-        <label class="control-label" for="organization">Organización: </label>
-        <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
-          <span ng-if="!vm.organization">-- Todos --</span>
-          {{vm.organization.name}}
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu" ng-if="vm.organizations">
-          <li>
-            <a ng-click="vm.setOrganization()">-- Todos --</a>
-          </li>
-          <li data-ng-repeat="organization in vm.organizations | orderBy:'name'">
-            <a ng-click="vm.setOrganization(organization)">{{organization.name}}</a>
-          </li>
-        </ul>
+    <div class="form-group">        
+      <label class="control-label" for="organization">Organización *</label>  
+      <input name="organization" type="hidden" ng-model="vm.organization" id="organization" class="form-control">
+      <div class="input-group">
+        <ui-select ng-model="vm.organization">
+          <ui-select-match  placeholder="Seleccione la organización...">
+                <span>{{$select.selected.name}}</span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (vm.organizations | filter: $select.search) track by item._id">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+            </ui-select-choices>
+        </ui-select> 
+        <span class="input-group-btn">
+          <button type="button" ng-click="vm.organization = undefined" class="btn btn-default">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </span>  
       </div> 
     </div>
     <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
@@ -37,7 +38,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="serviceacademyclass in vm.serviceacademyclasses | orderBy:['startDate', 'level', 'name'] | filter: vm.searchFilter | filter: vm.organization.name" class="active">
+        <tr ng-repeat="serviceacademyclass in vm.serviceacademyclasses | orderBy:['startDate','endDate', 'level', 'name']:true | filter: vm.searchFilter | filter: vm.organization.name" ng-class="vm.getStatusClass(serviceacademyclass)">
           <td>{{serviceacademyclass.name}}</td>
           <td>{{serviceacademyclass.level}}</td>
           <td>{{serviceacademyclass.startDate | date:'LLLL'}} - {{serviceacademyclass.endDate | date:'LLLL'}}</td>
@@ -45,6 +46,12 @@
           <td>{{serviceacademyclass.organization.name}}</td>
           <td>    
             <a data-ui-sref="serviceacademyclasses.view({ serviceacademyclassId: serviceacademyclass._id})">Detalles</a>    
+          </td>
+          <td>    
+            <a data-ui-sref="students.listAcademyStudents({ serviceacademyclassId: serviceacademyclass._id})">Estudiantes</a>    
+          </td>          
+          <td>    
+            <a data-ui-sref="assistances.listServiceAcademyClassAssistance({ serviceacademyclassId: serviceacademyclass._id})">Asistencias</a>    
           </td>
         </tr>
         </tbody>

@@ -20,7 +20,8 @@
         controller: 'ServiceacademyclassesListController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Serviceacademyclasses List'
+          roles: ['admin', 'teacher', 'student', 'user'],
+          pageTitle: 'Lista de Academias'
         }
       })
       .state('serviceacademyclasses.create', {
@@ -32,8 +33,8 @@
           serviceacademyclassResolve: newServiceacademyclass
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Serviceacademyclasses Create'
+          roles: ['admin', 'teacher'],
+          pageTitle: 'Crear Academia'
         }
       })
       .state('serviceacademyclasses.edit', {
@@ -45,8 +46,8 @@
           serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Edit Serviceacademyclass {{ serviceacademyclassResolve.name }}'
+          roles: ['admin', 'teacher'],
+          pageTitle: 'Editar Academia {{ serviceacademyclassResolve.name }}'
         }
       })
       .state('serviceacademyclasses.view', {
@@ -58,7 +59,8 @@
           serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
-          pageTitle: 'Serviceacademyclass {{ articleResolve.name }}'
+          roles: ['admin', 'teacher', 'student'],
+          pageTitle: 'Academia {{ articleResolve.name }}'
         }
       });
   }

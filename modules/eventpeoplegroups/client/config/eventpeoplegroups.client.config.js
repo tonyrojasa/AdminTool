@@ -12,7 +12,8 @@
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'maintenance', {
       title: 'Grupo de Personas',
-      state: 'eventpeoplegroups.list'
+      state: 'eventpeoplegroups.list',
+      roles: ['admin', 'inscriptor', 'user']
     });
   }
 })();

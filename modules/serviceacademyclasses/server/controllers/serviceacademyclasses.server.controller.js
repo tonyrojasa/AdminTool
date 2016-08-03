@@ -83,6 +83,7 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
   Serviceacademyclass.find().sort('-created')
     .populate('organization', 'name')
+    .populate('teacher')
     .populate('user', 'displayName')
     .exec(function(err, serviceacademyclasses) {
       if (err) {
@@ -99,7 +100,7 @@ exports.list = function(req, res) {
  * List of Current Serviceacademyclasses (startDate is >= Today)
  */
 exports.listAllCurrent = function(req, res) {
-  Serviceacademyclass.where('startDate').gte(new Date()).sort('-created').populate('user', 'displayName').exec(function(err, serviceacademyclasses) {
+  Serviceacademyclass.where('endDate').gte(new Date()).sort('-created').populate('user', 'displayName').exec(function(err, serviceacademyclasses) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -123,6 +124,7 @@ exports.serviceacademyclassByID = function(req, res, next, id) {
 
   Serviceacademyclass.findById(id)
     .populate('organization', 'name')
+    .populate('teacher')
     .populate('user', 'displayName')
     .exec(function(err, serviceacademyclass) {
       if (err) {

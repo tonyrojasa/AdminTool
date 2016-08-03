@@ -2,38 +2,43 @@
   <div class="page-header">
     <h1 data-ng-bind="vm.serviceacademyclass.name"></h1>
   </div>
-  <div class="pull-left">
-     <a class="btn btn-secondary" data-ui-sref="serviceacademyclasses.list()">
-      <i class="glyphicon glyphicon-arrow-left"></i>
-      Regresar
-    </a>
+  <div class="row">
+     <small>
+      <em class="text-muted">
+        Creato en
+        <span data-ng-bind="vm.serviceacademyclass.created | date:'mediumDate'"></span>
+        por
+        <span data-ng-if="vm.serviceacademyclass.user"
+              data-ng-bind="vm.serviceacademyclass.user.displayName"></span>
+        <span data-ng-if="!vm.serviceacademyclass.user">Deleted User</span>
+      </em>
+    </small>  
   </div>
-  <br /><br />
-  <div class="pull-right"
-       data-ng-show="vm.serviceacademyclass.isCurrentUserOwner">
-    <a class="btn btn-primary"
-       data-ui-sref="serviceacademyclasses.edit({ serviceacademyclassId: vm.serviceacademyclass._id })">
-      <i class="glyphicon glyphicon-edit"></i>
-    </a>
-    <a class="btn btn-primary" data-ng-click="vm.remove()">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a>
+  <div class="row">
+    <div class="pull-left">
+       <a class="btn btn-secondary" data-ui-sref="serviceacademyclasses.list()">
+        <i class="glyphicon glyphicon-arrow-left"></i>
+        Regresar
+      </a>
+    </div>
+    <div class="pull-right">
+      <a class="btn btn-primary" data-ui-sref="serviceacademyclasses.edit({ serviceacademyclassId: vm.serviceacademyclass._id })">
+        <i class="glyphicon glyphicon-edit"> Editar</i>
+      </a>
+      <a class="btn btn-primary" data-ng-show="vm.authentication.isUserAdmin()" data-ng-click="vm.remove()">
+        <i class="glyphicon glyphicon-trash"> Eliminar</i>
+      </a>
+    </div> 
   </div>
-  <small>
-    <em class="text-muted">
-      Posted on
-      <span data-ng-bind="vm.serviceacademyclass.created | date:'mediumDate'"></span>
-      by
-      <span data-ng-if="vm.serviceacademyclass.user"
-            data-ng-bind="vm.serviceacademyclass.user.displayName"></span>
-      <span data-ng-if="!vm.serviceacademyclass.user">Deleted User</span>
-    </em>
-  </small>  
   <br/>
-  Descripción: <p class="lead" data-ng-bind="vm.serviceacademyclass.description"></p>
-  Organización: <p class="lead" data-ng-bind="vm.serviceacademyclass.organization.name"></p>
-  Nivel: <p class="lead" data-ng-bind="vm.serviceacademyclass.level"></p>
-  Fecha de inicio: <p class="lead" data-ng-bind="vm.serviceacademyclass.startDate | date:'longDate'"></p>
-  Fecha final: <p class="lead" data-ng-bind="vm.serviceacademyclass.endDate | date:'longDate'"></p>  
-  Horario: <p class="lead">{{vm.parseSchedule(vm.serviceacademyclass.schedule)}}</p>
+  <b>Descripción:</b> <p class="lead" data-ng-bind="vm.serviceacademyclass.description"></p>
+  <b>Organización:</b> <p class="lead" data-ng-bind="vm.serviceacademyclass.organization.name"></p>
+  <b>Nivel:</b> <p class="lead" data-ng-bind="vm.serviceacademyclass.level"></p>
+  <b>Fecha de inicio:</b> <p class="lead" data-ng-bind="vm.serviceacademyclass.startDate | date:'longDate'"></p>
+  <b>Fecha final:</b> <p class="lead" data-ng-bind="vm.serviceacademyclass.endDate | date:'longDate'"></p>  
+  <b>Horario:</b> <p class="lead">{{vm.parseSchedule(vm.serviceacademyclass.schedule)}}</p>  
+  <b>Profesor:</b> <p ng-show="vm.serviceacademyclass.teacher" class="lead">
+    {{vm.serviceacademyclass.teacher.firstName}} {{vm.serviceacademyclass.teacher.lastName}}
+    {{vm.serviceacademyclass.teacher.secondLastName}}</p>
+    <p ng-show="!vm.serviceacademyclass.teacher" class="lead">--No asignado--</p>
 </section>

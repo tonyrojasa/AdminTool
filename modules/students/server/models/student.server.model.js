@@ -33,4 +33,10 @@ var StudentSchema = new Schema({
   }
 });
 
+StudentSchema.index({
+  person: 1,
+  serviceAcademyClass: 1
+}, {
+  unique: true
+});
 mongoose.model('Student', StudentSchema);

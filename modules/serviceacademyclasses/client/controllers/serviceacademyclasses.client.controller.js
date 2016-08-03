@@ -6,9 +6,12 @@
     .module('serviceacademyclasses')
     .controller('ServiceacademyclassesController', ServiceacademyclassesController);
 
-  ServiceacademyclassesController.$inject = ['_', '$scope', '$state', 'Authentication', 'serviceacademyclassResolve', 'OrganizationsService'];
+  ServiceacademyclassesController.$inject = ['_', '$scope', '$state', 'Authentication', 'serviceacademyclassResolve',
+    'OrganizationsService', 'PeopleService'
+  ];
 
-  function ServiceacademyclassesController(_, $scope, $state, Authentication, serviceacademyclass, OrganizationsService) {
+  function ServiceacademyclassesController(_, $scope, $state, Authentication, serviceacademyclass,
+    OrganizationsService, PeopleService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -18,8 +21,10 @@
     vm.remove = remove;
     vm.save = save;
     vm.parseSchedule = parseSchedule;
+    vm.isGtToday = isGtToday;
 
     vm.organizations = OrganizationsService.query();
+    vm.people = PeopleService.query();
     vm.setOrganization = function(organization) {
       vm.serviceacademyclass.organization = organization;
     };
@@ -67,6 +72,8 @@
 
     if (!vm.serviceacademyclass.schedule) {
       vm.serviceacademyclass.schedule = [];
+    } else {
+      vm.selectedSchedule = vm.serviceacademyclass.schedule;
     }
 
     if (vm.serviceacademyclass.startDate) {
@@ -82,12 +89,11 @@
 
     if (vm.serviceacademyclass.schedule) {
       _.forEach(vm.serviceacademyclass.schedule, function(value, key) {
-        debugger;
         _.find(vm.schedules, function(o) {
           if (o.value === value) {
             o.selected = true;
             return true;
-          };
+          }
         });
       });
     }
@@ -95,7 +101,6 @@
     function parseSchedule(sheduleArray) {
       _.forEach(sheduleArray,
         function(value, key) {
-          debugger;
           switch (value) {
             case "L":
               sheduleArray[key] = "Lunes";
@@ -133,7 +138,23 @@
       } else { // is newly selected
         vm.serviceacademyclass.schedule.push(scheduleValue);
       }
+      if (vm.serviceacademyclass.schedule.length > 0) {
+        vm.selectedSchedule = vm.serviceacademyclass.schedule;
+      } else {
+        vm.selectedSchedule = null;
+      }
     };
+
+    // Check if date is  gt today
+    function isGtToday(date) {
+      var givenDate = new Date(date);
+      var today = new Date();
+      if (givenDate > today) {
+        return true;
+      } else {
+        return false;
+      }
+    }
 
     // Remove existing Serviceacademyclass
     function remove() {

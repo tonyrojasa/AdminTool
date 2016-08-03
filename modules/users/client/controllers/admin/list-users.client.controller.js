@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -13,7 +13,34 @@
     vm.figureOutItemsToDisplay = figureOutItemsToDisplay;
     vm.pageChanged = pageChanged;
 
-    AdminService.query(function (data) {
+    vm.parseRoles = function(roleArray) {
+      _.forEach(roleArray,
+        function(value, key) {
+          switch (value) {
+            case "admin":
+              roleArray[key] = "Administrador";
+              break;
+            case "user":
+              roleArray[key] = "Estándar";
+              break;
+            case "guest":
+              roleArray[key] = "Invitado";
+              break;
+            case "inscriptor":
+              roleArray[key] = "Inscriptor de eventos";
+              break;
+            case "teacher":
+              roleArray[key] = "Profesor";
+              break;
+            case "student":
+              roleArray[key] = "Estudiante";
+          }
+        });
+      var roleValue = roleArray.join(', ');
+      return roleValue;
+    };
+
+    AdminService.query(function(data) {
       vm.users = data;
       vm.buildPager();
     });

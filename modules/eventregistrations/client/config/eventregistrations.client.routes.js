@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -20,11 +20,15 @@
         controller: 'EventregistrationsListController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Eventregistrations List'
+          roles: ['admin', 'inscriptor', 'user'],
+          pageTitle: 'Lista de Inscripciones'
         }
       })
       .state('eventregistrations.create', {
-        url: '/create',
+        url: '/create/:newMember',
+        params: {
+          newMember: 'true'
+        },
         templateUrl: 'modules/eventregistrations/client/views/form-eventregistration.client.view.html',
         controller: 'EventregistrationsController',
         controllerAs: 'vm',
@@ -33,13 +37,16 @@
           personResolve: newPerson
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Eventregistrations Create'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Crear Inscripcion'
         }
       })
       .state('eventregistrations.edit', {
-        url: '/:eventregistrationId/edit',
-        params: { 'personId': null },
+        url: '/:eventregistrationId/edit:newMember',
+        params: {
+          'newMember': 'true',
+          'personId': null
+        },
         templateUrl: 'modules/eventregistrations/client/views/form-eventregistration.client.view.html',
         controller: 'EventregistrationsController',
         controllerAs: 'vm',
@@ -48,8 +55,8 @@
           personResolve: getPerson
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Edit Eventregistration {{ eventregistrationResolve.name }}'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Editar Inscripcion - {{ eventregistrationResolve.name }}'
         }
       })
       .state('eventregistrations.view', {
@@ -62,7 +69,8 @@
           personResolve: newPerson
         },
         data: {
-          pageTitle: 'Eventregistration {{ articleResolve.name }}'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Inscripcion - {{ articleResolve.name }}'
         }
       });
   }

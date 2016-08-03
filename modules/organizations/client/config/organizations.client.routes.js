@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -20,6 +20,7 @@
         controller: 'OrganizationsListController',
         controllerAs: 'vm',
         data: {
+          roles: ['admin', 'user'],
           pageTitle: 'Lista de Organizaciones'
         }
       })
@@ -32,7 +33,7 @@
           organizationResolve: newOrganization
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin'],
           pageTitle: 'Crear Organización'
         }
       })
@@ -45,7 +46,7 @@
           organizationResolve: getOrganization
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['admin'],
           pageTitle: 'Editar Organización: {{ organizationResolve.name }}'
         }
       })
@@ -58,7 +59,8 @@
           organizationResolve: getOrganization
         },
         data: {
-          pageTitle: 'Organización: {{ articleResolve.name }}'
+          roles: ['admin'],
+          pageTitle: 'Organización {{ articleResolve.name }}'
         }
       });
   }

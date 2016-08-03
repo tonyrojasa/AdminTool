@@ -1,36 +1,43 @@
-<div class="form-group" show-errors>
-  <label class="control-label" for="organization">Organización *</label>
-  <input name="organization" type="hidden" ng-model="person.organization" id="organization" class="form-control" placeholder="Organización" required>
-  <div class="dropdown" id="organizationDropdown" uib-dropdown>
-    <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
-      <span ng-if="!person.organization">-- Seleccione uno --</span>
-      {{person.organization.name}}
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu" ng-if="organizations">
-      <li data-ng-repeat="organization in organizations | orderBy:'name'">
-        <a ng-click="setOrganization(organization)">{{organization.name}}</a>
-      </li>
-    </ul>
+<div class="form-group" show-errors>        
+  <label class="control-label" for="organization">Organización *</label>  
+  <input name="organization" type="hidden" ng-model="person.organization" id="organization" class="form-control" required>
+  <div class="input-group select2-bootstrap-append">
+    <ui-select ng-model="person.organization">
+      <ui-select-match  placeholder="Seleccione la organización...">
+            <span>{{$select.selected.name}}</span>
+        </ui-select-match>
+        <ui-select-choices repeat="item in (organizations | filter: $select.search) track by item._id">
+            <div ng-bind-html="item.name | highlight: $select.search"></div>
+        </ui-select-choices>
+    </ui-select> 
+    <span class="input-group-btn">
+      <button type="button" ng-click="person.organization = undefined" class="btn btn-default">
+        <span class="glyphicon glyphicon-trash"></span>
+      </button>
+    </span>  
   </div> 
-  <div ng-messages="form.organization.$error" role="alert">
+ <div ng-messages="form.organization.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Organización es requerido.</p>
   </div>
 </div>
-<!-- <div class="form-group" show-errors>
-  <label class="control-label" for="serviceAcademyClass">Academia de Servicio</label>
-  <input name="serviceAcademyClass" type="text" ng-model="person.serviceAcademyClass" id="serviceAcademyClass" class="form-control" placeholder="Academia de Servicio" required>
-  <div ng-messages="form.serviceAcademyClass.$error" role="alert">
-    <p class="help-block error-text" ng-message="required">Academia de Servicio es requerido.</p>
+<div class="form-group" show-errors> 
+  <label class="control-label" for="maleSex">Sexo *</label>
+  <input name="isFemale" type="hidden" ng-model="person.isFemale" id="isFemale" class="form-control" placeholder="Sexo" required> 
+  <div class="radio">
+    <label>
+      <input type="radio" class="radio-inline" ng-click="person.isFemale = false" name="sex" 
+      ng-checked="{{person.isFemale === true ? !person.isFemale : true}}">
+      <b>Masculino</b>
+    </label>
+    <label>
+      <input type="radio" class="radio-inline" ng-click="person.isFemale = true" name="sex" ng-checked="person.isFemale">
+      <b>Femenino</b>
+    </label>
   </div>
-</div> -->
-<!-- <div class="form-group" show-errors>
-  <label class="control-label" for="contactInfo">Información de Contacto</label>
-  <input name="contactInfo" type="text" ng-model="person.contactInfo" id="contactInfo" class="form-control" placeholder="contactInfo" required>
-  <div ng-messages="form.contactInfo.$error" role="alert">
-    <p class="help-block error-text" ng-message="required">Información de Contacto es requerido.</p>
+  <div ng-messages="form.isFemale.$error" role="alert">
+    <p class="help-block error-text" ng-message="required">Sexo es requerido.</p>
   </div>
-</div> -->
+</div>
 <div class="form-group" show-errors>
   <label class="control-label" for="personId">Identificación (cedula)</label>
   <input name="personId" type="text" ng-model="person.personId" id="personId" class="form-control" placeholder="Identificación">
@@ -62,15 +69,15 @@
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="mobilePhone">Teléfono celular</label>
-  <input name="mobilePhone" ui-mask="9999-9999" ng-model="person.mobilePhone" id="mobilePhone" class="form-control">
+  <input name="mobilePhone" ui-mask="9999-9999" ng-model="person.mobilePhone" id="mobilePhone" model-view-value="true" ui-options="{clearOnBlur:false}" ng-minlength="8" class="form-control">
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="homePhone">Teléfono casa</label>
-  <input name="homePhone" ng-model="person.homePhone" ui-mask="9999-9999"  id="homePhone" class="form-control" >
+  <input name="homePhone" ng-model="person.homePhone" ui-mask="9999-9999"  id="homePhone" model-view-value="true" ui-options="{clearOnBlur:false}" ng-minlength="8" class="form-control" >
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="otherPhone">Teléfono (otro)</label>
-  <input name="otherPhone" ui-mask="9999-9999" ng-model="person.otherPhone" id="otherPhone" class="form-control">
+  <input name="otherPhone" ui-mask="9999-9999" ng-model="person.otherPhone" id="otherPhone" model-view-value="true" ui-options="{clearOnBlur:false}" ng-minlength="8" class="form-control">
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="address">Dirección *</label>
@@ -97,6 +104,19 @@
   <div ng-messages="form.personType.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Tipo de Persona es requerido</p>
   </div>
+</div>
+<div class="form-group">
+  <label class="control-label" for="organization">Área de Servicio</label>
+  <div class="select2-bootstrap-append">
+    <ui-select multiple ng-model="person.serviceArea">
+      <ui-select-match  placeholder="Seleccione a las que pertenece...">
+            <span>{{$item.name}}</span>
+        </ui-select-match>
+        <ui-select-choices repeat="item in (serviceAreas | filter: $select.search | filter:filterAlreadyAdded) track by item._id">
+            <div ng-bind-html="item.name | highlight: $select.search"></div>
+        </ui-select-choices>
+    </ui-select> 
+  </div>  
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="birthDate">Fecha de Nacimiento</label>
@@ -217,5 +237,35 @@
     <input name="allergies" type="text" ng-model="person.medicalTreatment.allergies" id="allergies" class="form-control" placeholder="Alergias">
   </div>
 </div>
-        
-      
+<div class="form-group" show-errors>  
+  <input name="sponsorship" type="hidden" ng-model="person.sponsorship.exists" id="sponsorship" class="form-control">
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" ng-model="person.sponsorship.exists">
+      <b>Patrocinio</b>
+    </label>
+  </div>
+</div>
+<div ng-if="person.sponsorship.exists">
+  <div class="form-group" show-errors>
+    <label class="control-label" for="sponsorName">Nombre Patrocinador *</label>
+    <input name="sponsorName" type="text" ng-model="person.sponsorship.sponsorName" id="sponsorName" class="form-control" placeholder="Nombre Patrocinador" required>
+    <div ng-messages="form.sponsorName.$error" role="alert">
+      <p class="help-block error-text" ng-message="required">Nombre de patrocinador es requerido</p>
+    </div>
+  </div>
+  <div class="form-group" show-errors>
+    <label class="control-label" for="sponsorPhoneNumber">Teléfono Patrocinador *</label>
+    <input name="sponsorPhoneNumber" ui-mask="9999-9999" model-view-value="true" ui-options="{clearOnBlur:false}" ng-minlength="8" ng-model="person.sponsorship.phoneNumber" id="sponsorPhoneNumber" class="form-control" required>
+    <div ng-messages="form.sponsorPhoneNumber.$error" role="alert">
+      <p class="help-block error-text" ng-message="required">Teléfono de patrocinador es requerido</p>
+      <p class="help-block error-text" ng-message="invalid">Teléfono de patrocinador es invalido</p>
+    </div>
+  </div>
+  <div class="form-group" show-errors>
+    <label class="control-label" for="sponsorshipComments">Comentarios del patrocinio</label>
+    <input name="sponsorshipComments" type="text" ng-model="person.sponsorship.comments" id="sponsorshipComments" class="form-control" placeholder="Comentarios del patrocinio" />
+  </div>  
+</div>
+<contact-info contacts="person.contactInfo" form="form"></contact-info>
+<br /><br />

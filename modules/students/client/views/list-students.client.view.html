@@ -1,30 +1,33 @@
 <section>
   <div class="page-header">
-    <h1>Students</h1>
+    <h1>Estudiantes</h1>
   </div>
-  <a class="btn btn-primary" data-ui-sref="students.create">Nuevo Estudiante</a>
+  <a class="btn btn-primary" data-ui-sref="students.create">Agregar Estudiante</a>
   <br/><br/>
-  <div id="content" data-ng-if="vm.serviceAcademyClasses.length">
-    <br />
-    <div class="form-group">
-      <div class="dropdown" id="serviceAcademyClassDropdown" uib-dropdown>
-        <label class="control-label" for="serviceAcademyClass">Academia: </label>
-        <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
-          <span ng-if="!vm.serviceAcademyClass">-- Todos --</span>
-          {{vm.serviceAcademyClass.name}}
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu" ng-if="vm.serviceAcademyClasses">
-          <li>
-            <a ng-click="vm.setServiceAcademyClass()">-- Todos --</a>
-          </li>
-          <li data-ng-repeat="serviceAcademyClass in vm.serviceAcademyClasses | orderBy:'name'">
-            <a ng-click="vm.setServiceAcademyClass(serviceAcademyClass)">{{serviceAcademyClass.name}}</a>
-          </li>
-        </ul>
+  <div id="content" data-ng-if="vm.students.length">
+    <div class="form-group">        
+      <label class="control-label" for="serviceAcademyClass">Academia</label>  
+      <a class="btn btn-secondary" data-ui-sref="serviceacademyclasses.list()">
+        <i class="glyphicon glyphicon-th-list"></i>
+        Lista de Academias
+      </a>   
+      <input name="serviceAcademyClass" type="hidden" ng-model="vm.serviceAcademyClass" id="serviceAcademyClass" class="form-control">
+      <div class="input-group">
+        <ui-select ng-model="vm.serviceAcademyClass">
+          <ui-select-match  placeholder="Seleccione la academia...">
+                <span>{{$select.selected.name}}</span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (vm.serviceAcademyClasses | filter: $select.search) track by item._id">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+            </ui-select-choices>
+        </ui-select> 
+        <span class="input-group-btn">
+          <button type="button" ng-click="vm.serviceAcademyClass = undefined" class="btn btn-default">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </span>  
       </div> 
-    </div>    
-    <br />
+    </div>
     <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
     <br />
     <div id="exportable">
@@ -40,20 +43,20 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="student in vm.students | orderBy:['startDate', 'name'] | filter: vm.searchFilter | filter: vm.serviceAcademyClass.name" class="active">
+        <tr ng-repeat="student in vm.students | orderBy:['startDate', 'name'] | filter: vm.searchFilter | filter: vm.serviceAcademyClass.name" ng-class="vm.getStatusClass(student)">
           <td>{{student.person.firstName}}</td>
           <td>{{student.person.lastName}}</td>
           <td>{{student.person.secondLastName}}</td>
           <td>{{student.serviceAcademyClass.name}}</td>
           <td>{{student.score}}</td>
           <td>    
-            <a data-ui-sref="events.view({ eventId: event._id})">Detalles</a>    
+            <a data-ui-sref="students.view({ studentId: student._id})">Detalles</a>    
           </td>
         </tr>
         </tbody>
       </table>
     </div>
-  </div> 
+  </div>
   <div class="alert alert-warning text-center" data-ng-if="vm.students.$resolved && !vm.students.length">
     No hay estudiantes <a data-ui-sref="students.create">Crear</a>?
   </div>

@@ -4,7 +4,7 @@
   // Start by defining the main module and adding the module dependencies
   angular
     .module(app.applicationModuleName, app.applicationModuleVendorDependencies)
-    .constant('_', window._);;
+    .constant('_', window._);
 
   // Setting HTML5 Location Mode
   angular

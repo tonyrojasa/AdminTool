@@ -21,7 +21,7 @@
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="description">Descripción</label>
-          <input name="description" type="text" ng-model="vm.eventpeoplegroup.description" id="description" class="form-control" placeholder="Descripción">
+          <textarea name="description" type="text" ng-model="vm.eventpeoplegroup.description" id="description" class="form-control" placeholder="Descripción"></textarea>
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-default">{{vm.eventpeoplegroup._id ? 'Actualizar' : 'Crear'}}</button>

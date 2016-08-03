@@ -12,7 +12,8 @@
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'serviceacademyclasses', {
       title: 'Estudiantes',
-      state: 'students.list'
+      state: 'students.list',
+      roles: ['admin', 'teacher', 'student', 'user']
     });
   }
 })();

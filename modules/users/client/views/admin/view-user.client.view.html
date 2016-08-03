@@ -6,15 +6,21 @@
       </div>
       <div class="col-md-4">
         <a class="btn btn-primary" ui-sref="admin.user-edit({userId: vm.user._id})">
-          <i class="glyphicon glyphicon-edit"></i>
+          <i class="glyphicon glyphicon-edit"> Editar</i>
         </a>
-        <a class="btn btn-primary" ng-click="vm.remove()" ng-if="vm.user._id !== vm.authentication.user._id">
-          <i class="glyphicon glyphicon-trash"></i>
+        <a class="btn btn-primary" ng-click="vm.remove()" ng-if="vm.user.username !== vm.authentication.user.username">
+          <i class="glyphicon glyphicon-trash"> Eliminar</i>
         </a>
       </div>
     </div>
   </div>
-
+  <div class="row">
+     <a class="btn btn-secondary" data-ui-sref="admin.users">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
+    </a>
+  </div>
+  <br />
   <div class="row">
     <div class="col-md-8">
       <div class="row">
@@ -44,7 +50,7 @@
       <hr/>
       <div class="row">
         <div class="col-md-3"><strong>Roles</strong></div>
-        <div class="col-md-6" ng-bind="vm.user.roles"></div>
+        <div class="col-md-6">{{vm.parseRoles(vm.user.roles)}}</div>
       </div>
     </div>
   </div>

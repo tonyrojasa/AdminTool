@@ -20,7 +20,8 @@
         controller: 'PersontypesListController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Persontypes List'
+          roles: ['admin', 'inscriptor', 'teacher', 'user'],
+          pageTitle: 'Lista Tipos de Persona'
         }
       })
       .state('persontypes.create', {
@@ -32,8 +33,8 @@
           persontypeResolve: newPersontype
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Persontypes Create'
+          roles: ['admin', 'inscriptor', 'teacher'],
+          pageTitle: 'Create Tipo de Persona'
         }
       })
       .state('persontypes.edit', {
@@ -45,8 +46,8 @@
           persontypeResolve: getPersontype
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Edit Persontype {{ persontypeResolve.name }}'
+          roles: ['admin', 'inscriptor', 'teacher'],
+          pageTitle: 'Editar Tipo de Persona - {{ persontypeResolve.name }}'
         }
       })
       .state('persontypes.view', {
@@ -58,7 +59,8 @@
           persontypeResolve: getPersontype
         },
         data: {
-          pageTitle: 'Persontype {{ articleResolve.name }}'
+          roles: ['admin', 'inscriptor', 'teacher'],
+          pageTitle: 'Tipos de Persona {{ articleResolve.name }}'
         }
       });
   }

@@ -17,6 +17,9 @@ module.exports = function(app) {
     .put(students.update)
     .delete(students.delete);
 
+  app.route('/api/students/serviceacademyclass/:serviceacademyclassId').all(studentsPolicy.isAllowed)
+    .get(students.listByServiceAcademyClassId);
+
   // Finish by binding the Student middleware
   app.param('studentId', students.studentByID);
 };

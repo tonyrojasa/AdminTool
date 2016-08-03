@@ -19,7 +19,9 @@
     "angular-file-saver": "^1.1.2",
     "angular-ui-mask": "^1.8.6",
     "lodash": "^4.13.1",
-    "angular-i18n": "^1.5.7"
+    "angular-i18n": "^1.5.7",
+    "angular-ui-select": "^0.18.1",
+    "angular-sanitize": "^1.5.7"
   },
   "browserify-shim": {
     "moment": "moment"

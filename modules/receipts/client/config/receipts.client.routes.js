@@ -20,7 +20,8 @@
         controller: 'ReceiptsListController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Receipts List'
+          roles: ['admin', 'inscriptor', 'user'],
+          pageTitle: 'Lista de Recibos'
         }
       })
       .state('receipts.createFromEventRegistration', {
@@ -33,8 +34,8 @@
           eventregistrationResolve: getEventregistration
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Receipts Create'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Crear Recibo para evento'
         }
       })
       .state('receipts.create', {
@@ -47,8 +48,8 @@
           eventregistrationResolve: getEventregistration
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Receipts Create'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Crear Recibo'
         }
       })
       .state('receipts.edit', {
@@ -61,8 +62,8 @@
           eventregistrationResolve: getEventregistration
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Edit Receipt {{ receiptResolve.name }}'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Editar Recibo {{ receiptResolve.name }}'
         }
       })
       .state('receipts.view', {
@@ -78,6 +79,7 @@
           eventregistrationResolve: getEventregistration
         },
         data: {
+          roles: ['admin', 'inscriptor', 'guest'],
           pageTitle: 'Receipt {{ articleResolve.name }}'
         }
       });

@@ -11,7 +11,8 @@
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'maintenance', {
       title: 'Áreas de Servicio',
-      state: 'serviceareas.list'
+      state: 'serviceareas.list',
+      roles: ['admin', 'inscriptor', 'teacher', 'user']
     });
   }
 })();

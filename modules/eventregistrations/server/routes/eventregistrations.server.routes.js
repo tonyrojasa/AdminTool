@@ -17,6 +17,9 @@ module.exports = function(app) {
     .put(eventregistrations.update)
     .delete(eventregistrations.delete);
 
+  app.route('/api/eventregistrations/event/:eventId').all(eventregistrationsPolicy.isAllowed)
+    .get(eventregistrations.listByEventId);
+
   // Finish by binding the Eventregistration middleware
   app.param('eventregistrationId', eventregistrations.eventregistrationByID);
 };

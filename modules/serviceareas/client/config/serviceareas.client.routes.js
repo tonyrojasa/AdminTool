@@ -20,7 +20,8 @@
         controller: 'ServiceareasListController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Serviceareas List'
+          roles: ['admin', 'inscriptor', 'teacher', 'user'],
+          pageTitle: 'Lista de Áreas de Servicio'
         }
       })
       .state('serviceareas.create', {
@@ -32,8 +33,8 @@
           serviceareaResolve: newServicearea
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Serviceareas Create'
+          roles: ['admin', 'inscriptor', 'teacher'],
+          pageTitle: 'Crear Área de Servicio'
         }
       })
       .state('serviceareas.edit', {
@@ -45,8 +46,8 @@
           serviceareaResolve: getServicearea
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Edit Servicearea {{ serviceareaResolve.name }}'
+          roles: ['admin', 'inscriptor', 'teacher'],
+          pageTitle: 'Editar Área de Servicio {{ serviceareaResolve.name }}'
         }
       })
       .state('serviceareas.view', {
@@ -58,7 +59,8 @@
           serviceareaResolve: getServicearea
         },
         data: {
-          pageTitle: 'Servicearea {{ articleResolve.name }}'
+          roles: ['admin', 'inscriptor', 'teacher'],
+          pageTitle: 'Área de Servicio {{ articleResolve.name }}'
         }
       });
   }

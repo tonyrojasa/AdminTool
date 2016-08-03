@@ -12,35 +12,38 @@
   <div class="col-md-12">
     <form name="vm.form.serviceacademyclassForm" class="form-horizontal" ng-submit="vm.save(vm.form.serviceacademyclassForm.$valid)" novalidate>
       <fieldset>
-        <div class="form-group" show-errors>
-          <label class="control-label" for="organization">Organización *</label>
-          <input name="organization" type="hidden" ng-model="vm.serviceacademyclass.organization" id="organization" class="form-control" placeholder="Organización" required>
-          <div class="dropdown" id="organizationDropdown" uib-dropdown>
-            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
-              <span ng-if="!vm.serviceacademyclass.organization">-- Seleccione uno --</span>
-              {{vm.serviceacademyclass.organization.name}}
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              <li data-ng-repeat="organization in vm.organizations | orderBy:'name'">
-                <a ng-click="vm.setOrganization(organization)">{{organization.name}}</a>
-              </li>
-            </ul>
-          </div> 
-          <div ng-messages="form.organization.$error" role="alert">
+        <div class="form-group" show-errors>        
+          <label class="control-label" for="organization">Organización *</label>  
+          <input name="organization" type="hidden" ng-model="vm.serviceacademyclass.organization" id="organization" class="form-control" required>
+          <div class="input-group select2-bootstrap-append">
+            <ui-select ng-model="vm.serviceacademyclass.organization">
+              <ui-select-match  placeholder="Seleccione la organización...">
+                    <span>{{$select.selected.name}}</span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (vm.organizations | filter: $select.search) track by item._id">
+                    <div ng-bind-html="item.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select> 
+            <span class="input-group-btn">
+              <button type="button" ng-click="vm.serviceacademyclass.organization = undefined" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </span>           
+          </div>  
+          <div ng-messages="vm.form.serviceacademyclassForm.organization.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Organización es requerido.</p>
-          </div>
-        </div>
+          </div> 
+        </div> 
         <div class="form-group" show-errors>
-          <label class="control-label" for="name">Nombre *</label>
-          <input name="name" type="text" ng-model="vm.serviceacademyclass.name" id="name" class="form-control" placeholder="Name" required>
-          <div ng-messages="vm.form.serviceacademyclassForm.name.$error" role="alert">
+          <label class="control-label" for="serviceacademyclassName">Nombre *</label>
+          <input name="serviceacademyclassName" type="text" ng-model="vm.serviceacademyclass.name" id="serviceacademyclassName" class="form-control" placeholder="Name" required>
+          <div ng-messages="vm.form.serviceacademyclassForm.serviceacademyclassName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Nombre es requerido.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="description">Descripción</label>
-          <input name="description" type="text" ng-model="vm.serviceacademyclass.description" id="description" class="form-control" placeholder="Descripción">
+          <textarea name="description" type="text" ng-model="vm.serviceacademyclass.description" id="description" class="form-control" placeholder="Descripción"></textarea>
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="startDate">Fecha de inicio *</label>
@@ -75,21 +78,45 @@
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label class="control-label" for="price">Nivel *</label>
-          <input name="price" type="hidden" ng-model="vm.serviceacademyclass.level" id="level" required>
+          <label class="control-label" for="level">Nivel *</label>
+          <input name="level" type="hidden" ng-model="vm.serviceacademyclass.level" id="level" required>
           <select class="form-control" ng-model="vm.serviceacademyclass.level" ng-options="o.value as o.name for o in vm.levels"></select>
           <div ng-messages="vm.form.serviceacademyclassForm.level.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Nivel es requerido.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label class="control-label" for="price">Horario</label>
+          <label class="control-label" for="schedule">Horario</label>
+          <input name="selectedSchedule" type="hidden" ng-model="vm.selectedSchedule" id="selectedSchedule" required>
           <div class="controls">
             <label class="checkbox-inline" ng-repeat="schedule in vm.schedules">
               <input type="checkbox" ng-checked="schedule.selected" ng-click="vm.toggleScheduleSelection(schedule.value)"/>{{schedule.name}}
             </label>
           </div>
-        </div>        
+          <div ng-messages="vm.form.serviceacademyclassForm.selectedSchedule.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Horario es requerido.</p>
+          </div>
+        </div>    
+        <div class="form-group">        
+          <label class="control-label" for="teacher">Profesor</label>  
+          <input name="teacher" type="hidden" ng-model="vm.serviceacademyclass.teacher" id="teacher" class="form-control">
+          <div class="input-group select2-bootstrap-append">
+            <ui-select ng-model="vm.serviceacademyclass.teacher">
+              <ui-select-match  placeholder="Seleccione el profesor...">
+                    <span>{{$select.selected.firstName}} {{$select.selected.lastName}} {{$select.selected.secondLastName}}</span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (vm.people | filter: $select.search) track by item._id">
+                    <div ng-bind-html="[item.firstName +' '+ item.lastName +' '+ item.secondLastName] | highlight: $select.search"></div>
+                    <small ng-bind-html="item.personType.name | highlight: $select.search"></small>
+                </ui-select-choices>
+            </ui-select> 
+            <span class="input-group-btn">
+              <button type="button" ng-click="vm.serviceacademyclass.teacher = null" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </span> 
+          </div>  
+        </div>     
         <div ng-show="vm.error" class="text-danger">
           <strong ng-bind="vm.error"></strong>
         </div>

@@ -5,6 +5,42 @@
   <a class="btn btn-primary" data-ui-sref="people.create">Nueva Persona</a>
   <br /><br />
   <div id="content" data-ng-if="vm.people.length">
+    <div class="col-md-3 form-group">        
+      <label class="control-label" for="personType">Tipo de Persona: </label>  
+      <div class="input-group select2-bootstrap-append">
+        <ui-select ng-model="vm.personType">
+          <ui-select-match  placeholder="Seleccione el tipo de persona...">
+                <span>{{$select.selected.name}}</span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (vm.personTypes | filter: $select.search) track by item._id">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+            </ui-select-choices>
+        </ui-select> 
+        <span class="input-group-btn">
+          <button type="button" ng-click="vm.personType = undefined" class="btn btn-default">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </span>  
+      </div> 
+    </div>
+    <div class="form-group col-md-3">        
+      <label class="control-label" for="serviceArea">Área de Servicio: </label>  
+      <div class="input-group select2-bootstrap-append">
+        <ui-select ng-model="vm.serviceArea">
+          <ui-select-match  placeholder="Seleccione el Área de Servicio...">
+                <span>{{$select.selected.name}}</span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (vm.personTypes | filter: $select.search) track by item._id">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+            </ui-select-choices>
+        </ui-select> 
+        <span class="input-group-btn">
+          <button type="button" ng-click="vm.serviceArea = undefined" class="btn btn-default">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </span>  
+      </div> 
+    </div>
     <br />
     <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
     <br />
@@ -16,15 +52,17 @@
           <th>Primer Apellido</th>
           <th>Segundo Apellido</th>
           <th>Tipo de Persona</th>
+          <th>Áreas de Servicio</th>
           <th>Edad</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="person in vm.people | orderBy:['person.firstName', 'person.lastName', 'person.secondLastName'] | filter: vm.searchFilter">
+        <tr ng-repeat="person in vm.people | orderBy:['person.firstName', 'person.lastName', 'person.secondLastName'] | filter: vm.searchFilter | filter: vm.personType.name | filter:vm.serviceArea.name">
           <td>{{person.firstName}}</td>
           <td>{{person.lastName}}</td>
           <td>{{person.secondLastName}}</td>
           <td>{{person.personType.name}}</td>
+          <td>{{vm.getServiceAreaNames(person.serviceArea)}}</td>
           <td>{{person.age}}</td>
           <td>    
             <a data-ui-sref="people.view({ personId: person._id})">Detalles</a>    

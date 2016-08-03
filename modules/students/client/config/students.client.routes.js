@@ -19,8 +19,12 @@
         templateUrl: 'modules/students/client/views/list-students.client.view.html',
         controller: 'StudentsListController',
         controllerAs: 'vm',
+        resolve: {
+          serviceacademyclassResolve: getServiceacademyclass
+        },
         data: {
-          pageTitle: 'Students List'
+          roles: ['admin', 'teacher', 'student', 'user'],
+          pageTitle: 'Lista de Estudiantes'
         }
       })
       .state('students.create', {
@@ -29,11 +33,12 @@
         controller: 'StudentsController',
         controllerAs: 'vm',
         resolve: {
-          studentResolve: newStudent
+          studentResolve: newStudent,
+          serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Students Create'
+          roles: ['admin', 'teacher', 'student'],
+          pageTitle: 'Crear Estudiante'
         }
       })
       .state('students.edit', {
@@ -42,11 +47,12 @@
         controller: 'StudentsController',
         controllerAs: 'vm',
         resolve: {
-          studentResolve: getStudent
+          studentResolve: getStudent,
+          serviceacademyclassResolve: getServiceacademyclass
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Edit Student {{ studentResolve.name }}'
+          roles: ['admin', 'teacher', 'student'],
+          pageTitle: 'Editar Estudiante {{ studentResolve.name }}'
         }
       })
       .state('students.view', {
@@ -58,7 +64,21 @@
           studentResolve: getStudent
         },
         data: {
-          pageTitle: 'Student {{ articleResolve.name }}'
+          roles: ['admin', 'teacher', 'student'],
+          pageTitle: 'Estudiante {{ articleResolve.name }}'
+        }
+      })
+      .state('students.listAcademyStudents', {
+        url: '/serviceacademyclasses/:serviceacademyclassId',
+        templateUrl: 'modules/students/client/views/list-students.client.view.html',
+        controller: 'StudentsListController',
+        controllerAs: 'vm',
+        resolve: {
+          serviceacademyclassResolve: getServiceacademyclass
+        },
+        data: {
+          roles: ['admin', 'teacher', 'student', 'user'],
+          pageTitle: 'Estudiantes de Academia {{ articleResolve.name }}'
         }
       });
   }
@@ -75,5 +95,15 @@
 
   function newStudent(StudentsService) {
     return new StudentsService();
+  }
+
+  getServiceacademyclass.$inject = ['$stateParams', 'ServiceacademyclassesService'];
+
+  function getServiceacademyclass($stateParams, ServiceacademyclassesService) {
+    if ($stateParams.serviceacademyclassId) {
+      return ServiceacademyclassesService.get({
+        serviceacademyclassId: $stateParams.serviceacademyclassId
+      }).$promise;
+    }
   }
 })();
