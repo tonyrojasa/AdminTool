@@ -13,28 +13,28 @@
       title: 'Recibos',
       state: 'receipts',
       type: 'dropdown',
-      roles: ['admin', 'inscriptor', 'user']
+      roles: ['admin', 'inscriptor', 'user', 'accountant']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'receipts', {
       title: 'Lista de Recibos',
       state: 'receipts.list',
-      roles: ['admin', 'inscriptor', 'user']
+      roles: ['admin', 'inscriptor', 'user', 'accountant']
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'receipts', {
       title: 'Crear Recibo',
       state: 'receipts.create',
-      roles: ['admin', 'inscriptor']
+      roles: ['admin', 'accountant']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'eventregistrations', {
       title: 'Recibos',
       state: 'receipts.list',
-      roles: ['admin', 'inscriptor']
+      roles: ['admin', 'accountant']
     });
   }
 })();

@@ -20,7 +20,7 @@
         controller: 'ReceiptsListController',
         controllerAs: 'vm',
         data: {
-          roles: ['admin', 'inscriptor', 'user'],
+          roles: ['admin', 'inscriptor', 'user', 'accountant'],
           pageTitle: 'Lista de Recibos'
         }
       })
@@ -34,7 +34,7 @@
           eventregistrationResolve: getEventregistration
         },
         data: {
-          roles: ['admin', 'inscriptor'],
+          roles: ['admin', 'inscriptor', 'accountant'],
           pageTitle: 'Crear Recibo para evento'
         }
       })
@@ -48,7 +48,7 @@
           eventregistrationResolve: getEventregistration
         },
         data: {
-          roles: ['admin', 'inscriptor'],
+          roles: ['admin', 'accountant'],
           pageTitle: 'Crear Recibo'
         }
       })
@@ -62,7 +62,7 @@
           eventregistrationResolve: getEventregistration
         },
         data: {
-          roles: ['admin', 'inscriptor'],
+          roles: ['admin', 'accountant'],
           pageTitle: 'Editar Recibo {{ receiptResolve.name }}'
         }
       })
@@ -79,7 +79,7 @@
           eventregistrationResolve: getEventregistration
         },
         data: {
-          roles: ['admin', 'inscriptor', 'guest'],
+          roles: ['admin', 'inscriptor', 'guest', 'accountant'],
           pageTitle: 'Receipt {{ articleResolve.name }}'
         }
       });

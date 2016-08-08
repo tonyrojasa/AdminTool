@@ -34,6 +34,10 @@
               break;
             case "student":
               roleArray[key] = "Estudiante";
+              break;
+            case "accountant":
+              roleArray[key] = "Contador";
+              break;
           }
         });
       var roleValue = roleArray.join(', ');
