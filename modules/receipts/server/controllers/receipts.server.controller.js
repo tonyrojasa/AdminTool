@@ -108,7 +108,13 @@ exports.receiptByID = function(req, res, next, id) {
 
   Receipt.findById(id).populate('user', 'displayName')
     .populate('event')
-    .populate('eventRegistration').exec(function(err, receipt) {
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'person'
+      }
+    })
+    .exec(function(err, receipt) {
       if (err) {
         return next(err);
       } else if (!receipt) {

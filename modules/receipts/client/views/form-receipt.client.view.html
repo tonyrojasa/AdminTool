@@ -20,8 +20,8 @@
           <input name="isDebit" type="hidden" ng-model="vm.receipt.isDebit" id="isDebit" class="form-control">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="vm.receipt.isDebit" ng-click="vm.onIsDebitClicked()" ng-disabled="vm.receipt._id">
-              <b>Entrada de dinero</b>
+              <input type="checkbox" ng-model="vm.receipt.isDebit" ng-click="vm.onIsDebitClicked()" ng-disabled="vm.isEventRegistrationPayment">
+              <b>Salida de dinero</b>
             </label>
           </div>
         </div>
@@ -48,7 +48,7 @@
           <label class="control-label" for="event">Evento *</label>  
           <input name="event" type="hidden" ng-model="vm.receipt.event" id="event" class="form-control" required>
           <div class="input-group">
-            <ui-select ng-model="vm.receipt.event"  on-select="vm.setEvent(vm.receipt.event)" ng-disabled="vm.isEventRegistrationPayment || vm.receipt._id">
+            <ui-select ng-model="vm.receipt.event"  on-select="vm.setEvent(vm.receipt.event)" ng-disabled="vm.isEventRegistrationPayment">
               <ui-select-match  placeholder="Seleccione el evento...">
                     <span>{{$select.selected.name}}</span>
                 </ui-select-match>
@@ -56,7 +56,7 @@
                     <div ng-bind-html="item.name | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select> 
-            <span class="input-group-btn" ng-if="!vm.receipt._id">
+            <span class="input-group-btn" ng-if="!vm.isEventRegistrationPayment">
               <button type="button" ng-click="vm.receipt.event = vm.person = undefined" class="btn btn-default">
                 <span class="glyphicon glyphicon-trash"></span>
               </button>
@@ -97,11 +97,8 @@
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label class="control-label" for="description">Descripción *</label>
-          <input name="description" type="text" ng-model="vm.receipt.description" id="description" class="form-control" placeholder="Descripción" required>
-          <div ng-messages="vm.form.receiptForm.description.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Descripción es requerido.</p>
-          </div>
+          <label class="control-label" for="description">Descripción</label>
+          <input name="description" type="text" ng-model="vm.receipt.description" id="description" class="form-control" placeholder="Descripción">
         </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="currentBalance">Saldo actual *</label>

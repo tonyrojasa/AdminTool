@@ -47,11 +47,11 @@
 
     function initReceipt() {
       vm.paymentOfList = [
-        'Encuentro',
-        'Academia',
-        'Campamento',
-        'Ofrenda',
-        'Soda',
+        'Abono',
+        'Cancelación',
+        'Devolución',
+        'Ingreso - Ofrenda',
+        'Gasto',
         'Otro'
       ];
       //default to current user
@@ -68,7 +68,7 @@
         }
       }
 
-      if (vm.eventregistration && !vm.receipt.eventRegistration) {
+      if (vm.isNewEventRegistration()) {
         vm.isEventRegistrationPayment = true;
         vm.receipt.event = vm.eventregistration.event;
         vm.receipt.receivedFrom = vm.eventregistration.person.firstName + ' ' +
@@ -82,8 +82,17 @@
         vm.receipt.paymentDate = new Date();
 
       }
+
+      if (vm.eventregistration || vm.receipt.eventRegistration) {
+        vm.isEventRegistrationPayment = true;
+      } else {
+        vm.isEventRegistrationPayment = false;
+      }
     }
-    vm.initReceipt();
+
+    vm.isNewEventRegistration = function() {
+      return (vm.eventregistration && !vm.receipt.eventRegistration);
+    };
 
     vm.setPaymentOf = function(paymentOf) {
       vm.receipt.paymentOf = paymentOf;
@@ -162,5 +171,7 @@
     vm.print = function() {
       window.print();
     };
+
+    vm.initReceipt();
   }
 })();
