@@ -32,16 +32,18 @@
       if (vm.receipt.isDebit && !vm.isEventRegistrationPayment) {
         vm.receipt.currentBalance = 0;
       }
-      vm.receipt.paymentAmount = '';
-      vm.receipt.balanceDue = '';
+      if (vm.receipt.paymentAmount) {
+        vm.receipt.paymentAmount = vm.receipt.paymentAmount * -1;
+      }
+      calculateBalanceDue();
     }
 
     function calculateBalanceDue() {
-      if (vm.receipt.isDebit && vm.receipt.paymentAmount > 0) {
-        vm.receipt.paymentAmount = -vm.receipt.paymentAmount;
+      if (vm.receipt.isDebit && vm.receipt.currentBalance === 0) {
+        vm.receipt.balanceDue = 0;
+      } else {
+        vm.receipt.balanceDue = vm.receipt.currentBalance - vm.receipt.paymentAmount;
       }
-
-      vm.receipt.balanceDue = vm.receipt.currentBalance - vm.receipt.paymentAmount;
       return vm.receipt.balanceDue;
     }
 
@@ -158,11 +160,6 @@
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.receiptForm');
         return false;
-      }
-      if (vm.receipt.isDebit) {
-        vm.receipt.balanceDue = -vm.receipt.paymentAmount;
-      } else {
-        vm.receipt.balanceDue = vm.receipt.currentBalance - vm.receipt.paymentAmount;
       }
 
       saveEventRegistration();
