@@ -39,6 +39,10 @@
     }
 
     function calculateBalanceDue() {
+      if (vm.receipt.isDebit && vm.receipt.paymentAmount > 0) {
+        vm.receipt.paymentAmount = -vm.receipt.paymentAmount;
+      }
+
       if (vm.receipt.isDebit && vm.receipt.currentBalance === 0) {
         vm.receipt.balanceDue = 0;
       } else {
