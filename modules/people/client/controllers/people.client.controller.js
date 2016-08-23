@@ -63,8 +63,18 @@
       });
     }
 
+    function errorCallback2(res) {
+      vm.error = res.data.message;
+    }
+
     function errorCallback(res) {
       vm.error = res.data.message;
+      if (vm.error === 'Email already exists') {
+        vm.error = 'El e-mail pertenece a otra persona';
+      }
+      if (vm.error === 'MobilePhone already exists') {
+        vm.error = 'El número de celular pertenece a otra persona';
+      }
     }
   }
 })();

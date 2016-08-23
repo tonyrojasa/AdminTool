@@ -109,6 +109,11 @@
       vm.receipt.event = event;
     };
 
+    //set registration event
+    vm.setEventRegistrationEvent = function(event) {
+      vm.receipt.eventRegistration.event = event;
+    };
+
     // Remove existing Receipt
     function remove() {
       if (confirm('Are you sure you want to delete?')) {

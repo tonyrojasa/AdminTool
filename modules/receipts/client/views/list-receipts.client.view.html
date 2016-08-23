@@ -42,7 +42,8 @@
         <tr ng-class="vm.getStatusClass(receipt)" ng-repeat="receipt in vm.receipts | orderBy:['receivedFrom', 'paymentDate'] | filter : vm.searchFilter | filter: vm.event.name">
           <td>{{receipt.eventRegistration.registrationNumber}}</td>
           <td>{{receipt.receiptNumber}}</td>          
-          <td>{{receipt.event.name}}</td>
+          <td ng-if="receipt.eventRegistration">{{receipt.eventRegistration.event.name}}</td>
+          <td ng-if="!receipt.eventRegistration">{{receipt.event.name}}</td>
           <td>{{receipt.paymentOf}}</td>
           <td>{{receipt.paymentDate | date:'dd-MMM-yyyy'}}</td>
           <td>{{receipt.receivedFrom}}</td>

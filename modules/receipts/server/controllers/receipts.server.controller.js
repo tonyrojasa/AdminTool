@@ -83,7 +83,12 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
   Receipt.find().sort('-created')
     .populate('event')
-    .populate('eventRegistration', 'registrationNumber')
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'event'
+      }
+    })
     .populate('user', 'displayName').exec(function(err, receipts) {
       if (err) {
         return res.status(400).send({
@@ -112,6 +117,12 @@ exports.receiptByID = function(req, res, next, id) {
       path: 'eventRegistration',
       populate: {
         path: 'person'
+      }
+    })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'event'
       }
     })
     .exec(function(err, receipt) {

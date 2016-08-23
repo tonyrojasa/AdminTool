@@ -11,13 +11,17 @@
         versión beta 1
       </h5>
     </div> 
-    <div class="row" ng-show="vm.authentication.user">    
+    <div class="row" ng-show="vm.authentication.user && !vm.authentication.isGuestUser()">    
       <span class="text-muted">Accesos directos:</span>
       <div class="form-group" ng-if="vm.authentication.user">
         <a class="btn btn-primary btn-xs" data-ui-sref="events.list">Eventos</a>
         <a class="btn btn-primary btn-xs" data-ui-sref="eventregistrations.list">Inscripciones</a>
         <a class="btn btn-primary btn-xs" data-ui-sref="serviceacademyclasses.list">Academias</a>
       </div> 
+    </div> 
+    <div class="row" ng-show="vm.authentication.user && vm.authentication.isGuestUser()">    
+      <h3 class="text-danger">Contacte algún Administrador del sistema</h1>
+      <h4 class="text-danger">Debe solicitar permisos para acceder a las diferentes secciones.</h2>
     </div>   
     <div class="row">
       <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">

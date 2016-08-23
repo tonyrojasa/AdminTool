@@ -67,7 +67,9 @@
     //set registration event
     function setEvent(event) {
       vm.eventregistration.event = event;
-      vm.eventregistration.balanceAmount = event.price;
+      if (!vm.eventregistration._id) {
+        vm.eventregistration.balanceAmount = event.price;
+      }
 
       if (!vm.isNewMemberRegistration()) {
         var people = PeopleService.query();
@@ -108,6 +110,12 @@
 
       function errorPersonCallback(res) {
         vm.error = res.data.message;
+        if (vm.error === 'Email already exists') {
+          vm.error = 'El e-mail pertenece a otra persona';
+        }
+        if (vm.error === 'MobilePhone already exists') {
+          vm.error = 'El número de celular pertenece a otra persona';
+        }
       }
     }
 

@@ -42,7 +42,7 @@
         }
       })
       .state('eventregistrations.edit', {
-        url: '/:eventregistrationId/edit:newMember',
+        url: '/:eventregistrationId/edit/:newMember',
         params: {
           'newMember': 'true',
           'personId': null
