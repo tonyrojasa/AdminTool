@@ -127,7 +127,7 @@
           <label class="control-label" for="currentBalance">Saldo actual *</label>
           <div class="input-group"> 
             <span class="input-group-addon">₡</span>
-            <input type="number" ng-disabled="((vm.isEventRegistrationPayment && vm.receipt._id) || vm.receipt.isDebit)" name="currentBalance" type="number" ng-model="vm.receipt.currentBalance" ng-change="vm.calculateBalanceDue()" id="currentBalance" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Saldo actual" required>
+            <input type="number" ng-disabled="(vm.isEventRegistrationPayment || vm.receipt.isDebit)" name="currentBalance" type="number" ng-model="vm.receipt.currentBalance" ng-change="vm.calculateBalanceDue()" id="currentBalance" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Saldo actual" required>
           </div>         
           <div ng-messages="vm.form.receiptForm.currentBalance.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Saldo actual es requerido.</p>
@@ -137,10 +137,11 @@
           <label class="control-label" for="paymentAmount">Abono (monto del pago) *</label>
           <div class="input-group"> 
             <span class="input-group-addon">₡</span>
-            <input name="paymentAmount" type="number" ng-model="vm.receipt.paymentAmount" ng-change="vm.calculateBalanceDue()" id="paymentAmount" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Abono" required ng-disabled="vm.isEventRegistrationPayment && vm.receipt._id">
+            <input name="paymentAmount" type="number" ng-model="vm.receipt.paymentAmount" ng-change="vm.calculateBalanceDue()" id="paymentAmount" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Abono" required ng-disabled="vm.isEventRegistrationPayment && vm.receipt._id" lower-than="{{vm.receipt.currentBalance}}">
           </div>
           <div ng-messages="vm.form.receiptForm.paymentAmount.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Abono es requerido.</p>
+            <p class="help-block error-text" ng-message="lowerThan">Abono no puede ser mayor al saldo actual.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
