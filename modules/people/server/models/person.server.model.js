@@ -66,13 +66,11 @@ var PersonSchema = new Schema({
   },
   email: {
     type: String,
-    trim: true,
-    unique: true
+    trim: true
   },
   mobilePhone: {
     type: String,
-    trim: true,
-    unique: true
+    trim: true
   },
   homePhone: {
     type: String,
