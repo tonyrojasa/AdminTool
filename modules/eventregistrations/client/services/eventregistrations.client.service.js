@@ -1,5 +1,5 @@
 // Eventregistrations service used to communicate Eventregistrations REST endpoints
-(function () {
+(function() {
   'use strict';
 
   angular

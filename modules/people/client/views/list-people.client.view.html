@@ -1,3 +1,21 @@
+<div ng-if="vm.error">
+  <br />
+  <div class="alert alert-danger">
+    <a href="#" class="close" data-dismiss="alert" ng-click='vm.error = undefined'>&times;</a>
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <strong class="text-danger">Error:</strong>
+    <span>{{vm.error}}</span>
+  </div>
+</div>
+<div ng-if="vm.success">
+  <br />
+  <div class="alert alert-success" role="alert">
+    <a href="#" class="close" data-dismiss="alert" ng-click='vm.success = undefined'>&times;</a>
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <strong class="text-success">Operación ejecutada exitosamente:</strong>
+    <span>{{vm.success}}</span>
+  </div>
+</div>
 <section>
   <div class="page-header">
     <h1>Lista de Personas</h1>
@@ -66,6 +84,11 @@
           <td>{{person.age}}</td>
           <td>    
             <a data-ui-sref="people.view({ personId: person._id})">Detalles</a>    
+          </td>          
+          <td>
+            <a ng-if="vm.authentication.isUserAdmin()" class="btn btn-default" data-ng-click="vm.remove(person)">
+              <i class="glyphicon glyphicon-trash"></i>
+            </a>
           </td>
         </tr>
         </tbody>

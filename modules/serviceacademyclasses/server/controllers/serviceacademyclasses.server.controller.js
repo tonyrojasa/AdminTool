@@ -112,6 +112,22 @@ exports.listAllCurrent = function(req, res) {
 };
 
 /**
+ * List of Serviceacademyclasses by personId
+ */
+exports.listByPersonId = function(req, res) {
+  var personId = req.params.personId;
+  Serviceacademyclass.where('teacher', personId).sort('-created').populate('user', 'displayName').exec(function(err, serviceacademyclasses) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(serviceacademyclasses);
+    }
+  });
+};
+
+/**
  * Serviceacademyclass middleware
  */
 exports.serviceacademyclassByID = function(req, res, next, id) {

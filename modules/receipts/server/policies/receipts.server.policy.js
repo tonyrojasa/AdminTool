@@ -20,6 +20,9 @@ exports.invokeRolesPolicies = function() {
     }, {
       resources: '/api/receipts/:receiptId',
       permissions: '*'
+    }, {
+      resources: '/api/receipts/eventregistration/:eventRegistrationId',
+      permissions: '*'
     }]
   }, {
     roles: ['inscriptor'],
@@ -29,6 +32,9 @@ exports.invokeRolesPolicies = function() {
     }, {
       resources: '/api/receipts/:receiptId',
       permissions: ['get']
+    }, {
+      resources: '/api/receipts/eventregistration/:eventRegistrationId',
+      permissions: ['get']
     }]
   }, {
     roles: ['guest', 'user', 'teacher', 'student'],
@@ -37,6 +43,9 @@ exports.invokeRolesPolicies = function() {
       permissions: ['get']
     }, {
       resources: '/api/receipts/:receiptId',
+      permissions: ['get']
+    }, {
+      resources: '/api/receipts/eventregistration/:eventRegistrationId',
       permissions: ['get']
     }]
   }]);

@@ -101,6 +101,30 @@ exports.list = function(req, res) {
 };
 
 /**
+ * List of Receipts by EventRegistrationId
+ */
+exports.listByEventRegistrationId = function(req, res) {
+  var eventRegistrationId = req.params.eventRegistrationId;
+  Receipt.where('eventRegistration', eventRegistrationId).sort('-created')
+    .populate('event')
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'event'
+      }
+    })
+    .populate('user', 'displayName').exec(function(err, receipts) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(receipts);
+      }
+    });
+};
+
+/**
  * Receipt middleware
  */
 exports.receiptByID = function(req, res, next, id) {

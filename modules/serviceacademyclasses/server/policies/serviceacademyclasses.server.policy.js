@@ -26,6 +26,9 @@ exports.invokeRolesPolicies = function() {
     }, {
       resources: '/api/serviceacademyclasses/current/:serviceacademyclassId',
       permissions: '*'
+    }, {
+      resources: '/api/serviceacademyclasses/person/:personId',
+      permissions: '*'
     }]
   }, {
     roles: ['teacher'],
@@ -41,6 +44,9 @@ exports.invokeRolesPolicies = function() {
     }, {
       resources: '/api/serviceacademyclasses/current/:serviceacademyclassId',
       permissions: 'get'
+    }, {
+      resources: '/api/serviceacademyclasses/person/:personId',
+      permissions: 'get'
     }]
   }, {
     roles: ['guest', 'user', 'student'],
@@ -49,6 +55,9 @@ exports.invokeRolesPolicies = function() {
       permissions: ['get']
     }, {
       resources: '/api/serviceacademyclasses/:serviceacademyclassId',
+      permissions: ['get']
+    }, {
+      resources: '/api/serviceacademyclasses/person/:personId',
       permissions: ['get']
     }]
   }]);

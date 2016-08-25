@@ -1,3 +1,11 @@
+<div ng-if="vm.error">
+  <br />
+  <div class="alert alert-danger" role="alert">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <strong class="text-danger">Error:</strong>
+    <span>{{vm.error}}</span>
+  </div>
+</div>
 <section>
   <div class="page-header">
     <h1>{{vm.receipt._id ? 'Editar Recibo' : 'Nuevo Recibo'}}</h1>
@@ -167,9 +175,6 @@
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-primary">{{vm.receipt._id ? 'Actualizar' : 'Crear'}}</button>        
-        </div>
-        <div ng-show="vm.error" class="text-danger">
-          <strong ng-bind="vm.error"></strong>
         </div>
       </fieldset>
     </form>

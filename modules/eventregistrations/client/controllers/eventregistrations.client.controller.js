@@ -6,12 +6,12 @@
     .module('eventregistrations')
     .controller('EventregistrationsController', EventregistrationsController);
 
-  EventregistrationsController.$inject = ['$scope', '$state', '$stateParams', 'Authentication',
+  EventregistrationsController.$inject = ['$scope', '$anchorScroll', '$state', '$stateParams', 'Authentication',
     'eventregistrationResolve', 'CurrentEventsService', 'EventpeoplegroupsService', 'personResolve',
     'PeopleService', 'EventregistrationsByEventService'
   ];
 
-  function EventregistrationsController($scope, $state, $stateParams, Authentication, eventregistration,
+  function EventregistrationsController($scope, $anchorScroll, $state, $stateParams, Authentication, eventregistration,
     CurrentEventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService) {
     var vm = this;
 
@@ -21,7 +21,6 @@
     vm.form = {};
     vm.events = CurrentEventsService.query();
     vm.eventPeopleGroups = EventpeoplegroupsService.query();
-    vm.remove = remove;
     vm.save = save;
     vm.editMode = vm.eventregistration._id ? true : false;
     vm.setEvent = setEvent;
@@ -88,13 +87,6 @@
       vm.people = _.differenceBy(people, registeredPeopleInSelectedEvent, '_id');
     }
 
-    // Remove existing Eventregistration
-    function remove() {
-      if (confirm('Are you sure you want to delete?')) {
-        vm.eventregistration.$remove($state.go('eventregistrations.list'));
-      }
-    }
-
     // Save Person
     function savePerson() {
       if (vm.person._id) {
@@ -111,11 +103,13 @@
       function errorPersonCallback(res) {
         vm.error = res.data.message;
         if (vm.error === 'Email already exists') {
-          vm.error = 'El e-mail pertenece a otra persona';
+          vm.error = 'El Email pertenece a otra persona';
         }
         if (vm.error === 'MobilePhone already exists') {
           vm.error = 'El número de celular pertenece a otra persona';
         }
+
+        $anchorScroll(document.body.scrollTop);
       }
     }
 
@@ -133,6 +127,7 @@
 
       function errorCallback(res) {
         vm.error = res.data.message;
+        $anchorScroll(document.body.scrollTop);
       }
     }
 
@@ -140,6 +135,8 @@
     function save(isValid) {
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.eventregistrationForm');
+        vm.error = 'Corregir los errores del formulario';
+        $anchorScroll(document.body.scrollTop);
         return false;
       }
       savePerson();

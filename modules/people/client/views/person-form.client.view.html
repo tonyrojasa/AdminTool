@@ -65,7 +65,10 @@
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="email">Email</label>
-  <input name="email" type="text" ng-model="person.email" id="email" class="form-control" placeholder="Email">
+  <input name="email" type="email" ng-model="person.email" id="email" class="form-control" placeholder="Email">
+  <div ng-messages="form.email.$error" role="alert">
+    <p class="help-block error-text" ng-message="email">Email es incorrecto.</p>
+  </div>
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="mobilePhone">Teléfono celular</label>

@@ -17,6 +17,9 @@ module.exports = function(app) {
     .put(receipts.update)
     .delete(receipts.delete);
 
+  app.route('/api/receipts/eventregistration/:eventRegistrationId').all(receiptsPolicy.isAllowed)
+    .get(receipts.listByEventRegistrationId);
+
   // Finish by binding the Receipt middleware
   app.param('receiptId', receipts.receiptByID);
 };

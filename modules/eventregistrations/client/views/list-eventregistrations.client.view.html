@@ -1,3 +1,21 @@
+<div ng-if="vm.error">
+  <br />
+  <div class="alert alert-danger">
+    <a href="#" class="close" data-dismiss="alert" ng-click='vm.error = undefined'>&times;</a>
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <strong class="text-danger">Error:</strong>
+    <span>{{vm.error}}</span>
+  </div>
+</div>
+<div ng-if="vm.warning">
+  <br />
+  <div class="alert alert-warning" role="alert">
+    <a href="#" class="close" data-dismiss="alert" ng-click='vm.warning = undefined'>&times;</a>
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <strong class="text-warning">Alerta:</strong>
+    <span>{{vm.warning}}</span>
+  </div>
+</div>
 <section>
   <div class="page-header">
     <h1>Lista de Inscritos</h1>
@@ -53,6 +71,11 @@
           </td>
           <td>    
             <a ng-if="vm.hasPendingPayment(eventRegistration) || vm.authentication.isUserAdmin()" data-ui-sref="receipts.createFromEventRegistration({ eventregistrationId: eventRegistration._id })">Realizar Pago</a>    
+          </td>
+          <td>
+            <a ng-if="vm.authentication.isUserAdmin()" class="btn btn-default" data-ng-click="vm.remove(eventRegistration)">
+              <i class="glyphicon glyphicon-trash"></i>
+            </a>
           </td>
         </tr>
         </tbody>

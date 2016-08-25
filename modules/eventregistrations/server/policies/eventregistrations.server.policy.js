@@ -23,6 +23,9 @@ exports.invokeRolesPolicies = function() {
     }, {
       resources: '/api/eventregistrations/event/:eventId',
       permissions: '*'
+    }, {
+      resources: '/api/eventregistrations/person/:personId',
+      permissions: '*'
     }]
   }, {
     roles: ['inscriptor'],
@@ -32,6 +35,9 @@ exports.invokeRolesPolicies = function() {
     }, {
       resources: '/api/eventregistrations/:eventregistrationId',
       permissions: ['get', 'post', 'patch', 'put']
+    }, {
+      resources: '/api/eventregistrations/event/:eventId',
+      permissions: ['get']
     }, {
       resources: '/api/eventregistrations/event/:eventId',
       permissions: ['get']
@@ -46,6 +52,9 @@ exports.invokeRolesPolicies = function() {
       permissions: ['get']
     }, {
       resources: '/api/eventregistrations/event/:eventId',
+      permissions: ['get']
+    }, {
+      resources: '/api/eventregistrations/person/:personId',
       permissions: ['get']
     }]
   }]);

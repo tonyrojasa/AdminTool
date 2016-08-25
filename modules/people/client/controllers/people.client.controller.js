@@ -6,9 +6,9 @@
     .module('people')
     .controller('PeopleController', PeopleController);
 
-  PeopleController.$inject = ['_', '$scope', '$state', 'Authentication', 'personResolve'];
+  PeopleController.$inject = ['_', '$scope', '$anchorScroll', '$state', 'Authentication', 'personResolve'];
 
-  function PeopleController(_, $scope, $state, Authentication, person) {
+  function PeopleController(_, $scope, $anchorScroll, $state, Authentication, person) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -45,6 +45,8 @@
       debugger;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.personForm');
+        vm.error = 'Corregir los errores del formulario';
+        $anchorScroll(document.body.scrollTop);
         return false;
       }
 
