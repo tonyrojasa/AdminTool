@@ -64,7 +64,7 @@
             }, function(data) {
               var isInStudents = (data.length > 0);
               if (isInEventRegistrations || isInServiceAcademyClass || isInStudents) {
-                vm.error = 'No se puede eliminar la persona con el nombre de ' +
+                vm.error = 'No se puede eliminar la persona con el nombre ' +
                   selectedPersonName + ' debido a que está siendo utilizada en otros modulos.';
                 $anchorScroll(document.body.scrollTop);
               } else {

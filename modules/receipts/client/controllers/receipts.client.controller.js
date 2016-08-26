@@ -7,14 +7,14 @@
     .controller('ReceiptsController', ReceiptsController);
 
   ReceiptsController.$inject = ['$scope', '$state', 'Authentication', 'receiptResolve', 'EventsService',
-    'eventregistrationResolve', 'EventregistrationsService', "$stateParams"
+    'eventregistrationResolve', 'EventregistrationsService', '$stateParams'
   ];
 
   function ReceiptsController($scope, $state, Authentication, receipt, EventsService, eventregistration,
     EventregistrationsService, $stateParams) {
     var vm = this;
 
-    vm.successMessage = $stateParams.successMessage;
+    vm.success = $stateParams.successMessage;
 
     vm.authentication = Authentication;
     vm.receipt = receipt;
@@ -115,11 +115,36 @@
     };
 
     // Remove existing Receipt
+    vm.remove = function(receipt) {
+      if (confirm('Está seguro que desea eliminar el recibo # ' + receipt.receiptNumber + ' ?')) {
+        var eventRegistrationSuccessMsg = '';
+        receipt.$remove(function() {
+          if (vm.isEventRegistrationReceipt(receipt)) {
+            vm.updateEventRegistration(receipt);
+            eventRegistrationSuccessMsg = 'Y se actualizó el saldo de la inscripción # ' + receipt.eventRegistration.registrationNumber;
+          }
+          vm.success = 'Este recibo ha sido eliminado. ' + eventRegistrationSuccessMsg + ', haga click en el link de recibos para volver a la lista.';
+        });
+      }
+    };
+
+    // Remove existing Receipt
     function remove() {
       if (confirm('Are you sure you want to delete?')) {
         vm.receipt.$remove($state.go('receipts.list'));
       }
     }
+
+    vm.updateEventRegistration = function(receipt) {
+      receipt.eventRegistration.balanceAmount += receipt.paymentAmount;
+      EventregistrationsService.update({
+        eventregistrationId: receipt.eventRegistration._id
+      }, receipt.eventRegistration);
+    };
+
+    vm.isEventRegistrationReceipt = function(receipt) {
+      return receipt.eventRegistration !== undefined;
+    };
 
     // Save EventRegistration (if null only save receipt)
     function saveEventRegistration() {
@@ -152,7 +177,7 @@
         if (vm.isEventRegistrationPayment) {
           $state.go('receipts.view', {
             receiptId: res._id,
-            successMessage: 'El pago se ha ealizado exitosamente.'
+            successMessage: 'Recibo creado. El pago se ha ralizado.'
           });
         } else {
           $state.go('receipts.list');

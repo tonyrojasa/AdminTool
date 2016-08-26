@@ -1,7 +1,20 @@
-<div ng-if="vm.successMessage" class="alert alert-success" role="alert">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  <span class="sr-only">Recibo Creado:</span>
-  {{vm.successMessage}}
+<div ng-if="vm.error">
+  <br />
+  <div class="alert alert-danger">
+    <a href="#" class="close" data-dismiss="alert" ng-click='vm.error = undefined'>&times;</a>
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <strong class="text-danger">Error:</strong>
+    <span>{{vm.error}}</span>
+  </div>
+</div>
+<div ng-if="vm.success">
+  <br />
+  <div class="alert alert-success" role="alert">
+    <a href="#" class="close" data-dismiss="alert" ng-click='vm.success = undefined'>&times;</a>
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <strong class="text-success">Operación ejecutada exitosamente:</strong>
+    <span>{{vm.success}}</span>
+  </div>
 </div>
 <section class="row">
   <div class="page-header">
@@ -31,13 +44,15 @@
   </div>
 </section>
 <section class="row">
-  <div class="col-md-2 pull-right">
+  <div class="col-md-6 pull-right">
     <a class="btn btn-primary" data-ng-show="vm.authentication.isUserAdmin()" data-ui-sref="receipts.edit({ receiptId: vm.receipt._id })">
       <i class="glyphicon glyphicon-edit"></i>
       Editar
     </a>
-  </div>
-  <div class="col-md-2 pull-right">
+    <a class="btn btn-primary" data-ng-click="vm.remove(vm.receipt)" ng-if="vm.authentication.isUserAdmin()">
+      <i class="glyphicon glyphicon-trash"></i>
+      Eliminar
+    </a>
     <!-- <a class="btn btn-primary" data-ng-click="vm.remove()">
       <i class="glyphicon glyphicon-trash"></i>
     </a> -->
