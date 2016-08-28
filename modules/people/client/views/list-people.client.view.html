@@ -48,7 +48,7 @@
           <ui-select-match  placeholder="Seleccione el Área de Servicio...">
                 <span>{{$select.selected.name}}</span>
             </ui-select-match>
-            <ui-select-choices repeat="item in (vm.personTypes | filter: $select.search) track by item._id">
+            <ui-select-choices repeat="item in (vm.serviceAreas | filter: $select.search) track by item._id">
                 <div ng-bind-html="item.name | highlight: $select.search"></div>
             </ui-select-choices>
         </ui-select> 
