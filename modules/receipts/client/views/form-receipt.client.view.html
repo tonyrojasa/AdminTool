@@ -52,7 +52,6 @@
             <p class="help-block error-text" ng-message="required" >Fecha de pago es requerido.</p>
           </div>
         </div>
-        {{vm.isEventRegistrationPayment}}
         <div class="form-group" show-errors ng-if="!vm.isEventRegistrationPayment">        
           <label class="control-label" for="event">Evento *</label>  
           <input name="event" type="hidden" ng-model="vm.receipt.event" id="event" class="form-control" required>

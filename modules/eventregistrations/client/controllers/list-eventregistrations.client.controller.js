@@ -6,11 +6,11 @@
     .controller('EventregistrationsListController', EventregistrationsListController);
 
   EventregistrationsListController.$inject = ['$scope', 'EventregistrationsService', 'EventsService', 'Authentication',
-    'ReceiptsByEventRegistrationService', '$anchorScroll'
+    'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams'
   ];
 
   function EventregistrationsListController($scope, EventregistrationsService, EventsService, Authentication,
-    ReceiptsByEventRegistrationService, $anchorScroll) {
+    ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams) {
     var vm = this;
     vm.authentication = Authentication;
     vm.events = EventsService.query();
@@ -18,6 +18,72 @@
     vm.setEvent = setEvent;
     vm.remove = remove;
     vm.receiptsByEventRegistrationService = ReceiptsByEventRegistrationService;
+
+    vm.cols = [{
+      field: "registrationNumber",
+      title: "#",
+      show: true
+    }, {
+      field: "event.name",
+      title: "Evento",
+      show: true
+    }, {
+      field: "registrationDate",
+      title: "Fecha de Inscripción",
+      show: true
+    }, {
+      field: "eventPeopleGroup.name",
+      title: "Grupo",
+      show: false
+    }, {
+      field: "person.firstName",
+      title: "Nombre",
+      show: true
+    }, {
+      field: "person.lastName",
+      title: "Apellido 1",
+      show: true
+    }, {
+      field: "person.secondLastName",
+      title: "Apellido 2",
+      show: true
+    }, {
+      field: "person.personType.name",
+      title: "Tipo de Persona",
+      show: true
+    }, {
+      field: "balanceAmount",
+      title: "Saldo ₡",
+      show: true
+    }];
+
+    vm.isCollapsed = true;
+
+    vm.tableParams = new NgTableParams({
+      page: 1,
+      count: 10
+    }, {
+      dataset: vm.eventregistrations
+    });
+
+    // vm.tableParams = new NgTableParams({
+    //   page: 1,
+    //   count: 10
+    // }, {
+    //   total: 0,
+    //   getData: function(params) {
+    //     var filter = params.filter();
+    //     var sorting = params.sorting();
+    //     var count = params.count();
+    //     var page = params.page();
+    //     // ajax request to api
+    //     return EventregistrationsService.query().$promise.then(function(data) {
+    //       params.total(data.length); // recal. page nav controls
+    //       vm.eventregistrations = data;
+    //       return data;
+    //     });
+    //   }
+    // });
 
     //set registration event
     function setEvent(event) {
@@ -41,7 +107,7 @@
 
     // Remove existing Eventregistration
     function remove(eventRegistration) {
-      if (confirm('Está seguro que desea eliminar la inscripción seleccionada?')) {
+      if (confirm('Está seguro que desea eliminar la inscripción # ' + eventRegistration.registrationNumber + '?')) {
         vm.receiptsByEventRegistrationService.query({
           'eventRegistrationId': eventRegistration._id
         }, function(data) {

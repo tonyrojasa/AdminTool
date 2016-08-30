@@ -18,11 +18,11 @@
 </div>
 <section>
   <div class="page-header">
-    <h1>Lista de Inscritos</h1>
+    <h2>Lista de Inscritos</h2>
   </div>
   <a class="btn btn-primary" data-ui-sref="eventregistrations.create">Nuevo Miembro</a>
   <a class="btn btn-primary" data-ui-sref="eventregistrations.create({newMember:false})">Miembro Existente</a>
-  <br /><br />
+  <br />
   <div id="content" data-ng-if="vm.eventregistrations.length">
     <div class="col-md-6 form-group">        
       <label class="control-label" for="event">Evento: </label>  
@@ -41,54 +41,92 @@
           </button>
         </span>  
       </div> 
+    </div>  
+    <div class="col-md-6 form-group">
+      <label class="control-label" for="paymentDate">Fecha de inscripción</label>
+      <br />
+      <datetimepicker 
+        ng-model="vm.eventRegistrationDate" 
+        hidden-time="true" 
+        date-format="dd-MMM-yyyy" 
+        current-text="Hoy"
+        clear-text="Limpiar"
+        close-text="Cerrar"> 
+      </datetimepicker>    
     </div>
-    <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
+    <div class="col-md-12">
+     <strong>Columnas para mostrar <button type="button" class="btn btn-link" ng-click="vm.isCollapsed = !vm.isCollapsed">
+      {{vm.isCollapsed ? 'Ver opciones &gt;&gt;' : '&lt;&lt; Ocultar Opciones'}}</button>
+     </strong>
+    </div>
+    <hr>
+    <div class="col-md-12 well well-lg" uib-collapse="vm.isCollapsed">
+      <label class="checkbox-inline" ng-repeat="col in vm.cols">
+        <input type="checkbox" ng-if="col.title()" ng-model-options="{ getterSetter: true }" ng-model="col.show"/> 
+        {{col.title()}}
+      </label>
+    </div>
     <br />
     <div id="exportable">
-      <table class="table table-condensed">
-        <thead>
-        <tr>
-          <th>#</th>
-          <th>Evento</th>
-          <th>Fecha de Inscripción</th>
-          <th>Grupo</th>
-          <th>Nombre Persona Inscrita</th>
-          <th>Tipo de Persona</th>
-          <th>Saldo ₡</th>
-        </tr>
-        </thead>
+      <table ng-table="vm.tableParams" class="table" show-filter="true" ng-table-columns-binding="vm.cols">
         <tbody>
-        <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in vm.eventregistrations | orderBy:['person.firstName', 'person.lastName', 'person.secondLastName'] | filter: vm.searchFilter | filter: vm.event.name">
-          <td>{{eventRegistration.registrationNumber}}</td>
-          <td>{{eventRegistration.event.name}}</td>
-          <td>{{eventRegistration.registrationDate | date:'dd-MMM-yyyy'}}</td>
-          <td>{{eventRegistration.eventPeopleGroup.name}}</td>
-          <td>{{eventRegistration.person.firstName}} {{eventRegistration.person.lastName}} {{eventRegistration.person.secondLastName}}</td>
-          <td>{{eventRegistration.person.personType.name}}</td>
-          <td>{{eventRegistration.balanceAmount | currency:''}}</td>
-          <td>    
-            <a data-ui-sref="eventregistrations.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })">Editar</a>    
-          </td>
-          <td>    
-            <a ng-if="vm.hasPendingPayment(eventRegistration) || vm.authentication.isUserAdmin()" data-ui-sref="receipts.createFromEventRegistration({ eventregistrationId: eventRegistration._id })">Realizar Pago</a>    
-          </td>
-          <td>
-            <a ng-if="vm.authentication.isUserAdmin()" class="btn btn-default" data-ng-click="vm.remove(eventRegistration)">
-              <i class="glyphicon glyphicon-trash"></i>
-            </a>
-          </td>
-        </tr>
+          <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in $data | orderBy:['registrationDate','person.firstName', 'person.lastName', 'person.secondLastName'] | filter: vm.event.name | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''}">
+            <td class="col-md-1" title="'#'" filter="{ 'registrationNumber': 'number'}" sortable="'registrationNumber'" ng-if="true">
+                {{eventRegistration.registrationNumber}}</td>
+            <td title="'Evento'" filter="{ 'event.name': 'text'}" sortable="'event.name'" ng-if="true">
+                {{eventRegistration.event.name}}</td>
+            <td title="'Fecha de Inscripción'" sortable="'registrationDate'" ng-if="true">
+                {{eventRegistration.registrationDate | date:'dd-MMM-yyyy'}}</td>
+            <td title="'Grupo'" filter="{ 'eventPeopleGroup.name': 'text'}" sortable="'eventPeopleGroup.name'" ng-if="true">
+                {{eventRegistration.eventPeopleGroup.name}}</td>
+            <td title="'Nombre'" filter="{ 'person.firstName': 'text'}" sortable="'person.firstName'" ng-if="true">
+                {{eventRegistration.person.firstName}}</td>
+            <td title="'1er. Apellido'" filter="{ 'person.lastName': 'text'}" sortable="'person.lastName'" ng-if="true">
+                {{eventRegistration.person.lastName}}</td>
+            <td title="'2do. Apellido'" filter="{ 'person.secondLastName': 'text'}" sortable="'person.secondLastName'" ng-if="true">
+                {{eventRegistration.person.secondLastName}}</td>
+            <td title="'Tipo de Persona'" filter="{ 'person.personType.name': 'text'}" sortable="'person.personType.name'" ng-if="true">
+                {{eventRegistration.person.personType.name}}</td>
+            <td class="col-md-1" title="'Saldo ₡'" filter="{ 'balanceAmount': 'text'}" sortable="'balanceAmount'" ng-if="true">
+                {{eventRegistration.balanceAmount}} {{$data.$sum('balanceAmount')}}</td>
+            <td class="col-md-1">    
+              <a data-ui-sref="eventregistrations.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })">Editar</a>
+            </td>
+            <td>    
+              <a ng-if="vm.hasPendingPayment(eventRegistration) || vm.authentication.isUserAdmin()" data-ui-sref="receipts.createFromEventRegistration({ eventregistrationId: eventRegistration._id })">Realizar Pago</a>    
+            </td>
+            <td>
+              <a ng-if="vm.authentication.isUserAdmin()" class="btn btn-default" data-ng-click="vm.remove(eventRegistration)">
+                <i class="glyphicon glyphicon-trash"></i>
+              </a>
+            </td>
+          </tr>
         </tbody>
         <tfoot>
-          <tr>
-            <td colspan="5"></td>            
-            <td align="right"><b>Total:</b></td>
-            <td ng-class="vm.getTotalClass(vm.eventregistrations | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'balanceAmount')">{{vm.eventregistrations | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'balanceAmount'  | currency:''}}</td>
+          <tr>          
+            <td ng-if="vm.cols[0].show()"></td>  
+            <td ng-if="vm.cols[1].show()"></td> 
+            <td ng-if="vm.cols[2].show()"></td> 
+            <td ng-if="vm.cols[3].show()"></td>   
+            <td ng-if="vm.cols[4].show()"></td> 
+            <td ng-if="vm.cols[5].show()"></td> 
+            <td ng-if="vm.cols[6].show()"></td> 
+            <td ng-if="vm.cols[7].show()"></td> 
+            <td ng-if="vm.cols[8].show()" ng-class="vm.getTotalClass($data | filter: vm.event.name  | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''} | sumByKey:'balanceAmount')">
+              <span><b>Total:</b>{{$data | filter: vm.event.name  | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''} | sumByKey:'balanceAmount'  | currency:''}}</span>
+            </td>
+            <td ng-if="true" class="text-center">            
+              <span><b>Inscripciones:</b> {{($data | filter: vm.event.name  | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''}).length}}</span>
+            </td>
+            <td colspan="2">
+              <div class="text-right">
+                <export-to-file link-text="Exportar" element-id="exportable" format="excel" file-name="INSCRIPCIONES"></export-to-file>
+              </div>
+            </td>
           </tr>
         </tfoot>
       </table>
-    </div>
-    <export-to-file link-text="Exportar" element-id="exportable" format="excel" file-name="INSCRIPCIONES"></export-to-file>
+    </div>    
   </div>   
   <div class="alert alert-warning text-center" data-ng-if="vm.eventregistrations.$resolved && !vm.eventregistrations.length">
     No Eventregistrations yet, why don't you <a data-ui-sref="eventregistrations.create">create one</a>?

@@ -25,7 +25,7 @@
         </td>
         <td>
           <div class="form-inline input-group" show-errors ng-if="!readonly">
-            <input name="contactInfoPersonPhone_{{$index}}" ui-mask="9999-9999" model-view-value="true" ng-model="item.phoneNumber" id="contactInfoPersonPhone_{{$index}}" class="form-control" ng-disabled="readonly" required />
+            <input name="contactInfoPersonPhone_{{$index}}" mask="9999-9999" mask-restrict="reject" autocomplete="off" model-view-value="true" ng-model="item.phoneNumber" id="contactInfoPersonPhone_{{$index}}" class="form-control" ng-disabled="readonly" required />
           </div>
           <div ng-if="readonly">
             {{item.phoneNumber}}

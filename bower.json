@@ -21,7 +21,9 @@
     "lodash": "^4.13.1",
     "angular-i18n": "^1.5.7",
     "angular-ui-select": "^0.18.1",
-    "angular-sanitize": "^1.5.7"
+    "angular-sanitize": "^1.5.7",
+    "ngMask": "angular-mask#^3.1.1",
+    "ng-table": "^1.0.0"
   },
   "browserify-shim": {
     "moment": "moment"

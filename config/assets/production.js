@@ -8,7 +8,8 @@ module.exports = {
         'public/lib/bootstrap/dist/css/bootstrap.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.css',
         'public/lib/angular-ui-bootstrap-datetimepicker/datetimepicker.css',
-        'public/lib/angular-ui-select/dist/select.css'
+        'public/lib/angular-ui-select/dist/select.css',
+        'public/lib/ng-table/dist/ng-table.min.css'
         // endbower
       ],
       js: [
@@ -29,7 +30,9 @@ module.exports = {
         'public/lib/angular-ui-mask/dist/mask.js',
         'public/lib/lodash/lodash.js',
         'public/lib/angular-ui-select/dist/select.js',
-        'public/lib/angular-sanitize/angular-sanitize.js'
+        'public/lib/angular-sanitize/angular-sanitize.js',
+        'public/lib/ngMask/dist/ngMask.min.js',
+        'public/lib/ng-table/dist/ng-table.min.js'
         // endbower
       ]
     },
