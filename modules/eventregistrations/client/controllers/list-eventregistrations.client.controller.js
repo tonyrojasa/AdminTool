@@ -21,40 +21,76 @@
 
     vm.cols = [{
       field: "registrationNumber",
-      title: "#",
-      show: true
+      title: function() {
+        return "#";
+      },
+      show: function() {
+        return true;
+      }
     }, {
       field: "event.name",
-      title: "Evento",
-      show: true
+      title: function() {
+        return "Evento";
+      },
+      show: function() {
+        return true;
+      }
     }, {
       field: "registrationDate",
-      title: "Fecha de Inscripción",
-      show: true
+      title: function() {
+        return "Fecha de Inscripción";
+      },
+      show: function() {
+        return true;
+      }
     }, {
       field: "eventPeopleGroup.name",
-      title: "Grupo",
-      show: false
+      title: function() {
+        return "Grupo";
+      },
+      show: function() {
+        return true;
+      }
     }, {
       field: "person.firstName",
-      title: "Nombre",
-      show: true
+      title: function() {
+        return "Nombre";
+      },
+      show: function() {
+        return true;
+      }
     }, {
       field: "person.lastName",
-      title: "Apellido 1",
-      show: true
+      title: function() {
+        return "Apellido 1";
+      },
+      show: function() {
+        return true;
+      }
     }, {
       field: "person.secondLastName",
-      title: "Apellido 2",
-      show: true
+      title: function() {
+        return "Apellido 2";
+      },
+      show: function() {
+        return true;
+      }
     }, {
       field: "person.personType.name",
-      title: "Tipo de Persona",
-      show: true
+      title: function() {
+        return "Tipo de Persona";
+      },
+      show: function() {
+        return true;
+      }
     }, {
       field: "balanceAmount",
-      title: "Saldo ₡",
-      show: true
+      title: function() {
+        return "Saldo ₡";
+      },
+      show: function() {
+        return true;
+      }
     }];
 
     vm.isCollapsed = true;

@@ -32,7 +32,8 @@ module.exports = {
         'public/lib/angular-ui-select/dist/select.js',
         'public/lib/angular-sanitize/angular-sanitize.js',
         'public/lib/ngMask/dist/ngMask.min.js',
-        'public/lib/ng-table/dist/ng-table.min.js'
+        'public/lib/ng-table/dist/ng-table.min.js',
+        'public/lib/ng-table-to-csv/dist/ng-table-to-csv.js'
         // endbower
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
