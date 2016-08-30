@@ -62,7 +62,7 @@
     <hr>
     <div class="col-md-12 well well-lg" uib-collapse="vm.isCollapsed">
       <label class="checkbox-inline" ng-repeat="col in vm.cols">
-        <input type="checkbox" ng-if="col.title()" ng-model-options="{ getterSetter: true }" ng-model="col.show"/> 
+        <input type="checkbox" ng-if="col.title" ng-model-options="{ getterSetter: true }" ng-model="col.show"/> 
         {{col.title()}}
       </label>
     </div>
@@ -70,7 +70,7 @@
     <div id="exportable">
       <table ng-table="vm.tableParams" class="table" show-filter="true" ng-table-columns-binding="vm.cols">
         <tbody>
-          <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in $data | orderBy:['registrationDate','person.firstName', 'person.lastName', 'person.secondLastName'] | filter: vm.event.name | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''}">
+          <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in $data | filter: vm.event.name | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''}">
             <td class="col-md-1" title="'#'" filter="{ 'registrationNumber': 'number'}" sortable="'registrationNumber'" ng-if="true">
                 {{eventRegistration.registrationNumber}}</td>
             <td title="'Evento'" filter="{ 'event.name': 'text'}" sortable="'event.name'" ng-if="true">
