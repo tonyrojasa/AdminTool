@@ -6,11 +6,11 @@
     .controller('EventregistrationsListController', EventregistrationsListController);
 
   EventregistrationsListController.$inject = ['$scope', 'EventregistrationsService', 'EventsService', 'Authentication',
-    'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams'
+    'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams', '$filter'
   ];
 
   function EventregistrationsListController($scope, EventregistrationsService, EventsService, Authentication,
-    ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams) {
+    ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams, $filter) {
     var vm = this;
     vm.authentication = Authentication;
     vm.events = EventsService.query();
@@ -18,6 +18,17 @@
     vm.setEvent = setEvent;
     vm.remove = remove;
     vm.receiptsByEventRegistrationService = ReceiptsByEventRegistrationService;
+
+    // $scope.$watch('vm.eventRegistrationDate', function(newVal, oldVal) {
+    //   debugger;
+    //   if (newVal) {
+    //     var date = newVal.toISOString()
+    //     vm.eventregistrations = $filter('filter')(vm.eventregistrations, {
+    //       registrationDate: date
+    //     });
+    //   }
+
+    // });
 
     vm.cols = [{
       field: "registrationNumber",
