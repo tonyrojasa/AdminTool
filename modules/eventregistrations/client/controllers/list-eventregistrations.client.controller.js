@@ -97,7 +97,7 @@
     }, {
       field: "balanceAmount",
       title: function() {
-        return "Saldo ₡";
+        return "Saldo ₡ Pendiente";
       },
       show: function() {
         return true;
@@ -162,8 +162,12 @@
             eventRegistration.$remove(function() {
               vm.warning = 'Se eliminó la inscripción #' + eventRegistration.registrationNumber + '. ' +
                 'Sin embargo, la persona ha sido creada en la base de datos. ' +
-                'Si desea inscribir la misma persona, debe hacerlo por medio de la opción Miembro Existente';
-              vm.eventregistrations = EventregistrationsService.query();
+                'Si desea inscribir la misma persona, debe hacerlo por medio de la opción Miembro Existente. ' +
+                'Si desea eliminar la persona de la base de datos, debe hacerlo desde el modulo de Personas.';
+              _.remove(vm.eventregistrations, {
+                _id: eventRegistration._id
+              });
+              vm.tableParams.reload();
               $anchorScroll(document.body.scrollTop);
             });
           } else {

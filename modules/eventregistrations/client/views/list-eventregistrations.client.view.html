@@ -22,7 +22,7 @@
   </div>
   <a class="btn btn-primary" data-ui-sref="eventregistrations.create">Nuevo Miembro</a>
   <a class="btn btn-primary" data-ui-sref="eventregistrations.create({newMember:false})">Miembro Existente</a>
-  <br />
+  <br /><br />
   <div id="content" data-ng-if="vm.eventregistrations.length">
     <div class="col-md-6 form-group">        
       <label class="control-label" for="event">Evento: </label>  
@@ -62,7 +62,6 @@
       {{vm.isCollapsed ? 'Ver opciones &gt;&gt;' : '&lt;&lt; Ocultar Opciones'}}</button>
      </strong>
     </div>
-    <hr>
     <div class="col-md-12 well well-lg" uib-collapse="vm.isCollapsed">
       <label class="checkbox-inline" ng-repeat="col in vm.cols">
         <input type="checkbox" ng-if="col.title()" ng-model-options="{ getterSetter: true }" ng-model="col.show"/> 
@@ -90,8 +89,8 @@
                 {{eventRegistration.person.secondLastName}}</td>
             <td title="'Tipo de Persona'" filter="{ 'person.personType.name': 'text'}" sortable="'person.personType.name'" ng-if="true">
                 {{eventRegistration.person.personType.name}}</td>
-            <td class="col-md-1" title="'Saldo ₡'" filter="{ 'balanceAmount': 'text'}" sortable="'balanceAmount'" ng-if="true">
-                {{eventRegistration.balanceAmount}} {{$data.$sum('balanceAmount')}}</td>
+            <td class="col-md-1" title="'Saldo ₡ Pendiente'" filter="{ 'balanceAmount': 'text'}" sortable="'balanceAmount'" ng-if="true">
+                {{eventRegistration.balanceAmount | currency:''}} {{$data.$sum('balanceAmount')}}</td>
             <td class="col-md-1">    
               <a data-ui-sref="eventregistrations.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })"  data-toggle="tooltip" title="Editar inscripción #{{eventRegistration.registrationNumber}}">Editar</a>
             </td>
@@ -116,12 +115,12 @@
             <td ng-if="vm.cols[6].show()"></td> 
             <td ng-if="vm.cols[7].show()"></td> 
             <td ng-if="vm.cols[8].show()" ng-class="vm.getTotalClass($data | filter: vm.event.name  | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''} | sumByKey:'balanceAmount')">
-              <span><b>Total:</b>{{$data | filter: vm.event.name  | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''} | sumByKey:'balanceAmount'  | currency:''}}</span>
+              <span><b>Total ₡ Pendiente:</b> {{$data | filter: vm.event.name  | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''} | sumByKey:'balanceAmount'  | currency:''}}</span>
             </td>
             <td ng-if="true" class="text-center">            
               <span><b>Inscripciones:</b> {{($data | filter: vm.event.name  | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''}).length}}</span>
             </td>
-            <td colspan="2">
+            <td>
               <div class="text-right">
               <a class="btn" title="Export Table" ng-click='csv.generate()' ng-href="{{ csv.link() }}"
                  download="INSCRIPCIONES.csv">

@@ -43,9 +43,13 @@
           <div class="form-inline input-group" show-errors ng-if="!readonly">
             <select name="contactInfoPersonRelationship_{{$index}}" id="contactInfoPersonRelationship_{{$index}}" ng-model="item.relationship" class="form-control" style="width:auto;" required ng-disabled="readonly">
               <option value="Familiar" selected="selected">Familiar</option>
-              <option value="Amistad">Padre</option>
-              <option value="Amistad">Madre</option>
-              <option value="Amistad">Hermano(a)</option>
+              <option value="Padre">Padre</option>
+              <option value="Madre">Madre</option>
+              <option value="Hijo(a)">Hijo(a)</option>
+              <option value="Hermano(a)">Hermano(a)</option>
+              <option value="Abuelo(a)">Abuelo(a)</option>
+              <option value="Esposo(a)">Esposo(a)</option>
+              <option value="Pareja">Pareja</option>
               <option value="Amistad">Amistad</option>
               <option value="Otro" >Otro</option>
             </select>  
