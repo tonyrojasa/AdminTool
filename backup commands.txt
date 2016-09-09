@@ -1,0 +1,5 @@
+Backup Export DB command
+mongodump -h ds031835.mlab.com:31835 -d CloudFoundry_35ndkjco_f58kf9f8 -u CloudFoundry_35ndkjco_f58kf9f8_ojp4jq0u -p ap7kuNTkVhuTiRJr7IqSuZX1Jxod95K4 -o c:\Backups\
+
+Backup Import DB Command
+mongorestore -h ds031895.mlab.com:31895 -d iglesiamiel -u tonyrojasa -p 22984271Tony c:\Backups\CloudFoundry_35ndkjco_f58kf9f8
