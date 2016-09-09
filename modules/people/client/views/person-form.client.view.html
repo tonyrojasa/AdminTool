@@ -44,21 +44,21 @@
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="firstName">Nombre *</label>
-  <input name="firstName" type="text" ng-model="person.firstName" id="firstName" class="form-control" placeholder="Nombre" required>
+  <input name="firstName" type="text" ng-model="person.firstName" id="firstName" autocomplete="off" class="form-control" placeholder="Nombre" required>
   <div ng-messages="form.firstName.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Nombre es requerido.</p>
   </div>
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="lastName">Primer Apellido *</label>
-  <input name="lastName" type="text" ng-model="person.lastName" id="lastName" class="form-control" placeholder="Primer Apellido" required>
+  <input name="lastName" type="text" ng-model="person.lastName" id="lastName" autocomplete="off" class="form-control" placeholder="Primer Apellido" required>
   <div ng-messages="form.lastName.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Primer Apellido es requerido.</p>
   </div>
 </div>
  <div class="form-group" show-errors>
   <label class="control-label" for="secondLastName">Segundo Apellido *</label>
-  <input name="secondLastName" type="text" ng-model="person.secondLastName" id="secondLastName" class="form-control" placeholder="Segundo Apellido" required>
+  <input name="secondLastName" type="text" ng-model="person.secondLastName" id="secondLastName" autocomplete="off" class="form-control" placeholder="Segundo Apellido" required>
   <div ng-messages="form.secondLastName.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Segundo Apellido es requerido.</p>
   </div>
@@ -84,7 +84,7 @@
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="address">Dirección *</label>
-  <input name="address" type="text" ng-model="person.address" id="address" class="form-control" placeholder="Dirección" required>
+  <input name="address" type="text" ng-model="person.address" id="address" class="form-control" autocomplete="off" placeholder="Dirección" required>
   <div ng-messages="form.address.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Dirección es requerido.</p>
   </div>
@@ -137,7 +137,7 @@
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="age">Edad *</label>
-  <input name="age" type="number" ng-model="person.age" id="age" class="form-control" placeholder="Edad" ng-disabled="person.birthDate" required>
+  <input name="age" type="number" ng-model="person.age" id="age" autocomplete="off" class="form-control" placeholder="Edad" ng-disabled="person.birthDate" required>
   <div ng-messages="form.age.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Edad es requerido.</p>
   </div>
@@ -179,11 +179,11 @@
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="occupation">Profesión</label>
-  <input name="occupation" type="text" ng-model="person.occupation" id="occupation" class="form-control" placeholder="occupation">
+  <input name="occupation" type="text" ng-model="person.occupation" id="occupation" autocomplete="off" class="form-control" placeholder="occupation">
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="employer">Empleador (Empresa donde labora)</label>
-  <input name="employer" type="text" ng-model="person.employer" id="employer" class="form-control" placeholder="Empleador">
+  <input name="employer" type="text" ng-model="person.employer" id="employer" autocomplete="off" class="form-control" placeholder="Empleador">
 </div>
 <div class="form-group" show-errors>
   <label class="control-label" for="shirtSize">Talla de camiseta *</label>
@@ -229,19 +229,19 @@
 <div ng-show="person.medicalTreatment.exists">
   <div class="form-group" show-errors>
     <label class="control-label" for="medicalTreatment">Comentarios del tratamiento medico</label>
-    <input name="medicalTreatment" type="text" ng-model="person.medicalTreatment.comments" id="medicalTreatment" class="form-control" placeholder="Comentarios del tratamiento medico" />
+    <input name="medicalTreatment" type="text" ng-model="person.medicalTreatment.comments" id="medicalTreatment" autocomplete="off" class="form-control" placeholder="Comentarios del tratamiento medico" />
   </div>
   <div class="form-group" show-errors>
     <label class="control-label" for="medicineType">Tipo de medicina</label>
-    <input name="medicineType" type="text" ng-model="person.medicalTreatment.medicineType" id="medicineType" class="form-control" placeholder="Tipo de medicina">
+    <input name="medicineType" type="text" ng-model="person.medicalTreatment.medicineType" id="medicineType" autocomplete="off" class="form-control" placeholder="Tipo de medicina">
   </div>
   <div class="form-group" show-errors>
     <label class="control-label" for="allergies">Alergias</label>
-    <input name="allergies" type="text" ng-model="person.medicalTreatment.allergies" id="allergies" class="form-control" placeholder="Alergias">
+    <input name="allergies" type="text" ng-model="person.medicalTreatment.allergies" id="allergies" autocomplete="off" class="form-control" placeholder="Alergias">
   </div>
 </div>
 <div class="form-group" show-errors>  
-  <input name="sponsorship" type="hidden" ng-model="person.sponsorship.exists" id="sponsorship" class="form-control">
+  <input name="sponsorship" type="hidden" ng-model="person.sponsorship.exists" id="sponsorship" autocomplete="off" class="form-control">
   <div class="checkbox">
     <label>
       <input type="checkbox" ng-model="person.sponsorship.exists">
@@ -252,7 +252,7 @@
 <div ng-if="person.sponsorship.exists">
   <div class="form-group" show-errors>
     <label class="control-label" for="sponsorName">Nombre Patrocinador *</label>
-    <input name="sponsorName" type="text" ng-model="person.sponsorship.sponsorName" id="sponsorName" class="form-control" placeholder="Nombre Patrocinador" required>
+    <input name="sponsorName" type="text" ng-model="person.sponsorship.sponsorName" id="sponsorName" autocomplete="off" class="form-control" placeholder="Nombre Patrocinador" required>
     <div ng-messages="form.sponsorName.$error" role="alert">
       <p class="help-block error-text" ng-message="required">Nombre de patrocinador es requerido</p>
     </div>
@@ -267,7 +267,7 @@
   </div>
   <div class="form-group" show-errors>
     <label class="control-label" for="sponsorshipComments">Comentarios del patrocinio</label>
-    <input name="sponsorshipComments" type="text" ng-model="person.sponsorship.comments" id="sponsorshipComments" class="form-control" placeholder="Comentarios del patrocinio" />
+    <input name="sponsorshipComments" type="text" ng-model="person.sponsorship.comments" id="sponsorshipComments" autocomplete="off" class="form-control" placeholder="Comentarios del patrocinio" />
   </div>  
 </div>
 <contact-info contacts="person.contactInfo" form="form"></contact-info>

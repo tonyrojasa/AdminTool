@@ -17,7 +17,7 @@
         <td>{{$index+1}}</td>
         <td>  
           <div class="form-inline input-group" show-errors ng-if="!readonly">
-            <input name="contactInfoPersonName_{{$index}}" type="text" ng-model="item.personName" id="contactInfoPersonName_{{$index}}" class="form-control" placeholder="Nombre persona de contacto" ng-disabled="readonly" required />
+            <input name="contactInfoPersonName_{{$index}}" type="text" ng-model="item.personName" id="contactInfoPersonName_{{$index}}" autocomplete="off" class="form-control" placeholder="Nombre persona de contacto" ng-disabled="readonly" required />
           </div>
           <div ng-if="readonly">
             {{item.personName}}
@@ -33,7 +33,7 @@
         </td>
         <td>
           <div class="form-inline input-group" show-errors ng-if="!readonly">
-            <input name="contactInfoPersonAddress_{{$index}}" type="text" ng-model="item.homeAddress" id="contactInfoPersonAddress_{{$index}}" class="form-control" placeholder="Dirección persona de contacto" ng-disabled="readonly" required /> 
+            <input name="contactInfoPersonAddress_{{$index}}" type="text" ng-model="item.homeAddress" id="contactInfoPersonAddress_{{$index}}" autocomplete="off" class="form-control" placeholder="Dirección persona de contacto" ng-disabled="readonly" required /> 
           </div>
           <div ng-if="readonly">
             {{item.homeAddress}}
