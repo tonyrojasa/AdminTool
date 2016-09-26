@@ -8,11 +8,11 @@
 
   EventregistrationsController.$inject = ['$scope', '$anchorScroll', '$state', '$stateParams', 'Authentication',
     'eventregistrationResolve', 'CurrentEventsService', 'EventpeoplegroupsService', 'personResolve',
-    'PeopleService', 'EventregistrationsByEventService'
+    'PeopleService', 'EventregistrationsByEventService', '$rootScope'
   ];
 
   function EventregistrationsController($scope, $anchorScroll, $state, $stateParams, Authentication, eventregistration,
-    CurrentEventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService) {
+    CurrentEventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService, $rootScope) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -101,6 +101,7 @@
       }
 
       function errorPersonCallback(res) {
+        $rootScope.showSpinner = false;
         vm.error = res.data.message;
         if (vm.error === 'Email already exists') {
           vm.error = 'El Email pertenece a otra persona';
@@ -122,10 +123,12 @@
       }
 
       function successCallback(res) {
+        $rootScope.showLoadingSpinner = false;
         $state.go('eventregistrations.list');
       }
 
       function errorCallback(res) {
+        $rootScope.showLoadingSpinner = false;
         vm.error = res.data.message;
         $anchorScroll(document.body.scrollTop);
       }
@@ -133,7 +136,9 @@
 
     // Save Eventregistration
     function save(isValid) {
+      $rootScope.showLoadingSpinner = true;
       if (!isValid) {
+        $rootScope.showLoadingSpinner = false;
         $scope.$broadcast('show-errors-check-validity', 'vm.form.eventregistrationForm');
         vm.error = 'Corregir los errores del formulario';
         $anchorScroll(document.body.scrollTop);

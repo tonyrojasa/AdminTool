@@ -6,11 +6,11 @@
     .module('receipts')
     .controller('ReceiptsController', ReceiptsController);
 
-  ReceiptsController.$inject = ['$scope', '$state', 'Authentication', 'receiptResolve', 'EventsService',
+  ReceiptsController.$inject = ['$rootScope', '$scope', '$state', 'Authentication', 'receiptResolve', 'EventsService',
     'eventregistrationResolve', 'EventregistrationsService', '$stateParams'
   ];
 
-  function ReceiptsController($scope, $state, Authentication, receipt, EventsService, eventregistration,
+  function ReceiptsController($rootScope, $scope, $state, Authentication, receipt, EventsService, eventregistration,
     EventregistrationsService, $stateParams) {
     var vm = this;
 
@@ -156,11 +156,13 @@
       }
 
       function successCallback(res) {
+        $rootScope.showLoadingSpinner = false;
         vm.receipt.eventRegistration = res;
         saveReceipt();
       }
 
       function errorCallback(res) {
+        $rootScope.showLoadingSpinner = false;
         vm.error = res.data.message;
       }
     }
@@ -174,6 +176,7 @@
       }
 
       function successCallback(res) {
+        $rootScope.showLoadingSpinner = false;
         if (vm.isEventRegistrationPayment) {
           $state.go('receipts.view', {
             receiptId: res._id,
@@ -185,13 +188,16 @@
       }
 
       function errorCallback(res) {
+        $rootScope.showLoadingSpinner = false;
         vm.error = res.data.message;
       }
     }
 
     // Save Receipt
     function save(isValid) {
+      $rootScope.showLoadingSpinner = true;
       if (!isValid) {
+        $rootScope.showLoadingSpinner = false;
         $scope.$broadcast('show-errors-check-validity', 'vm.form.receiptForm');
         return false;
       }
