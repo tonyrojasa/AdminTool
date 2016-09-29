@@ -186,8 +186,8 @@
   <input name="employer" type="text" ng-model="person.employer" id="employer" autocomplete="off" class="form-control" placeholder="Empleador">
 </div>
 <div class="form-group" show-errors>
-  <label class="control-label" for="shirtSize">Talla de camiseta *</label>
-  <input name="shirtSize" type="hidden" ng-model="person.shirtSize" id="shirtSize" class="form-control" placeholder="Talla de camiseta" required>
+  <label class="control-label" for="shirtSize">Talla de camiseta</label>
+  <input name="shirtSize" type="hidden" ng-model="person.shirtSize" id="shirtSize" class="form-control" placeholder="Talla de camiseta">
   <div class="dropdown" id="shirtSizeDropdown" uib-dropdown>
     <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
       <span ng-if="!person.shirtSize">-- Seleccione uno --</span>
@@ -200,9 +200,6 @@
       </li>
     </ul>
   </div> 
-  <div ng-messages="form.shirtSize.$error" role="alert">
-    <p class="help-block error-text" ng-message="required">Talla de camiseta es requerido.</p>
-  </div>
 </div>
 <div class="form-group" show-errors>  
   <input name="activeMember" type="hidden" ng-model="person.activeMember" id="activeMember" class="form-control">

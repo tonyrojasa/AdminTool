@@ -25,12 +25,16 @@
     vm.editMode = vm.eventregistration._id ? true : false;
     vm.setEvent = setEvent;
     vm.isNewMemberRegistration = isNewMemberRegistration;
+    vm.clearEventSelection = clearEventSelection;
+    vm.isSelectionDisabled = isSelectionDisabled;
     vm.setEventPrice = setEventPrice;
     vm.shirtQuantities = [0, 1, 2, 3, 4, 5];
     vm.setShirtsQuantity = function(shirtsQuantity) {
       vm.eventregistration.shirtsQuantity = shirtsQuantity;
       vm.setEventPrice(vm.eventregistration.event);
     };
+    vm.oldShirtsQuantity = vm.eventregistration.shirtsQuantity;
+    vm.oldBalanceAmount = vm.eventregistration.balanceAmount;
     vm.shirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
     vm.setShirtSize = function(shirtSize) {
       vm.person.shirtSize = shirtSize;
@@ -51,7 +55,19 @@
             vm.eventregistration.balanceAmount += (event.shirtPrice * vm.eventregistration.shirtsQuantity);
           }
         } else {
-          vm.eventregistration.balanceAmount = event.price;
+          if (event.shirtPrice && vm.eventregistration.shirtsQuantity) {
+            vm.eventregistration.balanceAmount = event.price + (event.shirtPrice * vm.eventregistration.shirtsQuantity);
+          } else {
+            vm.eventregistration.balanceAmount = event.price;
+          }
+        }
+      } else {
+        debugger;
+        var newShirtsQuantity = vm.eventregistration.shirtsQuantity - vm.oldShirtsQuantity;
+        if (newShirtsQuantity === 0) {
+          vm.eventregistration.balanceAmount = vm.oldBalanceAmount;
+        } else {
+          vm.eventregistration.balanceAmount = vm.oldBalanceAmount + (event.shirtPrice * newShirtsQuantity);
         }
       }
     }
@@ -86,10 +102,29 @@
       }
     }
 
+    function isSelectionDisabled() {
+      if (!vm.eventregistration._id || (vm.eventregistration._id && vm.authentication.isUserAdmin())) {
+        return false;
+      }
+      return true;
+    }
+
+    function clearEventSelection() {
+      vm.eventregistration.event = undefined;
+      vm.person = vm.isNewMemberRegistration() ? vm.person : undefined;
+      vm.eventregistration.isEventServer = undefined;
+      vm.eventregistration.balanceAmount = vm.eventregistration._id ? vm.eventregistration.balanceAmount : undefined;
+    }
+
     //set registration event
     function setEvent(event) {
+      vm.person = vm.isNewMemberRegistration() ? vm.person : undefined;
       vm.eventregistration.event = event;
-      vm.eventregistration.shirtsQuantity = 1;
+      if (event.shirtPrice && event.shirtPrice > 0) {
+        vm.eventregistration.shirtsQuantity = 1;
+      } else {
+        vm.eventregistration.shirtsQuantity = 0;
+      }
       vm.setEventPrice(event);
 
       if (!vm.isNewMemberRegistration()) {
