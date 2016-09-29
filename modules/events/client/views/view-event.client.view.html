@@ -31,5 +31,7 @@
   <p class="lead" data-ng-if="!vm.event.description.length"> No hay descripción para este evento.</p>  
   Fecha de inicio: <p class="lead" data-ng-bind="vm.event.startDate | date:'longDate'"></p>
   Fecha final: <p class="lead" data-ng-bind="vm.event.endDate | date:'longDate'"></p>  
-  Precio por persona: <p>₡ <span class="lead" data-ng-bind="vm.event.price"></span></p>
+  Precio general: <p><span class="lead">{{vm.event.price | currency:'₡'}}</span></p>
+  Precio para servidores: <p><span class="lead">{{vm.event.serverPrice | currency:'₡'}}</span></p>
+  <span data-ng-if="vm.event.shirtPrice">Precio de camisa: <p class="lead">{{vm.event.shirtPrice | currency:'₡'}}</p></span>
 </section>

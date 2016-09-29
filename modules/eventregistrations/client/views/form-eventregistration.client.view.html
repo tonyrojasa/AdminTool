@@ -46,7 +46,7 @@
                 </ui-select-choices>
             </ui-select> 
             <span class="input-group-btn">
-              <button type="button" ng-click="vm.eventregistration.event = vm.person = undefined" class="btn btn-default">
+              <button type="button" ng-click="vm.eventregistration.event = vm.eventregistration.isEventServer = vm.eventregistration.balanceAmount = undefined" class="btn btn-default">
                 <span class="glyphicon glyphicon-trash"></span>
               </button>
             </span>  
@@ -54,7 +54,63 @@
           <div ng-messages="vm.form.eventregistrationForm.event.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Evento es requerido.</p>
           </div>
-        </div>   
+        </div>         
+        <div class="form-group" ng-if="vm.eventregistration.event" show-errors>  
+          <input name="isEventServer" type="hidden" ng-model="vm.eventregistration.isEventServer" id="isEventServer" class="form-control">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="vm.eventregistration.isEventServer" ng-click="vm.setEventPrice(vm.eventregistration.event)" ng-disabled="vm.eventregistration._id">
+              <b>Servidor del evento</b>
+            </label>
+          </div>
+        </div> 
+        <div class="form-group" show-errors>
+          <label class="control-label" for="shirtSize">Talla de camiseta *</label>
+          <input name="shirtSize" type="hidden" ng-model="vm.person.shirtSize" id="shirtSize" class="form-control" placeholder="Talla de camiseta" required>
+          <div class="dropdown" id="shirtSizeDropdown" uib-dropdown>
+            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+              <span ng-if="!vm.person.shirtSize">-- Seleccione uno --</span>
+              {{vm.person.shirtSize}}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li ng-repeat="shirtSize in vm.shirtSizes">
+                <a ng-click="vm.setShirtSize(shirtSize)">{{shirtSize}}</a>
+              </li>
+            </ul>
+          </div> 
+          <div ng-messages="vm.form.eventregistrationForm.shirtSize.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Talla de camiseta es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group" ng-if="vm.eventregistration.event" show-errors>
+          <label class="control-label" for="shirtsQuantity">
+            Cantidad de camisas <span ng-if="vm.eventregistration.isEventServer">({{vm.eventregistration.event.shirtPrice | currency:'₡'}} c/u)</span>*
+          </label>
+          <input name="shirtsQuantity" type="hidden" ng-model="vm.eventregistration.shirtsQuantity" id="shirtsQuantity" class="form-control" placeholder="Cantidad de camisas" required>
+          <div class="dropdown" id="shirtsQuantityDropdown" uib-dropdown>
+            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button" ng-disabled="vm.eventregistration._id">
+              <span ng-if="vm.eventregistration.shirtsQuantity === undefined">-- Seleccione uno --</span>
+              {{vm.eventregistration.shirtsQuantity}}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">    
+              <li ng-repeat="shirtQuantity in vm.shirtQuantities">
+                <a ng-click="vm.setShirtsQuantity(shirtQuantity)">{{shirtQuantity}}</a>
+              </li>
+            </ul>
+          </div> 
+          <div ng-messages="vm.form.eventregistrationForm.shirtSize.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Cantidad de camisas es requerido.</p>
+          </div>
+        </div>        
+        <div class="form-group" show-errors>
+          <label class="control-label" for="balanceAmount">Saldo *</label>
+          <input name="balanceAmount" type="text" ng-model="vm.eventregistration.balanceAmount" id="balanceAmount" autocomplete="off" class="form-control" placeholder="Saldo adeudado" required ng-disabled="true" >
+          <div ng-messages="vm.form.eventregistrationForm.balanceAmount.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Saldo es un campo requerido.</p>
+          </div>
+        </div>
         <div class="form-group" show-errors>        
           <label class="control-label" for="eventPeopleGroup">Grupo *</label>  
           <input name="eventPeopleGroup" type="hidden" ng-model="vm.eventregistration.eventPeopleGroup" id="eventPeopleGroup" class="form-control" required>
@@ -91,13 +147,6 @@
             close-text="Cerrar" />           
           <div ng-messages="vm.form.eventForm.registrationDate.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Fecha de inscripción es requerido.</p>
-          </div>
-        </div>
-         <div class="form-group" show-errors>
-          <label class="control-label" for="balanceAmount">Saldo *</label>
-          <input name="balanceAmount" type="text" ng-model="vm.eventregistration.balanceAmount" id="balanceAmount" autocomplete="off" class="form-control" placeholder="Saldo adeudado" required ng-disabled="vm.eventregistration._id" >
-          <div ng-messages="vm.form.eventregistrationForm.balanceAmount.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Saldo es un campo requerido.</p>
           </div>
         </div>
         <div ng-if="vm.isNewMemberRegistration()">

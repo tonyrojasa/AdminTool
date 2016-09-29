@@ -49,6 +49,16 @@ var EventregistrationSchema = new Schema({
     default: '',
     required: 'Please fill balance amount'
   },
+  shirtsQuantity: {
+    type: Number,
+    default: 0,
+    trim: true
+  },
+  isEventServer: {
+    type: Boolean,
+    default: false,
+    trim: true
+  },
   created: {
     type: Date,
     default: Date.now

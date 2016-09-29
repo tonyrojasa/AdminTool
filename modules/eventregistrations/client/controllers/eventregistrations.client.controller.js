@@ -25,12 +25,35 @@
     vm.editMode = vm.eventregistration._id ? true : false;
     vm.setEvent = setEvent;
     vm.isNewMemberRegistration = isNewMemberRegistration;
+    vm.setEventPrice = setEventPrice;
+    vm.shirtQuantities = [0, 1, 2, 3, 4, 5];
+    vm.setShirtsQuantity = function(shirtsQuantity) {
+      vm.eventregistration.shirtsQuantity = shirtsQuantity;
+      vm.setEventPrice(vm.eventregistration.event);
+    };
+    vm.shirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+    vm.setShirtSize = function(shirtSize) {
+      vm.person.shirtSize = shirtSize;
+    };
     loadDates();
 
     if (!vm.isNewMemberRegistration()) {
       vm.person = undefined;
     } else {
       vm.person = person;
+    }
+
+    function setEventPrice(event) {
+      if (!vm.eventregistration._id) {
+        if (vm.eventregistration.isEventServer) {
+          vm.eventregistration.balanceAmount = event.serverPrice;
+          if (event.shirtPrice && vm.eventregistration.shirtsQuantity) {
+            vm.eventregistration.balanceAmount += (event.shirtPrice * vm.eventregistration.shirtsQuantity);
+          }
+        } else {
+          vm.eventregistration.balanceAmount = event.price;
+        }
+      }
     }
 
     function isNewMemberRegistration() {
@@ -66,9 +89,8 @@
     //set registration event
     function setEvent(event) {
       vm.eventregistration.event = event;
-      if (!vm.eventregistration._id) {
-        vm.eventregistration.balanceAmount = event.price;
-      }
+      vm.eventregistration.shirtsQuantity = 1;
+      vm.setEventPrice(event);
 
       if (!vm.isNewMemberRegistration()) {
         var people = PeopleService.query();

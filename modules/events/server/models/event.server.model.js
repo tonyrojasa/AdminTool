@@ -39,6 +39,16 @@ var EventSchema = new Schema({
     default: '',
     trim: true
   },
+  serverPrice: {
+    type: Number,
+    default: 0,
+    trim: true
+  },
+  shirtPrice: {
+    type: Number,
+    default: 0,
+    trim: true
+  },
   created: {
     type: Date,
     default: Date.now
