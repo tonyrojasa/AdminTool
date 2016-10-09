@@ -128,12 +128,15 @@
       vm.setEventPrice(event);
 
       if (!vm.isNewMemberRegistration()) {
-        var people = PeopleService.query();
-        vm.eventRegistrations = EventregistrationsByEventService.query({
-          'eventId': event._id
-        }, function(data) {
-          filterPeopleListBySelectedEvent(people, data);
+        PeopleService.query(null, function(data) {
+          var people = data;
+          vm.eventRegistrations = EventregistrationsByEventService.query({
+            'eventId': event._id
+          }, function(data) {
+            filterPeopleListBySelectedEvent(people, data);
+          });
         });
+
       }
     }
 
@@ -181,7 +184,13 @@
 
       function successCallback(res) {
         $rootScope.showLoadingSpinner = false;
-        $state.go('eventregistrations.list');
+        if (!vm.editMode) {
+          $state.go('receipts.createFromEventRegistration', {
+            'eventregistrationId': res._id
+          });
+        } else {
+          $state.go('eventregistrations.list');
+        }
       }
 
       function errorCallback(res) {

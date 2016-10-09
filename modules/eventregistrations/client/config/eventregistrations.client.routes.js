@@ -14,6 +14,16 @@
         url: '/eventregistrations',
         template: '<ui-view/>'
       })
+      .state('eventregistrations.report', {
+        url: '/eventregistrations/report',
+        templateUrl: 'modules/eventregistrations/client/views/report-eventregistrations.client.view.html',
+        controller: 'EventregistrationsReportController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['admin', 'inscriptor', 'user'],
+          pageTitle: 'Reporte de Inscripciones'
+        }
+      })
       .state('eventregistrations.list', {
         url: '',
         templateUrl: 'modules/eventregistrations/client/views/list-eventregistrations.client.view.html',

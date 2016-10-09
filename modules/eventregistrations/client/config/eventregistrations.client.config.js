@@ -22,5 +22,10 @@
       state: 'eventregistrations.list',
       roles: ['admin', 'inscriptor', 'user']
     });
+    Menus.addSubMenuItem('topbar', 'eventregistrations', {
+      title: 'REPORTES',
+      state: 'eventregistrations.report',
+      roles: ['admin', 'inscriptor', 'user']
+    });
   }
 })();

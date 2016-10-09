@@ -61,7 +61,9 @@
         'Otro'
       ];
       //default to current user
-      vm.receipt.receivedBy = vm.authentication.user.displayName;
+      if (!vm.receipt.receivedBy) {
+        vm.receipt.receivedBy = vm.authentication.user.displayName;
+      }
 
       if (vm.receipt._id) {
         vm.eventregistration = receipt.eventRegistration;
