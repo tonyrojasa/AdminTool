@@ -1,11 +1,11 @@
 <section>
   <div class="page-header">
-    <h1>Repote de Inscripciones</h1>
+    <h1>Reporte de Inscripciones</h1>
   </div>
   <br /><br />
   <div id="content">
     <div class="col-md-6 form-group">        
-      <label class="control-label" for="event">Evento: </label>  
+      <label class="control-label" for="event">Evento *</label>  
       <div class="input-group select2-bootstrap-append">
         <ui-select ng-model="vm.event">
           <ui-select-match  placeholder="Seleccione el tipo de persona...">
@@ -23,7 +23,7 @@
       </div> 
     </div>  
     <div class="form-group col-md-6">        
-      <label class="control-label" for="eventPeopleGroup">Grupo *</label>  
+      <label class="control-label" for="eventPeopleGroup">Grupo</label>  
       <div class="input-group select2-bootstrap-append">
         <ui-select ng-model="vm.eventPeopleGroup" >
           <ui-select-match  placeholder="Seleccione el grupo...">
@@ -41,7 +41,7 @@
       </div> 
     </div> 
     <div class="form-group col-md-6">        
-      <label class="control-label" for="personType">Tipo de Persona *</label>
+      <label class="control-label" for="personType">Tipo de Persona</label>
       <div class="input-group select2-bootstrap-append">
         <ui-select ng-model="vm.personType" >
           <ui-select-match  placeholder="Seleccione el grupo...">
@@ -65,19 +65,87 @@
 		<table class="table table-condensed">
 		<thead>
 		<tr>
-		  <th ng-click="vm.orderByMe('registrationNumber')"># Inscripcion</th>
-		  <th ng-click="vm.orderByMe('registrationDate')">Fecha Inscripcion</th>
-		  <th ng-click="vm.orderByMe('event.name')">Evento</th>
-		  <th ng-click="vm.orderByMe('person.firstName')">Nombre</th>
-		  <th ng-click="vm.orderByMe('person.lastName')">1er Apellido</th>
-		  <th ng-click="vm.orderByMe('person.secondLastName')">2do Apellido</th>
-		  <th ng-click="vm.orderByMe('person.age')">Edad</th>
-		  <th ng-click="vm.orderByMe('person.personType.name')">Tipo de Persona</th>
-		  <th ng-click="vm.orderByMe('balanceAmount')">Saldo Pendiente ₡ </th>
+		  <th>
+			<a href="#" ng-click="vm.orderByMe('registrationNumber'); vm.sortReverse = !vm.sortReverse">
+	        	# Inscripción
+		        <span ng-show="vm.myOrderBy == 'registrationNumber' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'registrationNumber' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('registrationDate'); vm.sortReverse = !vm.sortReverse">
+	        	Fecha Inscripción
+		        <span ng-show="vm.myOrderBy == 'registrationDate' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'registrationDate' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('event.name'); vm.sortReverse = !vm.sortReverse">
+	        	Evento
+		        <span ng-show="vm.myOrderBy == 'event.name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'event.name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('person.firstName'); vm.sortReverse = !vm.sortReverse">
+	        	Nombre
+		        <span ng-show="vm.myOrderBy == 'person.firstName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.firstName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('person.lastName'); vm.sortReverse = !vm.sortReverse">
+	        	1er Apellido
+		        <span ng-show="vm.myOrderBy == 'person.lastName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.lastName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>		  	
+		  	<a href="#" ng-click="vm.orderByMe('person.secondLastName'); vm.sortReverse = !vm.sortReverse">
+	        	2do Apellido
+		        <span ng-show="vm.myOrderBy == 'person.secondLastName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.secondLastName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('person.age'); vm.sortReverse = !vm.sortReverse">
+	        	Edad
+		        <span ng-show="vm.myOrderBy == 'person.age' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.age' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('person.maritalStatus'); vm.sortReverse = !vm.sortReverse">
+	        	Estado civil
+		        <span ng-show="vm.myOrderBy == 'person.maritalStatus' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.maritalStatus' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('eventPeopleGroup.name'); vm.sortReverse = !vm.sortReverse">
+	        	Grupo
+		        <span ng-show="vm.myOrderBy == 'eventPeopleGroup.name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'eventPeopleGroup.name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('person.personType.name'); vm.sortReverse = !vm.sortReverse">
+	        	Tipo de Persona
+		        <span ng-show="vm.myOrderBy == 'person.personType.name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.personType.name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('balanceAmount'); vm.sortReverse = !vm.sortReverse">
+	        	Saldo ₡ 
+		        <span ng-show="vm.myOrderBy == 'balanceAmount' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'balanceAmount' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
 		</tr>
 		</thead>
 		<tbody>
-		<tr ng-repeat="eventRegistration in vm.eventregistrations | orderBy:['eventRegistration.balanceAmount', 'eventRegistration.person.firstName', 'eventRegistration.person.lastName', 'eventRegistration.person.secondLastName', 'eventRegistration.registrationDate','eventRegistration.registrationNumber'] | orderBy: vm.myOrderBy | filter: vm.searchFilter | filter: vm.event.name | filter: vm.eventPeopleGroup.name | filter:vm.personType.name" ng-class="vm.getStatusClass(eventRegistration)">
+		<tr ng-repeat="eventRegistration in vm.eventregistrations | orderBy:['eventRegistration.balanceAmount', 'eventRegistration.person.firstName', 'eventRegistration.person.lastName', 'eventRegistration.person.secondLastName', 'eventRegistration.registrationDate','eventRegistration.registrationNumber'] | orderBy: vm.myOrderBy:vm.sortReverse | filter: vm.searchFilter | filter: vm.event.name | filter: vm.eventPeopleGroup.name | filter:vm.personType.name" ng-class="vm.getStatusClass(eventRegistration)">
 		  <td>{{eventRegistration.registrationNumber}}</td>
 		  <td>{{eventRegistration.registrationDate | date:'dd-MMM-yyyy'}}</td>
 		  <td>{{eventRegistration.event.name}}</td>
@@ -85,6 +153,8 @@
 		  <td>{{eventRegistration.person.lastName}}</td>
 		  <td>{{eventRegistration.person.secondLastName}}</td>
 		  <td>{{eventRegistration.person.age}}</td>
+		  <td>{{eventRegistration.person.maritalStatus}}</td>
+		  <td>{{eventRegistration.eventPeopleGroup.name}}</td>
 		  <td>{{eventRegistration.person.personType.name}}</td>
 		  <td>{{eventRegistration.balanceAmount | currency:''}}</td>
 		</tr>
@@ -102,6 +172,6 @@
     No hay inscripciones en este evento.
   </div>
   <div class="alert alert-warning text-center" data-ng-if="!vm.event">
-    <strong>Seleccione el evento de las inscripciones que desea mostrar.</strong>
+    <strong>Seleccione el evento para las inscripciones que desea mostrar.</strong>
   </div>
 </section>

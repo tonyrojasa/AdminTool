@@ -23,7 +23,7 @@
       roles: ['admin', 'inscriptor', 'user']
     });
     Menus.addSubMenuItem('topbar', 'eventregistrations', {
-      title: 'REPORTES',
+      title: 'Reportes',
       state: 'eventregistrations.report',
       roles: ['admin', 'inscriptor', 'user']
     });

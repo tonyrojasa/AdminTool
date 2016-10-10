@@ -60,6 +60,14 @@
         'Gasto',
         'Otro'
       ];
+      vm.paidByList = [
+        'Efectivo',
+        'Cheque',
+        'Tarjeta',
+        'Transferencia',
+        'Otro'
+      ];
+      vm.receipt.paidBy = 'Efectivo'; //default value
       //default to current user
       if (!vm.receipt.receivedBy) {
         vm.receipt.receivedBy = vm.authentication.user.displayName;
@@ -104,6 +112,10 @@
 
     vm.setPaymentOf = function(paymentOf) {
       vm.receipt.paymentOf = paymentOf;
+    };
+
+    vm.setPaidBy = function(paidBy) {
+      vm.receipt.paidBy = paidBy;
     };
 
     //set registration event

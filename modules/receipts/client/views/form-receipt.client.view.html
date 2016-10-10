@@ -127,6 +127,25 @@
           </div>
         </div>
         <div class="form-group" show-errors>
+          <label class="control-label" for="shirtSize">Forma de pago *</label>
+          <input name="paidBy" type="hidden" ng-model="vm.receipt.paidBy" id="paidBy" class="form-control" placeholder="Por concepto de" required>
+          <div class="dropdown" id="paidByDropdown" uib-dropdown>
+            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+              <span ng-if="!vm.receipt.paidBy">-- Seleccione uno --</span>
+              {{vm.receipt.paidBy}}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li ng-repeat="paidBy in vm.paidByList">
+                <a ng-click="vm.setPaidBy(paidBy)">{{paidBy}}</a>
+              </li>
+            </ul>
+          </div> 
+          <div ng-messages="vm.form.receiptForm.paidBy.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Forma de pago es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
           <label class="control-label" for="description">Descripción</label>
           <input name="description" type="text" ng-model="vm.receipt.description" id="description" class="form-control" placeholder="Descripción">
         </div>

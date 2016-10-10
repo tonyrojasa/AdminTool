@@ -92,9 +92,13 @@
           <td><strong>Recibido de</strong></td>
           <td><span>{{vm.receipt.receivedFrom}}</span></td>
         </tr>
-         <tr>
+        <tr>
           <td><strong>Por concepto de</strong></td>
           <td><span>{{vm.receipt.paymentOf}}</span></td>
+        </tr>
+        <tr>
+          <td><strong>Forma de pago</strong></td>
+          <td><span>{{vm.receipt.paidBy}}</span></td>
         </tr>
          <tr ng-if="vm.receipt.description">
           <td><strong>Descripción</strong></td>

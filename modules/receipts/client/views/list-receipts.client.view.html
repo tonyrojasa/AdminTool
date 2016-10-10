@@ -66,7 +66,9 @@
                 <span ng-if="!receipt.eventRegistration">{{receipt.event.name}}</span>  
             </td>
             <td class="col-md-2" title="'Por concepto de'" filter="{ 'paymentOf': 'text'}" sortable="'paymentOf'" ng-if="true">
-                {{receipt.paymentOf}}</td>
+                {{receipt.paymentOf}}</td>  
+            <td class="col-md-2" title="'Forma de pago'" filter="{ 'paidBy': 'text'}" sortable="'paidBy'" ng-if="true">
+                {{receipt.paidBy}}</td>          
             <td class="col-md-2" title="'Fecha de pago'" sortable="'paymentDate'" ng-if="true">
                 {{receipt.paymentDate | date:'dd-MMM-yyyy'}}</td>
             <td class="col-md-2" title="'Recibido de'" filter="{ 'receivedFrom': 'text'}" sortable="'receivedFrom'" ng-if="true">

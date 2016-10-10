@@ -1,23 +1,24 @@
 <section>
   <div class="jumbotron text-center">
     <div class="row">
-      <h3 class="text-muted">
-        Iglesia Miel
-      </h3>
       <h4 class="text-muted">
-        Herramienta de Administración
+        Iglesia Miel - Herramienta de Administración
       </h4>
        <h5 class="text-muted">
-        versión beta 2
-      </h5>
+        BETA v3
+      </h5> 
     </div> 
     <div class="row" ng-show="vm.authentication.user && !vm.authentication.isGuestUser()">    
-      <span class="text-muted">Accesos directos:</span>
+      <h5 class="text-muted">Accesos directos:</h5>
       <div class="form-group" ng-if="vm.authentication.user">
-        <a class="btn btn-primary btn-xs" data-ui-sref="events.list">Eventos</a>
-        <a class="btn btn-primary btn-xs" data-ui-sref="eventregistrations.list">Inscripciones</a>
-        <a class="btn btn-primary btn-xs" data-ui-sref="receipts.list">Recibos</a>
-        <a class="btn btn-primary btn-xs" data-ui-sref="serviceacademyclasses.list">Academias</a>
+        <a class="btn btn-primary" data-ui-sref="eventregistrations.list">Inscripciones</a>
+        <a class="btn btn-primary" data-ui-sref="receipts.list">Recibos</a>
+        <a class="btn btn-primary" data-ui-sref="serviceacademyclasses.list">Academias</a>
+        <div class="row">
+        <br>
+          <h6 class="text-muted">Reportes:</h6>
+          <a class="btn btn-info btn-sm" data-ui-sref="eventregistrations.report">Inscripciones</a>
+        </div>
       </div> 
     </div> 
     <div class="row" ng-show="vm.authentication.user && vm.authentication.isGuestUser()">    
