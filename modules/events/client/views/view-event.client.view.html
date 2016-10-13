@@ -11,10 +11,10 @@
   <br /><br />
   <div class="pull-right">
     <a class="btn btn-primary" data-ui-sref="events.edit({ eventId: vm.event._id })">
-      <i class="glyphicon glyphicon-edit"></i>
+      <i class="glyphicon glyphicon-edit"> Editar</i>
     </a>
     <a data-ng-show="vm.authentication.isUserAdmin()" class="btn btn-primary" data-ng-click="vm.remove()">
-      <i class="glyphicon glyphicon-trash"></i>
+      <i class="glyphicon glyphicon-trash"> Eliminar</i>
     </a>
   </div>
   <small>
@@ -34,4 +34,5 @@
   Precio general: <p><span class="lead">{{vm.event.price | currency:'₡'}}</span></p>
   Precio para servidores: <p><span class="lead">{{vm.event.serverPrice | currency:'₡'}}</span></p>
   <span data-ng-if="vm.event.shirtPrice">Precio de camisa: <p class="lead">{{vm.event.shirtPrice | currency:'₡'}}</p></span>
+  <shirt-types shirt-types="vm.event.shirtTypes" readonly="true"></shirt-types>
 </section>

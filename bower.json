@@ -25,7 +25,8 @@
     "ngMask": "angular-mask#^3.1.1",
     "ng-table": "^1.0.0",
     "tableexport.js": "^3.2.8",
-    "ng-table-to-csv": "^0.3.1"
+    "ng-table-to-csv": "^0.3.1",
+    "angular-bootstrap-colorpicker": "^3.0.25"
   },
   "browserify-shim": {
     "moment": "moment"

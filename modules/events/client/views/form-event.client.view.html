@@ -101,12 +101,16 @@
             <input name="shirtPrice" type="number" ng-model="vm.event.shirtPrice" id="shirtPrice" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Precio de camisa">
           </div>
         </div>
+
+        <shirt-types shirt-types="vm.event.shirtTypes" form="vm.form.eventForm"></shirt-types>
+        <br/><br/>
         <div class="form-group">
           <button type="submit" class="btn btn-default">{{vm.event._id ? 'Actualizar' : 'Crear'}}</button>
         </div>
         <div ng-show="vm.error" class="text-danger">
           <strong ng-bind="vm.error"></strong>
-        </div>
+        </div>       
+        <br/><br/>
       </fieldset>
     </form>
   </div>

@@ -49,6 +49,9 @@ var EventSchema = new Schema({
     default: 0,
     trim: true
   },
+  shirtTypes: {
+    type: Array
+  },
   created: {
     type: Date,
     default: Date.now
