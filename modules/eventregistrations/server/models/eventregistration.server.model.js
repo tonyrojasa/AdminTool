@@ -62,6 +62,20 @@ var EventregistrationSchema = new Schema({
     default: false,
     trim: true
   },
+  eventExternalServer: {
+    isEventExternalServer: {
+      type: Boolean,
+      default: false
+    },
+    specialPrice: {
+      type: Number,
+      default: 0
+    }
+  },
+  personType: {
+    type: Schema.ObjectId,
+    ref: 'Persontype'
+  },
   created: {
     type: Date,
     default: Date.now

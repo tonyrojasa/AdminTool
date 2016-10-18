@@ -89,6 +89,7 @@ exports.list = function(req, res) {
         path: 'personType'
       }
     })
+    .populate('personType', 'name')
     .populate('event', 'name')
     .populate('eventPeopleGroup', 'name')
     .exec(function(err, eventregistrations) {
@@ -128,6 +129,7 @@ exports.listByEventId = function(req, res) {
         path: 'personType'
       }
     })
+    .populate('personType', 'name')
     .populate('event', 'name')
     .populate('eventPeopleGroup', 'name')
     .exec(function(err, eventregistrations) {
@@ -166,6 +168,7 @@ exports.listByPersonId = function(req, res) {
         path: 'personType'
       }
     })
+    .populate('personType', 'name')
     .populate('event', 'name')
     .populate('eventPeopleGroup', 'name')
     .exec(function(err, eventregistrations) {
@@ -198,6 +201,7 @@ exports.eventregistrationByID = function(req, res, next, id) {
         path: 'personType'
       }
     })
+    .populate('personType', 'name')
     .populate('event')
     .populate('eventPeopleGroup')
     .exec(function(err, eventregistration) {

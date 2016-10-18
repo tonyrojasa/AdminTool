@@ -23,9 +23,9 @@
 	        </span>  
 	      </div> 
 	    </div>   
-    </div>  
-    <div class="row" id="exportable" ng-show="vm.event && vm.shirtTypesGroups.length > 0">		 
-		<br/>
+    </div>   
+	<br/>
+    <div class="row" id="exportable" ng-show="vm.event && vm.shirtTypesGroups.length > 0">		
 		<table class="table table-condensed">
 		<thead>
 		<tr>		  
@@ -62,17 +62,19 @@
 		<tbody>
 			<tr class="info" ng-repeat="shirtTypeGroup in vm.filteredItems = (vm.shirtTypesGroups | orderBy: vm.myOrderBy:vm.sortReverse) track by $index">
 		  		<td>{{shirtTypeGroup.shirtTypeName}}</td>
-		  		<td><input style="background-color: {{shirtTypeGroup.shirtTypeColor}};color: {{shirtTypeGroup.shirtTypeColor}};" class="col-xs-1 img-rounded" ng-disabled="true"/></td>	
+		  		<td style="background-color: {{shirtTypeGroup.shirtTypeColor}};color: {{shirtTypeGroup.shirtTypeColor}};" ></td>	
 		  		<td>{{shirtTypeGroup.shirtSize}}</td>	  	
 				<td>{{shirtTypeGroup.quantity}}</td>
 			</tr>
 		</tbody>
 		<tfoot>
 			<tr> 
-			<td colspan="13"></td>
+			<td colspan="4"></td>
 			</tr>
 			<tr class="info"> 
-				<td colspan="3" align="right">
+				<td colspan="1" align="right">
+				</td>
+				<td colspan="2" align="right">
 					<b>Total Camisas:</b>
 				</td>
 				<td align="left">
@@ -84,7 +86,7 @@
     </div> 
     <div class="row">
 	    <div class="col-md-12" ng-show="vm.event && vm.shirtTypesGroups.length > 0">    
-	    	<export-to-file link-text="Exportar" element-id="exportable" format="excel" file-name="REPORTE DE INSCRIPCIONES"></export-to-file> 
+	    	<export-to-file link-text="Exportar" element-id="exportable" format="excel" file-name="REPORTE DE CAMISAS"></export-to-file> 
 	    </div>  
     </div> 
   </div>   

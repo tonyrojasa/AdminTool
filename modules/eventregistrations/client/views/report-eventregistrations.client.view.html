@@ -124,10 +124,10 @@
 	      	</a>
 		  </th>
 		  <th ng-show="!vm.personType">
-		  	<a href="#" ng-click="vm.orderByMe('person.personType.name'); vm.sortReverse = !vm.sortReverse">
+		  	<a href="#" ng-click="vm.orderByMe('personType.name'); vm.sortReverse = !vm.sortReverse">
 	        	Tipo de Persona
-		        <span ng-show="vm.myOrderBy == 'person.personType.name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.personType.name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+		        <span ng-show="vm.myOrderBy == 'personType.name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'personType.name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 	      	</a>
 		  </th> 
 		  <th>
@@ -170,7 +170,7 @@
 		  <td>{{eventRegistration.person.age}}</td>
 		  <td>{{eventRegistration.person.maritalStatus}}</td>
 		  <td ng-show="!vm.eventPeopleGroup">{{eventRegistration.eventPeopleGroup.name}}</td>
-		  <td ng-show="!vm.personType">{{eventRegistration.person.personType.name}}</td>
+		  <td ng-show="!vm.personType">{{eventRegistration.personType.name}}</td>
 		  <td>{{eventRegistration.person.shirtSize}}</td>		
 		  <td>{{eventRegistration.shirtsQuantity}}</td>		  
 		  <td>{{eventRegistration.totalPayments | currency:''}}</td>

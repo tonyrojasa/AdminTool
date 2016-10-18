@@ -87,8 +87,8 @@
                 {{eventRegistration.person.lastName}}</td>
             <td title="'2do. Apellido'" filter="{ 'person.secondLastName': 'text'}" sortable="'person.secondLastName'" ng-if="true">
                 {{eventRegistration.person.secondLastName}}</td>
-            <td title="'Tipo de Persona'" filter="{ 'person.personType.name': 'text'}" sortable="'person.personType.name'" ng-if="true">
-                {{eventRegistration.person.personType.name}}</td>
+            <td title="'Tipo de Persona'" filter="{ 'personType.name': 'text'}" sortable="'personType.name'" ng-if="true">
+                {{eventRegistration.personType.name}}</td>
             <td class="col-md-1" title="'Saldo ₡ Pendiente'" filter="{ 'balanceAmount': 'text'}" sortable="'balanceAmount'" ng-if="true">
                 {{eventRegistration.balanceAmount | currency:''}} {{$data.$sum('balanceAmount')}}</td>
             <td class="col-md-1">    

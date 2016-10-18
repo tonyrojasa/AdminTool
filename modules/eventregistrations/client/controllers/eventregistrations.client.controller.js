@@ -8,11 +8,12 @@
 
   EventregistrationsController.$inject = ['$scope', '$anchorScroll', '$state', '$stateParams', 'Authentication',
     'eventregistrationResolve', 'CurrentEventsService', 'EventpeoplegroupsService', 'personResolve',
-    'PeopleService', 'EventregistrationsByEventService', '$rootScope'
+    'PeopleService', 'EventregistrationsByEventService', '$rootScope', 'PersontypesService'
   ];
 
   function EventregistrationsController($scope, $anchorScroll, $state, $stateParams, Authentication, eventregistration,
-    CurrentEventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService, $rootScope) {
+    CurrentEventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService, $rootScope,
+    PersontypesService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -39,6 +40,13 @@
     vm.setShirtSize = function(shirtSize) {
       vm.person.shirtSize = shirtSize;
     };
+    vm.personTypes = PersontypesService.query();
+    vm.setPersonType = function(personType) {
+      vm.eventregistration.personType = personType;
+      if (vm.person && !vm.person.personType) {
+        vm.person.personType = personType;
+      }
+    };
     vm.getShirtTypesQuantityMax = getShirtTypesQuantityMax;
     init();
 
@@ -50,16 +58,33 @@
       } else {
         vm.person = person;
       }
+
+      if (!vm.eventregistration.eventExternalServer) {
+        vm.eventregistration.eventExternalServer = {
+          isEventExternalServer: false,
+          specialPrice: 0
+        };
+      }
     }
 
     function setShirtTypes() {
-      debugger;
       if (vm.eventregistration.event && vm.eventregistration.event.shirtTypes.length > 0) {
         if (!vm.eventregistration.shirtTypes ||
           (vm.eventregistration.shirtTypes && vm.eventregistration.shirtTypes.length === 0)) {
           vm.eventregistration.shirtTypes = _.map(vm.eventregistration.event.shirtTypes, function(shirtType) {
             shirtType.quantity = 0;
             return shirtType;
+          });
+        } else {
+          _.each(vm.eventregistration.event.shirtTypes, function(shirtType) {
+            var existingShirtTypeIndex = _.findIndex(vm.eventregistration.shirtTypes, function(o) {
+              return (o.shirtTypeName === shirtType.shirtTypeName &&
+                o.shirtTypeColor === shirtType.shirtTypeColor);
+            });
+            if (existingShirtTypeIndex < 0) {
+              shirtType.quantity = 0;
+              vm.eventregistration.shirtTypes.push(shirtType);
+            }
           });
         }
       }
@@ -91,6 +116,11 @@
           if (event.shirtPrice && vm.eventregistration.shirtsQuantity) {
             vm.eventregistration.balanceAmount += (event.shirtPrice * vm.eventregistration.shirtsQuantity);
           }
+        } else if (vm.eventregistration.eventExternalServer.isEventExternalServer) {
+          vm.eventregistration.balanceAmount = vm.eventregistration.eventExternalServer.specialPrice;
+          if (event.shirtPrice && vm.eventregistration.shirtsQuantity) {
+            vm.eventregistration.balanceAmount += (event.shirtPrice * vm.eventregistration.shirtsQuantity);
+          }
         } else {
           if (event.shirtPrice && vm.eventregistration.shirtsQuantity) {
             vm.eventregistration.balanceAmount = event.price + (event.shirtPrice * vm.eventregistration.shirtsQuantity);
@@ -99,7 +129,6 @@
           }
         }
       } else {
-        debugger;
         var newShirtsQuantity = vm.eventregistration.shirtsQuantity - vm.oldShirtsQuantity;
         if (newShirtsQuantity === 0) {
           vm.eventregistration.balanceAmount = vm.oldBalanceAmount;
@@ -150,6 +179,7 @@
       vm.eventregistration.event = undefined;
       vm.person = vm.isNewMemberRegistration() ? vm.person : undefined;
       vm.eventregistration.isEventServer = undefined;
+      vm.eventregistration.eventExternalServer.isEventExternalServer = undefined;
       vm.eventregistration.balanceAmount = vm.eventregistration._id ? vm.eventregistration.balanceAmount : undefined;
     }
 
@@ -167,11 +197,11 @@
 
       if (!vm.isNewMemberRegistration()) {
         PeopleService.query(null, function(data) {
-          var people = data;
+          vm.people = data;
           vm.eventRegistrations = EventregistrationsByEventService.query({
             'eventId': event._id
           }, function(data) {
-            filterPeopleListBySelectedEvent(people, data);
+            filterPeopleListBySelectedEvent(vm.people, data);
           });
         });
 
