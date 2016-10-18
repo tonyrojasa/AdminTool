@@ -1,0 +1,100 @@
+<section>
+  <div class="page-header">
+    <h1>Inscripciones - Reporte de Camisas</h1>
+  </div>
+  <br /><br />
+  <div id="content">
+  	<div class="row">
+	    <div class="col-md-6 form-group">        
+	      <label class="control-label" for="event">Evento *</label>  
+	      <div class="input-group select2-bootstrap-append">
+	        <ui-select ng-model="vm.event" on-select="vm.onEventSelected(vm.event)">
+	          <ui-select-match  placeholder="Seleccione el tipo de persona...">
+	                <span>{{$select.selected.name}}</span>
+	            </ui-select-match>
+	            <ui-select-choices repeat="item in (vm.events | filter: $select.search) track by item._id">
+	                <div ng-bind-html="item.name | highlight: $select.search"></div>
+	            </ui-select-choices>
+	        </ui-select> 
+	        <span class="input-group-btn">
+	          <button type="button" ng-click="vm.event = undefined" class="btn btn-default"  data-toggle="tooltip" title="Borrar filtro de evento">
+	            <span class="glyphicon glyphicon-trash"></span>
+	          </button>
+	        </span>  
+	      </div> 
+	    </div>   
+    </div>  
+    <div class="row" id="exportable" ng-show="vm.event && vm.shirtTypesGroups.length > 0">		 
+		<br/>
+		<table class="table table-condensed">
+		<thead>
+		<tr>		  
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('shirtTypeName'); vm.sortReverse = !vm.sortReverse">
+        		Tipo de camisa
+		        <span ng-show="vm.myOrderBy == 'shirtTypeName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'shirtTypeName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('shirtTypeColor'); vm.sortReverse = !vm.sortReverse">
+        		Color
+		        <span ng-show="vm.myOrderBy == 'shirtTypeColor' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'shirtTypeColor' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('shirtSize'); vm.sortReverse = !vm.sortReverse">
+        		Talla
+		        <span ng-show="vm.myOrderBy == 'shirtSize' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'shirtSize' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('quantity'); vm.sortReverse = !vm.sortReverse">
+	        	Cantidad
+		        <span ng-show="vm.myOrderBy == 'quantity' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'quantity' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		</tr>
+		</thead>
+		<tbody>
+			<tr class="info" ng-repeat="shirtTypeGroup in vm.filteredItems = (vm.shirtTypesGroups | orderBy: vm.myOrderBy:vm.sortReverse) track by $index">
+		  		<td>{{shirtTypeGroup.shirtTypeName}}</td>
+		  		<td><input style="background-color: {{shirtTypeGroup.shirtTypeColor}};color: {{shirtTypeGroup.shirtTypeColor}};" class="col-xs-1 img-rounded" ng-disabled="true"/></td>	
+		  		<td>{{shirtTypeGroup.shirtSize}}</td>	  	
+				<td>{{shirtTypeGroup.quantity}}</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr> 
+			<td colspan="13"></td>
+			</tr>
+			<tr class="info"> 
+				<td colspan="3" align="right">
+					<b>Total Camisas:</b>
+				</td>
+				<td align="left">
+			  		<span>{{vm.filteredItems | sumByKey:'quantity'}}</span>
+				</td>        
+			</tr>
+        </tfoot>
+		</table> 
+    </div> 
+    <div class="row">
+	    <div class="col-md-12" ng-show="vm.event && vm.shirtTypesGroups.length > 0">    
+	    	<export-to-file link-text="Exportar" element-id="exportable" format="excel" file-name="REPORTE DE INSCRIPCIONES"></export-to-file> 
+	    </div>  
+    </div> 
+  </div>   
+  <div class="alert alert-warning text-center" data-ng-if="vm.eventregistrations.$resolved && !vm.eventregistrations.length">
+    No hay inscripciones en este evento.
+  </div>
+   <div class="alert alert-warning text-center" data-ng-if="vm.event && vm.shirtTypesGroups.length === 0">
+    <strong>No existen registros de camisas en este evento.</strong>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="!vm.event">
+    <strong>Seleccione el evento para ver la distribución de camisas.</strong>
+  </div>
+</section>

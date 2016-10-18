@@ -23,8 +23,13 @@
       roles: ['admin', 'inscriptor', 'user']
     });
     Menus.addSubMenuItem('topbar', 'eventregistrations', {
-      title: 'Reportes',
+      title: 'Reporte General',
       state: 'eventregistrations.report',
+      roles: ['admin', 'inscriptor', 'user']
+    });
+    Menus.addSubMenuItem('topbar', 'eventregistrations', {
+      title: 'Reporte de Camisas',
+      state: 'eventregistrations.shirtsReport',
       roles: ['admin', 'inscriptor', 'user']
     });
   }

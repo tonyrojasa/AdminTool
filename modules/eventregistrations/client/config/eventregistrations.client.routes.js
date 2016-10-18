@@ -21,7 +21,17 @@
         controllerAs: 'vm',
         data: {
           roles: ['admin', 'inscriptor', 'user'],
-          pageTitle: 'Reporte de Inscripciones'
+          pageTitle: 'Inscripciones - Reporte General'
+        }
+      })
+      .state('eventregistrations.shirtsReport', {
+        url: '/eventregistrations/shirts-report',
+        templateUrl: 'modules/eventregistrations/client/views/report-eventregistrations-shirts.client.view.html',
+        controller: 'EventregistrationsShirtsReportController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['admin', 'inscriptor', 'user'],
+          pageTitle: 'Inscripciones - Reporte de Camisas'
         }
       })
       .state('eventregistrations.list', {

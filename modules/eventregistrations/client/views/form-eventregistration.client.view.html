@@ -82,7 +82,7 @@
           <div ng-messages="vm.form.eventregistrationForm.shirtSize.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Talla de camiseta es requerido.</p>
           </div>
-        </div>
+        </div> 
         <div class="form-group" ng-if="vm.eventregistration.event && vm.eventregistration.event.shirtPrice" show-errors>
           <label class="control-label" for="shirtsQuantity">
             Cantidad de camisas requeridas <span ng-if="vm.eventregistration.isEventServer">({{vm.eventregistration.event.shirtPrice | currency:'₡'}} c/u)</span>*
@@ -103,7 +103,36 @@
           <div ng-messages="vm.form.eventregistrationForm.shirtSize.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Cantidad de camisas es requerido.</p>
           </div>
-        </div>        
+        </div>                  
+        <div class="form-group" ng-if="vm.eventregistration.event && vm.eventregistration.event.shirtPrice && vm.eventregistration.shirtTypes.length  > 0" ng-repeat="shirtType in vm.eventregistration.shirtTypes track by $index">
+          <div class="col-md-1">
+            <label>{{shirtType.shirtTypeName}}</label> ->
+          </div>
+          <div class="col-md-1">
+            <input name="shirtTypeColor_{{$index}}" style="background-color: {{shirtType.shirtTypeColor}};color: {{shirtType.shirtTypeColor}};" class="col-xs-1 img-rounded" ng-disabled="true"/>
+          </div>
+          <div class="col-md-1">
+            <label class="control-label" for="shirtType_quantity_{{$index}}">Cantidad:</label>
+          </div>
+          <div class="col-md-9">
+            <div class="form-group" show-errors>
+              <div class="col-md-2">
+                <input name="shirtType_quantity_{{$index}}" ng-model="shirtType.quantity" ng-max="vm.getShirtTypesQuantityMax(vm.form.eventregistrationForm.shirtType_quantity_{{$index}})" type="number" min="0" step="1" id="shirtType_quantity_{{$index}}" autocomplete="off" class="form-control" placeholder="Cantidad de camisas">   
+              </div>
+              <div class="col-md-7">
+                <div ng-messages="vm.form.eventregistrationForm.shirtType_quantity_0.$error" role="alert">
+                  <p class="help-block error-text" ng-message="minQuantity">
+                    Debe indicar la cantidad de camisas de cada tipo
+                  </p>
+                  <p class="help-block error-text" ng-message="maxQuantity">
+                    Cantidad de tipo de camisas no puede exeder la cantidad solicitada
+                  </p>
+                </div>
+              </div>           
+              
+            </div>
+          </div>          
+        </div>     
         <div class="form-group" show-errors>
           <label class="control-label" for="balanceAmount">Saldo *</label>
           <input name="balanceAmount" type="text" ng-model="vm.eventregistration.balanceAmount" id="balanceAmount" autocomplete="off" class="form-control" placeholder="Saldo adeudado" required ng-disabled="true" >
@@ -179,10 +208,11 @@
           </div>
         </div>
         <div class="form-group">
-          <button type="submit" class="btn btn-default">{{vm.eventregistration._id ? 'Actualizar' : 'Crear'}}</button>
+          <button type="submit" class="btn btn-primary">{{vm.eventregistration._id ? 'Actualizar' : 'Crear'}}</button>
         </div>
       </fieldset>
     </form>
+    <br /><br />
   </div>
 </section>
 

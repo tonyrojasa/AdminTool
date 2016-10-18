@@ -97,7 +97,20 @@ exports.list = function(req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        res.jsonp(eventregistrations);
+
+        var shirtTypesList = [];
+        _.each(eventregistrations, function(eventregistration, key) {
+          if (eventregistration.shirtTypes.length > 0) {
+            _.each(eventregistration.shirtTypes, function(shirtType) {
+              shirtType.shirtSize = eventregistration.person.shirtSize;
+            });
+          }
+
+          if (key === eventregistrations.length - 1) {
+            eventregistrations.shirtTypesList = shirtTypesList;
+            res.jsonp(eventregistrations);
+          }
+        });
       }
     });
 };
@@ -123,7 +136,19 @@ exports.listByEventId = function(req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        res.jsonp(eventregistrations);
+        var shirtTypesList = [];
+        _.each(eventregistrations, function(eventregistration, key) {
+          if (eventregistration.shirtTypes.length > 0) {
+            _.each(eventregistration.shirtTypes, function(shirtType) {
+              shirtType.shirtSize = eventregistration.person.shirtSize;
+            });
+          }
+
+          if (key === eventregistrations.length - 1) {
+            eventregistrations.shirtTypesList = shirtTypesList;
+            res.jsonp(eventregistrations);
+          }
+        });
       }
     });
 };

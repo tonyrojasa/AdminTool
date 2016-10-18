@@ -39,12 +39,49 @@
     vm.setShirtSize = function(shirtSize) {
       vm.person.shirtSize = shirtSize;
     };
-    loadDates();
+    vm.getShirtTypesQuantityMax = getShirtTypesQuantityMax;
+    init();
 
-    if (!vm.isNewMemberRegistration()) {
-      vm.person = undefined;
-    } else {
-      vm.person = person;
+    function init() {
+      loadDates();
+      setShirtTypes();
+      if (!vm.isNewMemberRegistration()) {
+        vm.person = undefined;
+      } else {
+        vm.person = person;
+      }
+    }
+
+    function setShirtTypes() {
+      debugger;
+      if (vm.eventregistration.event && vm.eventregistration.event.shirtTypes.length > 0) {
+        if (!vm.eventregistration.shirtTypes ||
+          (vm.eventregistration.shirtTypes && vm.eventregistration.shirtTypes.length === 0)) {
+          vm.eventregistration.shirtTypes = _.map(vm.eventregistration.event.shirtTypes, function(shirtType) {
+            shirtType.quantity = 0;
+            return shirtType;
+          });
+        }
+      }
+    }
+
+    function getShirtTypesQuantityMax(selectedShirtType) {
+      var TotalShirtTypesQuantity = 0;
+      vm.eventregistration.shirtTypes.forEach(function(shirtType, key) {
+        if (shirtType.quantity) {
+          TotalShirtTypesQuantity += shirtType.quantity;
+        }
+      });
+      if (TotalShirtTypesQuantity > vm.eventregistration.shirtsQuantity) {
+        selectedShirtType.$setValidity("maxQuantity", false);
+      } else {
+        selectedShirtType.$setValidity("maxQuantity", true);
+      }
+      if (TotalShirtTypesQuantity < vm.eventregistration.shirtsQuantity) {
+        selectedShirtType.$setValidity("minQuantity", false);
+      } else {
+        selectedShirtType.$setValidity("minQuantity", true);
+      }
     }
 
     function setEventPrice(event) {
@@ -126,6 +163,7 @@
         vm.eventregistration.shirtsQuantity = 0;
       }
       vm.setEventPrice(event);
+      setShirtTypes();
 
       if (!vm.isNewMemberRegistration()) {
         PeopleService.query(null, function(data) {

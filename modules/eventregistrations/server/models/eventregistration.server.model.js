@@ -54,6 +54,9 @@ var EventregistrationSchema = new Schema({
     default: 0,
     trim: true
   },
+  shirtTypes: {
+    type: Array
+  },
   isEventServer: {
     type: Boolean,
     default: false,
