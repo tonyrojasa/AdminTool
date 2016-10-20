@@ -5,16 +5,33 @@
     .module('receipts')
     .controller('ReceiptsListController', ReceiptsListController);
 
-  ReceiptsListController.$inject = ['ReceiptsService', '$state', 'CurrentEventsService', 'EventregistrationsService',
-    'Authentication', '$anchorScroll', 'NgTableParams'
+  ReceiptsListController.$inject = ['$scope', 'ReceiptsService', '$state', 'CurrentEventsService', 'EventregistrationsService',
+    'Authentication', '$anchorScroll', 'NgTableParams', 'moment'
   ];
 
-  function ReceiptsListController(ReceiptsService, $state, CurrentEventsService, EventregistrationsService,
-    Authentication, $anchorScroll, NgTableParams) {
+  function ReceiptsListController($scope, ReceiptsService, $state, CurrentEventsService, EventregistrationsService,
+    Authentication, $anchorScroll, NgTableParams, moment) {
     var vm = this;
+    vm.moment = moment;
     vm.authentication = Authentication;
     vm.events = CurrentEventsService.query();
     vm.receipts = ReceiptsService.query();
+
+    vm.receipts = ReceiptsService.query(function(data) {
+      _.each(data, function(receipt) {
+        receipt.paymentDate = vm.moment(receipt.paymentDate).format('YYYY-MM-DD');
+      });
+    });
+
+    $scope.$watch('vm.paymentDate', function(newVal, oldVal) {
+      debugger;
+      if (newVal) {
+        vm.dateFilterValue = vm.moment(vm.paymentDate).format('YYYY-MM-DD');
+      } else {
+        vm.dateFilterValue = '';
+      }
+    });
+
     vm.setEvent = setEvent;
 
     vm.cols = [{

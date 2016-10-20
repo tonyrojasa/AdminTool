@@ -27,8 +27,18 @@
       state: 'eventregistrations.report',
       roles: ['admin', 'inscriptor', 'user']
     });
+    Menus.addSubMenuItem('topbar', 'reports', {
+      title: 'Inscripciones - Reporte General',
+      state: 'eventregistrations.report',
+      roles: ['admin', 'inscriptor', 'user']
+    });
     Menus.addSubMenuItem('topbar', 'eventregistrations', {
       title: 'Reporte de Camisas',
+      state: 'eventregistrations.shirtsReport',
+      roles: ['admin', 'inscriptor', 'user']
+    });
+    Menus.addSubMenuItem('topbar', 'reports', {
+      title: 'Inscripciones - Reporte de Camisas',
       state: 'eventregistrations.shirtsReport',
       roles: ['admin', 'inscriptor', 'user']
     });

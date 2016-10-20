@@ -24,6 +24,16 @@
           pageTitle: 'Lista de Recibos'
         }
       })
+      .state('receipts.report', {
+        url: '/receipts/report',
+        templateUrl: 'modules/receipts/client/views/report-receipts.client.view.html',
+        controller: 'ReceiptsReportController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['admin', 'inscriptor', 'user'],
+          pageTitle: 'Recibos - Reporte General'
+        }
+      })
       .state('receipts.createFromEventRegistration', {
         url: '/create/:eventregistrationId',
         templateUrl: 'modules/receipts/client/views/form-receipt.client.view.html',

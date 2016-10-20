@@ -41,6 +41,22 @@
         </span>  
       </div> 
     </div>
+    <div class="form-group col-md-6">        
+      <label class="control-label" for="paymentDate">Fecha de pago</label>
+        <br />
+        <div class="input-group select2-bootstrap-append">
+            <datetimepicker ng-if="!vm.editMode"
+              ng-model="vm.paymentDate" 
+              hidden-time="true" 
+              date-format="dd-MMM-yyyy" 
+              current-text="Hoy"
+              clear-text="Limpiar"
+              close-text="Cerrar"></datetimepicker>         
+            <button type="button" ng-click="vm.paymentDate = undefined" class="btn btn-default" data-toggle="tooltip" title="Borrar filtro de fecha">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+        </div>
+    </div>
     <div class="col-md-12">
      <strong>Columnas para mostrar <button type="button" class="btn btn-link" ng-click="vm.isCollapsed = !vm.isCollapsed">
       {{vm.isCollapsed ? 'Ver opciones &gt;&gt;' : '&lt;&lt; Ocultar Opciones'}}</button>
@@ -56,7 +72,7 @@
     <div id="exportable">
       <table ng-table="vm.tableParams" class="table" show-filter="true" ng-table-columns-binding="vm.cols" export-csv='csv'>
         <tbody>
-          <tr ng-class="vm.getStatusClass(receipt)" ng-repeat="receipt in $data | filter: vm.event.name">
+          <tr ng-class="vm.getStatusClass(receipt)" ng-repeat="receipt in $data | filter: vm.event.name | filter:{paymentDate:vm.dateFilterValue}:strict">
             <td class="col-md-1" title="'# Inscripción'" filter="{ 'eventRegistration.registrationNumber': 'number'}" sortable="'eventRegistration.registrationNumber'" ng-if="true">
                 {{receipt.eventRegistration.registrationNumber}}</td>
             <td class="col-md-1" title="'# Recibo'" filter="{ 'receiptNumber': 'number'}" sortable="'receiptNumber'" ng-if="true">
@@ -96,11 +112,11 @@
             <td ng-if="vm.cols[4].show()"></td> 
             <td ng-if="vm.cols[5].show()"></td> 
             <td ng-if="vm.cols[6].show()"></td> 
-            <td ng-if="vm.cols[7].show()" ng-class="vm.getTotalClass($data | filter: vm.event.name | sumByKey:'paymentAmount')">
-              <span><b>Balance ₡:</b> {{$data | filter: vm.event.name | sumByKey:'paymentAmount'  | currency:''}}</span>
-            </td>
+            <td ng-class="vm.getTotalClass($data | filter: vm.event.name | filter:{paymentDate:vm.dateFilterValue}:strict | sumByKey:'paymentAmount')">
+              <span><b>Total ₡:</b> {{$data | filter: vm.event.name | filter:{paymentDate:vm.dateFilterValue}:strict | sumByKey:'paymentAmount'  | currency:''}}</span>
+            </td>            
             <td ng-if="true" class="text-center">            
-              <span><b>Recibos:</b> {{($data | filter: vm.event.name).length}}</span>
+              <span><b>Recibos:</b> {{($data | filter: vm.event.name | filter:{paymentDate:vm.dateFilterValue}:strict).length}}</span>
             </td>
             <td>
               <div class="text-right">

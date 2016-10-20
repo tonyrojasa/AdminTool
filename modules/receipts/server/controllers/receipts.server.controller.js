@@ -89,6 +89,28 @@ exports.list = function(req, res) {
         path: 'event'
       }
     })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'eventPeopleGroup'
+      }
+    })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'personType'
+      }
+    })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'person',
+        populate: {
+          path: 'personType',
+          model: 'Persontype'
+        }
+      }
+    })
     .populate('user', 'displayName').exec(function(err, receipts) {
       if (err) {
         return res.status(400).send({
