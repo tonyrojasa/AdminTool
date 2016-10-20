@@ -7,7 +7,7 @@
     applicationModuleName: applicationModuleName,
     applicationModuleVendorDependencies: ['ngResource', 'ngAnimate', 'ngMessages', 'ui.router',
       'ui.bootstrap', 'angularFileUpload', 'ngFileSaver', 'ui.mask', 'ui.select', 'ngSanitize',
-      'ngMask', 'ngTable', 'ngTableToCsv', 'colorpicker.module'
+      'ngMask', 'ngTable', 'ngTableToCsv', 'colorpicker.module', 'angularMoment'
     ],
     registerModule: registerModule
   };

@@ -58,6 +58,22 @@
         </span>  
       </div> 
     </div> 
+    <div class="form-group col-md-6">    
+  		<label class="control-label" for="registrationDate">Fecha de inscripción</label>
+      	<br />
+		<div class="input-group select2-bootstrap-append">
+	      <datetimepicker ng-if="!vm.editMode"
+	        ng-model="vm.registrationDate" 
+	        hidden-time="true" 
+	        date-format="dd-MMM-yyyy" 
+	        current-text="Hoy"
+	        clear-text="Limpiar"
+	        close-text="Cerrar"></datetimepicker>       	
+	  		<button type="button" ng-click="vm.registrationDate = undefined" class="btn btn-default" data-toggle="tooltip" title="Borrar filtro de fecha">
+	        	<span class="glyphicon glyphicon-trash"></span>
+	  		</button>
+		</div>
+    </div> 
     <br />
     <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
     <br />
@@ -161,7 +177,7 @@
 		</tr>
 		</thead>
 		<tbody>
-		<tr ng-repeat="eventRegistration in vm.filteredItems = (vm.eventregistrations | orderBy:['eventRegistration.balanceAmount', 'eventRegistration.person.firstName', 'eventRegistration.person.lastName', 'eventRegistration.person.secondLastName', 'eventRegistration.registrationDate','eventRegistration.registrationNumber'] | orderBy: vm.myOrderBy:vm.sortReverse | filter: vm.searchFilter | filter: vm.event.name | filter: vm.eventPeopleGroup.name | filter:vm.personType.name)" ng-class="vm.getStatusClass(eventRegistration)">
+		<tr ng-repeat="eventRegistration in vm.filteredItems = (vm.eventregistrations | orderBy:['eventRegistration.balanceAmount', 'eventRegistration.person.firstName', 'eventRegistration.person.lastName', 'eventRegistration.person.secondLastName', 'eventRegistration.registrationDate','eventRegistration.registrationNumber'] | orderBy: vm.myOrderBy:vm.sortReverse | filter: vm.searchFilter | filter:{registrationDate:vm.dateFilterValue}:strict | filter: vm.event.name | filter: vm.eventPeopleGroup.name | filter:vm.personType.name)" ng-class="vm.getStatusClass(eventRegistration)">
 		  <td>{{eventRegistration.registrationNumber}}</td>
 		  <td>{{eventRegistration.registrationDate | date:'dd-MMM-yyyy'}}</td>
 		  <td>{{eventRegistration.person.firstName}}</td>

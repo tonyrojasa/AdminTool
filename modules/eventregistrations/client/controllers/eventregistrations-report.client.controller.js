@@ -6,21 +6,31 @@
     .controller('EventregistrationsReportController', EventregistrationsReportController);
 
   EventregistrationsReportController.$inject = ['$scope', 'EventregistrationsService',
-    'EventsService', 'EventpeoplegroupsService', 'PersontypesService', 'ReceiptsByEventRegistrationService', '$timeout'
+    'EventsService', 'EventpeoplegroupsService', 'PersontypesService', 'ReceiptsByEventRegistrationService', '$timeout', 'moment'
   ];
 
   function EventregistrationsReportController($scope, EventregistrationsService, EventsService,
-    EventpeoplegroupsService, PersontypesService, ReceiptsByEventRegistrationService, $timeout) {
+    EventpeoplegroupsService, PersontypesService, ReceiptsByEventRegistrationService, $timeout, moment) {
     var vm = this;
+    vm.moment = moment;
     vm.receiptsByEventRegistrationService = ReceiptsByEventRegistrationService;
     vm.events = EventsService.query();
     vm.eventPeopleGroups = EventpeoplegroupsService.query();
     vm.personTypes = PersontypesService.query();
     init();
 
+    $scope.$watch('vm.registrationDate', function(newVal, oldVal) {
+      if (newVal) {
+        vm.dateFilterValue = vm.moment(vm.registrationDate).format('YYYY-MM-DD');
+      } else {
+        vm.dateFilterValue = '';
+      }
+    });
+
     function init() {
       vm.eventregistrations = EventregistrationsService.query(function(data) {
         _.each(data, function(eventregistration) {
+          eventregistration.registrationDate = vm.moment(eventregistration.registrationDate).format('YYYY-MM-DD');
           vm.getEventRegistrationTotalPayments(eventregistration);
         });
       });

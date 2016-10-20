@@ -35,7 +35,8 @@ module.exports = {
         'public/lib/ngMask/dist/ngMask.min.js',
         'public/lib/ng-table/dist/ng-table.min.js',
         'public/lib/ng-table-to-csv/dist/ng-table-to-csv.js',
-        'public/lib/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js'
+        'public/lib/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
+        'public/lib/angular-moment/angular-moment.js'
         // endbower
       ]
     },

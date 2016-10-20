@@ -6,29 +6,31 @@
     .controller('EventregistrationsListController', EventregistrationsListController);
 
   EventregistrationsListController.$inject = ['$scope', 'EventregistrationsService', 'EventsService', 'Authentication',
-    'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams', '$filter'
+    'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams', '$filter', 'moment'
   ];
 
   function EventregistrationsListController($scope, EventregistrationsService, EventsService, Authentication,
-    ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams, $filter) {
+    ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams, $filter, moment) {
     var vm = this;
+    vm.moment = moment;
     vm.authentication = Authentication;
     vm.events = EventsService.query();
-    vm.eventregistrations = EventregistrationsService.query();
+    vm.eventregistrations = EventregistrationsService.query(function(data) {
+      _.each(data, function(eventregistration) {
+        eventregistration.registrationDate = vm.moment(eventregistration.registrationDate).format('YYYY-MM-DD');
+      });
+    });
     vm.setEvent = setEvent;
     vm.remove = remove;
     vm.receiptsByEventRegistrationService = ReceiptsByEventRegistrationService;
 
-    // $scope.$watch('vm.eventRegistrationDate', function(newVal, oldVal) {
-    //   debugger;
-    //   if (newVal) {
-    //     var date = newVal.toISOString()
-    //     vm.eventregistrations = $filter('filter')(vm.eventregistrations, {
-    //       registrationDate: date
-    //     });
-    //   }
-
-    // });
+    $scope.$watch('vm.registrationDate', function(newVal, oldVal) {
+      if (newVal) {
+        vm.dateFilterValue = vm.moment(vm.registrationDate).format('YYYY-MM-DD');
+      } else {
+        vm.dateFilterValue = '';
+      }
+    });
 
     vm.cols = [{
       field: "registrationNumber",

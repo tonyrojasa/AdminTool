@@ -42,21 +42,22 @@
         </span>  
       </div> 
     </div>  
-    <div class="col-md-6 form-group" ng-show="false">
-      <label class="control-label" for="paymentDate">Fecha de inscripción</label>
-      <br />
-      <datetimepicker 
-        ng-model="vm.eventRegistrationDate" 
-        hidden-time="true" 
-        date-format="dd-MMM-yyyy" 
-        current-text="Hoy"
-        clear-text="Limpiar"
-        close-text="Cerrar"> 
-      </datetimepicker>       
-      <button type="button" ng-click="vm.eventRegistrationDate = undefined" class="btn btn-default" data-toggle="tooltip" title="Borrar filtro de fecha">
-          <span class="glyphicon glyphicon-trash"></span>
-        </button>  
-    </div>
+    <div class="form-group col-md-6">        
+      <label class="control-label" for="registrationDate">Fecha de inscripción</label>
+        <br />
+        <div class="input-group select2-bootstrap-append">
+            <datetimepicker ng-if="!vm.editMode"
+              ng-model="vm.registrationDate" 
+              hidden-time="true" 
+              date-format="dd-MMM-yyyy" 
+              current-text="Hoy"
+              clear-text="Limpiar"
+              close-text="Cerrar"></datetimepicker>         
+            <button type="button" ng-click="vm.registrationDate = undefined" class="btn btn-default" data-toggle="tooltip" title="Borrar filtro de fecha">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+        </div>
+    </div> 
     <div class="col-md-12">
      <strong>Columnas para mostrar <button type="button" class="btn btn-link" ng-click="vm.isCollapsed = !vm.isCollapsed">
       {{vm.isCollapsed ? 'Ver opciones &gt;&gt;' : '&lt;&lt; Ocultar Opciones'}}</button>
@@ -72,7 +73,7 @@
     <div id="exportable">        
       <table ng-table="vm.tableParams" class="table" show-filter="true" ng-table-columns-binding="vm.cols" export-csv='csv'>
         <tbody>
-          <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in $data | filter: vm.event.name | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''}">
+          <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in $data | filter: vm.event.name | filter:{registrationDate:vm.dateFilterValue}:strict">
             <td class="col-md-1" title="'#'" filter="{ 'registrationNumber': 'number'}" sortable="'registrationNumber'" ng-if="true">
                 {{eventRegistration.registrationNumber}}</td>
             <td title="'Evento'" filter="{ 'event.name': 'text'}" sortable="'event.name'" ng-if="true">
@@ -114,11 +115,11 @@
             <td ng-if="vm.cols[5].show()"></td> 
             <td ng-if="vm.cols[6].show()"></td> 
             <td ng-if="vm.cols[7].show()"></td> 
-            <td ng-if="vm.cols[8].show()" ng-class="vm.getTotalClass($data | filter: vm.event.name  | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''} | sumByKey:'balanceAmount')">
-              <span><b>Total ₡ Pendiente:</b> {{$data | filter: vm.event.name  | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''} | sumByKey:'balanceAmount'  | currency:''}}</span>
+            <td ng-if="vm.cols[8].show()" ng-class="vm.getTotalClass($data | filter: vm.event.name  | filter:{registrationDate:vm.dateFilterValue}:strict | sumByKey:'balanceAmount')">
+              <span><b>Total ₡ Pendiente:</b> {{$data | filter: vm.event.name  | filter:{registrationDate:vm.dateFilterValue}:strict | sumByKey:'balanceAmount'  | currency:''}}</span>
             </td>
             <td ng-if="true" class="text-center">            
-              <span><b>Inscripciones:</b> {{($data | filter: vm.event.name  | filter:{registrationDate:(vm.eventRegistrationDate | date:'yyyy-MM-dd') || ''}).length}}</span>
+              <span><b>Inscripciones:</b> {{($data | filter: vm.event.name  | filter:{registrationDate:vm.dateFilterValue}:strict).length}}</span>
             </td>
             <td>
               <div class="text-right">
