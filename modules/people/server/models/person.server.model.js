@@ -127,7 +127,6 @@ var PersonSchema = new Schema({
   },
   shirtSize: {
     type: String,
-    required: 'Please fill shirtSize',
     trim: true
   },
   medicalTreatment: {

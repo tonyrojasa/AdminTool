@@ -1,3 +1,21 @@
+<div ng-if="vm.error">
+  <br />
+  <div class="alert alert-danger">
+    <a href="#" class="close" data-dismiss="alert" ng-click='vm.error = undefined'>&times;</a>
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <strong class="text-danger">Error:</strong>
+    <span>{{vm.error}}</span>
+  </div>
+</div>
+<div ng-if="vm.success">
+  <br />
+  <div class="alert alert-success" role="alert">
+    <a href="#" class="close" data-dismiss="alert" ng-click='vm.success = undefined'>&times;</a>
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <strong class="text-success">Operación ejecutada exitosamente:</strong>
+    <span>{{vm.success}}</span>
+  </div>
+</div>
 <section>
   <div class="page-header">
     <h1>Recibos</h1>
@@ -5,7 +23,7 @@
   <a class="btn btn-primary" data-ui-sref="receipts.create">Nuevo Recibo</a>
   <br/> <br/>
   <div id="content" data-ng-if="vm.receipts.length">
-    <div class="form-group">        
+    <div class="col-md-6 form-group">        
       <label class="control-label" for="event">Evento: </label>  
       <div class="input-group select2-bootstrap-append">
         <ui-select ng-model="vm.event">
@@ -23,45 +41,95 @@
         </span>  
       </div> 
     </div>
-    <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
+    <div class="form-group col-md-6">        
+      <label class="control-label" for="paymentDate">Fecha de pago</label>
+        <br />
+        <div class="input-group select2-bootstrap-append">
+            <datetimepicker ng-if="!vm.editMode"
+              ng-model="vm.paymentDate" 
+              hidden-time="true" 
+              date-format="dd-MMM-yyyy" 
+              current-text="Hoy"
+              clear-text="Limpiar"
+              close-text="Cerrar"></datetimepicker>         
+            <button type="button" ng-click="vm.paymentDate = undefined" class="btn btn-default" data-toggle="tooltip" title="Borrar filtro de fecha">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+        </div>
+    </div>
+    <div class="col-md-12">
+     <strong>Columnas para mostrar <button type="button" class="btn btn-link" ng-click="vm.isCollapsed = !vm.isCollapsed">
+      {{vm.isCollapsed ? 'Ver opciones &gt;&gt;' : '&lt;&lt; Ocultar Opciones'}}</button>
+     </strong>
+    </div>
+    <div class="col-md-12 well well-lg" uib-collapse="vm.isCollapsed">
+      <label class="checkbox-inline" ng-repeat="col in vm.cols">
+        <input type="checkbox" ng-if="col.title()" ng-model-options="{ getterSetter: true }" ng-model="col.show"/> 
+        {{col.title()}}
+      </label>
+    </div>
     <br />
     <div id="exportable">
-      <table class="table table-condensed">
-        <thead>
-        <tr>
-          <th># Inscripción</th>
-          <th># Recibo</th>
-          <th>Evento</th>
-          <th>Por concepto de</th>
-          <th>Fecha de pago</th>
-          <th>Recibido de</th>
-          <th>Mondo del pago ₡</th>
-        </tr>
-        </thead>        
+      <table ng-table="vm.tableParams" class="table" show-filter="true" ng-table-columns-binding="vm.cols" export-csv='csv'>
         <tbody>
-        <tr ng-class="vm.getStatusClass(receipt)" ng-repeat="receipt in vm.receipts | orderBy:['receivedFrom', 'paymentDate'] | filter : vm.searchFilter | filter: vm.event.name">
-          <td>{{receipt.eventRegistration.registrationNumber}}</td>
-          <td>{{receipt.receiptNumber}}</td>          
-          <td>{{receipt.event.name}}</td>
-          <td>{{receipt.paymentOf}}</td>
-          <td>{{receipt.paymentDate | date:'dd-MMM-yyyy'}}</td>
-          <td>{{receipt.receivedFrom}}</td>
-          <td>{{receipt.paymentAmount | currency:''}}</td>{{vm.addToTotal(receipt.paymentAmount)}}
-          <td>    
-            <a data-ui-sref="receipts.view({ receiptId: receipt._id })">Detalles</a>    
-          </td>
-        </tr>
+          <tr ng-class="vm.getStatusClass(receipt)" ng-repeat="receipt in $data | filter: vm.event.name | filter:{paymentDate:vm.dateFilterValue}:strict">
+            <td class="col-md-1" title="'# Inscripción'" filter="{ 'eventRegistration.registrationNumber': 'number'}" sortable="'eventRegistration.registrationNumber'" ng-if="true">
+                {{receipt.eventRegistration.registrationNumber}}</td>
+            <td class="col-md-1" title="'# Recibo'" filter="{ 'receiptNumber': 'number'}" sortable="'receiptNumber'" ng-if="true">
+                {{receipt.receiptNumber}}</td>
+            <td class="col-md-2" title="'Evento'" ng-if="true">
+                <span ng-if="receipt.eventRegistration">{{receipt.eventRegistration.event.name}}</span>
+                <span ng-if="!receipt.eventRegistration">{{receipt.event.name}}</span>  
+            </td>
+            <td class="col-md-2" title="'Por concepto de'" filter="{ 'paymentOf': 'text'}" sortable="'paymentOf'" ng-if="true">
+                {{receipt.paymentOf}}</td>  
+            <td class="col-md-2" title="'Forma de pago'" filter="{ 'paidBy': 'text'}" sortable="'paidBy'" ng-if="true">
+                {{receipt.paidBy}}</td>          
+            <td class="col-md-2" title="'Fecha de pago'" sortable="'paymentDate'" ng-if="true">
+                {{receipt.paymentDate | date:'dd-MMM-yyyy'}}</td>
+            <td class="col-md-2" title="'Recibido de'" filter="{ 'receivedFrom': 'text'}" sortable="'receivedFrom'" ng-if="true">
+                {{receipt.receivedFrom}}</td>
+            <td title="'Otra referencia'" filter="{ 'otherReference': 'text'}" sortable="'otherReference'" ng-if="false">
+                {{receipt.otherReference}}</td>
+            <td class="col-md-1" title="'Monto ₡ Ingreso/Gasto'" filter="{ 'paymentAmount': 'number'}" sortable="'paymentAmount'" ng-if="true">
+               {{receipt.paymentAmount | currency:''}} {{vm.addToTotal(receipt.paymentAmount)}}</td>
+            <td class="col-md-1">    
+              <a data-ui-sref="receipts.view({ receiptId: receipt._id })" data-toggle="tooltip" title="Ver detalles del recibo #{{receipt.receiptNumber}}">Detalles</a>    
+            </td>                 
+            <td class="col-md-1">
+              <a ng-if="vm.authentication.isUserAdmin()" class="btn btn-default  pull-right" data-ng-click="vm.remove(receipt)" data-toggle="tooltip" title="Eliminar recibo #{{receipt.receiptNumber}}">
+                <i class="glyphicon glyphicon-trash"></i>
+              </a>
+            </td>
+          </tr>
         </tbody>
         <tfoot>
-          <tr>
-            <td colspan="5"></td>            
-            <td align="right"><b>Total:</b></td>
-            <td ng-class="vm.getTotalClass(vm.receipts | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'paymentAmount')">{{vm.receipts | filter: vm.searchFilter | filter: vm.event.name | sumByKey:'paymentAmount'  | currency:''}}</td>
+          <tr>          
+            <td ng-if="vm.cols[0].show()"></td>  
+            <td ng-if="vm.cols[1].show()"></td> 
+            <td ng-if="vm.cols[2].show()"></td> 
+            <td ng-if="vm.cols[3].show()"></td>   
+            <td ng-if="vm.cols[4].show()"></td> 
+            <td ng-if="vm.cols[5].show()"></td> 
+            <td ng-if="vm.cols[6].show()"></td> 
+            <td ng-class="vm.getTotalClass($data | filter: vm.event.name | filter:{paymentDate:vm.dateFilterValue}:strict | sumByKey:'paymentAmount')">
+              <span><b>Total ₡:</b> {{$data | filter: vm.event.name | filter:{paymentDate:vm.dateFilterValue}:strict | sumByKey:'paymentAmount'  | currency:''}}</span>
+            </td>            
+            <td ng-if="true" class="text-center">            
+              <span><b>Recibos:</b> {{($data | filter: vm.event.name | filter:{paymentDate:vm.dateFilterValue}:strict).length}}</span>
+            </td>
+            <td>
+              <div class="text-right">
+              <a class="btn" title="Export Table" ng-click='csv.generate()' ng-href="{{ csv.link() }}"
+                 download="RECIBOS.csv">
+                <i class="glyphicon glyphicon-new-window"></i> &#160;Exportar
+              </a>  
+              </div>
+            </td>
           </tr>
         </tfoot>
-      </table>    
+      </table>
     </div> 
-    <export-to-file link-text="Exportar" element-id="exportable" format="excel" file-name="RECIBOS"></export-to-file> 
   </div>   
   <div class="alert alert-warning text-center" data-ng-if="vm.receipts.$resolved && !vm.receipts.length">
     No hay recibos creados <a data-ui-sref="receipts.create">Crear uno</a>?

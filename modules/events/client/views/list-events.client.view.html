@@ -15,7 +15,9 @@
           <th>Nombre</th>
           <th>Fecha Inicio</th>
           <th>Fecha Final</th>
-          <th>Precio ₡</th>
+          <th>Precio General ₡</th>
+          <th>Precio Servidor ₡</th>
+          <th>Precio Camisa ₡</th>
           <th></th>
         </tr>
         </thead>
@@ -24,7 +26,9 @@
           <td>{{event.name}}</td>
           <td>{{event.startDate | date:'mediumDate'}}</td>
           <td>{{event.endDate | date:'mediumDate'}}</td>
-          <td>{{event.price | currency}}</td>
+          <td>{{event.price | currency:''}}</td>
+          <td>{{event.serverPrice | currency:''}}</td>
+          <td>{{event.shirtPrice | currency:''}}</td>
           <td>    
             <a data-ui-sref="events.view({ eventId: event._id})">Detalles</a>    
           </td>

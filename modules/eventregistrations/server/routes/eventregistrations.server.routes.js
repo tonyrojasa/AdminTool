@@ -20,6 +20,9 @@ module.exports = function(app) {
   app.route('/api/eventregistrations/event/:eventId').all(eventregistrationsPolicy.isAllowed)
     .get(eventregistrations.listByEventId);
 
+  app.route('/api/eventregistrations/person/:personId').all(eventregistrationsPolicy.isAllowed)
+    .get(eventregistrations.listByPersonId);
+
   // Finish by binding the Eventregistration middleware
   app.param('eventregistrationId', eventregistrations.eventregistrationByID);
 };

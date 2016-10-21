@@ -39,6 +39,10 @@
       name: 'Estudiante',
       value: 'student',
       selected: false
+    }, {
+      name: 'Contador',
+      value: 'accountant',
+      selected: false
     }];
 
     if (!vm.user.roles) {
@@ -81,6 +85,10 @@
               break;
             case "student":
               roleArray[key] = "Estudiante";
+              break;
+            case "accountant":
+              roleArray[key] = "Contador";
+              break;
           }
         });
       var roleValue = roleArray.join(', ');

@@ -20,5 +20,11 @@
       type: 'dropdown',
       roles: ['admin', 'inscriptor', 'teacher', 'user']
     });
+    menuService.addMenuItem('topbar', {
+      title: 'Reportes',
+      state: 'reports',
+      type: 'dropdown',
+      roles: ['admin', 'inscriptor', 'teacher', 'user', 'accountant']
+    });
   }
 }());

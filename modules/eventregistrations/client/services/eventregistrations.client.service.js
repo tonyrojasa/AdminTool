@@ -1,5 +1,5 @@
 // Eventregistrations service used to communicate Eventregistrations REST endpoints
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -12,6 +12,11 @@
     return $resource('api/eventregistrations/:eventregistrationId', {
       eventregistrationId: '@_id'
     }, {
+      query: {
+        method: 'GET',
+        isArray: true,
+        cache: false
+      },
       update: {
         method: 'PUT'
       }

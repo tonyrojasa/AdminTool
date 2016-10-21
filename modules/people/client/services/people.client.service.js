@@ -1,5 +1,5 @@
 // People service used to communicate People REST endpoints
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -12,6 +12,11 @@
     return $resource('api/people/:personId', {
       personId: '@_id'
     }, {
+      query: {
+        method: 'GET',
+        isArray: true,
+        cache: false
+      },
       update: {
         method: 'PUT'
       }

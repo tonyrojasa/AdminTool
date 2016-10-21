@@ -14,6 +14,26 @@
         url: '/eventregistrations',
         template: '<ui-view/>'
       })
+      .state('eventregistrations.report', {
+        url: '/eventregistrations/report',
+        templateUrl: 'modules/eventregistrations/client/views/report-eventregistrations.client.view.html',
+        controller: 'EventregistrationsReportController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['admin', 'inscriptor', 'user'],
+          pageTitle: 'Inscripciones - Reporte General'
+        }
+      })
+      .state('eventregistrations.shirtsReport', {
+        url: '/eventregistrations/shirts-report',
+        templateUrl: 'modules/eventregistrations/client/views/report-eventregistrations-shirts.client.view.html',
+        controller: 'EventregistrationsShirtsReportController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['admin', 'inscriptor', 'user'],
+          pageTitle: 'Inscripciones - Reporte de Camisas'
+        }
+      })
       .state('eventregistrations.list', {
         url: '',
         templateUrl: 'modules/eventregistrations/client/views/list-eventregistrations.client.view.html',
@@ -42,7 +62,7 @@
         }
       })
       .state('eventregistrations.edit', {
-        url: '/:eventregistrationId/edit:newMember',
+        url: '/:eventregistrationId/edit/:newMember',
         params: {
           'newMember': 'true',
           'personId': null

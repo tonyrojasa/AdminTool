@@ -1,4 +1,4 @@
-<section>
+<section class="container">
   <div class="page-header">
     <h1>{{vm.event._id ? 'Editar Evento' : 'Nuevo Evento'}}</h1>
   </div>
@@ -46,7 +46,7 @@
           <input name="description" type="text" ng-model="vm.event.description" id="description" class="form-control" placeholder="Descripción">
         </div>
         <div class="form-group" show-errors>
-          <label class="control-label" for="startDate">Fecha de inicio</label>
+          <label class="control-label" for="startDate">Fecha de inicio *</label>
           <br />
           <input name="startDate" type="hidden" ng-model="vm.event.startDate" id="startDate" class="form-control" required>
           <datetimepicker 
@@ -62,7 +62,7 @@
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label class="control-label" for="endDate">Fecha final</label>
+          <label class="control-label" for="endDate">Fecha final *</label>
           <br />
           <input name="endDate" type="hidden" ng-model="vm.event.endDate" id="endDate" class="form-control" required>
           <datetimepicker 
@@ -78,7 +78,7 @@
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label class="control-label" for="price">Precio del evento (por persona)</label>
+          <label class="control-label" for="price">Precio del evento (general) *</label>
           <div class="input-group"> 
             <span class="input-group-addon">₡</span>
             <input name="price" type="number" ng-model="vm.event.price" id="price" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Precio del evento" required>
@@ -87,12 +87,30 @@
             <p class="help-block error-text" ng-message="required">Precio del evento es requerido.</p>
           </div>
         </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="serverPrice">Precio del evento (para servidores) *</label>
+          <div class="input-group"> 
+            <span class="input-group-addon">₡</span>
+            <input name="serverPrice" type="number" ng-model="vm.event.serverPrice" id="serverPrice" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Precio del evento (para servidores)">
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="shirtPrice">Precio de camisa (por persona)</label>
+          <div class="input-group"> 
+            <span class="input-group-addon">₡</span>
+            <input name="shirtPrice" type="number" ng-model="vm.event.shirtPrice" id="shirtPrice" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Precio de camisa">
+          </div>
+        </div>
+
+        <shirt-types shirt-types="vm.event.shirtTypes" form="vm.form.eventForm"></shirt-types>
+        <br/><br/>
         <div class="form-group">
-          <button type="submit" class="btn btn-default">{{vm.event._id ? 'Actualizar' : 'Crear'}}</button>
+          <button type="submit" class="btn btn-primary">{{vm.event._id ? 'Actualizar' : 'Crear'}}</button>
         </div>
         <div ng-show="vm.error" class="text-danger">
           <strong ng-bind="vm.error"></strong>
-        </div>
+        </div>       
+        <br/><br/>
       </fieldset>
     </form>
   </div>

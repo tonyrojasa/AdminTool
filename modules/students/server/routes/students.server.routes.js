@@ -20,6 +20,9 @@ module.exports = function(app) {
   app.route('/api/students/serviceacademyclass/:serviceacademyclassId').all(studentsPolicy.isAllowed)
     .get(students.listByServiceAcademyClassId);
 
+  app.route('/api/students/person/:personId').all(studentsPolicy.isAllowed)
+    .get(students.listByPersonId);
+
   // Finish by binding the Student middleware
   app.param('studentId', students.studentByID);
 };

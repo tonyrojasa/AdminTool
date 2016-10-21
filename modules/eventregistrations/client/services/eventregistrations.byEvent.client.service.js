@@ -11,6 +11,12 @@
   function EventregistrationsByEventService($resource) {
     return $resource('api/eventregistrations/event/:eventId', {
       eventId: '@eventId'
+    }, {
+      query: {
+        method: 'GET',
+        isArray: true,
+        cache: false
+      }
     });
   }
 })();

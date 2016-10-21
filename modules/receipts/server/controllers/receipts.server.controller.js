@@ -83,7 +83,58 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
   Receipt.find().sort('-created')
     .populate('event')
-    .populate('eventRegistration', 'registrationNumber')
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'event'
+      }
+    })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'eventPeopleGroup'
+      }
+    })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'personType'
+      }
+    })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'person',
+        populate: {
+          path: 'personType',
+          model: 'Persontype'
+        }
+      }
+    })
+    .populate('user', 'displayName').exec(function(err, receipts) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(receipts);
+      }
+    });
+};
+
+/**
+ * List of Receipts by EventRegistrationId
+ */
+exports.listByEventRegistrationId = function(req, res) {
+  var eventRegistrationId = req.params.eventRegistrationId;
+  Receipt.where('eventRegistration', eventRegistrationId).sort('-created')
+    .populate('event')
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'event'
+      }
+    })
     .populate('user', 'displayName').exec(function(err, receipts) {
       if (err) {
         return res.status(400).send({
@@ -108,7 +159,19 @@ exports.receiptByID = function(req, res, next, id) {
 
   Receipt.findById(id).populate('user', 'displayName')
     .populate('event')
-    .populate('eventRegistration').exec(function(err, receipt) {
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'person'
+      }
+    })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'event'
+      }
+    })
+    .exec(function(err, receipt) {
       if (err) {
         return next(err);
       } else if (!receipt) {

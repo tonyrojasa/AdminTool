@@ -1,0 +1,48 @@
+<div>        
+  <fieldset class="form-group fieldset" ng-if="shirtTypes.length">
+    <legend>Tipos de camisa</legend>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre camisa</th>
+          <th>Color</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in shirtTypes track by $index">
+          <td>{{$index+1}}</td>
+          <td>  
+            <div class="form-inline input-group" show-errors ng-if="!readonly">
+              <input name="shirtTypeName_{{$index}}" type="text" ng-model="item.shirtTypeName" id="shirtTypeName_{{$index}}" autocomplete="off" class="form-control" placeholder="Nombre de la camisa" ng-disabled="readonly" required />
+            </div>
+            <div ng-if="readonly">
+              {{item.shirtTypeName}}
+            </div>
+          </td>
+          <td>  
+            <div class="form-inline input-group" show-errors ng-if="!readonly">
+              <input name="shirtTypeColor_{{$index}}" type="hidden" ng-model="item.shirtTypeColor" required />
+              <input name="shirtTypeColor_{{$index}}" colorpicker colorpicker-with-input="false" colorpicker-close-on-select type="text" class="img-rounded" ng-model="item.shirtTypeColor" style="background-color: {{item.shirtTypeColor}};color: {{item.shirtTypeColor}};height: 30px;"  ng-disabled="readonly" readonly="true" ng-required="true" />
+            </div>
+            <div ng-if="readonly">
+              <input name="shirtTypeColor_{{$index}}" style="background-color: {{item.shirtTypeColor}};color: {{item.shirtTypeColor}};" ng-disabled="true"/>
+            </div>
+          </td>
+          <td>
+            <a class="form-group btn btn-default" ng-click="removeShirtType($index)" ng-if="!readonly">
+              <i class="glyphicon glyphicon-trash"></i> 
+              Eliminar           
+            </a>    
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </fieldset> 
+  <a class="form-group btn btn-secondary" ng-click="addShirtType(shirtTypes.length)" ng-if="!readonly">
+    <i class="glyphicon glyphicon-plus"></i>
+    Agregar Tipo de camisa
+  </a> 
+</div>

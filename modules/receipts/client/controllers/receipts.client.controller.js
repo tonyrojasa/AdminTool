@@ -6,15 +6,15 @@
     .module('receipts')
     .controller('ReceiptsController', ReceiptsController);
 
-  ReceiptsController.$inject = ['$scope', '$state', 'Authentication', 'receiptResolve', 'EventsService',
-    'eventregistrationResolve', 'EventregistrationsService', "$stateParams"
+  ReceiptsController.$inject = ['$rootScope', '$scope', '$state', 'Authentication', 'receiptResolve', 'EventsService',
+    'eventregistrationResolve', 'EventregistrationsService', '$stateParams'
   ];
 
-  function ReceiptsController($scope, $state, Authentication, receipt, EventsService, eventregistration,
+  function ReceiptsController($rootScope, $scope, $state, Authentication, receipt, EventsService, eventregistration,
     EventregistrationsService, $stateParams) {
     var vm = this;
 
-    vm.successMessage = $stateParams.successMessage;
+    vm.success = $stateParams.successMessage;
 
     vm.authentication = Authentication;
     vm.receipt = receipt;
@@ -32,8 +32,10 @@
       if (vm.receipt.isDebit && !vm.isEventRegistrationPayment) {
         vm.receipt.currentBalance = 0;
       }
-      vm.receipt.paymentAmount = '';
-      vm.receipt.balanceDue = '';
+      if (vm.receipt.paymentAmount) {
+        vm.receipt.paymentAmount = vm.receipt.paymentAmount * -1;
+      }
+      calculateBalanceDue();
     }
 
     function calculateBalanceDue() {
@@ -41,21 +43,35 @@
         vm.receipt.paymentAmount = -vm.receipt.paymentAmount;
       }
 
-      vm.receipt.balanceDue = vm.receipt.currentBalance - vm.receipt.paymentAmount;
+      if (vm.receipt.isDebit && vm.receipt.currentBalance === 0) {
+        vm.receipt.balanceDue = 0;
+      } else {
+        vm.receipt.balanceDue = vm.receipt.currentBalance - vm.receipt.paymentAmount;
+      }
       return vm.receipt.balanceDue;
     }
 
     function initReceipt() {
       vm.paymentOfList = [
-        'Encuentro',
-        'Academia',
-        'Campamento',
-        'Ofrenda',
-        'Soda',
+        'Abono',
+        'Cancelación',
+        'Devolución',
+        'Ingreso - Ofrenda',
+        'Gasto',
         'Otro'
       ];
+      vm.paidByList = [
+        'Efectivo',
+        'Cheque',
+        'Tarjeta',
+        'Transferencia',
+        'Otro'
+      ];
+      vm.receipt.paidBy = 'Efectivo'; //default value
       //default to current user
-      vm.receipt.receivedBy = vm.authentication.user.displayName;
+      if (!vm.receipt.receivedBy) {
+        vm.receipt.receivedBy = vm.authentication.user.displayName;
+      }
 
       if (vm.receipt._id) {
         vm.eventregistration = receipt.eventRegistration;
@@ -68,7 +84,7 @@
         }
       }
 
-      if (vm.eventregistration && !vm.receipt.eventRegistration) {
+      if (vm.isNewEventRegistration()) {
         vm.isEventRegistrationPayment = true;
         vm.receipt.event = vm.eventregistration.event;
         vm.receipt.receivedFrom = vm.eventregistration.person.firstName + ' ' +
@@ -82,16 +98,48 @@
         vm.receipt.paymentDate = new Date();
 
       }
+
+      if (vm.eventregistration || vm.receipt.eventRegistration) {
+        vm.isEventRegistrationPayment = true;
+      } else {
+        vm.isEventRegistrationPayment = false;
+      }
     }
-    vm.initReceipt();
+
+    vm.isNewEventRegistration = function() {
+      return (vm.eventregistration && !vm.receipt.eventRegistration);
+    };
 
     vm.setPaymentOf = function(paymentOf) {
       vm.receipt.paymentOf = paymentOf;
     };
 
+    vm.setPaidBy = function(paidBy) {
+      vm.receipt.paidBy = paidBy;
+    };
+
     //set registration event
     vm.setEvent = function(event) {
       vm.receipt.event = event;
+    };
+
+    //set registration event
+    vm.setEventRegistrationEvent = function(event) {
+      vm.receipt.eventRegistration.event = event;
+    };
+
+    // Remove existing Receipt
+    vm.remove = function(receipt) {
+      if (confirm('Está seguro que desea eliminar el recibo # ' + receipt.receiptNumber + ' ?')) {
+        var eventRegistrationSuccessMsg = '';
+        receipt.$remove(function() {
+          if (vm.isEventRegistrationReceipt(receipt)) {
+            vm.updateEventRegistration(receipt);
+            eventRegistrationSuccessMsg = 'Y se actualizó el saldo de la inscripción # ' + receipt.eventRegistration.registrationNumber;
+          }
+          vm.success = 'Este recibo ha sido eliminado. ' + eventRegistrationSuccessMsg + ', haga click en el link de recibos para volver a la lista.';
+        });
+      }
     };
 
     // Remove existing Receipt
@@ -100,6 +148,17 @@
         vm.receipt.$remove($state.go('receipts.list'));
       }
     }
+
+    vm.updateEventRegistration = function(receipt) {
+      receipt.eventRegistration.balanceAmount += receipt.paymentAmount;
+      EventregistrationsService.update({
+        eventregistrationId: receipt.eventRegistration._id
+      }, receipt.eventRegistration);
+    };
+
+    vm.isEventRegistrationReceipt = function(receipt) {
+      return receipt.eventRegistration !== undefined;
+    };
 
     // Save EventRegistration (if null only save receipt)
     function saveEventRegistration() {
@@ -111,11 +170,13 @@
       }
 
       function successCallback(res) {
+        $rootScope.showLoadingSpinner = false;
         vm.receipt.eventRegistration = res;
         saveReceipt();
       }
 
       function errorCallback(res) {
+        $rootScope.showLoadingSpinner = false;
         vm.error = res.data.message;
       }
     }
@@ -129,10 +190,11 @@
       }
 
       function successCallback(res) {
+        $rootScope.showLoadingSpinner = false;
         if (vm.isEventRegistrationPayment) {
           $state.go('receipts.view', {
             receiptId: res._id,
-            successMessage: 'El pago se ha ealizado exitosamente.'
+            successMessage: 'Recibo creado. El pago se ha ralizado.'
           });
         } else {
           $state.go('receipts.list');
@@ -140,27 +202,41 @@
       }
 
       function errorCallback(res) {
+        $rootScope.showLoadingSpinner = false;
         vm.error = res.data.message;
       }
     }
 
     // Save Receipt
     function save(isValid) {
+      $rootScope.showLoadingSpinner = true;
       if (!isValid) {
+        $rootScope.showLoadingSpinner = false;
         $scope.$broadcast('show-errors-check-validity', 'vm.form.receiptForm');
         return false;
-      }
-      if (vm.receipt.isDebit) {
-        vm.receipt.balanceDue = -vm.receipt.paymentAmount;
-      } else {
-        vm.receipt.balanceDue = vm.receipt.currentBalance - vm.receipt.paymentAmount;
       }
 
       saveEventRegistration();
     }
 
-    vm.print = function() {
-      window.print();
+    vm.print = function(id) {
+      var data = document.getElementById(id).innerHTML;
+      var mywindow = window.open('', 'my div', 'height=600,width=600');
+      mywindow.document.write('<html><head><title>Imprimir Recibo</title>');
+      mywindow.document.write('</head><body >');
+      mywindow.document.write(data);
+      mywindow.document.write('</body></html>');
+
+      mywindow.document.close(); // necessary for IE >= 10
+      mywindow.focus(); // necessary for IE >= 10
+
+      mywindow.print();
+      mywindow.close();
+
+      // return true;
+      //window.print();
     };
+
+    vm.initReceipt();
   }
 })();

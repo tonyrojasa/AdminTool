@@ -20,6 +20,10 @@ module.exports = function(app) {
     .put(serviceacademyclasses.update)
     .delete(serviceacademyclasses.delete);
 
+
+  app.route('/api/serviceacademyclasses/person/:personId').all(serviceacademyclassesPolicy.isAllowed)
+    .get(serviceacademyclasses.listByPersonId);
+
   // Finish by binding the Serviceacademyclass middleware
   app.param('serviceacademyclassId', serviceacademyclasses.serviceacademyclassByID);
 };

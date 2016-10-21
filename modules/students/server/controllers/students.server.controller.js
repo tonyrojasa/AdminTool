@@ -122,6 +122,26 @@ exports.listByServiceAcademyClassId = function(req, res) {
 };
 
 /**
+ * List of students by personId
+ */
+exports.listByPersonId = function(req, res) {
+  var personId = req.params.personId;
+  Student.find().where('person', personId).sort('-created')
+    .populate('person')
+    .populate('serviceAcademyClass')
+    .populate('user', 'displayName')
+    .exec(function(err, students) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(students);
+      }
+    });
+};
+
+/**
  * Student middleware
  */
 exports.studentByID = function(req, res, next, id) {

@@ -39,11 +39,15 @@ var ReceiptSchema = new Schema({
     default: '',
     required: 'Please fill paymentOf',
     trim: true
+  },  
+  paidBy: {
+    type: String,
+    default: 'Efectivo',
+    trim: true
   },
   description: {
     type: String,
     default: '',
-    required: 'Please fill description',
     trim: true
   },
   otherReference: {

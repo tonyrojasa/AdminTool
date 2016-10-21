@@ -1,119 +1,135 @@
-<div ng-if="vm.successMessage" class="alert alert-success" role="alert">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  <span class="sr-only">Recibo Creado:</span>
-  {{vm.successMessage}}
+<div class="container">
+  <div ng-if="vm.error">
+    <br />
+    <div class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert" ng-click='vm.error = undefined'>&times;</a>
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <strong class="text-danger">Error:</strong>
+      <span>{{vm.error}}</span>
+    </div>
+  </div>
+  <div ng-if="vm.success">
+    <br />
+    <div class="alert alert-success" role="alert">
+      <a href="#" class="close" data-dismiss="alert" ng-click='vm.success = undefined'>&times;</a>
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <strong class="text-success">Operación ejecutada exitosamente:</strong>
+      <span>{{vm.success}}</span>
+    </div>
+  </div>
+  <section class="row">
+    <div class="page-header">
+      <h1># de Recibo: {{vm.receipt.receiptNumber}}</h1>
+        <small>
+          <em class="text-muted">
+            Creado en
+            <span data-ng-bind="vm.receipt.created | date:'mediumDate'"></span>
+            Por
+            <span data-ng-if="vm.receipt.user"
+                  data-ng-bind="vm.receipt.user.displayName"></span>
+            <span data-ng-if="!vm.receipt.user">Deleted User</span>
+          </em>
+        </small>
+    </div>  
+    <div class="col-md-2 pull-left" ng-if="vm.eventregistration">
+      <a class="btn btn-secondary" data-ui-sref="eventregistrations.list()">
+        <i class="glyphicon glyphicon-arrow-left"></i>
+        Inscripciones
+      </a>
+    </div>
+    <div class="col-md-2 pull-left">
+      <a class="btn btn-secondary" data-ui-sref="receipts.list()">
+        <i class="glyphicon glyphicon-arrow-left"></i>
+        Recibos
+      </a>
+    </div>
+  </section>
+  <section class="row">
+    <div class="col-md-6 pull-right">
+      <a class="btn btn-primary" data-ng-show="vm.authentication.isUserAdmin()" data-ui-sref="receipts.edit({ receiptId: vm.receipt._id })">
+        <i class="glyphicon glyphicon-edit"></i>
+        Editar
+      </a>
+      <a class="btn btn-primary" data-ng-click="vm.remove(vm.receipt)" ng-if="vm.authentication.isUserAdmin()">
+        <i class="glyphicon glyphicon-trash"></i>
+        Eliminar
+      </a>
+      <!-- <a class="btn btn-primary" data-ng-click="vm.remove()">
+        <i class="glyphicon glyphicon-trash"></i>
+      </a> -->
+      <a class="btn btn-primary" data-ng-click="vm.print('receiptContent')">
+        <i class="glyphicon glyphicon-print"></i> 
+        Imprimir
+      </a>
+    </div>
+  </section>
+  <section>
+    <br /><br />
+    <div id="receiptContent" class="col-md-12">
+      <table class="table table-bordered" width="300">
+        <thead>
+          <th colspan="2" class="text-center">
+            <h4 ng-if="vm.receipt.eventRegistration">Inscripcion #: {{vm.receipt.eventRegistration.registrationNumber}}</h4>
+            <h4>Recibo #:{{vm.receipt.receiptNumber}}</h4>
+          </th>
+        </thead>
+        <tbody>
+           <tr ng-if="vm.receipt.isDebit">
+            <td><strong>Salida de dinero</strong></td>
+            <td>Si</td>
+          </tr>
+           <tr>
+            <td><strong>Fecha de pago</strong></td>
+            <td><span>{{vm.receipt.paymentDate | date:'mediumDate'}}</span></td>
+          </tr>
+           <tr>
+            <td><strong>Evento</strong></td>
+            <td>
+              <span ng-if="vm.receipt.eventRegistration">{{vm.receipt.eventRegistration.event.name}}</span>
+              <span ng-if="!vm.receipt.eventRegistration">{{vm.receipt.event.name}}</span>
+            </td>
+          </tr>
+           <tr>
+            <td><strong>Recibido de</strong></td>
+            <td><span>{{vm.receipt.receivedFrom}}</span></td>
+          </tr>
+          <tr>
+            <td><strong>Por concepto de</strong></td>
+            <td><span>{{vm.receipt.paymentOf}}</span></td>
+          </tr>
+          <tr>
+            <td><strong>Forma de pago</strong></td>
+            <td><span>{{vm.receipt.paidBy}}</span></td>
+          </tr>
+           <tr ng-if="vm.receipt.description">
+            <td><strong>Descripción</strong></td>
+            <td><span>{{vm.receipt.description}}</span></td>
+          </tr>
+           <tr>
+            <td><strong>Saldo anterior</strong></td>
+            <td><span>{{vm.receipt.currentBalance | currency:'₡'}}</span></td>
+          </tr>     
+           <tr>
+            <td><strong>Abono (monto del pago)</strong></td>
+            <td><span>{{vm.receipt.paymentAmount | currency:'₡'}}</span></td>
+          </tr>    
+           <tr>
+            <td><strong>Saldo adeudado</strong></td>
+            <td><span>{{vm.receipt.balanceDue | currency:'₡'}}</span></td>
+          </tr>    
+           <tr ng-if="vm.receipt.otherReference">
+            <td><strong>Otra referencia</strong></td>
+            <td><span>{{vm.receipt.otherReference}}</span></td>
+          </tr>    
+           <tr>
+            <td><strong>Recibido por</strong></td>
+            <td><span>{{vm.receipt.receivedBy}}</span></td>
+          </tr>
+        </tbody>   
+      </table>  
+      <div ng-show="vm.error" class="text-danger">
+        <strong ng-bind="vm.error"></strong>
+      </div>
+    </div>
+  </section>
 </div>
-<section class="row">
-  <div class="page-header">
-    <h1># de Recibo: {{vm.receipt.receiptNumber}}</h1>
-      <small>
-        <em class="text-muted">
-          Creado en
-          <span data-ng-bind="vm.receipt.created | date:'mediumDate'"></span>
-          Por
-          <span data-ng-if="vm.receipt.user"
-                data-ng-bind="vm.receipt.user.displayName"></span>
-          <span data-ng-if="!vm.receipt.user">Deleted User</span>
-        </em>
-      </small>
-  </div>  
-  <div class="col-md-6 pull-left">
-    <a class="btn btn-secondary" ng-if="vm.eventregistration" data-ui-sref="eventregistrations.list()">
-      <i class="glyphicon glyphicon-arrow-left"></i>
-      Inscripciones
-    </a>
-    <a class="btn btn-secondary" data-ui-sref="receipts.list()">
-      <i class="glyphicon glyphicon-arrow-left"></i>
-      Recibos
-    </a>
-  </div>
-  <div class="col-md-6 pull-rigth">
-    <a class="btn btn-primary" data-ng-show="vm.authentication.isUserAdmin()" data-ui-sref="receipts.edit({ receiptId: vm.receipt._id })">
-      <i class="glyphicon glyphicon-edit"></i>
-      Editar
-    </a>
-    <!-- <a class="btn btn-primary" data-ng-click="vm.remove()">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a> -->
-    <a class="btn btn-primary" data-ng-click="vm.print('receiptContent')">
-      <i class="glyphicon glyphicon-print"></i> 
-      Imprimir
-    </a>
-  </div>
-</section>
-<section>
-  <div id="receiptContent" class="col-md-12">
-    <fieldset>
-      <div ng-if="!vm.eventregistration" class="form-group" >  
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" ng-model="vm.receipt.isDebit" ng-disabled="true">
-            <b>Entrada de dinero</b>
-          </label>
-        </div>
-      </div>
-      <div class="form-group" >
-        <label class="control-label" for="paymentDate">Fecha de pago:</label>
-        <br />
-         <span>{{vm.receipt.paymentDate | date:'mediumDate'}}</span>     
-      </div>
-      <div class="form-group" >
-        <label class="control-label" for="event">Evento:</label>
-        <div class="input-group"> 
-          <span>{{vm.receipt.event.name}}</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label" for="receivedFrom">Recibido de:</label>
-        <div class="input-group"> 
-          <span>{{vm.receipt.receivedFrom}}</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label" for="shirtSize">Por concepto de:</label>
-        <div class="input-group"> 
-          <span>{{vm.receipt.paymentOf}}</span>
-        </div>
-      </div>
-      <div class="form-group" >
-        <label class="control-label" for="description">Descripción:</label>
-        <div class="input-group"> 
-          <span>{{vm.receipt.description}}</span>
-        </div>
-      </div>
-      <div class="form-group" >
-        <label class="control-label" for="currentBalance">Saldo actual:</label>
-        <div class="input-group">         
-          <span>{{vm.receipt.currentBalance | currency:'₡'}}</span>
-        </div>
-      </div>
-      <div class="form-group" >
-        <label class="control-label" for="paymentAmount">Abono (monto del pago):</label>
-        <div class="input-group">         
-          <span>{{vm.receipt.paymentAmount | currency:'₡'}}</span>
-      </div>
-      <br />
-      <div class="form-group" >
-        <label class="control-label" for="balanceDue">Saldo adeudado:</label>
-        <div class="input-group"> 
-          <span>{{vm.receipt.balanceDue | currency:'₡'}}</span>
-        </div>
-      </div>
-      <div class="form-group"s>
-        <label class="control-label" for="otherReference">Otra referencia:</label>
-        <div class="input-group"> 
-          <span>{{vm.receipt.otherReference}}</span>
-        </div>
-      </div>
-      <div class="form-group" >
-        <label class="control-label" for="receivedBy">Recibido por:</label>
-        <div class="input-group"> 
-          <span>{{vm.receipt.receivedBy}}</span>
-        </div>
-      </div>
-        <div ng-show="vm.error" class="text-danger">
-          <strong ng-bind="vm.error"></strong>
-        </div>
-    </fieldset>
-  </div>
-</section>

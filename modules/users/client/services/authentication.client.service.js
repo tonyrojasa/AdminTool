@@ -18,6 +18,11 @@
       return (auth.user.roles.indexOf('admin') > -1);
     };
 
+    auth.isGuestUser = function() {
+      return (auth.user.roles.indexOf('guest') > -1);
+    };
+
+
     return auth;
   }
 }());

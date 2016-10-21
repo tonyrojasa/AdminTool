@@ -89,6 +89,7 @@ exports.list = function(req, res) {
         path: 'personType'
       }
     })
+    .populate('personType', 'name')
     .populate('event', 'name')
     .populate('eventPeopleGroup', 'name')
     .exec(function(err, eventregistrations) {
@@ -97,7 +98,20 @@ exports.list = function(req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        res.jsonp(eventregistrations);
+
+        var shirtTypesList = [];
+        _.each(eventregistrations, function(eventregistration, key) {
+          if (eventregistration.shirtTypes.length > 0) {
+            _.each(eventregistration.shirtTypes, function(shirtType) {
+              shirtType.shirtSize = eventregistration.person.shirtSize;
+            });
+          }
+
+          if (key === eventregistrations.length - 1) {
+            eventregistrations.shirtTypesList = shirtTypesList;
+            res.jsonp(eventregistrations);
+          }
+        });
       }
     });
 };
@@ -115,6 +129,46 @@ exports.listByEventId = function(req, res) {
         path: 'personType'
       }
     })
+    .populate('personType', 'name')
+    .populate('event', 'name')
+    .populate('eventPeopleGroup', 'name')
+    .exec(function(err, eventregistrations) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        var shirtTypesList = [];
+        _.each(eventregistrations, function(eventregistration, key) {
+          if (eventregistration.shirtTypes.length > 0) {
+            _.each(eventregistration.shirtTypes, function(shirtType) {
+              shirtType.shirtSize = eventregistration.person.shirtSize;
+            });
+          }
+
+          if (key === eventregistrations.length - 1) {
+            eventregistrations.shirtTypesList = shirtTypesList;
+            res.jsonp(eventregistrations);
+          }
+        });
+      }
+    });
+};
+
+/**
+ * List of Eventregistrations by personId
+ */
+exports.listByPersonId = function(req, res) {
+  var personId = req.params.personId;
+  Eventregistration.where('person', personId).sort('-created')
+    .populate('user', 'displayName')
+    .populate({
+      path: 'person',
+      populate: {
+        path: 'personType'
+      }
+    })
+    .populate('personType', 'name')
     .populate('event', 'name')
     .populate('eventPeopleGroup', 'name')
     .exec(function(err, eventregistrations) {
@@ -147,6 +201,7 @@ exports.eventregistrationByID = function(req, res, next, id) {
         path: 'personType'
       }
     })
+    .populate('personType', 'name')
     .populate('event')
     .populate('eventPeopleGroup')
     .exec(function(err, eventregistration) {

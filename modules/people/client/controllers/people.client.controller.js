@@ -6,9 +6,9 @@
     .module('people')
     .controller('PeopleController', PeopleController);
 
-  PeopleController.$inject = ['_', '$scope', '$state', 'Authentication', 'personResolve'];
+  PeopleController.$inject = ['_', '$rootScope', '$scope', '$anchorScroll', '$state', 'Authentication', 'personResolve'];
 
-  function PeopleController(_, $scope, $state, Authentication, person) {
+  function PeopleController(_, $rootScope, $scope, $anchorScroll, $state, Authentication, person) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -42,9 +42,12 @@
 
     // Save Person
     function save(isValid) {
-      debugger;
+      $rootScope.showLoadingSpinner = true;
       if (!isValid) {
+        $rootScope.showLoadingSpinner = false;
         $scope.$broadcast('show-errors-check-validity', 'vm.form.personForm');
+        vm.error = 'Corregir los errores del formulario';
+        $anchorScroll(document.body.scrollTop);
         return false;
       }
 
@@ -58,13 +61,21 @@
 
     // Save Person callbacks
     function successCallback(res) {
+      $rootScope.showLoadingSpinner = false;
       $state.go('people.view', {
         personId: res._id
       });
     }
 
     function errorCallback(res) {
+      $rootScope.showLoadingSpinner = false;
       vm.error = res.data.message;
+      if (vm.error === 'Email already exists') {
+        vm.error = 'El e-mail pertenece a otra persona';
+      }
+      if (vm.error === 'MobilePhone already exists') {
+        vm.error = 'El número de celular pertenece a otra persona';
+      }
     }
   }
 })();

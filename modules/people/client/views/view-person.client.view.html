@@ -1,183 +1,185 @@
-<section>
-  <div class="page-header">
-    <h1>{{vm.person.firstName}} {{vm.person.lastName}} {{vm.person.secondLastName}}</h1>
-  </div>
-  <div class="pull-right">
-    <a class="btn btn-primary" data-ui-sref="people.edit({ personId: vm.person._id })">
-      <i class="glyphicon glyphicon-edit"> Editar</i>
+<div  class="container">
+  <section>
+    <div class="page-header">
+      <h1>{{vm.person.firstName}} {{vm.person.lastName}} {{vm.person.secondLastName}}</h1>
+    </div>
+    <div class="pull-right">
+      <a class="btn btn-primary" data-ui-sref="people.edit({ personId: vm.person._id })">
+        <i class="glyphicon glyphicon-edit"> Editar</i>
+      </a>
+     <!--  <a class="btn btn-primary" data-ng-show="vm.authentication.isUserAdmin()" data-ng-click="vm.remove()">
+        <i class="glyphicon glyphicon-trash"> Eliminar</i>
+      </a> -->
+    </div>
+    <small>
+      <em class="text-muted">
+        Creado en
+        <span data-ng-bind="vm.person.created | date:'mediumDate'"></span>
+        por
+        <span data-ng-if="vm.person.user"
+              data-ng-bind="vm.person.user.displayName"></span>
+        <span data-ng-if="!vm.person.user">Deleted User</span>
+      </em>
+    </small>
+  </section>
+  <div class="pull-left">
+     <a class="btn btn-secondary" data-ui-sref="people.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
     </a>
-   <!--  <a class="btn btn-primary" data-ng-show="vm.authentication.isUserAdmin()" data-ng-click="vm.remove()">
-      <i class="glyphicon glyphicon-trash"> Eliminar</i>
-    </a> -->
-  </div>
-  <small>
-    <em class="text-muted">
-      Creado en
-      <span data-ng-bind="vm.person.created | date:'mediumDate'"></span>
-      por
-      <span data-ng-if="vm.person.user"
-            data-ng-bind="vm.person.user.displayName"></span>
-      <span data-ng-if="!vm.person.user">Deleted User</span>
-    </em>
-  </small>
-</section>
-<div class="pull-left">
-   <a class="btn btn-secondary" data-ui-sref="people.list()">
-    <i class="glyphicon glyphicon-arrow-left"></i>
-    Regresar
-  </a>
-</div>   
-<br /><br />
-<section>
-  <div id="personContent" class="col-md-12">
-    <div class="form-group">
-      <label class="control-label" for="organization">Organización</label>
-      <input name="organization" type="text" ng-model="vm.person.organization.name" id="organization" class="form-control" placeholder="Organización" ng-disabled="true">
-    </div>
-    <div class="form-group"> 
-    <label class="control-label" for="maleSex">Sexo *</label>
-    <div>
-      <label>
-        <input type="radio" class="radio-inline" name="sex" ng-checked="!vm.person.isFemale" ng-disabled="true">
-        <b>Masculino</b>
-      </label>
-      <label>
-        <input type="radio" class="radio-inline" name="sex" ng-checked="vm.person.isFemale" ng-disabled="true"></label>
-        <b>Femenino</b>
-      </label>
-    </div>
-  </div>
-    <div class="form-group">
-      <label class="control-label" for="personId">Identificación (cedula)</label>
-      <input name="personId" type="text" ng-model="vm.person.personId" id="personId" class="form-control" placeholder="Identificación" ng-disabled="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="firstName">Nombre</label>
-      <input name="firstName" type="text" ng-model="vm.person.firstName" id="firstName" class="form-control" placeholder="Nombre" ng-disabled="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="lastName">Primer Apellido</label>
-      <input name="lastName" type="text" ng-model="vm.person.lastName" id="lastName" class="form-control" placeholder="Primer Apellido" ng-disabled="true">
-    </div>
-     <div class="form-group">
-      <label class="control-label" for="secondLastName">Segundo Apellido</label>
-      <input name="secondLastName" type="text" ng-model="vm.person.secondLastName" id="secondLastName" class="form-control" placeholder="Segundo Apellido" ng-disabled="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="email">Email</label>
-      <input name="email" type="text" ng-model="vm.person.email" id="email" class="form-control" placeholder="Email" ng-disabled="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="mobilePhone">Teléfono celular</label>
-      <input name="mobilePhone" type="text" ng-model="vm.person.mobilePhone" id="mobilePhone" class="form-control" placeholder="Teléfono celular" ng-disabled="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="homePhone">Teléfono casa</label>
-      <input name="homePhone" type="text" ng-model="vm.person.homePhone" id="homePhone" class="form-control" placeholder="Teléfono casa" ng-disabled="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="otherPhone">Teléfono (otro)</label>
-      <input name="otherPhone" type="text" ng-model="vm.person.otherPhone" id="otherPhone" class="form-control" placeholder="Teléfono (otro)" ng-disabled="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="address">Dirección</label>
-      <input name="address" type="text" ng-model="vm.person.address" id="address" class="form-control" placeholder="Dirección" ng-disabled="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="personType">Tipo de Persona</label>
-      <input name="personType" type="text" ng-model="vm.person.personType.name" id="personType" class="form-control" placeholder="Tipo de Persona" ng-disabled="true">   
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="serviceArea">Área de Servicio</label>
-      <input name="serviceArea" type="text" value="{{vm.getServiceAreaNames(vm.person.serviceArea)}}" id="serviceArea" class="form-control" placeholder="Área de Servicio" ng-disabled="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="birthDate">Fecha de Nacimiento</label>
-      <input name="birthDate" type="text" value="{{vm.person.birthDate | date:'mediumDate'}}" id="birthDate" class="form-control" ng-required="false" ng-disabled="true">   
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="age">Edad</label>
-      <input name="age" type="number" ng-model="vm.person.age" id="age" class="form-control" placeholder="Edad" ng-disabled="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="maritalStatus">Estado Civil</label>
-      <input name="maritalStatus" type="text" ng-model="vm.person.maritalStatus" id="maritalStatus" class="form-control" placeholder="Estado Civil" ng-disabled="true"> 
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="grade">Educación</label>
-      <input name="grade" type="text" ng-model="vm.person.grade" id="grade" class="form-control" placeholder="Educación" ng-disabled="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="occupation">Profesión</label>
-      <input name="occupation" type="text" ng-model="vm.person.occupation" id="occupation" class="form-control" placeholder="occupation" ng-disabled="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="employer">Empleador (Empresa donde labora)</label>
-      <input name="employer" type="text" ng-model="vm.person.employer" id="employer" class="form-control" placeholder="Empleador" ng-disabled="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="shirtSize">Talla de camiseta</label>
-      <input name="shirtSize" type="text" ng-model="vm.person.shirtSize" id="shirtSize" class="form-control" placeholder="Talla de camiseta" ng-disabled="true">
-    </div>
-    <div class="form-group">  
-      <input name="activeMember" type="hidden" ng-model="vm.person.activeMember" id="activeMember" class="form-control" ng-disabled="true">
-      <div class="checkbox">
+  </div>   
+  <br /><br />
+  <section>
+    <div id="personContent" class="col-md-12">
+      <div class="form-group">
+        <label class="control-label" for="organization">Organización</label>
+        <input name="organization" type="text" ng-model="vm.person.organization.name" id="organization" class="form-control" placeholder="Organización" ng-disabled="true">
+      </div>
+      <div class="form-group"> 
+      <label class="control-label" for="maleSex">Sexo *</label>
+      <div>
         <label>
-          <input type="checkbox" ng-model="vm.person.activeMember" ng-disabled="true">
-          <b>Miembro activo</b>
+          <input type="radio" class="radio-inline" name="sex" ng-checked="!vm.person.isFemale" ng-disabled="true">
+          <b>Masculino</b>
+        </label>
+        <label>
+          <input type="radio" class="radio-inline" name="sex" ng-checked="vm.person.isFemale" ng-disabled="true"></label>
+          <b>Femenino</b>
         </label>
       </div>
     </div>
-    <div ng-show="vm.person.activeMember" class="form-group">
-      <label class="control-label" for="memberTimeYears">Tiempo de asistir (años)</label>
-      <input name="memberTimeYears" type="Number" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" ng-model="vm.person.memberTimeYears" id="memberTimeYears" class="form-control" placeholder="Años de asistir" ng-disabled="true">
+      <div class="form-group">
+        <label class="control-label" for="personId">Identificación (cedula)</label>
+        <input name="personId" type="text" ng-model="vm.person.personId" id="personId" class="form-control" placeholder="Identificación" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="firstName">Nombre</label>
+        <input name="firstName" type="text" ng-model="vm.person.firstName" id="firstName" class="form-control" placeholder="Nombre" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="lastName">Primer Apellido</label>
+        <input name="lastName" type="text" ng-model="vm.person.lastName" id="lastName" class="form-control" placeholder="Primer Apellido" ng-disabled="true">
+      </div>
+       <div class="form-group">
+        <label class="control-label" for="secondLastName">Segundo Apellido</label>
+        <input name="secondLastName" type="text" ng-model="vm.person.secondLastName" id="secondLastName" class="form-control" placeholder="Segundo Apellido" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="email">Email</label>
+        <input name="email" type="text" ng-model="vm.person.email" id="email" class="form-control" placeholder="Email" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="mobilePhone">Teléfono celular</label>
+        <input name="mobilePhone" type="text" ng-model="vm.person.mobilePhone" id="mobilePhone" class="form-control" placeholder="Teléfono celular" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="homePhone">Teléfono casa</label>
+        <input name="homePhone" type="text" ng-model="vm.person.homePhone" id="homePhone" class="form-control" placeholder="Teléfono casa" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="otherPhone">Teléfono (otro)</label>
+        <input name="otherPhone" type="text" ng-model="vm.person.otherPhone" id="otherPhone" class="form-control" placeholder="Teléfono (otro)" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="address">Dirección</label>
+        <input name="address" type="text" ng-model="vm.person.address" id="address" class="form-control" placeholder="Dirección" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="personType">Tipo de Persona</label>
+        <input name="personType" type="text" ng-model="vm.person.personType.name" id="personType" class="form-control" placeholder="Tipo de Persona" ng-disabled="true">   
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="serviceArea">Área de Servicio</label>
+        <input name="serviceArea" type="text" value="{{vm.getServiceAreaNames(vm.person.serviceArea)}}" id="serviceArea" class="form-control" placeholder="Área de Servicio" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="birthDate">Fecha de Nacimiento</label>
+        <input name="birthDate" type="text" value="{{vm.person.birthDate | date:'mediumDate'}}" id="birthDate" class="form-control" ng-required="false" ng-disabled="true">   
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="age">Edad</label>
+        <input name="age" type="number" ng-model="vm.person.age" id="age" class="form-control" placeholder="Edad" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="maritalStatus">Estado Civil</label>
+        <input name="maritalStatus" type="text" ng-model="vm.person.maritalStatus" id="maritalStatus" class="form-control" placeholder="Estado Civil" ng-disabled="true"> 
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="grade">Educación</label>
+        <input name="grade" type="text" ng-model="vm.person.grade" id="grade" class="form-control" placeholder="Educación" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="occupation">Profesión</label>
+        <input name="occupation" type="text" ng-model="vm.person.occupation" id="occupation" class="form-control" placeholder="occupation" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="employer">Empleador (Empresa donde labora)</label>
+        <input name="employer" type="text" ng-model="vm.person.employer" id="employer" class="form-control" placeholder="Empleador" ng-disabled="true">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="shirtSize">Talla de camiseta</label>
+        <input name="shirtSize" type="text" ng-model="vm.person.shirtSize" id="shirtSize" class="form-control" placeholder="Talla de camiseta" ng-disabled="true">
+      </div>
+      <div class="form-group">  
+        <input name="activeMember" type="hidden" ng-model="vm.person.activeMember" id="activeMember" class="form-control" ng-disabled="true">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="vm.person.activeMember" ng-disabled="true">
+            <b>Miembro activo</b>
+          </label>
+        </div>
+      </div>
+      <div ng-show="vm.person.activeMember" class="form-group">
+        <label class="control-label" for="memberTimeYears">Tiempo de asistir (años)</label>
+        <input name="memberTimeYears" type="Number" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" ng-model="vm.person.memberTimeYears" id="memberTimeYears" class="form-control" placeholder="Años de asistir" ng-disabled="true">
+      </div>
+      <div class="form-group">  
+        <input name="medicalTreatment" type="hidden" ng-model="vm.person.medicalTreatment.exists" id="medicalTreatment" class="form-control" ng-disabled="true">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="vm.person.medicalTreatment.exists" ng-disabled="true">
+            <b>Tratamiento medico</b>
+          </label>
+        </div>
+      </div>
+      <div ng-show="vm.person.medicalTreatment.exists">
+        <div class="form-group">
+          <label class="control-label" for="medicalTreatment">Comentarios del tratamiento medico</label>
+          <input name="medicalTreatment" type="text" ng-model="vm.person.medicalTreatment.comments" id="medicalTreatment" class="form-control" placeholder="Comentarios del tratamiento medico" ng-disabled="true" />
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="medicineType">Tipo de medicina</label>
+          <input name="medicineType" type="text" ng-model="vm.person.medicalTreatment.medicineType" id="medicineType" class="form-control" placeholder="Tipo de medicina" ng-disabled="true">
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="allergies">Alergias</label>
+          <input name="allergies" type="text" ng-model="vm.person.medicalTreatment.allergies" id="allergies" class="form-control" placeholder="Alergias" ng-disabled="true">
+        </div>
+      </div> 
+      <div class="form-group">  
+        <input name="sponsorship" type="hidden" ng-model="vm.person.sponsorship.exists" id="sponsorship" class="form-control">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="vm.person.sponsorship.exists" ng-disabled="true">
+            <b>Patrocinio</b>
+          </label>
+        </div>
+      </div>
+      <div ng-show="vm.person.sponsorship.exists">
+        <div class="form-group">
+          <label class="control-label" for="sponsorName">Nombre Patrocinador</label>
+          <input name="sponsorName" type="text" ng-model="vm.person.sponsorship.sponsorName" id="sponsorName" class="form-control" placeholder="Nombre del Patrocinador" ng-disabled="true">
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="sponsorPhoneNumber">Teléfono Patrocinador</label>
+          <input name="sponsorPhoneNumber" ui-mask="9999-9999" model-view-value="true" ng-model="vm.person.sponsorship.phoneNumber" id="sponsorPhoneNumber" class="form-control" ng-disabled="true">
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="sponsorshipComments">Comentarios del patrocinio</label>
+          <input name="sponsorshipComments" type="text" ng-model="vm.person.sponsorship.comments" id="sponsorshipComments" class="form-control" placeholder="Comentarios del patrocinio" ng-disabled="true" />
+        </div>  
+      </div>
+      <contact-info contacts="vm.person.contactInfo" readonly="true"></contact-info> 
     </div>
-    <div class="form-group">  
-      <input name="medicalTreatment" type="hidden" ng-model="vm.person.medicalTreatment.exists" id="medicalTreatment" class="form-control" ng-disabled="true">
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" ng-model="vm.person.medicalTreatment.exists" ng-disabled="true">
-          <b>Tratamiento medico</b>
-        </label>
-      </div>
-    </div>
-    <div ng-show="vm.person.medicalTreatment.exists">
-      <div class="form-group">
-        <label class="control-label" for="medicalTreatment">Comentarios del tratamiento medico</label>
-        <input name="medicalTreatment" type="text" ng-model="vm.person.medicalTreatment.comments" id="medicalTreatment" class="form-control" placeholder="Comentarios del tratamiento medico" ng-disabled="true" />
-      </div>
-      <div class="form-group">
-        <label class="control-label" for="medicineType">Tipo de medicina</label>
-        <input name="medicineType" type="text" ng-model="vm.person.medicalTreatment.medicineType" id="medicineType" class="form-control" placeholder="Tipo de medicina" ng-disabled="true">
-      </div>
-      <div class="form-group">
-        <label class="control-label" for="allergies">Alergias</label>
-        <input name="allergies" type="text" ng-model="vm.person.medicalTreatment.allergies" id="allergies" class="form-control" placeholder="Alergias" ng-disabled="true">
-      </div>
-    </div> 
-    <div class="form-group">  
-      <input name="sponsorship" type="hidden" ng-model="vm.person.sponsorship.exists" id="sponsorship" class="form-control">
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" ng-model="vm.person.sponsorship.exists" ng-disabled="true">
-          <b>Patrocinio</b>
-        </label>
-      </div>
-    </div>
-    <div ng-show="vm.person.sponsorship.exists">
-      <div class="form-group">
-        <label class="control-label" for="sponsorName">Nombre Patrocinador</label>
-        <input name="sponsorName" type="text" ng-model="vm.person.sponsorship.sponsorName" id="sponsorName" class="form-control" placeholder="Nombre del Patrocinador" ng-disabled="true">
-      </div>
-      <div class="form-group">
-        <label class="control-label" for="sponsorPhoneNumber">Teléfono Patrocinador</label>
-        <input name="sponsorPhoneNumber" ui-mask="9999-9999" model-view-value="true" ng-model="vm.person.sponsorship.phoneNumber" id="sponsorPhoneNumber" class="form-control" ng-disabled="true">
-      </div>
-      <div class="form-group">
-        <label class="control-label" for="sponsorshipComments">Comentarios del patrocinio</label>
-        <input name="sponsorshipComments" type="text" ng-model="vm.person.sponsorship.comments" id="sponsorshipComments" class="form-control" placeholder="Comentarios del patrocinio" ng-disabled="true" />
-      </div>  
-    </div>
-    <contact-info contacts="vm.person.contactInfo" readonly="true"></contact-info> 
-  </div>
-</section>
+  </section>
+</div>

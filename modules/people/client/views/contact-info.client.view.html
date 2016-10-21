@@ -5,10 +5,10 @@
       <thead>
       <tr>
         <th>#</th>
-        <th>Nombre</th>
-        <th>Teléfono</th>
-        <th>Dirección</th>
-        <th>Relación</th>
+        <th>Nombre *</th>
+        <th>Teléfono *</th>
+        <th>Dirección *</th>
+        <th>Relación *</th>
         <th></th>
       </tr>
       </thead>
@@ -17,7 +17,7 @@
         <td>{{$index+1}}</td>
         <td>  
           <div class="form-inline input-group" show-errors ng-if="!readonly">
-            <input name="contactInfoPersonName_{{$index}}" type="text" ng-model="item.personName" id="contactInfoPersonName_{{$index}}" class="form-control" placeholder="Nombre persona de contacto" ng-disabled="readonly" required />
+            <input name="contactInfoPersonName_{{$index}}" type="text" ng-model="item.personName" id="contactInfoPersonName_{{$index}}" autocomplete="off" class="form-control" placeholder="Nombre persona de contacto" ng-disabled="readonly" required />
           </div>
           <div ng-if="readonly">
             {{item.personName}}
@@ -25,7 +25,7 @@
         </td>
         <td>
           <div class="form-inline input-group" show-errors ng-if="!readonly">
-            <input name="contactInfoPersonPhone_{{$index}}" ui-mask="9999-9999" model-view-value="true" ng-model="item.phoneNumber" id="contactInfoPersonPhone_{{$index}}" class="form-control" ng-disabled="readonly" required />
+            <input name="contactInfoPersonPhone_{{$index}}" mask="9999-9999" mask-restrict="reject" autocomplete="off" model-view-value="true" ng-model="item.phoneNumber" id="contactInfoPersonPhone_{{$index}}" class="form-control" ng-disabled="readonly" required />
           </div>
           <div ng-if="readonly">
             {{item.phoneNumber}}
@@ -33,7 +33,7 @@
         </td>
         <td>
           <div class="form-inline input-group" show-errors ng-if="!readonly">
-            <input name="contactInfoPersonAddress_{{$index}}" type="text" ng-model="item.homeAddress" id="contactInfoPersonAddress_{{$index}}" class="form-control" placeholder="Dirección persona de contacto" ng-disabled="readonly" required /> 
+            <input name="contactInfoPersonAddress_{{$index}}" type="text" ng-model="item.homeAddress" id="contactInfoPersonAddress_{{$index}}" autocomplete="off" class="form-control" placeholder="Dirección persona de contacto" ng-disabled="readonly" required /> 
           </div>
           <div ng-if="readonly">
             {{item.homeAddress}}
@@ -43,9 +43,13 @@
           <div class="form-inline input-group" show-errors ng-if="!readonly">
             <select name="contactInfoPersonRelationship_{{$index}}" id="contactInfoPersonRelationship_{{$index}}" ng-model="item.relationship" class="form-control" style="width:auto;" required ng-disabled="readonly">
               <option value="Familiar" selected="selected">Familiar</option>
-              <option value="Amistad">Padre</option>
-              <option value="Amistad">Madre</option>
-              <option value="Amistad">Hermano(a)</option>
+              <option value="Padre">Padre</option>
+              <option value="Madre">Madre</option>
+              <option value="Hijo(a)">Hijo(a)</option>
+              <option value="Hermano(a)">Hermano(a)</option>
+              <option value="Abuelo(a)">Abuelo(a)</option>
+              <option value="Esposo(a)">Esposo(a)</option>
+              <option value="Pareja">Pareja</option>
               <option value="Amistad">Amistad</option>
               <option value="Otro" >Otro</option>
             </select>  
@@ -64,8 +68,8 @@
       </tbody>
     </table>
   </fieldset> 
-  <a class="form-group btn btn-info" ng-click="addContact()" ng-if="!readonly">
+  <a class="form-group btn btn-secondary" ng-click="addContact()" ng-if="!readonly">
     <i class="glyphicon glyphicon-plus"></i>
-    Agregar Contacto
+    Agregar Persona de Contacto
   </a>  
 </div>

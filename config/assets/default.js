@@ -8,7 +8,9 @@ module.exports = {
         'public/lib/bootstrap/dist/css/bootstrap.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.css',
         'public/lib/angular-ui-bootstrap-datetimepicker/datetimepicker.css',
-        'public/lib/angular-ui-select/dist/select.css'
+        'public/lib/angular-ui-select/dist/select.css',
+        'public/lib/ng-table/dist/ng-table.min.css',
+        'public/lib/angular-bootstrap-colorpicker/css/colorpicker.css'
         // endbower
       ],
       js: [
@@ -29,7 +31,12 @@ module.exports = {
         'public/lib/angular-ui-mask/dist/mask.js',
         'public/lib/lodash/lodash.js',
         'public/lib/angular-ui-select/dist/select.js',
-        'public/lib/angular-sanitize/angular-sanitize.js'
+        'public/lib/angular-sanitize/angular-sanitize.js',
+        'public/lib/ngMask/dist/ngMask.min.js',
+        'public/lib/ng-table/dist/ng-table.min.js',
+        'public/lib/ng-table-to-csv/dist/ng-table-to-csv.js',
+        'public/lib/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
+        'public/lib/angular-moment/angular-moment.js'
         // endbower
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
