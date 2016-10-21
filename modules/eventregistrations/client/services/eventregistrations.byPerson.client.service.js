@@ -11,6 +11,12 @@
   function EventregistrationsByPersonService($resource) {
     return $resource('api/eventregistrations/person/:personId', {
       personId: '@personId'
+    }, {
+      query: {
+        method: 'GET',
+        isArray: true,
+        cache: false
+      }
     });
   }
 })();

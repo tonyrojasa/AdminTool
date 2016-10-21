@@ -12,6 +12,11 @@
     return $resource('api/eventregistrations/:eventregistrationId', {
       eventregistrationId: '@_id'
     }, {
+      query: {
+        method: 'GET',
+        isArray: true,
+        cache: false
+      },
       update: {
         method: 'PUT'
       }

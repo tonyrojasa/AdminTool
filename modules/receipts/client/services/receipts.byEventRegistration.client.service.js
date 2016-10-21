@@ -11,6 +11,11 @@
   function ReceiptsByEventRegistrationService($resource) {
     return $resource('api/receipts/eventregistration/:eventRegistrationId', {
       eventId: '@eventRegistrationId'
+    }, {
+      query: {
+        method: 'GET',
+        cache: false
+      }
     });
   }
 })();

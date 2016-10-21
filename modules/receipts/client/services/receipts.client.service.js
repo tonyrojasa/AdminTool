@@ -1,5 +1,5 @@
 //Receipts service used to communicate Receipts REST endpoints
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -12,6 +12,11 @@
     return $resource('api/receipts/:receiptId', {
       receiptId: '@_id'
     }, {
+      query: {
+        method: 'GET',
+        isArray: true,
+        cache: false
+      },
       update: {
         method: 'PUT'
       }
