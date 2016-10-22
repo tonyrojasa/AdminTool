@@ -14,6 +14,7 @@
     }, {
       query: {
         method: 'GET',
+        isArray: true,
         cache: false
       }
     });

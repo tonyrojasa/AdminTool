@@ -5,16 +5,24 @@
     .module('eventregistrations')
     .controller('EventregistrationsListController', EventregistrationsListController);
 
-  EventregistrationsListController.$inject = ['$scope', 'EventregistrationsService', 'EventsService', 'Authentication',
-    'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams', '$filter', 'moment'
+  EventregistrationsListController.$inject = ['$scope', 'EventregistrationsService', 'CurrentEventsService', 'Authentication',
+    'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams', '$filter', 'moment', '$q'
   ];
 
-  function EventregistrationsListController($scope, EventregistrationsService, EventsService, Authentication,
-    ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams, $filter, moment) {
+  function EventregistrationsListController($scope, EventregistrationsService, CurrentEventsService, Authentication,
+    ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams, $filter, moment, $q) {
     var vm = this;
     vm.moment = moment;
     vm.authentication = Authentication;
-    vm.events = EventsService.query();
+    vm.events = CurrentEventsService.query(function(data) {
+      vm.eventsFilterArray = [];
+      _.each(data, function(event) {
+        vm.eventsFilterArray.push({
+          id: event.name,
+          title: event.name
+        });
+      });
+    });
     vm.eventregistrations = EventregistrationsService.query(function(data) {
       _.each(data, function(eventregistration) {
         eventregistration.registrationDate = vm.moment(eventregistration.registrationDate).format('YYYY-MM-DD');
@@ -30,6 +38,7 @@
       } else {
         vm.dateFilterValue = '';
       }
+      vm.tableParams.filter().registrationDate = vm.dateFilterValue;
     });
 
     vm.cols = [{
