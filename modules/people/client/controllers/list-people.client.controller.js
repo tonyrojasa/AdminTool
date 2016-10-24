@@ -93,7 +93,10 @@
               } else {
                 person.$remove(function() {
                   vm.success = 'Se eliminó la persona con el nombre: ' + selectedPersonName;
-                  vm.people = vm.getPeople();
+                  _.remove(vm.people, {
+                    _id: person._id
+                  });
+                  vm.tableParams.reload();
                   $anchorScroll(document.body.scrollTop);
                 });
               }

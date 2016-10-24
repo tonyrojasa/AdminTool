@@ -33,13 +33,13 @@
     Menus.addSubMenuItem('topbar', 'receipts', {
       title: 'Reporte General',
       state: 'receipts.report',
-      roles: ['admin', 'accountant']
+      roles: ['admin', 'inscriptor', 'user', 'accountant']
     });
 
     Menus.addSubMenuItem('topbar', 'reports', {
       title: 'Recibos - Reporte General',
       state: 'receipts.report',
-      roles: ['admin', 'accountant']
+      roles: ['admin', 'inscriptor', 'user', 'accountant']
     });
 
     // Add the dropdown list item
