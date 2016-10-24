@@ -14,8 +14,9 @@
     var vm = this;
     vm.moment = moment;
     vm.authentication = Authentication;
+
+    vm.eventsFilterArray = [];
     vm.events = EventsService.query(function(data) {
-      vm.eventsFilterArray = [];
       _.each(data, function(event) {
         vm.eventsFilterArray.push({
           id: event.name,

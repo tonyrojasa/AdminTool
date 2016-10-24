@@ -17,8 +17,9 @@
     vm.moment = moment;
     vm.authentication = Authentication;
 
+
+    vm.eventsFilterArray = [];
     vm.events = CurrentEventsService.query(function(data) {
-      vm.eventsFilterArray = [];
       _.each(data, function(event) {
         vm.eventsFilterArray.push({
           id: event.name,
@@ -27,8 +28,8 @@
       });
     });
 
+    vm.groupsFilterArray = [];
     EventpeoplegroupsService.query(function(data) {
-      vm.groupsFilterArray = [];
       _.each(data, function(group) {
         vm.groupsFilterArray.push({
           id: group.name,
@@ -37,8 +38,8 @@
       });
     });
 
+    vm.personTypesFilterArray = [];
     PersontypesService.query(function(data) {
-      vm.personTypesFilterArray = [];
       _.each(data, function(personType) {
         vm.personTypesFilterArray.push({
           id: personType.name,
