@@ -67,7 +67,7 @@
         'Transferencia',
         'Otro'
       ];
-      vm.receipt.paidBy = 'Efectivo'; //default value
+      vm.receipt.paidBy = vm.receipt.paidBy ? vm.receipt.paidBy : 'Efectivo'; //default value
       //default to current user
       if (!vm.receipt.receivedBy) {
         vm.receipt.receivedBy = vm.authentication.user.displayName;
