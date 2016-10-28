@@ -313,7 +313,7 @@
             savePerson();
           } else {
             $rootScope.showLoadingSpinner = false;
-            vm.error = 'Operación cancelada por el usuario debido a que existe una persona con el mismo nombre. ' +
+            vm.warning = 'Operación cancelada por el usuario debido a que existe una persona con el mismo nombre. ' +
               'Verifique la información e intente de nuevo. Si desea inscribir una persona existente en la base de datos, ' +
               'utilice la opción: <a class="btn btn-secondary" href="/eventregistrations/create/false">Miembro Existente</a>';
             $anchorScroll(document.body.scrollTop);
