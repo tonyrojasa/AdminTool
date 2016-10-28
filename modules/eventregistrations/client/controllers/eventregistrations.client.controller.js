@@ -68,6 +68,9 @@
     }
 
     function setShirtTypes() {
+      if (!vm.editMode) {
+        vm.eventregistration.shirtTypes = [];
+      }
       if (vm.eventregistration.event && vm.eventregistration.event.shirtTypes.length > 0) {
         if (!vm.eventregistration.shirtTypes ||
           (vm.eventregistration.shirtTypes && vm.eventregistration.shirtTypes.length === 0)) {
@@ -76,6 +79,7 @@
             return shirtType;
           });
         } else {
+          debugger;
           _.each(vm.eventregistration.event.shirtTypes, function(shirtType) {
             var existingShirtTypeIndex = _.findIndex(vm.eventregistration.shirtTypes, function(o) {
               return (o.shirtTypeName === shirtType.shirtTypeName &&
@@ -278,7 +282,47 @@
         $anchorScroll(document.body.scrollTop);
         return false;
       }
-      savePerson();
+
+
+      if (vm.isNewMemberRegistration()) {
+        var query = {
+          firstName: vm.person.firstName,
+          lastName: vm.person.lastName,
+          secondLastName: vm.person.secondLastName
+        };
+        var maxPeopleLength = 0;
+        // if (vm.editMode) {
+        //   maxPeopleLength = 1;
+        //   query._id = vm.person._id;
+        // }
+        //verify if person names already exist
+        PeopleService.query(query, function(data) {
+          var continueOperation = true;
+          var existingPersonIndex = -1;
+          if (vm.editMode) {
+            existingPersonIndex = _.findIndex(data, function(o) {
+              return (o._id === vm.person._id);
+            });
+          }
+          if (data.length > maxPeopleLength && existingPersonIndex < 0) {
+            continueOperation = confirm('Ya existe una persona con el nombre: ' +
+              vm.person.firstName + ' ' + vm.person.lastName + ' ' + vm.person.secondLastName + '. ' +
+              '¿Desea continuar de todas formas?');
+          }
+          if (continueOperation) {
+            savePerson();
+          } else {
+            $rootScope.showLoadingSpinner = false;
+            vm.error = 'Operación cancelada por el usuario debido a que existe una persona con el mismo nombre. ' +
+              'Verifique la información e intente de nuevo. Si desea inscribir una persona existente en la base de datos, ' +
+              'utilice la opción: <a class="btn btn-secondary" href="/eventregistrations/create/false">Miembro Existente</a>';
+            $anchorScroll(document.body.scrollTop);
+          }
+        });
+      } else {
+        savePerson();
+      }
+
     }
   }
 })();

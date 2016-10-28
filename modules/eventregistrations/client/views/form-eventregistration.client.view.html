@@ -4,7 +4,7 @@
     <div class="alert alert-danger" role="alert">
       <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
       <strong class="text-danger">Error:</strong>
-      <span>{{vm.error}}</span>
+      <span ng-bind-html="vm.error"></span>
     </div>
   </div>
   <section>
