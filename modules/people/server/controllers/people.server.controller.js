@@ -81,7 +81,22 @@ exports.delete = function(req, res) {
  * List of People
  */
 exports.list = function(req, res) {
-  Person.find(req.query).sort('-created')
+  var query = _.forEach(req.query, function(value, key) {
+    var queryParam = {
+      $regex: new RegExp('^' + value + '$', "i"),
+      $options: 'i'
+    };
+    req.query[key] = _.zipObject([key], [queryParam]);
+  });
+
+  if (!_.isEmpty(query)) {
+    query = {
+      $and: _.toArray(query)
+    };
+  }
+
+  Person.find(query)
+    .sort('-created')
     .populate('organization', 'name')
     .populate('personType', 'name')
     .populate('serviceArea')
@@ -100,40 +115,7 @@ exports.list = function(req, res) {
 /**
  * Person middleware
  */
-exports.personByID2 = function(req, res, next, id) {
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'Person is invalid'
-    });
-  }
-
-  Person.findById(id)
-    .populate('user', 'displayName')
-    .populate('personType', 'name')
-    .populate('serviceArea')
-    .populate('organization', 'name')
-    .exec(function(err, person) {
-      if (err) {
-        return next(err);
-      } else if (!person) {
-        return res.status(404).send({
-          message: 'No Person with that identifier has been found'
-        });
-      }
-      req.person = person;
-      next();
-    });
-};
-
-/**
- * Person by data middleware
- */
 exports.personByID = function(req, res, next, id) {
-  var eventId = req.params.eventId;
-  var personFirstName = req.params.personFirstName;
-  var personLastName = req.params.personLastName;
-  var personSecondLastName = req.params.personSecondLastName;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
