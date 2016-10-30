@@ -171,6 +171,12 @@ exports.receiptByID = function(req, res, next, id) {
         path: 'event'
       }
     })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'personType'
+      }
+    })
     .exec(function(err, receipt) {
       if (err) {
         return next(err);

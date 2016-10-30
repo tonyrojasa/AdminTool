@@ -88,6 +88,18 @@
               <span ng-if="vm.receipt.eventRegistration">{{vm.receipt.eventRegistration.event.name}}</span>
               <span ng-if="!vm.receipt.eventRegistration">{{vm.receipt.event.name}}</span>
             </td>
+          </tr>          
+          <tr ng-if="vm.receipt.eventRegistration">
+            <td><strong>Tipo de Persona</strong></td>
+            <td>
+              <span>{{vm.receipt.eventRegistration.personType.name}}</span>
+            </td>
+          </tr>
+          <tr ng-if="vm.isEventServerReceipt()">
+            <td><strong>Cantidad de camisas</strong></td>
+            <td>
+              <span>{{vm.receipt.eventRegistration.shirtsQuantity}}</span>
+            </td>
           </tr>
            <tr>
             <td><strong>Recibido de</strong></td>

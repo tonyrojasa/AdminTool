@@ -110,6 +110,12 @@
       return (vm.eventregistration && !vm.receipt.eventRegistration);
     };
 
+    vm.isEventServerReceipt = function() {
+      return (vm.receipt.eventRegistration && vm.receipt.eventRegistration.shirtsQuantity &&
+        (vm.receipt.eventRegistration.isEventServer ||
+          vm.receipt.eventRegistration.eventExternalServer.isEventExternalServer));
+    };
+
     vm.setPaymentOf = function(paymentOf) {
       vm.receipt.paymentOf = paymentOf;
     };
