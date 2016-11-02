@@ -90,6 +90,12 @@
                 {{eventRegistration.person.secondLastName}}</td>
             <td title="'Tipo de Persona'" filter="{ 'personType.name': 'select'}" filter-data="vm.personTypesFilterArray" sortable="'personType.name'" ng-if="true">
                 {{eventRegistration.personType.name}}</td>
+            <td title="'Tel. Celular'" filter="{ 'person.mobilePhone': 'text'}" sortable="'person.mobilePhone'" ng-if="true">
+                {{eventRegistration.person.mobilePhone}}</td>
+            <td title="'Tel. Casa'" filter="{ 'person.homePhone': 'text'}" sortable="'person.homePhone'" ng-if="false">
+                {{eventRegistration.person.homePhone}}</td>
+             <td title="'Tel. Otro'" filter="{ 'person.otherPhone': 'text'}" sortable="'person.otherPhone'" ng-if="false">
+                {{eventRegistration.person.otherPhone}}</td>
             <td class="col-md-1" title="'Saldo ₡ Pendiente'" filter="{ 'balanceAmount': 'text'}" sortable="'balanceAmount'" ng-if="true">
                 {{eventRegistration.balanceAmount | currency:''}} {{$data.$sum('balanceAmount')}}</td>
             <td class="col-md-1">    

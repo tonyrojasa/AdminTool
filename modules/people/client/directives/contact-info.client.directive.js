@@ -13,7 +13,8 @@
       scope: {
         contacts: '=',
         form: '=',
-        readonly: '@'
+        readonly: '@',
+        report: '@'
       },
       link: function postLink(scope, element, attrs) {
 

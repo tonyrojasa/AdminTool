@@ -58,7 +58,7 @@
         </span>  
       </div> 
     </div> 
-    <div class="form-group col-md-6">    
+    <div class="form-group col-md-2">    
   		<label class="control-label" for="registrationDate">Fecha de inscripción</label>
       	<br />
 		<div class="input-group select2-bootstrap-append">
@@ -74,6 +74,14 @@
 	  		</button>
 		</div>
     </div> 
+    <div class="form-group col-md-4">
+	    <div class="checkbox">
+		    <label>
+		      <input type="checkbox" ng-model="vm.showContactInfo">
+		      <b>Mostrar Información de Contacto</b>
+	    	</label>
+	  	</div>
+    </div>
     <br />
     <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
     <br />
@@ -147,6 +155,34 @@
 	      	</a>
 		  </th> 
 		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('person.mobilePhone'); vm.sortReverse = !vm.sortReverse">
+	        	Tel. Celular
+		        <span ng-show="vm.myOrderBy == 'person.mobilePhone' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.mobilePhone' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th> 
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('person.homePhone'); vm.sortReverse = !vm.sortReverse">
+	        	Tel. Casa
+		        <span ng-show="vm.myOrderBy == 'person.homePhone' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.homePhone' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th> 
+		  <th>
+		  	<a href="#" ng-click="vm.orderByMe('person.otherPhone'); vm.sortReverse = !vm.sortReverse">
+	        	Tel. Otro
+		        <span ng-show="vm.myOrderBy == 'person.otherPhone' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.otherPhone' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th> 
+		  <th colspan="2" ng-if="vm.showContactInfo">
+		  	<a href="#" ng-click="vm.orderByMe('person.contactInfo'); vm.sortReverse = !vm.sortReverse">
+	        	Información de Contacto
+		        <span ng-show="vm.myOrderBy == 'person.contactInfo' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.contactInfo' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th> 
+		  <th>
 		  	<a href="#" ng-click="vm.orderByMe('person.shirtSize'); vm.sortReverse = !vm.sortReverse">
         		Talla
 		        <span ng-show="vm.myOrderBy == 'person.shirtSize' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
@@ -187,6 +223,12 @@
 		  <td>{{eventRegistration.person.maritalStatus}}</td>
 		  <td ng-show="!vm.eventPeopleGroup">{{eventRegistration.eventPeopleGroup.name}}</td>
 		  <td ng-show="!vm.personType">{{eventRegistration.personType.name}}</td>
+		  <td>{{eventRegistration.person.mobilePhone}}</td>
+		  <td>{{eventRegistration.person.homePhone}}</td>
+		  <td>{{eventRegistration.person.otherPhone}}</td>
+		  <td colspan="2" ng-if="vm.showContactInfo">
+		  	<contact-info contacts="eventRegistration.person.contactInfo" readonly="true" report="true"></contact-info> 
+		  </td>
 		  <td>{{eventRegistration.person.shirtSize}}</td>		
 		  <td>{{eventRegistration.shirtsQuantity}}</td>		  
 		  <td>{{eventRegistration.totalPayments | currency:''}}</td>
