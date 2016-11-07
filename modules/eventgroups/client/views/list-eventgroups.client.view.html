@@ -1,0 +1,22 @@
+<section>
+  <div class="page-header">
+    <h1>Eventgroups</h1>
+  </div>
+  <div class="list-group">
+    <a data-ng-repeat="eventgroup in vm.eventgroups"
+       data-ui-sref="eventgroups.view({ eventgroupId: eventgroup._id })"
+       class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span data-ng-bind="eventgroup.created | date:'mediumDate'"></span>
+        by
+        <span data-ng-if="eventgroup.user" data-ng-bind="eventgroup.user.displayName"></span>
+        <span data-ng-if="!eventgroup.user">Deleted User</span>
+      </small>
+      <h4 class="list-group-item-heading" data-ng-bind="eventgroup.name"></h4>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="vm.eventgroups.$resolved && !vm.eventgroups.length">
+    No Eventgroups yet, why don't you <a data-ui-sref="eventgroups.create">create one</a>?
+  </div>
+</section>
