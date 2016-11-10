@@ -5,14 +5,15 @@
     .module('eventgroups')
     .controller('EventgroupsListController', EventgroupsListController);
 
-  EventgroupsListController.$inject = ['EventgroupsService', 'CurrentEventsService'];
+  EventgroupsListController.$inject = ['EventgroupsService', 'CurrentEventsService', 'EventpeoplegroupsService'];
 
-  function EventgroupsListController(EventgroupsService, CurrentEventsService) {
+  function EventgroupsListController(EventgroupsService, CurrentEventsService, EventpeoplegroupsService) {
     var vm = this;
     vm.showMembers = false;
     vm.showContactInfo = false;
 
     vm.events = CurrentEventsService.query();
+    vm.eventPeopleGroups = EventpeoplegroupsService.query();
 
     vm.setEvent = function(event) {
       EventgroupsService.query({

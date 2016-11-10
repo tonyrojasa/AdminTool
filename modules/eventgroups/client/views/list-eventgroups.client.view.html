@@ -17,12 +17,30 @@
             </ui-select-choices>
         </ui-select> 
         <span class="input-group-btn">
-          <button type="button" ng-click="vm.event = vm.eventgroups = undefined" class="btn btn-default"  data-toggle="tooltip" title="Borrar filtro de evento">
+          <button type="button" ng-click="vm.event = vm.eventPeopleGroup = vm.eventgroups = undefined" class="btn btn-default"  data-toggle="tooltip" title="Borrar filtro de evento">
             <span class="glyphicon glyphicon-trash"></span>
           </button>
         </span>  
       </div>  
     </div> 
+    <div class="form-group col-md-6" ng-if="vm.event">        
+      <label class="control-label" for="eventPeopleGroup">Grupo</label>  
+      <div class="input-group select2-bootstrap-append">
+        <ui-select ng-model="vm.eventPeopleGroup" >
+          <ui-select-match  placeholder="Seleccione el grupo...">
+                <span>{{$select.selected.name}}</span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (vm.eventPeopleGroups | filter: $select.search) track by item._id">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+            </ui-select-choices>
+        </ui-select> 
+        <span class="input-group-btn">
+          <button type="button" ng-click="vm.eventPeopleGroup = undefined" class="btn btn-default">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </span>  
+      </div> 
+    </div>
     <br />    
     <div ng-if="vm.event && vm.eventgroups.$resolved && vm.eventgroups.length > 0">
       <div class="col-md-12">
@@ -91,7 +109,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="eventgroup in vm.eventgroups | orderBy:['event.name', 'eventPeopleGroup.name','name'] | orderBy: vm.myOrderBy:vm.sortReverse | filter: vm.searchFilter" class="success">
+          <tr ng-repeat="eventgroup in vm.eventgroups | orderBy:['event.name', 'eventPeopleGroup.name','name'] | orderBy: vm.myOrderBy:vm.sortReverse | filter: vm.searchFilter | filter: vm.eventPeopleGroup.name" class="success">
             <td>{{eventgroup.event.name}}</td>
             <td>{{eventgroup.eventPeopleGroup.name}}</td>
             <td>{{eventgroup.name}}</td>
