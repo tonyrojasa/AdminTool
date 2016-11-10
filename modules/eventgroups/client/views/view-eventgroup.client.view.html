@@ -1,26 +1,36 @@
-<section>
-  <div class="page-header">
-    <h1 data-ng-bind="vm.eventgroup.name"></h1>
-  </div>
-  <div class="pull-right"
-       data-ng-show="vm.eventgroup.isCurrentUserOwner">
-    <a class="btn btn-primary"
-       data-ui-sref="eventgroups.edit({ eventgroupId: vm.eventgroup._id })">
-      <i class="glyphicon glyphicon-edit"></i>
-    </a>
-    <a class="btn btn-primary" data-ng-click="vm.remove()">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a>
-  </div>
-  <small>
-    <em class="text-muted">
-      Posted on
-      <span data-ng-bind="vm.eventgroup.created | date:'mediumDate'"></span>
-      by
-      <span data-ng-if="vm.eventgroup.user"
-            data-ng-bind="vm.eventgroup.user.displayName"></span>
-      <span data-ng-if="!vm.eventgroup.user">Deleted User</span>
-    </em>
-  </small>
-  <p class="lead" data-ng-bind="vm.eventgroup.content"></p>
-</section>
+<div class="container">
+  <section>
+    <div class="page-header">
+      <h3>{{vm.eventgroup.event.name}}</h3>    
+      <h2>{{vm.eventgroup.eventPeopleGroup.name}}</h2>
+      <h1>{{vm.eventgroup.name}}</h1>
+    </div>
+    <div class="pull-left">
+      <a class="btn btn-secondary" data-ui-sref="eventgroups.list()">
+        <i class="glyphicon glyphicon-arrow-left"></i>
+        Regresar
+      </a>
+    </div>
+    <br /><br />
+    <div class="pull-right">
+      <a class="btn btn-primary" data-ui-sref="eventgroups.edit({ eventgroupId: vm.eventgroup._id })"">
+        <i class="glyphicon glyphicon-edit"> Editar</i>
+      </a>
+      <a class="btn btn-default" data-ng-show="vm.authentication.isUserAdmin()" data-ng-click="vm.remove()">
+        <i class="glyphicon glyphicon-trash"> Eliminar</i>
+      </a>
+    </div>
+    <small>
+      <em class="text-muted">
+        Creado en
+        <span data-ng-bind="vm.eventgroup.created | date:'mediumDate'"></span>
+        por
+        <span data-ng-if="vm.eventgroup.user"
+              data-ng-bind="vm.eventgroup.user.displayName"></span>
+        <span data-ng-if="!vm.eventgroup.user">Deleted User</span>
+      </em>
+    </small>
+  </section>
+  <br /><br />
+  <eventgroup-info leader="vm.eventgroup.leader" assistant="vm.eventgroup.assistant" members="vm.eventgroup.members" show-contact-info="true"></eventgroup-info>
+</div>

@@ -7,7 +7,7 @@
     <div class="col-md-6 form-group">        
       <label class="control-label" for="event">Evento *</label>  
       <div class="input-group select2-bootstrap-append">
-        <ui-select ng-model="vm.event">
+        <ui-select ng-model="vm.event" on-select="vm.setEvent(vm.event)">
           <ui-select-match  placeholder="Seleccione el tipo de persona...">
                 <span>{{$select.selected.name}}</span>
             </ui-select-match>
@@ -79,6 +79,12 @@
 		    <label>
 		      <input type="checkbox" ng-model="vm.showContactInfo">
 		      <b>Mostrar Información de Contacto</b>
+	    	</label>
+	  	</div>
+	  	<div class="checkbox">
+	    	<label>
+		      <input type="checkbox" ng-model="vm.showEventGroup">
+		      <b>Mostrar Cabañas</b>
 	    	</label>
 	  	</div>
     </div>
@@ -182,6 +188,13 @@
 		        <span ng-show="vm.myOrderBy == 'person.contactInfo' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 	      	</a>
 		  </th> 
+		  <th colspan="2" ng-if="vm.showEventGroup">
+		  	<a href="#" ng-click="vm.orderByMe('eventGroup'); vm.sortReverse = !vm.sortReverse">
+	        	Cabaña
+		        <span ng-show="vm.myOrderBy == 'eventGroup' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'eventGroup' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th> 
 		  <th>
 		  	<a href="#" ng-click="vm.orderByMe('person.shirtSize'); vm.sortReverse = !vm.sortReverse">
         		Talla
@@ -228,6 +241,10 @@
 		  <td>{{eventRegistration.person.otherPhone}}</td>
 		  <td colspan="2" ng-if="vm.showContactInfo">
 		  	<contact-info contacts="eventRegistration.person.contactInfo" readonly="true" report="true"></contact-info> 
+
+		  </td>
+		  <td colspan="2" ng-if="vm.showEventGroup">
+		  	{{eventRegistration.eventGroup}}
 		  </td>
 		  <td>{{eventRegistration.person.shirtSize}}</td>		
 		  <td>{{eventRegistration.shirtsQuantity}}</td>		  
@@ -237,19 +254,19 @@
 		</tbody>
 		<tfoot>
 			<tr> 
-			<td colspan="13"></td>
+			<td colspan="20"></td>
 			</tr>
 			<tr class="info"> 
-				<td colspan="3"" align="left"> 
+				<td colspan="5"" align="left"> 
 					<span><b>Total de Inscripciones:</b> {{vm.filteredItems.length}}</span> 
 				</td>  
-				<td colspan="3"" align="left"> 
+				<td colspan="4"" align="left"> 
 					<span><b>Total Camisas:</b> {{vm.filteredItems | sumByKey:'shirtsQuantity'}}</span> 
 				</td>    
-				<td colspan="3" align="right">
+				<td colspan="5" align="right">
 			  		<span><b>Total Pagos (Recaudación) ₡:</b> {{vm.filteredItems | sumByKey:'totalPayments'  | currency:''}}</span>
 				</td>        
-				<td colspan="4" align="right">
+				<td colspan="6" align="right">
 				  <span><b>Saldo Pendiente (por cobrar) ₡:</b> {{vm.filteredItems | sumByKey:'balanceAmount'  | currency:''}}</span>
 				</td>        
 			</tr>

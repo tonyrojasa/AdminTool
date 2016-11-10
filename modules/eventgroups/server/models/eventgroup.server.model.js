@@ -55,9 +55,9 @@ EventgroupSchema.pre('validate', function(next) {
 });
 
 EventgroupSchema.index({
-  name: 1,
   event: 1,
-  eventPeopleGroup: 1
+  eventPeopleGroup: 1,
+  name: 1
 }, {
   unique: true
 });

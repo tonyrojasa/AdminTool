@@ -20,7 +20,8 @@
         controller: 'EventgroupsListController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Eventgroups List'
+          roles: ['admin', 'inscriptor', 'user'],
+          pageTitle: 'Lista de Cabañas'
         }
       })
       .state('eventgroups.create', {
@@ -32,8 +33,8 @@
           eventgroupResolve: newEventgroup
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Eventgroups Create'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Crear Cabaña'
         }
       })
       .state('eventgroups.edit', {
@@ -45,8 +46,8 @@
           eventgroupResolve: getEventgroup
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Edit Eventgroup {{ eventgroupResolve.name }}'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Editar Cabaña - {{ eventgroupResolve.name }}'
         }
       })
       .state('eventgroups.view', {
@@ -58,7 +59,8 @@
           eventgroupResolve: getEventgroup
         },
         data: {
-          pageTitle: 'Eventgroup {{ articleResolve.name }}'
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Cabaña - {{ articleResolve.name }}'
         }
       });
   }

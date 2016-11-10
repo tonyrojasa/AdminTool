@@ -1,22 +1,120 @@
 <section>
   <div class="page-header">
-    <h1>Eventgroups</h1>
+    <h1>Lista de Cabañas</h1>
   </div>
-  <div class="list-group">
-    <a data-ng-repeat="eventgroup in vm.eventgroups"
-       data-ui-sref="eventgroups.view({ eventgroupId: eventgroup._id })"
-       class="list-group-item">
-      <small class="list-group-item-text">
-        Posted on
-        <span data-ng-bind="eventgroup.created | date:'mediumDate'"></span>
-        by
-        <span data-ng-if="eventgroup.user" data-ng-bind="eventgroup.user.displayName"></span>
-        <span data-ng-if="!eventgroup.user">Deleted User</span>
-      </small>
-      <h4 class="list-group-item-heading" data-ng-bind="eventgroup.name"></h4>
-    </a>
-  </div>
-  <div class="alert alert-warning text-center" data-ng-if="vm.eventgroups.$resolved && !vm.eventgroups.length">
-    No Eventgroups yet, why don't you <a data-ui-sref="eventgroups.create">create one</a>?
+  <a class="btn btn-primary" data-ui-sref="eventgroups.create">Nueva Cabaña</a>
+  <br/><br/>  
+  <div id="content">
+    <div class="col-md-6 form-group">        
+      <label class="control-label" for="event">Evento *</label>  
+      <div class="input-group select2-bootstrap-append">
+        <ui-select ng-model="vm.event" on-select="vm.setEvent(vm.event)" ng-disabled="vm.isOptionDisabled()">
+          <ui-select-match  placeholder="Seleccione el evento...">
+                <span>{{$select.selected.name}}</span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (vm.events | filter: $select.search) track by item._id">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+            </ui-select-choices>
+        </ui-select> 
+        <span class="input-group-btn">
+          <button type="button" ng-click="vm.event = vm.eventgroups = undefined" class="btn btn-default"  data-toggle="tooltip" title="Borrar filtro de evento">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </span>  
+      </div>  
+    </div> 
+    <br />    
+    <div ng-if="vm.event && vm.eventgroups.$resolved && vm.eventgroups.length > 0">
+      <div class="col-md-12">
+       <strong>Opciones para mostrar <button type="button" class="btn btn-link" ng-click="vm.isCollapsed = !vm.isCollapsed">
+        {{vm.isCollapsed ? 'Ver opciones &gt;&gt;' : '&lt;&lt; Ocultar Opciones'}}</button>
+       </strong>
+      </div>
+      <div class="col-md-12 well well-lg" uib-collapse="vm.isCollapsed">
+        <label class="checkbox-inline">
+          <input type="checkbox" ng-model="vm.showMembers"/> 
+          Mostrar Miembros
+        </label>
+        <label class="checkbox-inline" ng-hide="!vm.showMembers">
+          <input type="checkbox" ng-model="vm.showContactInfo" ng-disabled="!vm.showMembers"/> 
+          Mostrar Informacion de Contacto de miembros
+        </label>
+      </div>
+      <br />
+      <div id="exportable">
+        <table class="table table-condensed">
+          <thead>
+          <tr>
+            <th>
+              <a href="#" ng-click="vm.orderByMe('event.name'); vm.sortReverse = !vm.sortReverse">
+                  Evento
+                  <span ng-show="vm.myOrderBy == 'event.name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                  <span ng-show="vm.myOrderBy == 'event.name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+                </a>
+            </th>
+            <th>
+              <a href="#" ng-click="vm.orderByMe('eventPeopleGroup.name'); vm.sortReverse = !vm.sortReverse">
+                  Grupo
+                  <span ng-show="vm.myOrderBy == 'eventPeopleGroup.name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                  <span ng-show="vm.myOrderBy == 'eventPeopleGroup.name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+                </a>
+            </th>
+            <th>
+              <a href="#" ng-click="vm.orderByMe('name'); vm.sortReverse = !vm.sortReverse">
+                  Nombre de Cabaña
+                  <span ng-show="vm.myOrderBy == 'name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                  <span ng-show="vm.myOrderBy == 'name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+                </a>
+            </th>
+            <th>
+              <a href="#" ng-click="vm.orderByMe('leader.person.firstName'); vm.sortReverse = !vm.sortReverse">
+                  Líder
+                  <span ng-show="vm.myOrderBy == 'leader.person.firstName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                  <span ng-show="vm.myOrderBy == 'leader.person.firstName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+                </a>
+            </th>
+            <th>
+              <a href="#" ng-click="vm.orderByMe('assistant.person.firstName'); vm.sortReverse = !vm.sortReverse">
+                  Asistente
+                  <span ng-show="vm.myOrderBy == 'assistant.person.firstName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                  <span ng-show="vm.myOrderBy == 'assistant.person.firstName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+                </a>
+            </th>
+            <th>
+              <a href="#" ng-click="vm.orderByMe('members'); vm.sortReverse = !vm.sortReverse" ng-if="vm.showMembers">
+                  Miembros
+                  <span ng-show="vm.myOrderBy == 'members' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                  <span ng-show="vm.myOrderBy == 'members' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+                </a>
+            </th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="eventgroup in vm.eventgroups | orderBy:['event.name', 'eventPeopleGroup.name','name'] | orderBy: vm.myOrderBy:vm.sortReverse | filter: vm.searchFilter" class="success">
+            <td>{{eventgroup.event.name}}</td>
+            <td>{{eventgroup.eventPeopleGroup.name}}</td>
+            <td>{{eventgroup.name}}</td>
+            <td>{{eventgroup.leader.person.firstName}} {{eventgroup.leader.person.lastName}} {{eventgroup.leader.person.secondLastName}}</td>
+            <td>{{eventgroup.assistant.person.firstName}} {{eventgroup.assistant.person.lastName}} {{eventgroup.assistant.person.secondLastName}}</td>
+            <td ng-if="vm.showMembers">
+              <eventgroup-info show-headers="true" report="false" members="eventgroup.members" show-contact-info="vm.showContactInfo"></eventgroup-info>
+            </td>
+            <td>    
+              <a data-ui-sref="eventgroups.view({ eventgroupId: eventgroup._id})">Detalles</a>    
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>   
+  <div class="col-md-12">
+    <div class="alert alert-warning text-center" data-ng-if="!vm.event">
+      <strong>Seleccione el evento para las cabañas que desea mostrar.</strong>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-if="vm.eventgroups.$resolved && !vm.eventgroups.length">
+      No hay ninguna cabaña creada <a data-ui-sref="eventgroups.create">Crear una</a>?
+    </div>
   </div>
 </section>

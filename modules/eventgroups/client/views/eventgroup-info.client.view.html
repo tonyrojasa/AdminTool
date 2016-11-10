@@ -1,0 +1,59 @@
+<div>        
+  <div ng-if="leader">
+    <p>Líder:</p> 
+    <p class="lead">{{leader.person.firstName}} {{leader.person.lastName}} {{leader.person.secondLastName}}</p>
+  </div>  
+  <div ng-if="assistant">
+    <p>Asistente:</p>
+    <p class="lead" data-ng-bind="assistant.person.firstName"></p>
+  </div> 
+  <fieldset class="form-group fieldset" ng-if="members.length">
+    <legend ng-if="!report">Miembros</legend>
+    <table ng-class="report || showHeaders ? 'table table-condensed fontSize11px' : 'table table-condensed'">
+      <thead ng-if="!report || showHeaders">
+      <tr>
+        <th>#</th>
+        <th># Inscripción</th>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>Estado Civil</th>
+        <th>Tel. Celular</th>
+        <th>Tel. Casa</th>        
+        <th>Tel. Otro</th>
+        <th ng-if="showContactInfo">Información de Contacto</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="item in members | orderBy:['firstName','lastName','secondLastName'] track by $index">
+        <td>
+          {{$index+1}}
+        </td>
+        <td>
+          {{item.registrationNumber}}
+        </td>
+        <td>  
+          {{item.person.firstName}} {{item.person.lastName}} {{item.person.secondLastName}}
+        </td>
+        <td>
+          {{item.person.age}}
+        </td>
+        <td>
+          {{item.person.maritalStatus}}
+        </td>
+        <td>
+          {{item.person.mobilePhone}}
+        </td>
+        <td>
+          {{item.person.homePhone}}
+        </td>
+        <td>
+          {{item.person.otherPhone}}
+        </td>
+        <td ng-if="showContactInfo">
+          <contact-info contacts="item.person.contactInfo" readonly="true" report="true"></contact-info> 
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </fieldset> 
+</div>

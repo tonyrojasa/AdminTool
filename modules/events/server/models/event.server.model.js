@@ -34,6 +34,14 @@ var EventSchema = new Schema({
     type: Date,
     required: 'Please fill Event endDate'
   },
+  openEnrollment: {
+    type: Boolean,
+    default: true
+  },
+  ended: {
+    type: Boolean,
+    default: false
+  },
   price: {
     type: Number,
     default: '',

@@ -2,7 +2,7 @@
   <fieldset class="form-group fieldset" ng-if="contacts.length">
     <legend ng-if="!report">Información de contacto</legend>
     <table ng-class="report ? 'table table-condensed fontSize11px' : 'table table-condensed'">
-      <thead ng-show="!report">
+      <thead ng-if="!report">
       <tr>
         <th>#</th>
         <th>Nombre *</th>

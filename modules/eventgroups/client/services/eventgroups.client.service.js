@@ -1,5 +1,5 @@
 //Eventgroups service used to communicate Eventgroups REST endpoints
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -12,6 +12,11 @@
     return $resource('api/eventgroups/:eventgroupId', {
       eventgroupId: '@_id'
     }, {
+      query: {
+        method: 'GET',
+        isArray: true,
+        cache: false
+      },
       update: {
         method: 'PUT'
       }

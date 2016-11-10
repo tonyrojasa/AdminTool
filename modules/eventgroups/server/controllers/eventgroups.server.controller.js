@@ -81,15 +81,38 @@ exports.delete = function(req, res) {
  * List of Eventgroups
  */
 exports.list = function(req, res) {
-  Eventgroup.find().sort('-created').populate('user', 'displayName').exec(function(err, eventgroups) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(eventgroups);
-    }
-  });
+  Eventgroup.find(req.query).sort('-created')
+    .populate('user', 'displayName')
+    .populate('event', 'name')
+    .populate('eventPeopleGroup', 'name')
+    .populate('members')
+    .populate({
+      path: 'members',
+      populate: {
+        path: 'person'
+      }
+    })
+    .populate({
+      path: 'leader',
+      populate: {
+        path: 'person'
+      }
+    })
+    .populate({
+      path: 'assistant',
+      populate: {
+        path: 'person'
+      }
+    })
+    .exec(function(err, eventgroups) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(eventgroups);
+      }
+    });
 };
 
 /**
@@ -103,15 +126,39 @@ exports.eventgroupByID = function(req, res, next, id) {
     });
   }
 
-  Eventgroup.findById(id).populate('user', 'displayName').exec(function(err, eventgroup) {
-    if (err) {
-      return next(err);
-    } else if (!eventgroup) {
-      return res.status(404).send({
-        message: 'No Eventgroup with that identifier has been found'
-      });
-    }
-    req.eventgroup = eventgroup;
-    next();
-  });
+  Eventgroup.findById(id)
+    .populate('user', 'displayName')
+    .populate('user', 'displayName')
+    .populate('event', 'name')
+    .populate('eventPeopleGroup', 'name')
+    .populate('members')
+    .populate({
+      path: 'members',
+      populate: {
+        path: 'person'
+      }
+    })
+    .populate({
+      path: 'leader',
+      populate: {
+        path: 'person'
+      }
+    })
+    .populate({
+      path: 'assistant',
+      populate: {
+        path: 'person'
+      }
+    })
+    .exec(function(err, eventgroup) {
+      if (err) {
+        return next(err);
+      } else if (!eventgroup) {
+        return res.status(404).send({
+          message: 'No Eventgroup with that identifier has been found'
+        });
+      }
+      req.eventgroup = eventgroup;
+      next();
+    });
 };

@@ -241,8 +241,8 @@
             <label class="control-label" for="registrationDate">Fecha de inscripción *</label>
             <br />
             <input name="registrationDate" type="hidden" ng-model="vm.eventregistration.registrationDate" id="registrationDate" class="form-control" required>
-            <input name="registrationDate" ng-if="vm.editMode" type="text" value="{{vm.eventregistration.registrationDate | date:'dd-MMM-yyyy'}}" id="registrationDate" class="form-control" ng-disabled="true" required>
-            <datetimepicker ng-if="!vm.editMode"
+            <input name="registrationDate" ng-if="vm.editMode && !vm.authentication.isUserAdmin()" type="text" value="{{vm.eventregistration.registrationDate | date:'dd-MMM-yyyy'}}" id="registrationDate" class="form-control" ng-disabled="true" required>
+            <datetimepicker ng-if="!vm.editMode || vm.authentication.isUserAdmin()"
               ng-model="vm.eventregistration.registrationDate" 
               hidden-time="true" 
               date-format="dd-MMM-yyyy" 
