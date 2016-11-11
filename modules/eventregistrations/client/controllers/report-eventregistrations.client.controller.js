@@ -18,6 +18,7 @@
     vm.events = EventsService.query();
     vm.eventPeopleGroups = EventpeoplegroupsService.query();
     vm.personTypes = PersontypesService.query();
+    vm.showMobilePhone = true;
 
     $scope.$watch('vm.registrationDate', function(newVal, oldVal) {
       if (newVal) {
