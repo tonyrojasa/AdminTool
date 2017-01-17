@@ -115,7 +115,7 @@
       _.forEach(pendingServiceAcademyClassStudents, function(person) {
         vm.assistance.assistants.push({
           person: person,
-          status: ''
+          status: 'absent'
         });
       });
     }
