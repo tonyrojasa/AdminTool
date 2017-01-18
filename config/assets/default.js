@@ -41,7 +41,8 @@ module.exports = {
         'public/lib/ng-table/dist/ng-table.min.js',
         'public/lib/ng-table-to-csv/dist/ng-table-to-csv.js',
         'public/lib/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
-        'public/lib/angular-moment/angular-moment.js'
+        'public/lib/angular-moment/angular-moment.js',
+        'public/lib/angular-file-upload/dist/angular-file-upload.min.js'
         // endbower
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']

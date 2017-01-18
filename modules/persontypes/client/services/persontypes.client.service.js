@@ -1,5 +1,5 @@
 //Persontypes service used to communicate Persontypes REST endpoints
-(function () {
+(function() {
   'use strict';
 
   angular

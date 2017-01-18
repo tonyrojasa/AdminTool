@@ -1,5 +1,5 @@
 //Eventpeoplegroups service used to communicate Eventpeoplegroups REST endpoints
-(function () {
+(function() {
   'use strict';
 
   angular

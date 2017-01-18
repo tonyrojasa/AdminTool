@@ -1,5 +1,5 @@
 //Organizations service used to communicate Organizations REST endpoints
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -14,6 +14,10 @@
     }, {
       update: {
         method: 'PUT'
+      },
+      query: {
+        method: "GET",
+        isArray: true
       }
     });
   }
