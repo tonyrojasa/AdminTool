@@ -36,33 +36,32 @@ exports.signup = function(req, res) {
     // Then save the user
     user.save(function(err) {
       if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        // Remove sensitive data before login
-        user.password = undefined;
-        user.salt = undefined;
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      // Remove sensitive data before login
+      user.password = undefined;
+      user.salt = undefined;
 
-        req.login(user, function(err) {
-          if (err) {
-            res.status(400).send(err);
-          } else {
-            res.json(user);
-          }
-        });
-      }
-    });
+      req.login(user, function (err) {
+        if (err) {
+          res.status(400).send(err);
+        } else {
+          res.json(user);
+        }
+      });
+    }
   });
 };
 
 /**
  * Signin after passport authentication
  */
-exports.signin = function(req, res, next) {
-  passport.authenticate('local', function(err, user, info) {
+exports.signin = function (req, res, next) {
+  passport.authenticate('local', function (err, user, info) {
     if (err || !user) {
-      res.status(400).send(info);
+      res.status(422).send(info);
     } else {
       // Remove sensitive data before login
       user.password = undefined;
@@ -92,11 +91,9 @@ exports.signout = function(req, res) {
  */
 exports.oauthCall = function(strategy, scope) {
   return function(req, res, next) {
-    // Set redirection path on session.
-    // Do not redirect to a signin or signup page
-    if (noReturnUrls.indexOf(req.query.redirect_to) === -1) {
+    if (req.query && req.query.redirect_to)
       req.session.redirect_to = req.query.redirect_to;
-    }
+
     // Authenticate
     passport.authenticate(strategy, scope)(req, res, next);
   };
@@ -107,11 +104,9 @@ exports.oauthCall = function(strategy, scope) {
  */
 exports.oauthCallback = function(strategy) {
   return function(req, res, next) {
-    // Pop redirect URL from session
-    var sessionRedirectURL = req.session.redirect_to;
-    delete req.session.redirect_to;
 
-    passport.authenticate(strategy, function(err, user, redirectURL) {
+    // info.redirect_to contains inteded redirect path
+    passport.authenticate(strategy, function (err, user, info) {
       if (err) {
         return res.redirect('/authentication/signin?err=' + encodeURIComponent(errorHandler.getErrorMessage(err)));
       }
@@ -123,7 +118,7 @@ exports.oauthCallback = function(strategy) {
           return res.redirect('/authentication/signin');
         }
 
-        return res.redirect(typeof redirectURL == 'string' ? redirectURL : sessionRedirectURL || '/');
+        return res.redirect(info.redirect_to || '/');
       });
     })(req, res, next);
   };
@@ -133,6 +128,14 @@ exports.oauthCallback = function(strategy) {
  * Helper function to save or update a OAuth user profile
  */
 exports.saveOAuthUserProfile = function(req, providerUserProfile, done) {
+  // Setup info object
+  var info = {};
+
+  // Set redirection path on session.
+  // Do not redirect to a signin or signup page
+  if (noReturnUrls.indexOf(req.session.redirect_to) === -1)
+    info.redirect_to = req.session.redirect_to;
+
   if (!req.user) {
     // Define a search query fields
     var searchMainProviderIdentifierField = 'providerData.' + providerUserProfile.providerIdentifierField;
@@ -165,26 +168,23 @@ exports.saveOAuthUserProfile = function(req, providerUserProfile, done) {
               lastName: providerUserProfile.lastName,
               username: availableUsername,
               displayName: providerUserProfile.displayName,
-              email: providerUserProfile.email,
               profileImageURL: providerUserProfile.profileImageURL,
               provider: providerUserProfile.provider,
               providerData: providerUserProfile.providerData
             });
 
-            User.isCollectionEmpty(function(isEmpty) {
+            // Email intentionally added later to allow defaults (sparse settings) to be applid.
+            // Handles case where no email is supplied.
+            // See comment: https://github.com/meanjs/mean/pull/1495#issuecomment-246090193
+            user.email = providerUserProfile.email;
 
-              if (isEmpty) { //first user needs to be admin
-                user.roles = ['admin'];
-              }
               // And save the user
               user.save(function(err) {
-                return done(err, user);
-              });
+              return done(err, user, info);
             });
-
           });
         } else {
-          return done(err, user);
+          return done(err, user, info);
         }
       }
     });
@@ -206,7 +206,7 @@ exports.saveOAuthUserProfile = function(req, providerUserProfile, done) {
 
       // And save the user
       user.save(function(err) {
-        return done(err, user, '/settings/accounts');
+        return done(err, user, info);
       });
     } else {
       return done(new Error('User is already connected using this provider'), user);
@@ -239,7 +239,7 @@ exports.removeOAuthProvider = function(req, res, next) {
 
   user.save(function(err) {
     if (err) {
-      return res.status(400).send({
+      return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {

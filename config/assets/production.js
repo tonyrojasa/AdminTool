@@ -1,10 +1,13 @@
 'use strict';
 
+/* eslint comma-dangle:[0, "only-multiline"] */
+
 module.exports = {
   client: {
     lib: {
       css: [
         // bower:css
+        'public/lib/angular-ui-notification/dist/angular-ui-notification.min.css',
         'public/lib/bootstrap/dist/css/bootstrap.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.css',
         'public/lib/angular-ui-bootstrap-datetimepicker/datetimepicker.css',
@@ -40,7 +43,7 @@ module.exports = {
         // endbower
       ]
     },
-    css: 'public/dist/application.min.css',
-    js: 'public/dist/application.min.js'
+    css: 'public/dist/application*.min.css',
+    js: 'public/dist/application*.min.js'
   }
 };
