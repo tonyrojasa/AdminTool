@@ -36,22 +36,23 @@ exports.signup = function(req, res) {
     // Then save the user
     user.save(function(err) {
       if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      // Remove sensitive data before login
-      user.password = undefined;
-      user.salt = undefined;
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        // Remove sensitive data before login
+        user.password = undefined;
+        user.salt = undefined;
 
-      req.login(user, function (err) {
-        if (err) {
-          res.status(400).send(err);
-        } else {
-          res.json(user);
-        }
-      });
-    }
+        req.login(user, function (err) {
+          if (err) {
+            res.status(400).send(err);
+          } else {
+            res.json(user);
+          }
+        });
+      } 
+    });
   });
 };
 
@@ -178,8 +179,8 @@ exports.saveOAuthUserProfile = function(req, providerUserProfile, done) {
             // See comment: https://github.com/meanjs/mean/pull/1495#issuecomment-246090193
             user.email = providerUserProfile.email;
 
-              // And save the user
-              user.save(function(err) {
+            // And save the user
+            user.save(function(err) {
               return done(err, user, info);
             });
           });

@@ -88,7 +88,7 @@
         };
 
         scope.grades =
-          ['Ninguna',
+        ['Ninguna',
           'Primaria incompleta',
           'Primaria completa',
           'Secundaria incompleta',
