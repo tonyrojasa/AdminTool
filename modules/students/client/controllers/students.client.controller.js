@@ -50,9 +50,7 @@
       }
 
       function successCallback(res) {
-        $state.go('students.view', {
-          studentId: res._id
-        });
+        $state.go('students.list');
       }
 
       function errorCallback(res) {

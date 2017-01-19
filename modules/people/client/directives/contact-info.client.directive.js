@@ -13,7 +13,9 @@
       scope: {
         contacts: '=',
         form: '=',
-        readonly: '@'
+        readonly: '@',
+        report: '@',
+        showHeaders: '='
       },
       link: function postLink(scope, element, attrs) {
 

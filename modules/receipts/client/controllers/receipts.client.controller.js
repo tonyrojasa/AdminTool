@@ -67,7 +67,7 @@
         'Transferencia',
         'Otro'
       ];
-      vm.receipt.paidBy = 'Efectivo'; //default value
+      vm.receipt.paidBy = vm.receipt.paidBy ? vm.receipt.paidBy : 'Efectivo'; //default value
       //default to current user
       if (!vm.receipt.receivedBy) {
         vm.receipt.receivedBy = vm.authentication.user.displayName;
@@ -108,6 +108,12 @@
 
     vm.isNewEventRegistration = function() {
       return (vm.eventregistration && !vm.receipt.eventRegistration);
+    };
+
+    vm.isEventServerReceipt = function() {
+      return (vm.receipt.eventRegistration && vm.receipt.eventRegistration.shirtsQuantity &&
+        (vm.receipt.eventRegistration.isEventServer ||
+          vm.receipt.eventRegistration.eventExternalServer.isEventExternalServer));
     };
 
     vm.setPaymentOf = function(paymentOf) {

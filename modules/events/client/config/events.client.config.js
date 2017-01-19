@@ -20,5 +20,11 @@
       state: 'events.list',
       roles: ['admin', 'user']
     });
+
+    Menus.addSubMenuItem('topbar', 'maintenance', {
+      title: 'Eventos | Cabañas',
+      state: 'eventgroups.list',
+      roles: ['admin', 'inscriptor', 'user']
+    });
   }
 })();

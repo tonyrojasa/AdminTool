@@ -37,7 +37,7 @@
       value: 2
     }, {
       name: 'Nivel 3',
-      value: 2
+      value: 3
     }];
 
     vm.schedules = [{

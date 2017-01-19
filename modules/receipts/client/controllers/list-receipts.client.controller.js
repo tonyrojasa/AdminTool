@@ -5,16 +5,25 @@
     .module('receipts')
     .controller('ReceiptsListController', ReceiptsListController);
 
-  ReceiptsListController.$inject = ['$scope', 'ReceiptsService', '$state', 'CurrentEventsService', 'EventregistrationsService',
+  ReceiptsListController.$inject = ['$scope', 'ReceiptsService', '$state', 'EventsService', 'EventregistrationsService',
     'Authentication', '$anchorScroll', 'NgTableParams', 'moment'
   ];
 
-  function ReceiptsListController($scope, ReceiptsService, $state, CurrentEventsService, EventregistrationsService,
+  function ReceiptsListController($scope, ReceiptsService, $state, EventsService, EventregistrationsService,
     Authentication, $anchorScroll, NgTableParams, moment) {
     var vm = this;
     vm.moment = moment;
     vm.authentication = Authentication;
-    vm.events = CurrentEventsService.query();
+
+    vm.eventsFilterArray = [];
+    vm.events = EventsService.query(function(data) {
+      _.each(data, function(event) {
+        vm.eventsFilterArray.push({
+          id: event.name,
+          title: event.name
+        });
+      });
+    });
     vm.receipts = ReceiptsService.query();
 
     vm.receipts = ReceiptsService.query(function(data) {
@@ -24,81 +33,15 @@
     });
 
     $scope.$watch('vm.paymentDate', function(newVal, oldVal) {
-      debugger;
       if (newVal) {
         vm.dateFilterValue = vm.moment(vm.paymentDate).format('YYYY-MM-DD');
       } else {
         vm.dateFilterValue = '';
       }
+      vm.tableParams.filter().paymentDate = vm.dateFilterValue;
     });
 
     vm.setEvent = setEvent;
-
-    vm.cols = [{
-      field: "eventRegistration.registrationNumber",
-      title: function() {
-        return "# Inscripción";
-      },
-      show: function() {
-        return true;
-      }
-    }, {
-      field: "receiptNumber",
-      title: function() {
-        return "# Recibo";
-      },
-      show: function() {
-        return true;
-      }
-    }, {
-      field: "event.name",
-      title: function() {
-        return "Evento";
-      },
-      show: function() {
-        return true;
-      }
-    }, {
-      field: "paymentOf",
-      title: function() {
-        return "Por concepto de";
-      },
-      show: function() {
-        return true;
-      }
-    }, {
-      field: "paymentDate",
-      title: function() {
-        return "Fecha de pago";
-      },
-      show: function() {
-        return true;
-      }
-    }, {
-      field: "receivedFrom",
-      title: function() {
-        return "Recibido de";
-      },
-      show: function() {
-        return true;
-      }
-    }, {
-      field: "otherReference",
-      title: function() {
-        return "Otra referencia";
-      },
-      show: function() {
-        return false;
-      }
-    }, {
-      field: "paymentAmount",
-      title: function() {
-        return "Monto ₡ Ingreso/Gasto";
-      },
-      show: function() {
-        return true;
-      }
-    }];
 
     vm.isCollapsed = true;
 

@@ -5,16 +5,49 @@
     .module('eventregistrations')
     .controller('EventregistrationsListController', EventregistrationsListController);
 
-  EventregistrationsListController.$inject = ['$scope', 'EventregistrationsService', 'EventsService', 'Authentication',
-    'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams', '$filter', 'moment'
+  EventregistrationsListController.$inject = ['$scope', 'EventregistrationsService', 'CurrentEventsService', 'Authentication',
+    'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams', '$filter', 'moment', 'EventpeoplegroupsService',
+    'PersontypesService'
   ];
 
-  function EventregistrationsListController($scope, EventregistrationsService, EventsService, Authentication,
-    ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams, $filter, moment) {
+  function EventregistrationsListController($scope, EventregistrationsService, CurrentEventsService, Authentication,
+    ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams, $filter, moment, EventpeoplegroupsService,
+    PersontypesService) {
     var vm = this;
     vm.moment = moment;
     vm.authentication = Authentication;
-    vm.events = EventsService.query();
+
+
+    vm.eventsFilterArray = [];
+    vm.events = CurrentEventsService.query(function(data) {
+      _.each(data, function(event) {
+        vm.eventsFilterArray.push({
+          id: event.name,
+          title: event.name
+        });
+      });
+    });
+
+    vm.groupsFilterArray = [];
+    EventpeoplegroupsService.query(function(data) {
+      _.each(data, function(group) {
+        vm.groupsFilterArray.push({
+          id: group.name,
+          title: group.name
+        });
+      });
+    });
+
+    vm.personTypesFilterArray = [];
+    PersontypesService.query(function(data) {
+      _.each(data, function(personType) {
+        vm.personTypesFilterArray.push({
+          id: personType.name,
+          title: personType.name
+        });
+      });
+    });
+
     vm.eventregistrations = EventregistrationsService.query(function(data) {
       _.each(data, function(eventregistration) {
         eventregistration.registrationDate = vm.moment(eventregistration.registrationDate).format('YYYY-MM-DD');
@@ -30,6 +63,7 @@
       } else {
         vm.dateFilterValue = '';
       }
+      vm.tableParams.filter().registrationDate = vm.dateFilterValue;
     });
 
     vm.cols = [{

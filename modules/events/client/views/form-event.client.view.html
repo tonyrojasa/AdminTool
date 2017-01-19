@@ -77,6 +77,18 @@
             <p class="help-block error-text" ng-message="required">Fecha final es requerido.</p>
           </div>
         </div>
+        <div class="form-group">
+          <label class="checkbox-inline">
+            <input type="checkbox"  name="ended" type="checkbox" ng-model="vm.event.ended"/> 
+            <strong>Evento Finalizado</strong>
+          </label>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-inline">
+            <input type="checkbox"  name="openEnrollment" type="checkbox" ng-model="vm.event.openEnrollment"/> 
+            <strong>Cupo Disponible</strong>
+          </label>
+        </div>
         <div class="form-group" show-errors>
           <label class="control-label" for="price">Precio del evento (general) *</label>
           <div class="input-group"> 

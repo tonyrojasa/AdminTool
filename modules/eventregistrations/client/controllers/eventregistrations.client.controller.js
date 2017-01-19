@@ -68,6 +68,9 @@
     }
 
     function setShirtTypes() {
+      if (!vm.editMode) {
+        vm.eventregistration.shirtTypes = [];
+      }
       if (vm.eventregistration.event && vm.eventregistration.event.shirtTypes.length > 0) {
         if (!vm.eventregistration.shirtTypes ||
           (vm.eventregistration.shirtTypes && vm.eventregistration.shirtTypes.length === 0)) {
@@ -278,7 +281,52 @@
         $anchorScroll(document.body.scrollTop);
         return false;
       }
-      savePerson();
+
+
+      if (vm.isNewMemberRegistration()) {
+        var query = {
+          firstName: vm.person.firstName,
+          lastName: vm.person.lastName,
+          secondLastName: vm.person.secondLastName
+        };
+
+        //verify if person names already exist
+        PeopleService.query(query, function(data) {
+          var continueOperation = true;
+          var existingPersonIndex = -1;
+          if (vm.editMode) {
+            existingPersonIndex = _.findIndex(data, function(o) {
+              return (o._id === vm.person._id &&
+                o.firstName === vm.person.firstName &&
+                o.lastName === vm.person.lastName &&
+                o.secondLastName === vm.person.secondLastName);
+            });
+          }
+          if (data.length > 0 && existingPersonIndex < 0) {
+            continueOperation = confirm('Ya existe una persona con el nombre: ' +
+              vm.person.firstName + ' ' + vm.person.lastName + ' ' + vm.person.secondLastName + '. ' +
+              '¿Desea continuar de todas formas?');
+          }
+          if (continueOperation) {
+            savePerson();
+          } else {
+            $rootScope.showLoadingSpinner = false;
+            vm.warning = 'Operación cancelada por el usuario debido a que existe una persona con el mismo nombre. ' +
+              'Verifique la información e intente de nuevo. Si desea inscribir una persona existente en la base de datos, ' +
+              'utilice la opción: <a class="btn btn-secondary" href="/eventregistrations/create/false">Miembro Existente</a>';
+            $anchorScroll(document.body.scrollTop);
+          }
+        }, errorResponse);
+      } else {
+        savePerson();
+      }
+
+    }
+
+    function errorResponse(error) {
+      $rootScope.showLoadingSpinner = false;
+      vm.error = 'Por favor verifique su conexión de Internet e intente de nuevo.';
+      $anchorScroll(document.body.scrollTop);
     }
   }
 })();

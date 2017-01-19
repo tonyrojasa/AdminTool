@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -12,6 +12,7 @@
     $rootScope.$on('$stateChangeSuccess', stateChangeSuccess);
 
     function stateChangeStart(event, toState, toParams, fromState, fromParams) {
+      $rootScope.showLoadingSpinner = false;
       // Check authentication before changing state
       if (toState.data && toState.data.roles && toState.data.roles.length > 0) {
         var allowed = false;
@@ -28,7 +29,7 @@
           if (Authentication.user !== null && typeof Authentication.user === 'object') {
             $state.transitionTo('forbidden');
           } else {
-            $state.go('authentication.signin').then(function () {
+            $state.go('authentication.signin').then(function() {
               // Record previous state
               storePreviousState(toState, toParams);
             });

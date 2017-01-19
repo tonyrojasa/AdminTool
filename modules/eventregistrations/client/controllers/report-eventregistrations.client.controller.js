@@ -5,19 +5,20 @@
     .module('eventregistrations')
     .controller('EventregistrationsReportController', EventregistrationsReportController);
 
-  EventregistrationsReportController.$inject = ['$scope', 'EventregistrationsService',
-    'EventsService', 'EventpeoplegroupsService', 'PersontypesService', 'ReceiptsByEventRegistrationService', '$timeout', 'moment'
+  EventregistrationsReportController.$inject = ['$scope', 'EventregistrationsByEventService',
+    'EventsService', 'EventpeoplegroupsService', 'PersontypesService', 'ReceiptsByEventRegistrationService', '$timeout', 'moment',
+    'EventgroupsService'
   ];
 
-  function EventregistrationsReportController($scope, EventregistrationsService, EventsService,
-    EventpeoplegroupsService, PersontypesService, ReceiptsByEventRegistrationService, $timeout, moment) {
+  function EventregistrationsReportController($scope, EventregistrationsByEventService, EventsService,
+    EventpeoplegroupsService, PersontypesService, ReceiptsByEventRegistrationService, $timeout, moment, EventgroupsService) {
     var vm = this;
     vm.moment = moment;
     vm.receiptsByEventRegistrationService = ReceiptsByEventRegistrationService;
     vm.events = EventsService.query();
     vm.eventPeopleGroups = EventpeoplegroupsService.query();
     vm.personTypes = PersontypesService.query();
-    init();
+    vm.showMobilePhone = true;
 
     $scope.$watch('vm.registrationDate', function(newVal, oldVal) {
       if (newVal) {
@@ -27,14 +28,49 @@
       }
     });
 
-    function init() {
-      vm.eventregistrations = EventregistrationsService.query(function(data) {
-        _.each(data, function(eventregistration) {
-          eventregistration.registrationDate = vm.moment(eventregistration.registrationDate).format('YYYY-MM-DD');
-          vm.getEventRegistrationTotalPayments(eventregistration);
+    vm.setEvent = function(event) {
+      vm.loadEventgroups(event._id, function(eventGroups) {
+        vm.eventregistrations = EventregistrationsByEventService.query({
+          'eventId': event._id
+        }, function(data) {
+          _.each(data, function(eventregistration) {
+            vm.setEventRegistrationEventGroup(eventGroups, eventregistration);
+
+            eventregistration.registrationDate = vm.moment(eventregistration.registrationDate).format('YYYY-MM-DD');
+            vm.getEventRegistrationTotalPayments(eventregistration);
+          });
         });
       });
-    }
+    };
+
+    vm.loadEventgroups = function(eventId, callback) {
+      EventgroupsService.query({
+        event: eventId
+      }, function(data) {
+        vm.eventGroups = data;
+        callback(data);
+      });
+    };
+
+    vm.setEventRegistrationEventGroup = function(eventGroups, eventregistration) {
+      var a = _.find(eventGroups, {
+        '_id': eventregistration._id
+      });
+      _.each(eventGroups, function(eventGroup, key) {
+        if (eventGroup.leader && eventGroup.leader._id === eventregistration._id) {
+          eventregistration.eventGroup = eventGroup.name + ' (Líder)';
+        } else if (eventGroup.assistant && eventGroup.assistant._id === eventregistration._id) {
+          eventregistration.eventGroup = eventGroup.name + ' (Asistente)';
+        } else {
+          var member = _.find(eventGroup.members, function(o) {
+            return o._id === eventregistration._id;
+          });
+          if (member) {
+            eventregistration.eventGroup = eventGroup.name;
+          }
+        }
+      });
+    };
 
     vm.getTotalClass = function(value) {
       if (value >= 0) {

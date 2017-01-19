@@ -23,78 +23,67 @@
   <a class="btn btn-primary" data-ui-sref="people.create">Nueva Persona</a>
   <br /><br />
   <div id="content" data-ng-if="vm.people.length">
-    <div class="col-md-3 form-group">        
-      <label class="control-label" for="personType">Tipo de Persona: </label>  
-      <div class="input-group select2-bootstrap-append">
-        <ui-select ng-model="vm.personType">
-          <ui-select-match  placeholder="Seleccione el tipo de persona...">
-                <span>{{$select.selected.name}}</span>
-            </ui-select-match>
-            <ui-select-choices repeat="item in (vm.personTypes | filter: $select.search) track by item._id">
-                <div ng-bind-html="item.name | highlight: $select.search"></div>
-            </ui-select-choices>
-        </ui-select> 
-        <span class="input-group-btn">
-          <button type="button" ng-click="vm.personType = undefined" class="btn btn-default">
-            <span class="glyphicon glyphicon-trash"></span>
-          </button>
-        </span>  
-      </div> 
+    <div class="col-md-12">
+     <strong>Columnas para mostrar <button type="button" class="btn btn-link" ng-click="vm.isCollapsed = !vm.isCollapsed">
+      {{vm.isCollapsed ? 'Ver opciones &gt;&gt;' : '&lt;&lt; Ocultar Opciones'}}</button>
+     </strong>
     </div>
-    <div class="form-group col-md-3">        
-      <label class="control-label" for="serviceArea">Área de Servicio: </label>  
-      <div class="input-group select2-bootstrap-append">
-        <ui-select ng-model="vm.serviceArea">
-          <ui-select-match  placeholder="Seleccione el Área de Servicio...">
-                <span>{{$select.selected.name}}</span>
-            </ui-select-match>
-            <ui-select-choices repeat="item in (vm.serviceAreas | filter: $select.search) track by item._id">
-                <div ng-bind-html="item.name | highlight: $select.search"></div>
-            </ui-select-choices>
-        </ui-select> 
-        <span class="input-group-btn">
-          <button type="button" ng-click="vm.serviceArea = undefined" class="btn btn-default">
-            <span class="glyphicon glyphicon-trash"></span>
-          </button>
-        </span>  
-      </div> 
+    <div class="col-md-12 well well-lg" uib-collapse="vm.isCollapsed">
+      <label class="checkbox-inline" ng-repeat="col in vm.cols">
+        <input type="checkbox" ng-if="col.title()" ng-model-options="{ getterSetter: true }" ng-model="col.show"/> 
+        {{col.title()}}
+      </label>
     </div>
-    <br />
-    <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
-    <br />
+    <button class="btn btn-warning pull-right" ng-disabled="!vm.tableParams.hasFilter()" ng-click="vm.tableParams.filter({})">Borrar Filtros de Búsqueda</button>
     <div id="exportable">
-      <table class="table table-condensed">
-        <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Primer Apellido</th>
-          <th>Segundo Apellido</th>
-          <th>Tipo de Persona</th>
-          <th>Áreas de Servicio</th>
-          <th>Edad</th>
-        </tr>
-        </thead>
+      <table ng-table="vm.tableParams" class="table" show-filter="true" ng-table-columns-binding="vm.cols" export-csv='csv'>
         <tbody>
-        <tr ng-repeat="person in vm.people | orderBy:['person.firstName', 'person.lastName', 'person.secondLastName'] | filter: vm.searchFilter | filter: vm.personType.name | filter:vm.serviceArea.name">
-          <td>{{person.firstName}}</td>
-          <td>{{person.lastName}}</td>
-          <td>{{person.secondLastName}}</td>
-          <td>{{person.personType.name}}</td>
-          <td>{{vm.getServiceAreaNames(person.serviceArea)}}</td>
-          <td>{{person.age}}</td>
-          <td>    
-            <a data-ui-sref="people.view({ personId: person._id})">Detalles</a>    
-          </td>          
-          <td>
-            <a ng-if="vm.authentication.isUserAdmin()" class="btn btn-default" data-ng-click="vm.remove(person)">
-              <i class="glyphicon glyphicon-trash"></i>
-            </a>
-          </td>
-        </tr>
+          <tr class="info" ng-repeat="person in $data">
+            <td class="col-md-1" title="'Nombre'" filter="{ 'firstName': 'text'}" sortable="'firstName'" ng-if="true">
+                {{person.firstName}}</td>
+            <td class="col-md-1" title="'Primer Apellido'" filter="{ 'lastName': 'text'}" sortable="'lastName'" ng-if="true">
+                {{person.lastName}}</td>
+            <td class="col-md-2" title="'Segundo Apellido'" filter="{ 'secondLastName': 'text'}" sortable="'secondLastName'" ng-if="true">
+                {{person.secondLastName}}</td>  
+            <td class="col-md-2" title="'Tipo de Persona'" filter="{ 'personType.name': 'select'}" filter-data="vm.personTypesFilterArray" sortable="'personType.name'" ng-if="true">
+                {{person.personType.name}}</td>          
+            <td class="col-md-2" title="'Áreas de Servicio'" filter="{ 'serviceAreas': 'select'}" filter-data="vm.serviceAreasFilterArray" sortable="'serviceAreas'" ng-if="true">
+                {{person.serviceAreas}}</td>
+            <td class="col-md-2" title="'Edad'" filter="{ 'age': 'number'}" sortable="'age'" ng-if="true">
+                {{person.age}}</td>
+            <td class="col-md-1">    
+              <a data-ui-sref="people.view({ personId: person._id})" data-toggle="tooltip" title="Ver detalles de la persona: {{person.firstName}} {{person.lastName}} {{person.secondLastName}}">Detalles</a>    
+            </td>  
+            <td class="col-md-1">    
+              <a ng-if="vm.authentication.isUserAdmin()" class="btn btn-default  pull-right" data-ng-click="vm.remove(person)" data-toggle="tooltip" title="Eliminar la persona: {{person.firstName}} {{person.lastName}} {{person.secondLastName}}">
+                <i class="glyphicon glyphicon-trash"></i>
+              </a>
+            </td>
+          </tr>
         </tbody>
+        <tfoot>
+          <tr>          
+            <td ng-if="vm.cols[0].show()"></td>  
+            <td ng-if="vm.cols[1].show()"></td> 
+            <td ng-if="vm.cols[2].show()"></td> 
+            <td ng-if="vm.cols[3].show()"></td>   
+            <td ng-if="vm.cols[4].show()"></td>   
+            <td ng-if="vm.cols[5].show()"></td>           
+            <td ng-if="true" class="text-center">            
+              <span><b>Personas:</b> {{($data).length}}</span>
+            </td>
+            <td>
+              <div class="text-right">
+              <a class="btn" title="Export Table" ng-click='csv.generate()' ng-href="{{ csv.link() }}"
+                 download="PERSONAS.csv">
+                <i class="glyphicon glyphicon-new-window"></i> &#160;Exportar
+              </a>  
+              </div>
+            </td>
+          </tr>
+        </tfoot>
       </table>
-    </div>    
-    <export-to-file link-text="Exportar" element-id="exportable" format="excel" file-name="PERSONAS"></export-to-file> 
+    </div> 
   </div>   
   <div class="alert alert-warning text-center" data-ng-if="vm.people.$resolved && !vm.people.length">
     No hay ninguna persona creada <a data-ui-sref="people.create">Crear una</a>?

@@ -7,7 +7,7 @@
     <div class="col-md-6 form-group">        
       <label class="control-label" for="event">Evento *</label>  
       <div class="input-group select2-bootstrap-append">
-        <ui-select ng-model="vm.event">
+        <ui-select ng-model="vm.event" on-select="vm.setEvent(vm.event)">
           <ui-select-match  placeholder="Seleccione el tipo de persona...">
                 <span>{{$select.selected.name}}</span>
             </ui-select-match>
@@ -58,7 +58,7 @@
         </span>  
       </div> 
     </div> 
-    <div class="form-group col-md-6">    
+    <div class="form-group col-md-2">    
   		<label class="control-label" for="registrationDate">Fecha de inscripción</label>
       	<br />
 		<div class="input-group select2-bootstrap-append">
@@ -74,9 +74,66 @@
 	  		</button>
 		</div>
     </div> 
+    <div class="form-group col-md-4">
+	    
+    </div>
     <br />
     <input class="form-control" ng-model="vm.searchFilter" placeholder="Buscar..." type="text"/>
     <br />
+    <div ng-show="vm.event">
+    	<div class="col-md-12">
+	       <strong>Opciones para mostrar <button type="button" class="btn btn-link" ng-click="vm.isCollapsed = !vm.isCollapsed">
+	        {{vm.isCollapsed ? 'Ver opciones &gt;&gt;' : '&lt;&lt; Ocultar Opciones'}}</button>
+	       </strong>
+		</div>
+      	<div class="col-md-12 well well-lg" uib-collapse="vm.isCollapsed">
+  			<label class="checkbox-inline">
+		      <input type="checkbox" ng-model="vm.showMobilePhone">
+		      Tel. Celular
+	    	</label>
+	    	<label class="checkbox-inline">
+		      <input type="checkbox" ng-model="vm.showHomePhone">
+		      Tel. Casa
+	    	</label>
+	    	<label class="checkbox-inline">
+		      <input type="checkbox" ng-model="vm.showOtherPhone">
+		      Tel. Otro
+	    	</label>
+	      	<label class="checkbox-inline">
+		      <input type="checkbox" ng-model="vm.showContactInfo">
+		      Mostrar Información de Contacto
+	    	</label>
+		  	<label class="checkbox-inline">
+		      <input type="checkbox" ng-model="vm.showEventGroup">
+		      Mostrar Cabañas
+	    	</label>
+	        <label class="checkbox-inline">
+	          <input type="checkbox" ng-model="vm.showMedicalTreatmentComments"/> 
+	          Mostrar Tratamiento Medico
+	        </label>
+	        <label class="checkbox-inline">
+	          <input type="checkbox" ng-model="vm.showMedicalTreatmentMedicineType"/> 
+	          Tipo de medicina
+	        </label>
+	        <label class="checkbox-inline">
+	          <input type="checkbox" ng-model="vm.showMedicalTreatmentAllergies"/> 
+	          Mostrar Alergias
+	        </label>
+	        <label class="checkbox-inline">
+	          <input type="checkbox" ng-model="vm.showSponsorshipSponsorName"/> 
+	          Patrocinador
+	        </label>
+	        <label class="checkbox-inline">
+	          <input type="checkbox" ng-model="vm.showSponsorshipPhoneNumber"/> 
+	          Tel. Patrocinador
+	        </label>
+	        <label class="checkbox-inline">
+	          <input type="checkbox" ng-model="vm.showSponsorshipComments"/> 
+	          Comentarios Patrocinio
+	        </label>
+      	</div>
+  	</div>
+  	<br />
     <div id="exportable" ng-show="vm.event">
     	<div>
     	</div>
@@ -132,20 +189,97 @@
 		        <span ng-show="vm.myOrderBy == 'person.maritalStatus' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 	      	</a>
 		  </th>
-		  <th ng-show="!vm.eventPeopleGroup">
-		  	<a href="#" ng-click="vm.orderByMe('eventPeopleGroup.name'); vm.sortReverse = !vm.sortReverse">
+		  <th>
+		  	<a ng-if="!vm.eventPeopleGroup" href="#" ng-click="vm.orderByMe('eventPeopleGroup.name'); vm.sortReverse = !vm.sortReverse">
 	        	Grupo
 		        <span ng-show="vm.myOrderBy == 'eventPeopleGroup.name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
 		        <span ng-show="vm.myOrderBy == 'eventPeopleGroup.name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 	      	</a>
 		  </th>
-		  <th ng-show="!vm.personType">
-		  	<a href="#" ng-click="vm.orderByMe('personType.name'); vm.sortReverse = !vm.sortReverse">
+		  <th>
+		  	<a ng-if="!vm.personType" href="#" ng-click="vm.orderByMe('personType.name'); vm.sortReverse = !vm.sortReverse">
 	        	Tipo de Persona
 		        <span ng-show="vm.myOrderBy == 'personType.name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
 		        <span ng-show="vm.myOrderBy == 'personType.name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 	      	</a>
 		  </th> 
+		  <th>
+		  	<a ng-if="vm.showMobilePhone" href="#" ng-click="vm.orderByMe('person.mobilePhone'); vm.sortReverse = !vm.sortReverse">
+	        	Tel. Celular
+		        <span ng-show="vm.myOrderBy == 'person.mobilePhone' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.mobilePhone' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th> 
+		  <th>
+		  	<a ng-if="vm.showHomePhone" href="#" ng-click="vm.orderByMe('person.homePhone'); vm.sortReverse = !vm.sortReverse">
+	        	Tel. Casa
+		        <span ng-show="vm.myOrderBy == 'person.homePhone' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.homePhone' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th> 
+		  <th>
+		  	<a ng-if="vm.showOtherPhone" href="#" ng-click="vm.orderByMe('person.otherPhone'); vm.sortReverse = !vm.sortReverse">
+	        	Tel. Otro
+		        <span ng-show="vm.myOrderBy == 'person.otherPhone' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.otherPhone' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th> 
+		  <th colspan="2">
+		  	<a ng-if="vm.showContactInfo" href="#" ng-click="vm.orderByMe('person.contactInfo'); vm.sortReverse = !vm.sortReverse">
+	        	Información de Contacto
+		        <span ng-show="vm.myOrderBy == 'person.contactInfo' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.contactInfo' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th> 
+		  <th>
+		  	<a ng-if="vm.showEventGroup" href="#" ng-click="vm.orderByMe('eventGroup'); vm.sortReverse = !vm.sortReverse">
+	        	Cabaña
+		        <span ng-show="vm.myOrderBy == 'eventGroup' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'eventGroup' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th> 
+		  <th>
+		  	<a ng-if="vm.showMedicalTreatmentComments" href="#" ng-click="vm.orderByMe('person.medicalTreatment.comments'); vm.sortReverse = !vm.sortReverse">
+	        	Tratamiento medico
+		        <span ng-show="vm.myOrderBy == 'person.medicalTreatment.comments' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.medicalTreatment.comments' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th> 
+		  <th>
+		  	<a ng-if="vm.showMedicalTreatmentMedicineType" href="#" ng-click="vm.orderByMe('person.medicalTreatment.medicineType'); vm.sortReverse = !vm.sortReverse">
+	        	Tipo de Medicina
+		        <span ng-show="vm.myOrderBy == 'person.medicalTreatment.medicineType' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.medicalTreatment.medicineType' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a ng-if="vm.showMedicalTreatmentAllergies" href="#" ng-click="vm.orderByMe('person.medicalTreatment.allergies'); vm.sortReverse = !vm.sortReverse">
+	        	Alergias
+		        <span ng-show="vm.myOrderBy == 'person.medicalTreatment.allergies' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.medicalTreatment.allergies' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a ng-if="vm.showSponsorshipSponsorName" href="#" ng-click="vm.orderByMe('person.sponsorship.sponsorName'); vm.sortReverse = !vm.sortReverse">
+	        	Patrocinador
+		        <span ng-show="vm.myOrderBy == 'person.sponsorship.sponsorName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.sponsorship.sponsorName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th> 
+		  <th>
+		  	<a ng-if="vm.showSponsorshipPhoneNumber" href="#" ng-click="vm.orderByMe('person.sponsorship.phoneNumber'); vm.sortReverse = !vm.sortReverse">
+	        	Tel. Patrocinador
+		        <span ng-show="vm.myOrderBy == 'person.sponsorship.phoneNumber' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.sponsorship.phoneNumber' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a ng-if="vm.showSponsorshipComments" href="#" ng-click="vm.orderByMe('person.sponsorship.comments'); vm.sortReverse = !vm.sortReverse">
+	        	Comentarios Patrocinio
+		        <span ng-show="vm.myOrderBy == 'person.sponsorship.comments' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'person.sponsorship.comments' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
 		  <th>
 		  	<a href="#" ng-click="vm.orderByMe('person.shirtSize'); vm.sortReverse = !vm.sortReverse">
         		Talla
@@ -185,8 +319,27 @@
 		  <td>{{eventRegistration.person.secondLastName}}</td>
 		  <td>{{eventRegistration.person.age}}</td>
 		  <td>{{eventRegistration.person.maritalStatus}}</td>
-		  <td ng-show="!vm.eventPeopleGroup">{{eventRegistration.eventPeopleGroup.name}}</td>
-		  <td ng-show="!vm.personType">{{eventRegistration.personType.name}}</td>
+		  <td><span ng-if="!vm.eventPeopleGroup">{{eventRegistration.eventPeopleGroup.name}}</span></td>
+		  <td><span ng-if="!vm.personType">{{eventRegistration.personType.name}}</span></td>
+		  <td><span ng-if="vm.showMobilePhone">{{eventRegistration.person.mobilePhone}}</span></td>
+		  <td><span ng-if="vm.showHomePhone">{{eventRegistration.person.homePhone}}</span></td>
+		  <td><span ng-if="vm.showOtherPhone">{{eventRegistration.person.otherPhone}}</span></td>
+		  <td colspan="2">
+		  	<span ng-if="vm.showContactInfo">
+		  		<contact-info show-headers="true" contacts="eventRegistration.person.contactInfo" readonly="true" report="true"></contact-info> 
+	  		</span>
+		  </td>
+		  <td>
+		  	<span ng-if="vm.showEventGroup">
+		  		{{eventRegistration.eventGroup}}
+		  	</span>
+		  </td>
+		  <td><span ng-if="vm.showMedicalTreatmentComments">{{eventRegistration.person.medicalTreatment.comments}}</span></td>
+		  <td><span ng-if="vm.showMedicalTreatmentMedicineType">{{eventRegistration.person.medicalTreatment.medicineType}}</span></td>
+		  <td><span ng-if="vm.showMedicalTreatmentAllergies">{{eventRegistration.person.medicalTreatment.allergies}}</span></td>
+		  <td><span ng-if="vm.showSponsorshipSponsorName">{{eventRegistration.person.sponsorship.sponsorName}}</span></td>
+		  <td><span ng-if="vm.showSponsorshipPhoneNumber">{{eventRegistration.person.sponsorship.phoneNumber}}</span></td>
+		  <td><span ng-if="vm.showSponsorshipComments">{{eventRegistration.person.sponsorship.comments}}</span></td>
 		  <td>{{eventRegistration.person.shirtSize}}</td>		
 		  <td>{{eventRegistration.shirtsQuantity}}</td>		  
 		  <td>{{eventRegistration.totalPayments | currency:''}}</td>
@@ -195,21 +348,23 @@
 		</tbody>
 		<tfoot>
 			<tr> 
-			<td colspan="13"></td>
+			<td colspan="27"></td>
 			</tr>
 			<tr class="info"> 
-				<td colspan="3"" align="left"> 
-					<span><b>Total de Inscripciones:</b> {{vm.filteredItems.length}}</span> 
-				</td>  
-				<td colspan="3"" align="left"> 
-					<span><b>Total Camisas:</b> {{vm.filteredItems | sumByKey:'shirtsQuantity'}}</span> 
-				</td>    
-				<td colspan="3" align="right">
-			  		<span><b>Total Pagos (Recaudación) ₡:</b> {{vm.filteredItems | sumByKey:'totalPayments'  | currency:''}}</span>
-				</td>        
-				<td colspan="4" align="right">
-				  <span><b>Saldo Pendiente (por cobrar) ₡:</b> {{vm.filteredItems | sumByKey:'balanceAmount'  | currency:''}}</span>
-				</td>        
+				<td colspan="27">
+					<div class="col-md-2" align="left"> 
+						<span><b>Total de Inscripciones:</b> {{vm.filteredItems.length}}</span> 
+					</div>  
+					<div class="col-md-2" align="left"> 
+						<span><b>Total Camisas:</b> {{vm.filteredItems | sumByKey:'shirtsQuantity'}}</span> 
+					</div>    
+					<div class="col-md-4" align="right">
+				  		<span><b>Total Pagos (Recaudación) ₡:</b> {{vm.filteredItems | sumByKey:'totalPayments'  | currency:''}}</span>
+					</div>        
+					<div class="col-md-4" align="right">
+					  <span><b>Saldo Pendiente (por cobrar) ₡:</b> {{vm.filteredItems | sumByKey:'balanceAmount'  | currency:''}}</span>
+					</div>  
+				</td>      
 			</tr>
         </tfoot>
 		</table>   		

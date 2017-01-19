@@ -81,7 +81,22 @@ exports.delete = function(req, res) {
  * List of People
  */
 exports.list = function(req, res) {
-  Person.find().sort('-created')
+  var query = _.forEach(req.query, function(value, key) {
+    var queryParam = {
+      $regex: new RegExp('^' + value + '$', "i"),
+      $options: 'i'
+    };
+    req.query[key] = _.zipObject([key], [queryParam]);
+  });
+
+  if (!_.isEmpty(query)) {
+    query = {
+      $and: _.toArray(query)
+    };
+  }
+
+  Person.find(query)
+    .sort('-created')
     .populate('organization', 'name')
     .populate('personType', 'name')
     .populate('serviceArea')
