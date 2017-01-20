@@ -108,7 +108,7 @@
       ServiceAcademyClassStudents = _.map(ServiceAcademyClassStudents, function(item) {
         return item.person;
       });
-      debugger;
+
       var pendingServiceAcademyClassStudents = _.differenceBy(ServiceAcademyClassStudents, oldAssistants, '_id');
       var removedServiceAcademyClassStudents = _.differenceBy(oldAssistants, ServiceAcademyClassStudents, '_id');
 

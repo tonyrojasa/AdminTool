@@ -107,6 +107,12 @@ exports.assistanceByID = function(req, res, next, id) {
   Assistance.findById(id)
     .populate('serviceAcademyClass')
     .populate('assistants.person')
+    .populate({
+      path: 'assistants.person',
+      populate: {
+        path: 'personType'
+      }
+    })
     .populate('user', 'displayName').exec(function(err, assistance) {
       if (err) {
         return next(err);
