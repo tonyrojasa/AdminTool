@@ -37,7 +37,6 @@ exports.read = function(req, res) {
   // Add a custom field to the Article, for determining if the current User is the "owner".
   // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
   assistance.isCurrentUserOwner = req.user && assistance.user && assistance.user._id.toString() === req.user._id.toString() ? true : false;
-
   res.jsonp(assistance);
 };
 
@@ -107,15 +106,7 @@ exports.assistanceByID = function(req, res, next, id) {
 
   Assistance.findById(id)
     .populate('serviceAcademyClass')
-    .populate({
-      path: 'assistants',
-      populate: {
-        path: 'person',
-        populate: {
-          path: 'personType'
-        }
-      }
-    })
+    .populate('assistants.person')
     .populate('user', 'displayName').exec(function(err, assistance) {
       if (err) {
         return next(err);
