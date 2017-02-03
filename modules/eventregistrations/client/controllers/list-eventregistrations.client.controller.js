@@ -5,12 +5,12 @@
     .module('eventregistrations')
     .controller('EventregistrationsListController', EventregistrationsListController);
 
-  EventregistrationsListController.$inject = ['$scope', 'EventregistrationsService', 'CurrentEventsService', 'Authentication',
+  EventregistrationsListController.$inject = ['$scope', 'CurrentEventregistrationsService', 'CurrentEventsService', 'Authentication',
     'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams', '$filter', 'moment', 'EventpeoplegroupsService',
     'PersontypesService'
   ];
 
-  function EventregistrationsListController($scope, EventregistrationsService, CurrentEventsService, Authentication,
+  function EventregistrationsListController($scope, CurrentEventregistrationsService, CurrentEventsService, Authentication,
     ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams, $filter, moment, EventpeoplegroupsService,
     PersontypesService) {
     var vm = this;
@@ -48,7 +48,7 @@
       });
     });
 
-    vm.eventregistrations = EventregistrationsService.query(function(data) {
+    vm.eventregistrations = CurrentEventregistrationsService.query(function(data) {
       _.each(data, function(eventregistration) {
         eventregistration.registrationDate = vm.moment(eventregistration.registrationDate).format('YYYY-MM-DD');
       });
@@ -160,7 +160,7 @@
     //     var count = params.count();
     //     var page = params.page();
     //     // ajax request to api
-    //     return EventregistrationsService.query().$promise.then(function(data) {
+    //     return CurrentEventregistrationsService.query().$promise.then(function(data) {
     //       params.total(data.length); // recal. page nav controls
     //       vm.eventregistrations = data;
     //       return data;

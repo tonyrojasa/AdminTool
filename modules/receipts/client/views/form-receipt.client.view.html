@@ -53,6 +53,33 @@
               <p class="help-block error-text" ng-message="required" >Fecha de pago es requerido.</p>
             </div>
           </div>
+          <div ng-if="vm.isEventRegistrationPayment" class="form-group" show-errors>            
+            <label class="control-label" uib-tooltip="Puede cambiar la inscripción a la que quiere aplicar este pago. 
+            Si es una inscripción existente entonces se rebajara el monto de la anterior y se aplicara a la nueva." for="event">Inscripción *</label>  
+            <input name="eventRegistration" type="hidden" ng-model="vm.eventregistration.event.name" id="eventRegistration" class="form-control" required>
+            <div class="input-group">
+              <ui-select ng-model="vm.eventregistration" on-select="vm.setEventRegistration(vm.receipt.eventRegistration)" ng-disabled="!vm.authentication.isUserAdmin()" uib-tooltip="Puede cambiar la inscripción a la que quiere aplicar este pago. 
+            Si es una inscripción existente entonces se rebajara el monto de la anterior y se aplicara a la nueva.">
+                <ui-select-match  placeholder="Seleccione la inscripción...">
+                      <span>{{$select.selected.registrationNumber}} - 
+                      {{$select.selected.event.name}} -
+                      {{$select.selected.person.firstName}} {{$select.selected.person.lastName}} {{$select.selected.person.secondLastName }}</span>
+                  </ui-select-match>
+                  <ui-select-choices repeat="item in (vm.eventRegistrations | filter: $select.search) track by item._id">
+                      <div ng-bind-html="item.registrationNumber + ' - ' + item.event.name + ' - ' + 
+                      item.person.firstName + ' ' + item.person.lastName + ' ' + item.person.secondLastName | highlight: $select.search"></div>
+                  </ui-select-choices>
+              </ui-select> 
+              <span class="input-group-btn">
+                <button type="button" ng-click="vm.receipt.eventRegistration = undefined" class="btn btn-default" ng-disabled="true">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+              </span>  
+            </div> 
+            <div ng-messages="vm.form.receiptForm.eventRegistration.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Inscripción es requerido.</p>
+            </div>
+          </div>
           <div class="form-group" show-errors ng-if="!vm.isEventRegistrationPayment">        
             <label class="control-label" for="event">Evento *</label>  
             <input name="event" type="hidden" ng-model="vm.receipt.event" id="event" class="form-control" required>

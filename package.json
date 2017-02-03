@@ -49,6 +49,7 @@
     "file-stream-rotator": "~0.0.6",
     "generate-password": "~1.2.0",
     "glob": "~7.1.0",
+    "gulp-node-inspector": "^0.1.0",
     "helmet": "~2.3.0",
     "jasmine-core": "~2.5.0",
     "lodash": "^4.16.6",

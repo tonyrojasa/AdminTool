@@ -5,18 +5,18 @@
     .module('receipts')
     .controller('ReceiptsListController', ReceiptsListController);
 
-  ReceiptsListController.$inject = ['$scope', 'ReceiptsService', '$state', 'EventsService', 'EventregistrationsService',
+  ReceiptsListController.$inject = ['$scope', 'CurrentReceiptsService', '$state', 'CurrentEventsService', 'EventregistrationsService',
     'Authentication', '$anchorScroll', 'NgTableParams', 'moment'
   ];
 
-  function ReceiptsListController($scope, ReceiptsService, $state, EventsService, EventregistrationsService,
+  function ReceiptsListController($scope, CurrentReceiptsService, $state, CurrentEventsService, EventregistrationsService,
     Authentication, $anchorScroll, NgTableParams, moment) {
     var vm = this;
     vm.moment = moment;
     vm.authentication = Authentication;
 
     vm.eventsFilterArray = [];
-    vm.events = EventsService.query(function(data) {
+    vm.events = CurrentEventsService.query(function(data) {
       _.each(data, function(event) {
         vm.eventsFilterArray.push({
           id: event.name,
@@ -24,9 +24,8 @@
         });
       });
     });
-    vm.receipts = ReceiptsService.query();
 
-    vm.receipts = ReceiptsService.query(function(data) {
+    vm.receipts = CurrentReceiptsService.query(function(data) {
       _.each(data, function(receipt) {
         receipt.paymentDate = vm.moment(receipt.paymentDate).format('YYYY-MM-DD');
       });

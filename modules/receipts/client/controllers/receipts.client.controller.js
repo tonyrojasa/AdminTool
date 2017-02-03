@@ -6,12 +6,12 @@
     .module('receipts')
     .controller('ReceiptsController', ReceiptsController);
 
-  ReceiptsController.$inject = ['$rootScope', '$scope', '$state', 'Authentication', 'receiptResolve', 'EventsService',
-    'eventregistrationResolve', 'EventregistrationsService', '$stateParams'
+  ReceiptsController.$inject = ['$rootScope', '$scope', '$state', 'Authentication', 'receiptResolve', 'CurrentEventsService',
+    'eventregistrationResolve', 'EventregistrationsService', 'CurrentEventregistrationsService', '$stateParams'
   ];
 
-  function ReceiptsController($rootScope, $scope, $state, Authentication, receipt, EventsService, eventregistration,
-    EventregistrationsService, $stateParams) {
+  function ReceiptsController($rootScope, $scope, $state, Authentication, receipt, CurrentEventsService, eventregistration,
+    EventregistrationsService, CurrentEventregistrationsService, $stateParams) {
     var vm = this;
 
     vm.success = $stateParams.successMessage;
@@ -19,9 +19,10 @@
     vm.authentication = Authentication;
     vm.receipt = receipt;
     vm.eventregistration = eventregistration;
+    vm.eventRegistrations = CurrentEventregistrationsService.query();
     vm.error = null;
     vm.form = {};
-    vm.events = EventsService.query();
+    vm.events = CurrentEventsService.query();
     vm.remove = remove;
     vm.save = save;
     vm.initReceipt = initReceipt;

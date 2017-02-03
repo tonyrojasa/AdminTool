@@ -12,6 +12,9 @@ module.exports = function(app) {
     .get(receipts.list)
     .post(receipts.create);
 
+  app.route('/api/receipts/current').all(receiptsPolicy.isAllowed)
+    .get(receipts.listAllCurrent);
+
   app.route('/api/receipts/:receiptId').all(receiptsPolicy.isAllowed)
     .get(receipts.read)
     .put(receipts.update)
