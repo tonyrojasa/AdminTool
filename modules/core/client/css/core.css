@@ -42,7 +42,7 @@ a:hover .header-profile-image {
   display: inline;
 }
 .spinner{
-  background-image: url('../img/loaders/spinner.gif');
+  background-image: url('/modules/core/client/img/loaders/spinner.gif');
   background-repeat: no-repeat;
   background-size: 100px 100px;
   height: 100px;
