@@ -7,9 +7,9 @@ module.exports = {
     lib: {
       css: [
         // bower:css
-        'public/lib/angular-ui-notification/dist/angular-ui-notification.min.css',
         'public/lib/bootstrap/dist/css/bootstrap.min.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.min.css',
+        'public/lib/angular-ui-notification/dist/angular-ui-notification.min.css',
         'public/lib/angular-ui-bootstrap-datetimepicker/datetimepicker.css',
         'public/lib/angular-ui-select/dist/select.min.css',
         'public/lib/ng-table/dist/ng-table.min.css',
@@ -19,6 +19,7 @@ module.exports = {
       js: [
         // bower:js
         'public/lib/angular/angular.min.js',
+        'public/lib/angular-i18n/angular-locale_es-cr.js',
         'public/lib/angular-animate/angular-animate.min.js',
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js',
         'public/lib/angular-file-upload/dist/angular-file-upload.min.js',

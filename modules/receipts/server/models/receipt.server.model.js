@@ -39,7 +39,7 @@ var ReceiptSchema = new Schema({
     default: '',
     required: 'Please fill paymentOf',
     trim: true
-  },  
+  },
   paidBy: {
     type: String,
     default: 'Efectivo',
@@ -82,6 +82,9 @@ var ReceiptSchema = new Schema({
     type: Date,
     default: Date.now,
     required: 'Please fill paymentDate'
+  },
+  observations: {
+    type: [String]
   },
   created: {
     type: Date,

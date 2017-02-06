@@ -133,6 +133,10 @@
             <td><strong>Otra referencia:</strong></td>
             <td><span><strong>{{vm.receipt.otherReference}}</strong></span></td>
           </tr>    
+          <tr ng-if="vm.receipt.observations.length">
+            <td><strong>Observaciones:</strong></td>
+            <td><span ng-repeat="observation in vm.receipt.observations"><strong>{{observation}}</strong><br /></span></td>
+          </tr>    
            <tr>
             <td><strong>Recibido por:</strong></td>
             <td><span><strong>{{vm.receipt.receivedBy}}</strong></span></td>

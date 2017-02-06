@@ -105,7 +105,16 @@
       } else {
         vm.isEventRegistrationPayment = false;
       }
+
+      if (vm.receipt.eventRegistration) {
+        vm.oldEventRegistration = vm.receipt.eventRegistration;
+        vm.oldEventRegistration.balanceAmount += vm.receipt.paymentAmount;
+      }
     }
+
+    vm.pendingRegistrationsFilter = function(eventRegistration) {
+      return eventRegistration.balanceAmount > 0;
+    };
 
     vm.isNewEventRegistration = function() {
       return (vm.eventregistration && !vm.receipt.eventRegistration);
@@ -133,6 +142,24 @@
     //set registration event
     vm.setEventRegistrationEvent = function(event) {
       vm.receipt.eventRegistration.event = event;
+    };
+
+    vm.setEventRegistration = function(eventRegistration) {
+      debugger;
+      vm.receipt.eventRegistration = eventRegistration;
+      vm.receipt.event = eventRegistration.event;
+      if (vm.oldEventRegistration) {
+        if (vm.oldEventRegistration._id != eventRegistration._id) {
+          vm.receipt.currentBalance = eventRegistration.balanceAmount;
+          calculateBalanceDue();
+          vm.newObservation = 'Este recibo, anteriormente aplicado a la inscripción #' +
+            vm.oldEventRegistration.registrationNumber + ', se aplicó la inscripción #' + eventRegistration.registrationNumber;
+        } else {
+          vm.receipt.currentBalance = vm.oldEventRegistration.balanceAmount;
+          calculateBalanceDue();
+          vm.newObservation = null;
+        }
+      }
     };
 
     // Remove existing Receipt
@@ -163,6 +190,12 @@
       }, receipt.eventRegistration);
     };
 
+    vm.updateOldEventRegistration = function() {
+      EventregistrationsService.update({
+        eventregistrationId: vm.oldEventRegistration._id
+      }, vm.oldEventRegistration);
+    };
+
     vm.isEventRegistrationReceipt = function(receipt) {
       return receipt.eventRegistration !== undefined;
     };
@@ -171,7 +204,11 @@
     function saveEventRegistration() {
       if (vm.isEventRegistrationPayment) {
         vm.eventregistration.balanceAmount = vm.calculateBalanceDue();
-        vm.eventregistration.$update(successCallback, errorCallback);
+
+        EventregistrationsService.update({
+          eventregistrationId: vm.eventregistration._id
+        }, vm.eventregistration, successCallback, errorCallback);
+
       } else {
         saveReceipt();
       }
@@ -222,7 +259,10 @@
         $scope.$broadcast('show-errors-check-validity', 'vm.form.receiptForm');
         return false;
       }
-
+      if (vm.newObservation) {
+        vm.updateOldEventRegistration();
+        vm.receipt.observations.push(vm.newObservation);
+      }
       saveEventRegistration();
     }
 
