@@ -5,12 +5,12 @@
     .module('receipts')
     .controller('ReceiptsListController', ReceiptsListController);
 
-  ReceiptsListController.$inject = ['$scope', 'CurrentReceiptsService', '$state', 'CurrentEventsService', 'EventregistrationsService',
-    'Authentication', '$anchorScroll', 'NgTableParams', 'moment'
+  ReceiptsListController.$inject = ['$scope', 'ReceiptsService', 'CurrentReceiptsService', '$state', 'CurrentEventsService', 'EventregistrationsService',
+    'Authentication', '$anchorScroll', 'NgTableParams', 'moment', 'Notification'
   ];
 
-  function ReceiptsListController($scope, CurrentReceiptsService, $state, CurrentEventsService, EventregistrationsService,
-    Authentication, $anchorScroll, NgTableParams, moment) {
+  function ReceiptsListController($scope, ReceiptsService, CurrentReceiptsService, $state, CurrentEventsService, EventregistrationsService,
+    Authentication, $anchorScroll, NgTableParams, moment, Notification) {
     var vm = this;
     vm.moment = moment;
     vm.authentication = Authentication;
@@ -73,9 +73,12 @@
     };
     // Remove existing Receipt
     vm.remove = function(receipt) {
+      debugger;
       if (confirm('Está seguro que desea eliminar el recibo # ' + receipt.receiptNumber + ' ?')) {
         var eventRegistrationSuccessMsg = '';
-        receipt.$remove(function() {
+        ReceiptsService.delete({
+          'receiptId': receipt._id
+        }, function() {
           if (vm.isEventRegistrationReceipt(receipt)) {
             vm.updateEventRegistration(receipt);
             eventRegistrationSuccessMsg = 'Y se actualizó el saldo de la inscripción # ' + receipt.eventRegistration.registrationNumber;
@@ -86,6 +89,11 @@
           });
           vm.tableParams.reload();
           $anchorScroll(document.body.scrollTop);
+          Notification.info({
+            title: 'Operación ejecutada exitosamente!',
+            message: vm.success,
+            delay: 15000
+          });
         });
       }
     };

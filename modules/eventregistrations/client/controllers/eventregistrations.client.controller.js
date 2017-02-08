@@ -8,12 +8,12 @@
 
   EventregistrationsController.$inject = ['$scope', '$anchorScroll', '$state', '$stateParams', 'Authentication',
     'eventregistrationResolve', 'CurrentEventsService', 'EventpeoplegroupsService', 'personResolve',
-    'PeopleService', 'EventregistrationsByEventService', '$rootScope', 'PersontypesService'
+    'PeopleService', 'EventregistrationsByEventService', '$rootScope', 'PersontypesService', 'Notification'
   ];
 
   function EventregistrationsController($scope, $anchorScroll, $state, $stateParams, Authentication, eventregistration,
     CurrentEventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService, $rootScope,
-    PersontypesService) {
+    PersontypesService, Notification) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -48,6 +48,26 @@
       }
     };
     vm.getShirtTypesQuantityMax = getShirtTypesQuantityMax;
+    vm.isQuickRegistration = isQuickRegistration;
+    vm.regularRegistrationRequiredFields = [
+      'organization',
+      'sex',
+      'firstName',
+      'lastName',
+      'secondLastName',
+      'address',
+      'personType',
+      'age',
+      'maritalStatus'
+    ];
+    vm.quickRegistrationRequiredFields = [
+      'organization',
+      'sex',
+      'firstName',
+      'lastName',
+      'age',
+      'secondLastName'
+    ];
     init();
 
     function init() {
@@ -65,6 +85,10 @@
           specialPrice: 0
         };
       }
+    }
+
+    function isQuickRegistration() {
+      return vm.eventregistration.event && vm.eventregistration.event.quickRegistration;
     }
 
     function setShirtTypes() {
@@ -260,6 +284,11 @@
             'eventregistrationId': res._id
           });
         } else {
+          Notification.info({
+            title: 'Operación ejecutada exitosamente!',
+            message: 'Se creó/actualizó la inscripción # ' + res.registrationNumber + ' correctamente.',
+            delay: 15000
+          });
           $state.go('eventregistrations.list');
         }
       }
@@ -277,7 +306,15 @@
       if (!isValid) {
         $rootScope.showLoadingSpinner = false;
         $scope.$broadcast('show-errors-check-validity', 'vm.form.eventregistrationForm');
-        vm.error = 'Corregir los errores del formulario';
+        vm.error = 'Por favor completar los campos requeridos (*) y/o corregir los errores del formulario';
+
+        Notification.clearAll();
+        Notification.error({
+          message: vm.error,
+          title: '<i class="glyphicon glyphicon-remove"></i> Error en el formulario!',
+          delay: 6000,
+          replaceMessage: true
+        });
         $anchorScroll(document.body.scrollTop);
         return false;
       }

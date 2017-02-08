@@ -14,7 +14,9 @@
       scope: {
         person: '=',
         form: '=',
-        error: '='
+        error: '=',
+        requiredFields: '=',
+        hideOptionalFields: '='
       },
       link: function postLink(scope, element, attrs) {
         if (scope.person.birthDate) {
@@ -60,6 +62,17 @@
           scope.person.serviceArea = serviceArea;
         };
 
+        scope.isFieldRequired = function(fieldName) {
+          var result = _.find(scope.requiredFields, function(value) {
+            return value === fieldName;
+          });
+          return result != undefined;
+        };
+
+        scope.isFieldVisible = function(fieldName) {
+          return (scope.isFieldRequired(fieldName) && scope.hideOptionalFields) || !scope.hideOptionalFields;
+        }
+
         scope.maritalStatuses = ['Soltero(a)', 'Comprometido(a)', 'Casado(a)', 'Unión Libre', 'Divorciado(a)', 'Viudo(a)'];
         scope.setMaritalStatus = function(maritalStatus) {
           scope.person.maritalStatus = maritalStatus;
@@ -88,21 +101,21 @@
         };
 
         scope.grades =
-        ['Ninguna',
-          'Primaria incompleta',
-          'Primaria completa',
-          'Secundaria incompleta',
-          'Secundaria completa',
-          'Bachiller Universitario incompleto',
-          'Bachiller Universitario completo',
-          'Licenciatura Universitaria incompleta',
-          'Licenciatura Universitaria completa',
-          'Maestría Universitaria incompleta',
-          'Maestría Universitaria completa',
-          'Doctorado Universitaria incompleto',
-          'Doctorado Universitaria completo',
-          'Otro(a)'
-        ];
+          ['Ninguna',
+            'Primaria incompleta',
+            'Primaria completa',
+            'Secundaria incompleta',
+            'Secundaria completa',
+            'Bachiller Universitario incompleto',
+            'Bachiller Universitario completo',
+            'Licenciatura Universitaria incompleta',
+            'Licenciatura Universitaria completa',
+            'Maestría Universitaria incompleta',
+            'Maestría Universitaria completa',
+            'Doctorado Universitaria incompleto',
+            'Doctorado Universitaria completo',
+            'Otro(a)'
+          ];
         scope.setGrade = function(grade) {
           scope.person.grade = grade;
         };

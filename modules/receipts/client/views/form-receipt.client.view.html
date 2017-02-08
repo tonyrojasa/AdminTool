@@ -22,6 +22,7 @@
       </a>
     </div>
     <br /><br />
+    <h3 class="bg-primary" for="event">Los campos marcados con asterisco (*) son requeridos.</h3> 
     <div class="col-md-12">
       <form name="vm.form.receiptForm" class="form-horizontal" ng-submit="vm.save(vm.form.receiptForm.$valid)" novalidate>
         <fieldset>
@@ -174,10 +175,6 @@
             </div>
           </div>
           <div class="form-group" show-errors>
-            <label class="control-label" for="description">Descripción</label>
-            <input name="description" type="text" ng-model="vm.receipt.description" id="description" class="form-control" placeholder="Descripción">
-          </div>
-          <div class="form-group" show-errors>
             <label class="control-label" for="currentBalance">Saldo actual *</label>
             <div class="input-group"> 
               <span class="input-group-addon">₡</span>
@@ -207,6 +204,10 @@
             <div ng-messages="vm.form.receiptForm.balanceDue.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Saldo adeudado es requerido.</p>
             </div>
+          </div>          
+          <div class="form-group" show-errors>
+            <label class="control-label" for="description">Descripción</label>
+            <input name="description" type="text" ng-model="vm.receipt.description" id="description" class="form-control" placeholder="Descripción">
           </div>
           <div class="form-group" show-errors>
             <label class="control-label" for="otherReference">Otra referencia</label>

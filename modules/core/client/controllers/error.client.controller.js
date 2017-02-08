@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -15,4 +15,3 @@
     if ($stateParams.message) vm.errorMessage = $stateParams.message;
   }
 }());
-

@@ -7,11 +7,11 @@
     .controller('ReceiptsController', ReceiptsController);
 
   ReceiptsController.$inject = ['$rootScope', '$scope', '$state', 'Authentication', 'receiptResolve', 'CurrentEventsService',
-    'eventregistrationResolve', 'EventregistrationsService', 'CurrentEventregistrationsService', '$stateParams'
+    'eventregistrationResolve', 'EventregistrationsService', 'CurrentEventregistrationsService', '$stateParams', 'Notification'
   ];
 
   function ReceiptsController($rootScope, $scope, $state, Authentication, receipt, CurrentEventsService, eventregistration,
-    EventregistrationsService, CurrentEventregistrationsService, $stateParams) {
+    EventregistrationsService, CurrentEventregistrationsService, $stateParams, Notification) {
     var vm = this;
 
     vm.success = $stateParams.successMessage;
@@ -171,7 +171,14 @@
             vm.updateEventRegistration(receipt);
             eventRegistrationSuccessMsg = 'Y se actualizó el saldo de la inscripción # ' + receipt.eventRegistration.registrationNumber;
           }
-          vm.success = 'Este recibo ha sido eliminado. ' + eventRegistrationSuccessMsg + ', haga click en el link de recibos para volver a la lista.';
+          vm.success = 'El recibo # ' + receipt.receiptNumber + '  ha sido eliminado. ' + eventRegistrationSuccessMsg + '.';
+
+          Notification.info({
+            title: 'Operación ejecutada exitosamente!',
+            message: vm.success,
+            delay: 15000
+          });
+          $state.go('receipts.list');
         });
       }
     };
@@ -238,9 +245,14 @@
         if (vm.isEventRegistrationPayment) {
           $state.go('receipts.view', {
             receiptId: res._id,
-            successMessage: 'Recibo creado. El pago se ha ralizado.'
+            successMessage: 'Recibo creado. El pago se ha realizado.'
           });
         } else {
+          Notification.info({
+            title: 'Operación ejecutada exitosamente!',
+            message: 'Recibo # ' + res.receiptNumber + ' creado/actualizado correctamente.',
+            delay: 15000
+          });
           $state.go('receipts.list');
         }
       }
@@ -256,7 +268,15 @@
       $rootScope.showLoadingSpinner = true;
       if (!isValid) {
         $rootScope.showLoadingSpinner = false;
+        vm.error = 'Por favor completar los campos requeridos (*) y/o corregir los errores del formulario';
         $scope.$broadcast('show-errors-check-validity', 'vm.form.receiptForm');
+        Notification.clearAll();
+        Notification.error({
+          message: vm.error,
+          title: '<i class="glyphicon glyphicon-remove"></i> Error en el formulario!',
+          delay: 6000,
+          replaceMessage: true
+        });
         return false;
       }
       if (vm.newObservation) {

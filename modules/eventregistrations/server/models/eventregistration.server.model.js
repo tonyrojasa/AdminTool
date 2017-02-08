@@ -15,7 +15,6 @@ var EventregistrationSchema = new Schema({
     type: Number
   },
   eventPeopleGroup: {
-    required: 'Please select the event group',
     type: Schema.ObjectId,
     ref: 'Eventpeoplegroup'
   },
