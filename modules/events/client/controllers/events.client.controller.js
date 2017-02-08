@@ -48,6 +48,24 @@
       }
     }
 
+    vm.quickRegistrationChanged = function() {
+      vm.event.nonRegistration = false;
+    };
+
+    vm.nonRegistrationChanged = function() {
+      vm.event.quickRegistration = false;
+    };
+
+    vm.getRegistrationType = function(event) {
+      var result = 'Regular';
+      if (event.quickRegistration) {
+        result = 'Inscripción Rápida';
+      } else if (event.nonRegistration) {
+        result = 'No requiere inscripción';
+      }
+      return result;
+    }
+
     // Save Event
     function save(isValid) {
       if (!isValid) {

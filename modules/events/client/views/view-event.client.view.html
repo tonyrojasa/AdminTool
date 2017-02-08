@@ -35,6 +35,7 @@
   Precio para servidores: <p><span class="lead">{{vm.event.serverPrice | currency:'₡'}}</span></p>
   Estado del evento: <p><span class="lead">{{vm.event.ended ? 'Finalizado' : 'Disponible'}}</span></p>
   Estado de Inscripciones: <p><span class="lead">{{!vm.event.openEnrollment ? 'Inscripciones Cerradas' : 'Inscripciones Abiertas'}}</span></p>
+  Tipo de Inscripción: <p><span class="lead">{{vm.getRegistrationType(vm.event)}}</span></p>
   <span data-ng-if="vm.event.shirtPrice">Precio de camisa: <p class="lead">{{vm.event.shirtPrice | currency:'₡'}}</p></span>
   <shirt-types shirt-types="vm.event.shirtTypes" readonly="true"></shirt-types>
 </section>

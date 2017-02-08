@@ -42,6 +42,14 @@ var EventSchema = new Schema({
     type: Boolean,
     default: false
   },
+  quickRegistration: {
+    type: Boolean,
+    default: false
+  },
+  nonRegistration: {
+    type: Boolean,
+    default: false
+  },
   price: {
     type: Number,
     default: '',

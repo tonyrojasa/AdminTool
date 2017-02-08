@@ -20,6 +20,7 @@
           <th>Precio Camisa ₡</th>
           <th>Estado del Evento</th>
           <th>Estado de Inscripciones</th>
+          <th>Tipo de Inscripción</th>
           <th></th>
         </tr>
         </thead>
@@ -33,6 +34,7 @@
           <td>{{event.shirtPrice | currency:''}}</td>
           <td>{{event.ended ? 'Finalizado' : 'Disponible'}}</td>
           <td>{{!event.openEnrollment ? 'Inscripciones Cerradas' : 'Inscripciones Abiertas'}}</td>
+          <td>{{vm.getRegistrationType(event)}}</td>
           <td>    
             <a data-ui-sref="events.view({ eventId: event._id})">Detalles</a>    
           </td>
