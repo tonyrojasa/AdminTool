@@ -9,7 +9,7 @@
   </div>
   <section>
     <div class="page-header">
-      <h1>{{vm.receipt._id ? 'Editar Recibo' : 'Nuevo Recibo'}}</h1>
+      <h1>{{vm.receipt._id ? 'Editar Recibo' : 'Nuevo Recibo'}} <SPAN ng-show="vm.showNonRegistrationEventsOnly()"> - Entrada / Tiquete</SPAN></h1>
     </div>
     <div class="pull-left">
       <a class="btn btn-secondary" ng-if="vm.isEventRegistrationPayment" data-ui-sref="eventregistrations.list()">

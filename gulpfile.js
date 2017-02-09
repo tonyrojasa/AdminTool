@@ -441,8 +441,13 @@ gulp.task('build', function(done) {
 });
 
 // Run the project tests
-gulp.task('test', function(done) {
+gulp.task('testing', function(done) {
   runSequence('env:test', 'test:server', 'karma', 'nodemon', 'protractor', done);
+});
+
+// Run the project tests
+gulp.task('test', function(done) {
+  runSequence(['copyLocalEnvConfig', 'makeUploadsDir', 'templatecache'], 'build', 'env:test', 'lint', ['nodemon-nodebug', 'watch'], done);
 });
 
 gulp.task('test:server', function(done) {
