@@ -26,9 +26,20 @@
           scope.person.serviceArea = [];
         }
         if (!scope.person._id) {
+          scope.person.isFemale = undefined;
+        } else {
           scope.person.isFemale = false;
         }
 
+        scope.isMaleSexChecked = function() {
+          if (scope.person.isFemale) {
+            return !scope.person.isFemale;
+          } else if (scope.person._id) {
+            return true;
+          } else {
+            return undefined;
+          }
+        };
 
         scope.getServiceAreaNames = function() {
           if (scope.person && scope.person.serviceArea) {
@@ -70,7 +81,11 @@
         };
 
         scope.isFieldVisible = function(fieldName) {
-          return (scope.isFieldRequired(fieldName) && scope.hideOptionalFields) || !scope.hideOptionalFields;
+          return (!scope.person._id &&
+              ((scope.isFieldRequired(fieldName) &&
+                  scope.hideOptionalFields) ||
+                !scope.hideOptionalFields)) ||
+            scope.person._id;
         }
 
         scope.maritalStatuses = ['Soltero(a)', 'Comprometido(a)', 'Casado(a)', 'Unión Libre', 'Divorciado(a)', 'Viudo(a)'];

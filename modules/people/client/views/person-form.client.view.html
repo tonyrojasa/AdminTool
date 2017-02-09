@@ -1,4 +1,4 @@
-<div class="form-group" ng-if="isFieldVisible('')" show-errors>        
+<div class="form-group" ng-if="isFieldVisible('organization')" show-errors>        
   <label class="control-label" for="organization">Organización <span ng-show="isFieldRequired('organization')">*</span></label>  
   <input name="organization" type="hidden" ng-model="person.organization" id="organization" class="form-control" ng-required="isFieldRequired('organization')">
   <div class="input-group select2-bootstrap-append">
@@ -26,7 +26,7 @@
   <div class="radio">
     <label>
       <input type="radio" class="radio-inline" ng-click="person.isFemale = false" name="sex" 
-      ng-checked="{{person.isFemale === true ? !person.isFemale : true}}">
+      ng-checked="isMaleSexChecked()">
       <b>Masculino</b>
     </label>
     <label>

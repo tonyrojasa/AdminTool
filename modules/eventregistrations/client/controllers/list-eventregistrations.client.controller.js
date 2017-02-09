@@ -7,12 +7,12 @@
 
   EventregistrationsListController.$inject = ['$scope', 'CurrentEventregistrationsService', 'CurrentEventsService', 'Authentication',
     'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams', '$filter', 'moment', 'EventpeoplegroupsService',
-    'PersontypesService'
+    'PersontypesService', 'EventregistrationsService', 'Notification'
   ];
 
   function EventregistrationsListController($scope, CurrentEventregistrationsService, CurrentEventsService, Authentication,
     ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams, $filter, moment, EventpeoplegroupsService,
-    PersontypesService) {
+    PersontypesService, EventregistrationsService, Notification) {
     var vm = this;
     vm.moment = moment;
     vm.authentication = Authentication;
@@ -195,7 +195,9 @@
           'eventRegistrationId': eventRegistration._id
         }, function(data) {
           if (data.length === 0) {
-            eventRegistration.$remove(function() {
+            EventregistrationsService.delete({
+              'eventregistrationId': eventRegistration._id
+            }, function() {
               vm.warning = 'Se eliminó la inscripción #' + eventRegistration.registrationNumber + '. ' +
                 'Sin embargo, la persona ha sido creada en la base de datos. ' +
                 'Si desea inscribir la misma persona, debe hacerlo por medio de la opción Miembro Existente. ' +
@@ -205,9 +207,19 @@
               });
               vm.tableParams.reload();
               $anchorScroll(document.body.scrollTop);
+              Notification.warning({
+                title: 'Operación ejecutada exitosamente!',
+                message: vm.warning,
+                delay: 15000
+              });
             });
           } else {
             vm.error = 'No se puede eliminar la inscripción #' + eventRegistration.registrationNumber + ' debido a que tiene recibos relacionados';
+            Notification.error({
+              title: 'Error al eliminar inscripción!',
+              message: vm.error,
+              delay: 10000
+            });
           }
         });
       }

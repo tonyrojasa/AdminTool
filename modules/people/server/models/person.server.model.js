@@ -99,7 +99,6 @@ var PersonSchema = new Schema({
   },
   age: {
     type: Number,
-    required: 'Please fill age',
     trim: true
   },
   maritalStatus: {

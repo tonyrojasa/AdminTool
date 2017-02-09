@@ -15,6 +15,13 @@
     var vm = this;
 
     vm.success = $stateParams.successMessage;
+    if (vm.success) {
+      Notification.info({
+        title: 'Operación ejecutada exitosamente!',
+        message: vm.success,
+        delay: 15000
+      });
+    }
 
     vm.authentication = Authentication;
     vm.receipt = receipt;
@@ -22,12 +29,20 @@
     vm.eventRegistrations = CurrentEventregistrationsService.query();
     vm.error = null;
     vm.form = {};
-    vm.events = CurrentEventsService.query();
     vm.remove = remove;
     vm.save = save;
     vm.initReceipt = initReceipt;
     vm.onIsDebitClicked = onIsDebitClicked;
     vm.calculateBalanceDue = calculateBalanceDue;
+    vm.showNonRegistrationEventsOnly = showNonRegistrationEventsOnly;
+
+    function showNonRegistrationEventsOnly() {
+      if ($state.current.name === 'receipts.createForNonRegistrationEvents') {
+        return true;
+      } else {
+        return false;
+      }
+    }
 
     function onIsDebitClicked() {
       if (vm.receipt.isDebit && !vm.isEventRegistrationPayment) {
@@ -53,6 +68,19 @@
     }
 
     function initReceipt() {
+      CurrentEventsService.query(function(events) {
+        if (vm.showNonRegistrationEventsOnly()) {
+          vm.receipt.paymentOf = 'Cancelación';
+          vm.events = _.filter(events, function(o) {
+            return o.nonRegistration === true;
+          });
+        } else {
+          vm.events = _.filter(events, function(o) {
+            return o.nonRegistration === false;
+          });
+        }
+      });
+
       vm.paymentOfList = [
         'Abono',
         'Cancelación',
@@ -137,7 +165,22 @@
     //set registration event
     vm.setEvent = function(event) {
       vm.receipt.event = event;
+      if (vm.showNonRegistrationEventsOnly()) {
+        vm.receipt.description = 'Venta de Tiquete - ' + event.name;
+        vm.receipt.currentBalance = event.price;
+        vm.receipt.paymentAmount = event.price;
+        vm.calculateBalanceDue();
+      }
     };
+
+    vm.clearEvent = function() {
+      vm.receipt.event = undefined;
+      vm.person = undefined;
+      if (vm.showNonRegistrationEventsOnly()) {
+        vm.receipt.currentBalance = '';
+        vm.receipt.paymentAmount = '';
+      }
+    }
 
     //set registration event
     vm.setEventRegistrationEvent = function(event) {
@@ -145,7 +188,6 @@
     };
 
     vm.setEventRegistration = function(eventRegistration) {
-      debugger;
       vm.receipt.eventRegistration = eventRegistration;
       vm.receipt.event = eventRegistration.event;
       if (vm.oldEventRegistration) {

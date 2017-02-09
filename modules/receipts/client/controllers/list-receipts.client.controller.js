@@ -73,7 +73,6 @@
     };
     // Remove existing Receipt
     vm.remove = function(receipt) {
-      debugger;
       if (confirm('Está seguro que desea eliminar el recibo # ' + receipt.receiptNumber + ' ?')) {
         var eventRegistrationSuccessMsg = '';
         ReceiptsService.delete({

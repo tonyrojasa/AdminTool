@@ -33,6 +33,14 @@
     }
 
 
+    vm.RequiredFields = [
+      'organization',
+      'sex',
+      'firstName',
+      'lastName',
+      'secondLastName'
+    ];
+
     // Remove existing Person
     function remove() {
       if (confirm('Are you sure you want to delete?')) {

@@ -65,7 +65,6 @@
       'sex',
       'firstName',
       'lastName',
-      'age',
       'secondLastName'
     ];
     init();
