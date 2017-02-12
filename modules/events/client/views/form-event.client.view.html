@@ -76,19 +76,7 @@
           <div ng-messages="vm.form.eventForm.endDate.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Fecha final es requerido.</p>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="checkbox-inline">
-            <input type="checkbox"  name="ended" type="checkbox" ng-model="vm.event.ended"/> 
-            <strong>Evento Finalizado</strong>
-          </label>
-        </div>
-        <div class="form-group">
-          <label class="checkbox-inline">
-            <input type="checkbox"  name="openEnrollment" type="checkbox" ng-model="vm.event.openEnrollment"/> 
-            <strong>Cupo Disponible</strong>
-          </label>
-        </div>
+        </div>               
         <div class="form-group" show-errors>
           <label class="control-label" for="price">Precio del evento (general) *</label>
           <div class="input-group"> 
@@ -113,7 +101,50 @@
             <input name="shirtPrice" type="number" ng-model="vm.event.shirtPrice" id="shirtPrice" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Precio de camisa">
           </div>
         </div>
-
+        <div class="form-group" show-errors>        
+          <label class="control-label" for="serviceAcademyClass">Academia</label>  
+          <input name="serviceAcademyClass" type="hidden" ng-model="vm.event.serviceAcademyClass" id="serviceAcademyClass" class="form-control">
+          <div class="input-group">
+            <ui-select ng-model="vm.event.serviceAcademyClass">
+              <ui-select-match  placeholder="Seleccione la academia...">
+                    <span>{{$select.selected.name}}</span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (vm.serviceAcademyClasses | filter: $select.search) track by item._id">
+                    <div ng-bind-html="item.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select> 
+            <span class="input-group-btn">
+              <button type="button" ng-click="vm.event.serviceAcademyClass = null" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </span>  
+          </div> 
+        </div>
+        <fieldset class="form-group">
+          <legend>Configuración del Evento</legend>
+          <div>
+            <label class="checkbox-inline">
+              <input type="checkbox"  name="ended" type="checkbox" ng-model="vm.event.ended"/> 
+              <strong>Evento Finalizado</strong>
+            </label>
+          </div>
+          <div>
+            <label class="checkbox-inline">
+              <input type="checkbox"  name="openEnrollment" type="checkbox" ng-model="vm.event.openEnrollment"/> 
+              <strong>Cupo Disponible</strong>
+            </label>
+          </div>
+          <div>
+            <label class="checkbox-inline">
+              <input type="checkbox"  name="ended" type="checkbox" ng-model="vm.event.quickRegistration" ng-change="vm.quickRegistrationChanged()"/> 
+              <strong>Inscripción Rapida</strong>
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox"  name="ended" type="checkbox" ng-model="vm.event.nonRegistration" ng-change="vm.nonRegistrationChanged()"/> 
+              <strong>No requiere Inscripción</strong>
+            </label>
+          </div>
+        </fieldset>        
         <shirt-types shirt-types="vm.event.shirtTypes" form="vm.form.eventForm"></shirt-types>
         <br/><br/>
         <div class="form-group">

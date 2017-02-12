@@ -23,6 +23,12 @@ exports.invokeRolesPolicies = function() {
     }, {
       resources: '/api/receipts/eventregistration/:eventRegistrationId',
       permissions: '*'
+    }, {
+      resources: '/api/receipts/current',
+      permissions: '*'
+    }, {
+      resources: '/api/receipts/current/:receiptId',
+      permissions: '*'
     }]
   }, {
     roles: ['inscriptor'],
@@ -35,6 +41,12 @@ exports.invokeRolesPolicies = function() {
     }, {
       resources: '/api/receipts/eventregistration/:eventRegistrationId',
       permissions: ['get']
+    }, {
+      resources: '/api/receipts/current',
+      permissions: ['get', 'post', 'patch', 'put']
+    }, {
+      resources: '/api/receipts/current/:receiptId',
+      permissions: ['get', 'post', 'patch', 'put']
     }]
   }, {
     roles: ['guest', 'user', 'teacher', 'student'],
@@ -46,6 +58,12 @@ exports.invokeRolesPolicies = function() {
       permissions: ['get']
     }, {
       resources: '/api/receipts/eventregistration/:eventRegistrationId',
+      permissions: ['get']
+    }, {
+      resources: '/api/receipts/current',
+      permissions: ['get']
+    }, {
+      resources: '/api/receipts/current/:receiptId',
       permissions: ['get']
     }]
   }]);

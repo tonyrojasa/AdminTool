@@ -10,5 +10,6 @@
   function HomeController(Authentication) {
     var vm = this;
     vm.authentication = Authentication;
+    vm.isTestEnv = window.env === 'test' ? true : false;
   }
 }());

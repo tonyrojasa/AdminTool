@@ -48,6 +48,20 @@
           pageTitle: 'Crear Recibo para evento'
         }
       })
+      .state('receipts.createForNonRegistrationEvents', {
+        url: '/createForNonRegistrationEvents',
+        templateUrl: 'modules/receipts/client/views/form-receipt.client.view.html',
+        controller: 'ReceiptsController',
+        controllerAs: 'vm',
+        resolve: {
+          receiptResolve: newReceipt,
+          eventregistrationResolve: getEventregistration
+        },
+        data: {
+          roles: ['admin', 'inscriptor', 'accountant'],
+          pageTitle: 'Crear Recibo para evento sin inscripcion'
+        }
+      })
       .state('receipts.create', {
         url: '/create',
         templateUrl: 'modules/receipts/client/views/form-receipt.client.view.html',

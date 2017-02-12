@@ -5,18 +5,18 @@
     .module('receipts')
     .controller('ReceiptsListController', ReceiptsListController);
 
-  ReceiptsListController.$inject = ['$scope', 'ReceiptsService', '$state', 'EventsService', 'EventregistrationsService',
-    'Authentication', '$anchorScroll', 'NgTableParams', 'moment'
+  ReceiptsListController.$inject = ['$scope', 'ReceiptsService', 'CurrentReceiptsService', '$state', 'CurrentEventsService', 'EventregistrationsService',
+    'Authentication', '$anchorScroll', 'NgTableParams', 'moment', 'Notification'
   ];
 
-  function ReceiptsListController($scope, ReceiptsService, $state, EventsService, EventregistrationsService,
-    Authentication, $anchorScroll, NgTableParams, moment) {
+  function ReceiptsListController($scope, ReceiptsService, CurrentReceiptsService, $state, CurrentEventsService, EventregistrationsService,
+    Authentication, $anchorScroll, NgTableParams, moment, Notification) {
     var vm = this;
     vm.moment = moment;
     vm.authentication = Authentication;
 
     vm.eventsFilterArray = [];
-    vm.events = EventsService.query(function(data) {
+    vm.events = CurrentEventsService.query(function(data) {
       _.each(data, function(event) {
         vm.eventsFilterArray.push({
           id: event.name,
@@ -24,9 +24,8 @@
         });
       });
     });
-    vm.receipts = ReceiptsService.query();
 
-    vm.receipts = ReceiptsService.query(function(data) {
+    vm.receipts = CurrentReceiptsService.query(function(data) {
       _.each(data, function(receipt) {
         receipt.paymentDate = vm.moment(receipt.paymentDate).format('YYYY-MM-DD');
       });
@@ -76,7 +75,9 @@
     vm.remove = function(receipt) {
       if (confirm('Está seguro que desea eliminar el recibo # ' + receipt.receiptNumber + ' ?')) {
         var eventRegistrationSuccessMsg = '';
-        receipt.$remove(function() {
+        ReceiptsService.delete({
+          'receiptId': receipt._id
+        }, function() {
           if (vm.isEventRegistrationReceipt(receipt)) {
             vm.updateEventRegistration(receipt);
             eventRegistrationSuccessMsg = 'Y se actualizó el saldo de la inscripción # ' + receipt.eventRegistration.registrationNumber;
@@ -87,6 +88,11 @@
           });
           vm.tableParams.reload();
           $anchorScroll(document.body.scrollTop);
+          Notification.info({
+            title: 'Operación ejecutada exitosamente!',
+            message: vm.success,
+            delay: 15000
+          });
         });
       }
     };

@@ -1,5 +1,7 @@
 'use strict';
 
+var fs = require('fs');
+
 module.exports = {
   secure: {
     ssl: true,
@@ -15,6 +17,20 @@ module.exports = {
     options: {
       user: '',
       pass: ''
+      /**
+        * Uncomment to enable ssl certificate based authentication to mongodb
+        * servers. Adjust the settings below for your specific certificate
+        * setup.
+      server: {
+        ssl: true,
+        sslValidate: false,
+        checkServerIdentity: false,
+        sslCA: fs.readFileSync('./config/sslcerts/ssl-ca.pem'),
+        sslCert: fs.readFileSync('./config/sslcerts/ssl-cert.pem'),
+        sslKey: fs.readFileSync('./config/sslcerts/ssl-key.pem'),
+        sslPass: '1234'
+      }
+      */
     },
     // Enable mongoose debug mode
     debug: process.env.MONGODB_DEBUG || false
@@ -77,7 +93,7 @@ module.exports = {
     options: {
       logResults: process.env.MONGO_SEED_LOG_RESULTS !== 'false',
       seedUser: {
-        username: process.env.MONGO_SEED_USER_USERNAME || 'user',
+        username: process.env.MONGO_SEED_USER_USERNAME || 'seeduser',
         provider: 'local',
         email: process.env.MONGO_SEED_USER_EMAIL || 'user@localhost.com',
         firstName: 'User',
@@ -86,7 +102,7 @@ module.exports = {
         roles: ['user']
       },
       seedAdmin: {
-        username: process.env.MONGO_SEED_ADMIN_USERNAME || 'admin',
+        username: process.env.MONGO_SEED_ADMIN_USERNAME || 'seedadmin',
         provider: 'local',
         email: process.env.MONGO_SEED_ADMIN_EMAIL || 'admin@localhost.com',
         firstName: 'Admin',

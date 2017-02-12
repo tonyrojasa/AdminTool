@@ -14,6 +14,10 @@ var EventSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Organization'
   },
+  serviceAcademyClass: {
+    type: Schema.ObjectId,
+    ref: 'Serviceacademyclass'
+  },
   name: {
     type: String,
     default: '',
@@ -39,6 +43,14 @@ var EventSchema = new Schema({
     default: true
   },
   ended: {
+    type: Boolean,
+    default: false
+  },
+  quickRegistration: {
+    type: Boolean,
+    default: false
+  },
+  nonRegistration: {
     type: Boolean,
     default: false
   },

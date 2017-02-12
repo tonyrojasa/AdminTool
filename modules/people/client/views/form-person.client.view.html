@@ -13,7 +13,7 @@
 	  	<div class="col-md-12">
 	    <form name="vm.form.personForm" id="form.personForm" class="form-horizontal" ng-submit="vm.save(vm.form.personForm.$valid)" novalidate>
 	      <fieldset>
-	  		<person-form person="vm.person" form="vm.form.personForm"></person-form>
+	  		<person-form person="vm.person" required-fields="vm.RequiredFields" form="vm.form.personForm"></person-form>
 	  		<div class="form-group">
 	          <button type="submit" class="btn btn-default">{{vm.person._id ? 'Actualizar' : 'Crear'}}</button>
 	        </div>

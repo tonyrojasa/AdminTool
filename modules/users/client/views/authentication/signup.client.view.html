@@ -5,7 +5,7 @@
       <fieldset>
         <div class="form-group" show-errors>
           <label for="firstName">Nombre</label>
-          <input type="text" id="firstName" name="firstName" class="form-control" ng-model="vm.credentials.firstName" placeholder="Nombre" required>
+          <input type="text" id="firstName" name="firstName" class="form-control" ng-model="vm.credentials.firstName" placeholder="Nombre" required autofocus>
           <div ng-messages="vm.userForm.firstName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Nombre es requerido.</p>
           </div>
@@ -27,14 +27,15 @@
         </div>
         <div class="form-group" show-errors>
           <label for="username">Usuario</label>
-          <input type="text" id="username" name="username" class="form-control" ng-model="vm.credentials.username" placeholder="Usuario" lowercase required>
+          <input type="text" id="username" name="username" class="form-control" ng-model="vm.credentials.username" ng-pattern="vm.usernameRegex" placeholder="Username" lowercase required>
           <div ng-messages="vm.userForm.username.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Usuario es requerido.</p>
+            <p class="help-block error-text" ng-message="pattern">Please enter a valid username: 3+ characters long, non restricted word, characters "_-.", no consecutive dots, does not begin or end with dots, letters a-z and numbers 0-9.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
           <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" class="form-control" ng-model="vm.credentials.password" placeholder="Contraseña" uib-popover="{{vm.getPopoverMsg()}}" uib-popover-trigger="focus" password-validator required>
+            <input type="password" id="password" name="password" class="form-control" ng-model="vm.credentials.password" placeholder="Password" uib-popover="{{vm.getPopoverMsg()}}" popover-trigger="outsideClick" password-validator required>
           <div ng-messages="vm.userForm.password.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Contraseña es requerido.</p>
             <div ng-repeat="passwordError in passwordErrors">
@@ -50,9 +51,6 @@
           <button type="submit" class="btn btn-primary">Registrarse</button>
           &nbsp; or&nbsp;
           <a ui-sref="authentication.signin" class="show-signup">Iniciar Sesión</a>
-        </div>
-        <div ng-show="vm.error" class="text-center text-danger">
-          <strong ng-bind="vm.error"></strong>
         </div>
       </fieldset>
     </form>

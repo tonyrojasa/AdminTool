@@ -81,7 +81,21 @@ exports.delete = function(req, res) {
  * List of Receipts
  */
 exports.list = function(req, res) {
-  Receipt.find().sort('-created')
+  var query = _.forEach(req.query, function(value, key) {
+    var queryParam = {
+      $regex: new RegExp('^' + value + '$', "i"),
+      $options: 'i'
+    };
+    req.query[key] = _.zipObject([key], [queryParam]);
+  });
+
+  if (!_.isEmpty(query)) {
+    query = {
+      $and: _.toArray(query)
+    };
+  }
+
+  Receipt.find(query).sort('-created')
     .populate('event')
     .populate({
       path: 'eventRegistration',
@@ -112,6 +126,70 @@ exports.list = function(req, res) {
       }
     })
     .populate('user', 'displayName').exec(function(err, receipts) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(receipts);
+      }
+    });
+};
+
+/**
+ * List of Current Receipts (related event is not ended)
+ */
+exports.listAllCurrent = function(req, res) {
+  var query = _.forEach(req.query, function(value, key) {
+    var queryParam = {
+      $regex: new RegExp('^' + value + '$', "i"),
+      $options: 'i'
+    };
+    req.query[key] = _.zipObject([key], [queryParam]);
+  });
+
+  if (!_.isEmpty(query)) {
+    query = {
+      $and: _.toArray(query)
+    };
+  }
+
+  Receipt.find(query).sort('-created')
+    .populate('event')
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'event'
+      }
+    })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'eventPeopleGroup'
+      }
+    })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'personType'
+      }
+    })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'person',
+        populate: {
+          path: 'personType',
+          model: 'Persontype'
+        }
+      }
+    })
+    .populate('user', 'displayName').exec(function(err, receipts) {
+      receipts = receipts.filter(function(receipt) {
+        return ((receipt.event && (!receipt.event.ended || receipt.event.openEnrollment)) ||
+          (receipt.eventRegistration && receipt.eventRegistration.event &&
+            (!receipt.eventRegistration.event.ended || receipt.eventRegistration.event.openEnrollment)));
+      });
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)

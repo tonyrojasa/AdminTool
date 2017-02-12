@@ -32,6 +32,7 @@ module.exports = {
     }],
     'no-bitwise': 0,
     'no-caller': 2,
+    'no-console': 0,
     'no-else-return': 0,
     'no-empty-class': 0,
     'no-multi-spaces': 2,
@@ -65,6 +66,7 @@ module.exports = {
   },
   env: {
     node: true,
+    es6: true,
     browser: true,
     jasmine: true,
     mocha: true,

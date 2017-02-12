@@ -1,5 +1,5 @@
 //Serviceacademyclasses service used to communicate Serviceacademyclasses REST endpoints
-(function () {
+(function() {
   'use strict';
 
   angular

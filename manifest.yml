@@ -6,7 +6,7 @@ declared-services:
 applications:
 - name: mean
   host: mean-${random-word}
-  memory: 128M
+  memory: 512M
   services:
   - mean-mongo
   env:
