@@ -284,19 +284,11 @@
 
       function successCallback(res) {
         $rootScope.showLoadingSpinner = false;
-        if (vm.isEventRegistrationPayment) {
-          $state.go('receipts.view', {
-            receiptId: res._id,
-            successMessage: 'Recibo creado. El pago se ha realizado.'
-          });
-        } else {
-          Notification.info({
-            title: 'Operación ejecutada exitosamente!',
-            message: 'Recibo # ' + res.receiptNumber + ' creado/actualizado correctamente.',
-            delay: 15000
-          });
-          $state.go('receipts.list');
-        }
+        var message = 'Recibo # ' + res.receiptNumber + ' creado/actualizado correctamente.';
+        $state.go('receipts.view', {
+          receiptId: res._id,
+          successMessage: message
+        });
       }
 
       function errorCallback(res) {

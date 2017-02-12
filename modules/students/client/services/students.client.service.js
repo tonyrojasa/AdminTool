@@ -12,8 +12,14 @@
     return $resource('api/students/:studentId', {
       studentId: '@_id'
     }, {
+      create: {
+        method: 'POST'
+      },
       update: {
         method: 'PUT'
+      },
+      delete: {
+        method: 'DELETE'
       }
     });
   }

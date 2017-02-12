@@ -123,6 +123,7 @@ exports.eventByID = function(req, res, next, id) {
   Event.findById(id)
     .populate('user', 'displayName')
     .populate('organization', 'name')
+    .populate('serviceAcademyClass', 'name')
     .exec(function(err, event) {
       if (err) {
         return next(err);

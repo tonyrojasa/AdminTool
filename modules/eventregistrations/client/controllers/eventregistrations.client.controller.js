@@ -8,12 +8,13 @@
 
   EventregistrationsController.$inject = ['$scope', '$anchorScroll', '$state', '$stateParams', 'Authentication',
     'eventregistrationResolve', 'CurrentEventsService', 'EventpeoplegroupsService', 'personResolve',
-    'PeopleService', 'EventregistrationsByEventService', '$rootScope', 'PersontypesService', 'Notification'
+    'PeopleService', 'EventregistrationsByEventService', '$rootScope', 'PersontypesService', 'Notification',
+    'StudentsService'
   ];
 
   function EventregistrationsController($scope, $anchorScroll, $state, $stateParams, Authentication, eventregistration,
     CurrentEventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService, $rootScope,
-    PersontypesService, Notification) {
+    PersontypesService, Notification, StudentsService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -251,6 +252,7 @@
 
       function successPersonCallback(res) {
         vm.eventregistration.person = res;
+        saveStudent();
         saveEventRegistration();
       }
 
@@ -295,6 +297,39 @@
       function errorCallback(res) {
         $rootScope.showLoadingSpinner = false;
         vm.error = res.data.message;
+        $anchorScroll(document.body.scrollTop);
+      }
+    }
+
+     // Save Person
+    function saveStudent() {
+      if(vm.eventregistration.event.serviceAcademyClass) {        
+        if(!vm.eventregistration._id) {//create student
+          var student = {
+            person: vm.eventregistration.person._id,
+            serviceAcademyClass: vm.eventregistration.event.serviceAcademyClass,
+            score: 0
+          };
+          StudentsService.create(student,successStudentCallback,errorStudentCallback);
+        }
+      }
+
+      function successStudentCallback(res) {
+        Notification.info({
+          message: 'Se registró la persona en la academia asignada a este evento.',
+          title: 'Estudiante agregado!',
+          delay: 6000
+        });
+      }
+
+      function errorStudentCallback(res) {
+        $rootScope.showSpinner = false;
+        Notification.error({
+          message: 'No se pudo registrar la persona en la academia asignada a este evento. '+
+          'Debe agregarla manualmente',
+          title: '<i class="glyphicon glyphicon-remove"></i> Error en el formulario!',
+          delay: 6000
+        });
         $anchorScroll(document.body.scrollTop);
       }
     }
@@ -350,6 +385,12 @@
             vm.warning = 'Operación cancelada por el usuario debido a que existe una persona con el mismo nombre. ' +
               'Verifique la información e intente de nuevo. Si desea inscribir una persona existente en la base de datos, ' +
               'utilice la opción: <a class="btn btn-secondary" href="/eventregistrations/create/false">Miembro Existente</a>';
+            Notification.warning({
+              message: vm.warning,
+              title: 'Mensaje importante!',
+              delay: 6000,
+              replaceMessage: true
+            });
             $anchorScroll(document.body.scrollTop);
           }
         }, errorResponse);

@@ -187,17 +187,26 @@
               <p class="help-block error-text" ng-message="required">Saldo actual es requerido.</p>
             </div>
           </div>
-          <div class="form-group" show-errors>
+          <div class="form-group" ng-if="!vm.showNonRegistrationEventsOnly()" show-errors>
             <label class="control-label" for="paymentAmount">Abono (monto del pago) *</label>
             <div class="input-group"> 
               <span class="input-group-addon">₡</span>
-              <input ng-if="!vm.showNonRegistrationEventsOnly()" name="paymentAmount" type="number" ng-model="vm.receipt.paymentAmount" ng-change="vm.calculateBalanceDue()" id="paymentAmount" step="
+              <input name="paymentAmount" type="number" ng-model="vm.receipt.paymentAmount" ng-change="vm.calculateBalanceDue()" id="paymentAmount" step="
               0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Abono" required ng-disabled="(vm.isEventRegistrationPayment && vm.receipt._id)" lower-than="{{vm.receipt.currentBalance}}">
-               <input ng-if="vm.showNonRegistrationEventsOnly()" name="paymentAmount" type="number" ng-model="vm.receipt.paymentAmount" id="paymentAmount" class="form-control currency" placeholder="Abono" required ng-disabled="true">
             </div>
-            <div ng-messages="vm.form.receiptForm.paymentAmount.$error" role="alert">
+            <div ng-if="!vm.showNonRegistrationEventsOnly()" ng-messages="vm.form.receiptForm.paymentAmount.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Abono es requerido.</p>
               <p class="help-block error-text" ng-message="lowerThan">Abono no puede ser mayor al saldo actual.</p>
+            </div>
+          </div>
+          <div class="form-group" ng-if="vm.showNonRegistrationEventsOnly()" show-errors>
+            <label class="control-label" for="paymentAmount">Abono (monto del pago) *</label>
+            <div class="input-group"> 
+              <span class="input-group-addon">₡</span>              
+               <input name="paymentAmount" type="number" ng-model="vm.receipt.paymentAmount" id="paymentAmount" class="form-control currency" placeholder="Abono" required ng-disabled="true">
+            </div>
+             <div ng-messages="vm.form.receiptForm.paymentAmount.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Abono es requerido.</p>    
             </div>
           </div>
           <div class="form-group" show-errors>

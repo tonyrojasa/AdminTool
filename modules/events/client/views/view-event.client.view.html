@@ -33,6 +33,7 @@
   Fecha final: <p class="lead" data-ng-bind="vm.event.endDate | date:'longDate'"></p>  
   Precio general: <p><span class="lead">{{vm.event.price | currency:'₡'}}</span></p>
   Precio para servidores: <p><span class="lead">{{vm.event.serverPrice | currency:'₡'}}</span></p>
+  <span data-ng-if="vm.event.serviceAcademyClass">Academia: <p class="lead">{{vm.event.serviceAcademyClass.name}}</p></span>
   Estado del evento: <p><span class="lead">{{vm.event.ended ? 'Finalizado' : 'Disponible'}}</span></p>
   Estado de Inscripciones: <p><span class="lead">{{!vm.event.openEnrollment ? 'Inscripciones Cerradas' : 'Inscripciones Abiertas'}}</span></p>
   Tipo de Inscripción: <p><span class="lead">{{vm.getRegistrationType(vm.event)}}</span></p>

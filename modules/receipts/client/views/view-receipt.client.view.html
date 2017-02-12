@@ -42,6 +42,8 @@
         <i class="glyphicon glyphicon-arrow-left"></i>
         Recibos
       </a>
+      <a class="btn btn-default" ng-if="vm.receipt.event && vm.receipt.event.nonRegistration"
+      data-ui-sref="receipts.createForNonRegistrationEvents">Nueva Entrada / Tiquete</a>
     </div>
   </section>
   <section class="row">
