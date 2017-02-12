@@ -327,7 +327,7 @@
         Notification.error({
           message: 'No se pudo registrar la persona en la academia asignada a este evento. '+
           'Debe agregarla manualmente',
-          title: '<i class="glyphicon glyphicon-remove"></i> Error en el formulario!',
+          title: '<i class="glyphicon glyphicon-remove"></i> Error al agregar al estudiante!',
           delay: 6000
         });
         $anchorScroll(document.body.scrollTop);
