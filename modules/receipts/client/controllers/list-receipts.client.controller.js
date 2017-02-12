@@ -5,100 +5,42 @@
     .module('receipts')
     .controller('ReceiptsListController', ReceiptsListController);
 
-  ReceiptsListController.$inject = ['$scope', 'ReceiptsService', '$state', 'CurrentEventsService', 'EventregistrationsService',
-    'Authentication', '$anchorScroll', 'NgTableParams', 'moment'
+  ReceiptsListController.$inject = ['$scope', 'ReceiptsService', 'CurrentReceiptsService', '$state', 'CurrentEventsService', 'EventregistrationsService',
+    'Authentication', '$anchorScroll', 'NgTableParams', 'moment', 'Notification'
   ];
 
-  function ReceiptsListController($scope, ReceiptsService, $state, CurrentEventsService, EventregistrationsService,
-    Authentication, $anchorScroll, NgTableParams, moment) {
+  function ReceiptsListController($scope, ReceiptsService, CurrentReceiptsService, $state, CurrentEventsService, EventregistrationsService,
+    Authentication, $anchorScroll, NgTableParams, moment, Notification) {
     var vm = this;
     vm.moment = moment;
     vm.authentication = Authentication;
-    vm.events = CurrentEventsService.query();
-    vm.receipts = ReceiptsService.query();
 
-    vm.receipts = ReceiptsService.query(function(data) {
+    vm.eventsFilterArray = [];
+    vm.events = CurrentEventsService.query(function(data) {
+      _.each(data, function(event) {
+        vm.eventsFilterArray.push({
+          id: event.name,
+          title: event.name
+        });
+      });
+    });
+
+    vm.receipts = CurrentReceiptsService.query(function(data) {
       _.each(data, function(receipt) {
         receipt.paymentDate = vm.moment(receipt.paymentDate).format('YYYY-MM-DD');
       });
     });
 
     $scope.$watch('vm.paymentDate', function(newVal, oldVal) {
-      debugger;
       if (newVal) {
         vm.dateFilterValue = vm.moment(vm.paymentDate).format('YYYY-MM-DD');
       } else {
         vm.dateFilterValue = '';
       }
+      vm.tableParams.filter().paymentDate = vm.dateFilterValue;
     });
 
     vm.setEvent = setEvent;
-
-    vm.cols = [{
-      field: "eventRegistration.registrationNumber",
-      title: function() {
-        return "# Inscripción";
-      },
-      show: function() {
-        return true;
-      }
-    }, {
-      field: "receiptNumber",
-      title: function() {
-        return "# Recibo";
-      },
-      show: function() {
-        return true;
-      }
-    }, {
-      field: "event.name",
-      title: function() {
-        return "Evento";
-      },
-      show: function() {
-        return true;
-      }
-    }, {
-      field: "paymentOf",
-      title: function() {
-        return "Por concepto de";
-      },
-      show: function() {
-        return true;
-      }
-    }, {
-      field: "paymentDate",
-      title: function() {
-        return "Fecha de pago";
-      },
-      show: function() {
-        return true;
-      }
-    }, {
-      field: "receivedFrom",
-      title: function() {
-        return "Recibido de";
-      },
-      show: function() {
-        return true;
-      }
-    }, {
-      field: "otherReference",
-      title: function() {
-        return "Otra referencia";
-      },
-      show: function() {
-        return false;
-      }
-    }, {
-      field: "paymentAmount",
-      title: function() {
-        return "Monto ₡ Ingreso/Gasto";
-      },
-      show: function() {
-        return true;
-      }
-    }];
 
     vm.isCollapsed = true;
 
@@ -133,7 +75,9 @@
     vm.remove = function(receipt) {
       if (confirm('Está seguro que desea eliminar el recibo # ' + receipt.receiptNumber + ' ?')) {
         var eventRegistrationSuccessMsg = '';
-        receipt.$remove(function() {
+        ReceiptsService.delete({
+          'receiptId': receipt._id
+        }, function() {
           if (vm.isEventRegistrationReceipt(receipt)) {
             vm.updateEventRegistration(receipt);
             eventRegistrationSuccessMsg = 'Y se actualizó el saldo de la inscripción # ' + receipt.eventRegistration.registrationNumber;
@@ -144,6 +88,11 @@
           });
           vm.tableParams.reload();
           $anchorScroll(document.body.scrollTop);
+          Notification.info({
+            title: 'Operación ejecutada exitosamente!',
+            message: vm.success,
+            delay: 15000
+          });
         });
       }
     };

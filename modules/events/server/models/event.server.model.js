@@ -14,6 +14,10 @@ var EventSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Organization'
   },
+  serviceAcademyClass: {
+    type: Schema.ObjectId,
+    ref: 'Serviceacademyclass'
+  },
   name: {
     type: String,
     default: '',
@@ -33,6 +37,22 @@ var EventSchema = new Schema({
   endDate: {
     type: Date,
     required: 'Please fill Event endDate'
+  },
+  openEnrollment: {
+    type: Boolean,
+    default: true
+  },
+  ended: {
+    type: Boolean,
+    default: false
+  },
+  quickRegistration: {
+    type: Boolean,
+    default: false
+  },
+  nonRegistration: {
+    type: Boolean,
+    default: false
   },
   price: {
     type: Number,

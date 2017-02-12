@@ -24,7 +24,7 @@
   <a class="btn btn-primary" data-ui-sref="eventregistrations.create({newMember:false})">Miembro Existente</a>
   <br /><br />
   <div id="content" data-ng-if="vm.eventregistrations.length">
-    <div class="col-md-6 form-group">        
+    <div class="col-md-6 form-group" ng-show="false">        
       <label class="control-label" for="event">Evento: </label>  
       <div class="input-group select2-bootstrap-append">
         <ui-select ng-model="vm.event">
@@ -69,18 +69,18 @@
         {{col.title()}}
       </label>
     </div>
-    <br />
+    <button class="btn btn-warning pull-right" ng-disabled="!vm.tableParams.hasFilter()" ng-click="vm.tableParams.filter({});vm.registrationDate = undefined;">Borrar Filtros de Búsqueda</button>
     <div id="exportable">        
       <table ng-table="vm.tableParams" class="table" show-filter="true" ng-table-columns-binding="vm.cols" export-csv='csv'>
         <tbody>
-          <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in $data | filter: vm.event.name | filter:{registrationDate:vm.dateFilterValue}:strict">
+          <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in $data">
             <td class="col-md-1" title="'#'" filter="{ 'registrationNumber': 'number'}" sortable="'registrationNumber'" ng-if="true">
                 {{eventRegistration.registrationNumber}}</td>
-            <td title="'Evento'" filter="{ 'event.name': 'text'}" sortable="'event.name'" ng-if="true">
+            <td title="'Evento'" filter="{ 'event.name': 'select'}" filter-data="vm.eventsFilterArray" sortable="'event.name'" ng-if="true">
                 {{eventRegistration.event.name}}</td>
             <td title="'Fecha de Inscripción'" sortable="'registrationDate'" ng-if="true">
                 {{eventRegistration.registrationDate | date:'dd-MMM-yyyy'}}</td>
-            <td title="'Grupo'" filter="{ 'eventPeopleGroup.name': 'text'}" sortable="'eventPeopleGroup.name'" ng-if="true">
+            <td title="'Grupo'" filter="{ 'eventPeopleGroup.name': 'select'}" filter-data="vm.groupsFilterArray"  sortable="'eventPeopleGroup.name'" ng-if="true">
                 {{eventRegistration.eventPeopleGroup.name}}</td>
             <td title="'Nombre'" filter="{ 'person.firstName': 'text'}" sortable="'person.firstName'" ng-if="true">
                 {{eventRegistration.person.firstName}}</td>
@@ -88,8 +88,14 @@
                 {{eventRegistration.person.lastName}}</td>
             <td title="'2do. Apellido'" filter="{ 'person.secondLastName': 'text'}" sortable="'person.secondLastName'" ng-if="true">
                 {{eventRegistration.person.secondLastName}}</td>
-            <td title="'Tipo de Persona'" filter="{ 'personType.name': 'text'}" sortable="'personType.name'" ng-if="true">
+            <td title="'Tipo de Persona'" filter="{ 'personType.name': 'select'}" filter-data="vm.personTypesFilterArray" sortable="'personType.name'" ng-if="true">
                 {{eventRegistration.personType.name}}</td>
+            <td title="'Tel. Celular'" filter="{ 'person.mobilePhone': 'text'}" sortable="'person.mobilePhone'" ng-if="true">
+                {{eventRegistration.person.mobilePhone}}</td>
+            <td title="'Tel. Casa'" filter="{ 'person.homePhone': 'text'}" sortable="'person.homePhone'" ng-if="false">
+                {{eventRegistration.person.homePhone}}</td>
+             <td title="'Tel. Otro'" filter="{ 'person.otherPhone': 'text'}" sortable="'person.otherPhone'" ng-if="false">
+                {{eventRegistration.person.otherPhone}}</td>
             <td class="col-md-1" title="'Saldo ₡ Pendiente'" filter="{ 'balanceAmount': 'text'}" sortable="'balanceAmount'" ng-if="true">
                 {{eventRegistration.balanceAmount | currency:''}} {{$data.$sum('balanceAmount')}}</td>
             <td class="col-md-1">    
@@ -115,11 +121,11 @@
             <td ng-if="vm.cols[5].show()"></td> 
             <td ng-if="vm.cols[6].show()"></td> 
             <td ng-if="vm.cols[7].show()"></td> 
-            <td ng-if="vm.cols[8].show()" ng-class="vm.getTotalClass($data | filter: vm.event.name  | filter:{registrationDate:vm.dateFilterValue}:strict | sumByKey:'balanceAmount')">
-              <span><b>Total ₡ Pendiente:</b> {{$data | filter: vm.event.name  | filter:{registrationDate:vm.dateFilterValue}:strict | sumByKey:'balanceAmount'  | currency:''}}</span>
+            <td ng-if="vm.cols[8].show()" ng-class="vm.getTotalClass($data | sumByKey:'balanceAmount')">
+              <span><b>Total ₡ Pendiente:</b> {{$data | sumByKey:'balanceAmount'  | currency:''}}</span>
             </td>
             <td ng-if="true" class="text-center">            
-              <span><b>Inscripciones:</b> {{($data | filter: vm.event.name  | filter:{registrationDate:vm.dateFilterValue}:strict).length}}</span>
+              <span><b>Inscripciones:</b> {{($data).length}}</span>
             </td>
             <td>
               <div class="text-right">

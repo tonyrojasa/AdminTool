@@ -96,7 +96,9 @@ exports.list = function(req, res) {
  * List of Current Events (startDate is >= Today)
  */
 exports.listAllCurrent = function(req, res) {
-  Event.where('startDate').gte(new Date()).sort('-created').populate('user', 'displayName').exec(function(err, events) {
+  Event.where({
+    'ended': false
+  }).sort('-created').populate('user', 'displayName').exec(function(err, events) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -121,6 +123,7 @@ exports.eventByID = function(req, res, next, id) {
   Event.findById(id)
     .populate('user', 'displayName')
     .populate('organization', 'name')
+    .populate('serviceAcademyClass', 'name')
     .exec(function(err, event) {
       if (err) {
         return next(err);

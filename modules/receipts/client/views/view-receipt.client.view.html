@@ -42,6 +42,8 @@
         <i class="glyphicon glyphicon-arrow-left"></i>
         Recibos
       </a>
+      <a class="btn btn-default" ng-if="vm.receipt.event && vm.receipt.event.nonRegistration"
+      data-ui-sref="receipts.createForNonRegistrationEvents">Nueva Entrada / Tiquete</a>
     </div>
   </section>
   <section class="row">
@@ -75,55 +77,71 @@
         </thead>
         <tbody>
            <tr ng-if="vm.receipt.isDebit">
-            <td><strong>Salida de dinero</strong></td>
-            <td>Si</td>
+            <td><strong>Salida de dinero:</strong></td>
+            <td><strong>Si</strong></td>
           </tr>
            <tr>
-            <td><strong>Fecha de pago</strong></td>
-            <td><span>{{vm.receipt.paymentDate | date:'mediumDate'}}</span></td>
+            <td><strong>Fecha de pago:</strong></td>
+            <td><span><strong>{{vm.receipt.paymentDate | date:'mediumDate'}}</strong></span></td>
           </tr>
            <tr>
-            <td><strong>Evento</strong></td>
+            <td><strong>Evento:</strong></td>
             <td>
-              <span ng-if="vm.receipt.eventRegistration">{{vm.receipt.eventRegistration.event.name}}</span>
-              <span ng-if="!vm.receipt.eventRegistration">{{vm.receipt.event.name}}</span>
+              <span ng-if="vm.receipt.eventRegistration"><strong>{{vm.receipt.eventRegistration.event.name}}</strong></span>
+              <span ng-if="!vm.receipt.eventRegistration"><strong>{{vm.receipt.event.name}}</strong></span>
+            </td>
+          </tr>          
+          <tr ng-if="vm.receipt.eventRegistration">
+            <td><strong><strong>Tipo de Persona:</strong></td>
+            <td>
+              <span><strong>{{vm.receipt.eventRegistration.personType.name}}</strong></span>
+            </td>
+          </tr>
+          <tr ng-if="vm.isEventServerReceipt()">
+            <td><strong>Cantidad de camisas:</strong></td>
+            <td>
+              <span><strong>{{vm.receipt.eventRegistration.shirtsQuantity}}</strong></span>
             </td>
           </tr>
            <tr>
-            <td><strong>Recibido de</strong></td>
-            <td><span>{{vm.receipt.receivedFrom}}</span></td>
+            <td><strong>Recibido de:</strong></td>
+            <td><span><strong>{{vm.receipt.receivedFrom}}</strong></span></td>
           </tr>
           <tr>
-            <td><strong>Por concepto de</strong></td>
-            <td><span>{{vm.receipt.paymentOf}}</span></td>
+            <td><strong>Por concepto de:</strong></td>
+            <td><span><strong>{{vm.receipt.paymentOf}}</strong></span></td>
           </tr>
           <tr>
-            <td><strong>Forma de pago</strong></td>
-            <td><span>{{vm.receipt.paidBy}}</span></td>
+            <td><strong>Forma de pago:</strong></td>
+            <td><span><strong>{{vm.receipt.paidBy}}</strong></span></td>
           </tr>
            <tr ng-if="vm.receipt.description">
-            <td><strong>Descripción</strong></td>
-            <td><span>{{vm.receipt.description}}</span></td>
+            <td><strong>Descripción:</strong></td>
+            <td><span><strong>{{vm.receipt.description}}</strong></span></td>
           </tr>
            <tr>
-            <td><strong>Saldo anterior</strong></td>
-            <td><span>{{vm.receipt.currentBalance | currency:'₡'}}</span></td>
+            <td><strong>Saldo anterior:</strong></td>
+            <td><span><strong>{{vm.receipt.currentBalance | currency:'₡'}}</strong></span></td>
           </tr>     
            <tr>
-            <td><strong>Abono (monto del pago)</strong></td>
-            <td><span>{{vm.receipt.paymentAmount | currency:'₡'}}</span></td>
+            <td><strong>Abono (monto del pago):</strong></td>
+            <td><span><strong>{{vm.receipt.paymentAmount | currency:'₡'}}</strong></span></td>
           </tr>    
            <tr>
-            <td><strong>Saldo adeudado</strong></td>
-            <td><span>{{vm.receipt.balanceDue | currency:'₡'}}</span></td>
+            <td><strong>Saldo adeudado:</strong></td>
+            <td><span><strong>{{vm.receipt.balanceDue | currency:'₡'}}</strong></span></td>
           </tr>    
            <tr ng-if="vm.receipt.otherReference">
-            <td><strong>Otra referencia</strong></td>
-            <td><span>{{vm.receipt.otherReference}}</span></td>
+            <td><strong>Otra referencia:</strong></td>
+            <td><span><strong>{{vm.receipt.otherReference}}</strong></span></td>
+          </tr>    
+          <tr ng-if="vm.receipt.observations.length">
+            <td><strong>Observaciones:</strong></td>
+            <td><span ng-repeat="observation in vm.receipt.observations track by $index"><strong>{{$index+1}} - {{observation}}</strong><br /></span></td>
           </tr>    
            <tr>
-            <td><strong>Recibido por</strong></td>
-            <td><span>{{vm.receipt.receivedBy}}</span></td>
+            <td><strong>Recibido por:</strong></td>
+            <td><span><strong>{{vm.receipt.receivedBy}}</strong></span></td>
           </tr>
         </tbody>   
       </table>  

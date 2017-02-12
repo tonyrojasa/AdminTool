@@ -1,8 +1,8 @@
 <section class="row">
   <h3 class="col-md-12 text-center">Iniciar Sesión con una cuenta de Red Social</h3>
   <div class="col-md-12 text-center">
-    <img ng-click="vm.callOauthProvider('/api/auth/facebook')" ng-src="/modules/users/client/img/buttons/facebook.png">
-    <img ng-click="vm.callOauthProvider('/api/auth/twitter')" ng-src="/modules/users/client/img/buttons/twitter.png">
+    <div class="social-account-container social-button"><a class="btn"><img class="img-responsive" ng-click="vm.callOauthProvider('/api/auth/facebook')" ng-src="/modules/users/client/img/buttons/facebook.png"></a></div>
+    <div class="social-account-container social-button"><a class="btn"><img class="img-responsive" ng-click="vm.callOauthProvider('/api/auth/twitter')" ng-src="/modules/users/client/img/buttons/twitter.png"></a></div>
 <!--     <img ng-click="vm.callOauthProvider('/api/auth/google')" ng-src="/modules/users/client/img/buttons/google.png">
     <img ng-click="vm.callOauthProvider('/api/auth/linkedin')" ng-src="/modules/users/client/img/buttons/linkedin.png"> -->
   </div>

@@ -6,27 +6,43 @@
     .module('receipts')
     .controller('ReceiptsController', ReceiptsController);
 
-  ReceiptsController.$inject = ['$rootScope', '$scope', '$state', 'Authentication', 'receiptResolve', 'EventsService',
-    'eventregistrationResolve', 'EventregistrationsService', '$stateParams'
+  ReceiptsController.$inject = ['$rootScope', '$scope', '$state', 'Authentication', 'receiptResolve', 'CurrentEventsService',
+    'eventregistrationResolve', 'EventregistrationsService', 'CurrentEventregistrationsService', '$stateParams', 'Notification'
   ];
 
-  function ReceiptsController($rootScope, $scope, $state, Authentication, receipt, EventsService, eventregistration,
-    EventregistrationsService, $stateParams) {
+  function ReceiptsController($rootScope, $scope, $state, Authentication, receipt, CurrentEventsService, eventregistration,
+    EventregistrationsService, CurrentEventregistrationsService, $stateParams, Notification) {
     var vm = this;
 
     vm.success = $stateParams.successMessage;
+    if (vm.success) {
+      Notification.info({
+        title: 'Operación ejecutada exitosamente!',
+        message: vm.success,
+        delay: 15000
+      });
+    }
 
     vm.authentication = Authentication;
     vm.receipt = receipt;
     vm.eventregistration = eventregistration;
+    vm.eventRegistrations = CurrentEventregistrationsService.query();
     vm.error = null;
     vm.form = {};
-    vm.events = EventsService.query();
     vm.remove = remove;
     vm.save = save;
     vm.initReceipt = initReceipt;
     vm.onIsDebitClicked = onIsDebitClicked;
     vm.calculateBalanceDue = calculateBalanceDue;
+    vm.showNonRegistrationEventsOnly = showNonRegistrationEventsOnly;
+
+    function showNonRegistrationEventsOnly() {
+      if ($state.current.name === 'receipts.createForNonRegistrationEvents') {
+        return true;
+      } else {
+        return false;
+      }
+    }
 
     function onIsDebitClicked() {
       if (vm.receipt.isDebit && !vm.isEventRegistrationPayment) {
@@ -52,6 +68,19 @@
     }
 
     function initReceipt() {
+      CurrentEventsService.query(function(events) {
+        if (vm.showNonRegistrationEventsOnly()) {
+          vm.receipt.paymentOf = 'Cancelación';
+          vm.events = _.filter(events, function(o) {
+            return o.nonRegistration === true;
+          });
+        } else {
+          vm.events = _.filter(events, function(o) {
+            return o.nonRegistration === false;
+          });
+        }
+      });
+
       vm.paymentOfList = [
         'Abono',
         'Cancelación',
@@ -67,7 +96,7 @@
         'Transferencia',
         'Otro'
       ];
-      vm.receipt.paidBy = 'Efectivo'; //default value
+      vm.receipt.paidBy = vm.receipt.paidBy ? vm.receipt.paidBy : 'Efectivo'; //default value
       //default to current user
       if (!vm.receipt.receivedBy) {
         vm.receipt.receivedBy = vm.authentication.user.displayName;
@@ -104,10 +133,25 @@
       } else {
         vm.isEventRegistrationPayment = false;
       }
+
+      if (vm.receipt.eventRegistration) {
+        vm.oldEventRegistration = vm.receipt.eventRegistration;
+        vm.oldEventRegistration.balanceAmount += vm.receipt.paymentAmount;
+      }
     }
+
+    vm.pendingRegistrationsFilter = function(eventRegistration) {
+      return eventRegistration.balanceAmount > 0;
+    };
 
     vm.isNewEventRegistration = function() {
       return (vm.eventregistration && !vm.receipt.eventRegistration);
+    };
+
+    vm.isEventServerReceipt = function() {
+      return (vm.receipt.eventRegistration && vm.receipt.eventRegistration.shirtsQuantity &&
+        (vm.receipt.eventRegistration.isEventServer ||
+          vm.receipt.eventRegistration.eventExternalServer.isEventExternalServer));
     };
 
     vm.setPaymentOf = function(paymentOf) {
@@ -121,11 +165,43 @@
     //set registration event
     vm.setEvent = function(event) {
       vm.receipt.event = event;
+      if (vm.showNonRegistrationEventsOnly()) {
+        vm.receipt.description = 'Venta de Tiquete - ' + event.name;
+        vm.receipt.currentBalance = event.price;
+        vm.receipt.paymentAmount = event.price;
+        vm.calculateBalanceDue();
+      }
     };
+
+    vm.clearEvent = function() {
+      vm.receipt.event = undefined;
+      vm.person = undefined;
+      if (vm.showNonRegistrationEventsOnly()) {
+        vm.receipt.currentBalance = '';
+        vm.receipt.paymentAmount = '';
+      }
+    }
 
     //set registration event
     vm.setEventRegistrationEvent = function(event) {
       vm.receipt.eventRegistration.event = event;
+    };
+
+    vm.setEventRegistration = function(eventRegistration) {
+      vm.receipt.eventRegistration = eventRegistration;
+      vm.receipt.event = eventRegistration.event;
+      if (vm.oldEventRegistration) {
+        if (vm.oldEventRegistration._id != eventRegistration._id) {
+          vm.receipt.currentBalance = eventRegistration.balanceAmount;
+          calculateBalanceDue();
+          vm.newObservation = 'Este recibo, anteriormente aplicado a la inscripción #' +
+            vm.oldEventRegistration.registrationNumber + ', se aplicó la inscripción #' + eventRegistration.registrationNumber;
+        } else {
+          vm.receipt.currentBalance = vm.oldEventRegistration.balanceAmount;
+          calculateBalanceDue();
+          vm.newObservation = null;
+        }
+      }
     };
 
     // Remove existing Receipt
@@ -137,7 +213,14 @@
             vm.updateEventRegistration(receipt);
             eventRegistrationSuccessMsg = 'Y se actualizó el saldo de la inscripción # ' + receipt.eventRegistration.registrationNumber;
           }
-          vm.success = 'Este recibo ha sido eliminado. ' + eventRegistrationSuccessMsg + ', haga click en el link de recibos para volver a la lista.';
+          vm.success = 'El recibo # ' + receipt.receiptNumber + '  ha sido eliminado. ' + eventRegistrationSuccessMsg + '.';
+
+          Notification.info({
+            title: 'Operación ejecutada exitosamente!',
+            message: vm.success,
+            delay: 15000
+          });
+          $state.go('receipts.list');
         });
       }
     };
@@ -156,6 +239,12 @@
       }, receipt.eventRegistration);
     };
 
+    vm.updateOldEventRegistration = function() {
+      EventregistrationsService.update({
+        eventregistrationId: vm.oldEventRegistration._id
+      }, vm.oldEventRegistration);
+    };
+
     vm.isEventRegistrationReceipt = function(receipt) {
       return receipt.eventRegistration !== undefined;
     };
@@ -164,7 +253,11 @@
     function saveEventRegistration() {
       if (vm.isEventRegistrationPayment) {
         vm.eventregistration.balanceAmount = vm.calculateBalanceDue();
-        vm.eventregistration.$update(successCallback, errorCallback);
+
+        EventregistrationsService.update({
+          eventregistrationId: vm.eventregistration._id
+        }, vm.eventregistration, successCallback, errorCallback);
+
       } else {
         saveReceipt();
       }
@@ -191,14 +284,11 @@
 
       function successCallback(res) {
         $rootScope.showLoadingSpinner = false;
-        if (vm.isEventRegistrationPayment) {
-          $state.go('receipts.view', {
-            receiptId: res._id,
-            successMessage: 'Recibo creado. El pago se ha ralizado.'
-          });
-        } else {
-          $state.go('receipts.list');
-        }
+        var message = 'Recibo # ' + res.receiptNumber + ' creado/actualizado correctamente.';
+        $state.go('receipts.view', {
+          receiptId: res._id,
+          successMessage: message
+        });
       }
 
       function errorCallback(res) {
@@ -212,10 +302,21 @@
       $rootScope.showLoadingSpinner = true;
       if (!isValid) {
         $rootScope.showLoadingSpinner = false;
+        vm.error = 'Por favor completar los campos requeridos (*) y/o corregir los errores del formulario';
         $scope.$broadcast('show-errors-check-validity', 'vm.form.receiptForm');
+        Notification.clearAll();
+        Notification.error({
+          message: vm.error,
+          title: '<i class="glyphicon glyphicon-remove"></i> Error en el formulario!',
+          delay: 6000,
+          replaceMessage: true
+        });
         return false;
       }
-
+      if (vm.newObservation) {
+        vm.updateOldEventRegistration();
+        vm.receipt.observations.push(vm.newObservation);
+      }
       saveEventRegistration();
     }
 

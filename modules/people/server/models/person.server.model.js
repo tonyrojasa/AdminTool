@@ -91,7 +91,6 @@ var PersonSchema = new Schema({
   },
   address: {
     type: String,
-    required: 'Please fill address',
     trim: true
   },
   birthDate: {
@@ -100,12 +99,10 @@ var PersonSchema = new Schema({
   },
   age: {
     type: Number,
-    required: 'Please fill age',
     trim: true
   },
   maritalStatus: {
     type: String,
-    required: 'Please fill maritalStatus',
     trim: true
   },
   isFemale: {

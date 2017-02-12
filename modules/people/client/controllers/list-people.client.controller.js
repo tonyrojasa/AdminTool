@@ -6,31 +6,45 @@
     .controller('PeopleListController', PeopleListController);
 
   PeopleListController.$inject = ['$anchorScroll', 'PeopleService', 'PersontypesService', 'ServiceareasService', 'Authentication',
-    'EventregistrationsByPersonService', 'ServiceacademyclassesByPersonService', 'StudentsByPersonService'
+    'EventregistrationsByPersonService', 'ServiceacademyclassesByPersonService', 'StudentsByPersonService', 'NgTableParams'
   ];
 
   function PeopleListController($anchorScroll, PeopleService, PersontypesService, ServiceareasService, Authentication,
-    EventregistrationsByPersonService, ServiceacademyclassesByPersonService, StudentsByPersonService) {
+    EventregistrationsByPersonService, ServiceacademyclassesByPersonService, StudentsByPersonService, NgTableParams) {
     var vm = this;
-    vm.people = PeopleService.query();
+    vm.personTypesFilterArray = [];
+    vm.serviceAreasFilterArray = [];
+    vm.getPeople = function() {
+      return PeopleService.query(function(data) {
+        _.each(data, function(person) {
+          person.serviceAreas = vm.getServiceAreaNames(person.serviceArea);
+        });
+      });
+    };
+    vm.people = vm.getPeople();
     vm.authentication = Authentication;
     vm.remove = remove;
     vm.eventregistrationsByPersonService = EventregistrationsByPersonService;
     vm.serviceacademyclassesByPersonService = ServiceacademyclassesByPersonService;
     vm.studentsByPersonService = StudentsByPersonService;
-    vm.personTypes = PersontypesService.query();
-    vm.setPersonType = setPersonType;
-    //set personTypes
-    function setPersonType(personType) {
-      vm.personType = personType;
-    }
 
-    vm.serviceAreas = ServiceareasService.query();
-    vm.setServiceArea = setServiceArea;
-    //set serviceAreas
-    function setServiceArea(serviceArea) {
-      vm.serviceArea = serviceArea;
-    }
+    PersontypesService.query(function(data) {
+      _.each(data, function(personType) {
+        vm.personTypesFilterArray.push({
+          id: personType.name,
+          title: personType.name
+        });
+      });
+    });
+
+    ServiceareasService.query(function(data) {
+      _.each(data, function(serviceArea) {
+        vm.serviceAreasFilterArray.push({
+          id: serviceArea.name,
+          title: serviceArea.name
+        });
+      });
+    });
 
     vm.getServiceAreaNames = getServiceAreaNames;
 
@@ -45,6 +59,15 @@
         return parsedServiceAreasArray.join(', ');
       }
     }
+
+    vm.isCollapsed = true;
+
+    vm.tableParams = new NgTableParams({
+      page: 1,
+      count: 10
+    }, {
+      dataset: vm.people
+    });
 
     // Remove existing Eventregistration
     //Check if person exists on Students, ServiceAcademyClasses and EventRegistrations
@@ -70,7 +93,10 @@
               } else {
                 person.$remove(function() {
                   vm.success = 'Se eliminó la persona con el nombre: ' + selectedPersonName;
-                  vm.people = PeopleService.query();
+                  _.remove(vm.people, {
+                    _id: person._id
+                  });
+                  vm.tableParams.reload();
                   $anchorScroll(document.body.scrollTop);
                 });
               }

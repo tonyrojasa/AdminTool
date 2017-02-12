@@ -8,12 +8,13 @@
 
   EventregistrationsController.$inject = ['$scope', '$anchorScroll', '$state', '$stateParams', 'Authentication',
     'eventregistrationResolve', 'CurrentEventsService', 'EventpeoplegroupsService', 'personResolve',
-    'PeopleService', 'EventregistrationsByEventService', '$rootScope', 'PersontypesService'
+    'PeopleService', 'EventregistrationsByEventService', '$rootScope', 'PersontypesService', 'Notification',
+    'StudentsService'
   ];
 
   function EventregistrationsController($scope, $anchorScroll, $state, $stateParams, Authentication, eventregistration,
     CurrentEventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService, $rootScope,
-    PersontypesService) {
+    PersontypesService, Notification, StudentsService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -48,6 +49,25 @@
       }
     };
     vm.getShirtTypesQuantityMax = getShirtTypesQuantityMax;
+    vm.isQuickRegistration = isQuickRegistration;
+    vm.regularRegistrationRequiredFields = [
+      'organization',
+      'sex',
+      'firstName',
+      'lastName',
+      'secondLastName',
+      'address',
+      'personType',
+      'age',
+      'maritalStatus'
+    ];
+    vm.quickRegistrationRequiredFields = [
+      'organization',
+      'sex',
+      'firstName',
+      'lastName',
+      'secondLastName'
+    ];
     init();
 
     function init() {
@@ -67,7 +87,14 @@
       }
     }
 
+    function isQuickRegistration() {
+      return vm.eventregistration.event && vm.eventregistration.event.quickRegistration;
+    }
+
     function setShirtTypes() {
+      if (!vm.editMode) {
+        vm.eventregistration.shirtTypes = [];
+      }
       if (vm.eventregistration.event && vm.eventregistration.event.shirtTypes.length > 0) {
         if (!vm.eventregistration.shirtTypes ||
           (vm.eventregistration.shirtTypes && vm.eventregistration.shirtTypes.length === 0)) {
@@ -225,6 +252,7 @@
 
       function successPersonCallback(res) {
         vm.eventregistration.person = res;
+        saveStudent();
         saveEventRegistration();
       }
 
@@ -257,6 +285,11 @@
             'eventregistrationId': res._id
           });
         } else {
+          Notification.info({
+            title: 'Operación ejecutada exitosamente!',
+            message: 'Se creó/actualizó la inscripción # ' + res.registrationNumber + ' correctamente.',
+            delay: 15000
+          });
           $state.go('eventregistrations.list');
         }
       }
@@ -268,17 +301,109 @@
       }
     }
 
+     // Save Person
+    function saveStudent() {
+      if(vm.eventregistration.event.serviceAcademyClass) {        
+        if(!vm.eventregistration._id) {//create student
+          var student = {
+            person: vm.eventregistration.person._id,
+            serviceAcademyClass: vm.eventregistration.event.serviceAcademyClass,
+            score: 0
+          };
+          StudentsService.create(student,successStudentCallback,errorStudentCallback);
+        }
+      }
+
+      function successStudentCallback(res) {
+        Notification.info({
+          message: 'Se registró la persona en la academia asignada a este evento.',
+          title: 'Estudiante agregado!',
+          delay: 6000
+        });
+      }
+
+      function errorStudentCallback(res) {
+        $rootScope.showSpinner = false;
+        Notification.error({
+          message: 'No se pudo registrar la persona en la academia asignada a este evento. '+
+          'Debe agregarla manualmente',
+          title: '<i class="glyphicon glyphicon-remove"></i> Error al agregar al estudiante!',
+          delay: 6000
+        });
+        $anchorScroll(document.body.scrollTop);
+      }
+    }
+
     // Save Eventregistration
     function save(isValid) {
       $rootScope.showLoadingSpinner = true;
       if (!isValid) {
         $rootScope.showLoadingSpinner = false;
         $scope.$broadcast('show-errors-check-validity', 'vm.form.eventregistrationForm');
-        vm.error = 'Corregir los errores del formulario';
+        vm.error = 'Por favor completar los campos requeridos (*) y/o corregir los errores del formulario';
+
+        Notification.clearAll();
+        Notification.error({
+          message: vm.error,
+          title: '<i class="glyphicon glyphicon-remove"></i> Error en el formulario!',
+          delay: 6000,
+          replaceMessage: true
+        });
         $anchorScroll(document.body.scrollTop);
         return false;
       }
-      savePerson();
+
+
+      if (vm.isNewMemberRegistration()) {
+        var query = {
+          firstName: vm.person.firstName,
+          lastName: vm.person.lastName,
+          secondLastName: vm.person.secondLastName
+        };
+
+        //verify if person names already exist
+        PeopleService.query(query, function(data) {
+          var continueOperation = true;
+          var existingPersonIndex = -1;
+          if (vm.editMode) {
+            existingPersonIndex = _.findIndex(data, function(o) {
+              return (o._id === vm.person._id &&
+                o.firstName === vm.person.firstName &&
+                o.lastName === vm.person.lastName &&
+                o.secondLastName === vm.person.secondLastName);
+            });
+          }
+          if (data.length > 0 && existingPersonIndex < 0) {
+            continueOperation = confirm('Ya existe una persona con el nombre: ' +
+              vm.person.firstName + ' ' + vm.person.lastName + ' ' + vm.person.secondLastName + '. ' +
+              '¿Desea continuar de todas formas?');
+          }
+          if (continueOperation) {
+            savePerson();
+          } else {
+            $rootScope.showLoadingSpinner = false;
+            vm.warning = 'Operación cancelada por el usuario debido a que existe una persona con el mismo nombre. ' +
+              'Verifique la información e intente de nuevo. Si desea inscribir una persona existente en la base de datos, ' +
+              'utilice la opción: <a class="btn btn-secondary" href="/eventregistrations/create/false">Miembro Existente</a>';
+            Notification.warning({
+              message: vm.warning,
+              title: 'Mensaje importante!',
+              delay: 6000,
+              replaceMessage: true
+            });
+            $anchorScroll(document.body.scrollTop);
+          }
+        }, errorResponse);
+      } else {
+        savePerson();
+      }
+
+    }
+
+    function errorResponse(error) {
+      $rootScope.showLoadingSpinner = false;
+      vm.error = 'Por favor verifique su conexión de Internet e intente de nuevo.';
+      $anchorScroll(document.body.scrollTop);
     }
   }
 })();

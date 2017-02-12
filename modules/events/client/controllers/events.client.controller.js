@@ -6,9 +6,11 @@
     .module('events')
     .controller('EventsController', EventsController);
 
-  EventsController.$inject = ['$scope', '$state', 'Authentication', 'eventResolve', 'OrganizationsService'];
+  EventsController.$inject = ['$scope', '$state', 'Authentication', 'eventResolve', 'OrganizationsService',
+  'CurrentServiceAcademyClassesService'];
 
-  function EventsController($scope, $state, Authentication, event, OrganizationsService) {
+  function EventsController($scope, $state, Authentication, event, OrganizationsService, 
+    CurrentServiceAcademyClassesService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -35,6 +37,7 @@
       vm.event.endDate = new Date();
     }
 
+    vm.serviceAcademyClasses = CurrentServiceAcademyClassesService.query();
 
     vm.organizations = OrganizationsService.query();
     vm.setOrganization = function(organization) {
@@ -46,6 +49,24 @@
       if (confirm('Are you sure you want to delete?')) {
         vm.event.$remove($state.go('events.list'));
       }
+    }
+
+    vm.quickRegistrationChanged = function() {
+      vm.event.nonRegistration = false;
+    };
+
+    vm.nonRegistrationChanged = function() {
+      vm.event.quickRegistration = false;
+    };
+
+    vm.getRegistrationType = function(event) {
+      var result = 'Regular';
+      if (event.quickRegistration) {
+        result = 'Inscripción Rápida';
+      } else if (event.nonRegistration) {
+        result = 'No requiere inscripción';
+      }
+      return result;
     }
 
     // Save Event

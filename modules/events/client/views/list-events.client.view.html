@@ -18,17 +18,23 @@
           <th>Precio General ₡</th>
           <th>Precio Servidor ₡</th>
           <th>Precio Camisa ₡</th>
+          <th>Estado del Evento</th>
+          <th>Estado de Inscripciones</th>
+          <th>Tipo de Inscripción</th>
           <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="event in vm.events | orderBy:['startDate', 'name'] | filter: vm.searchFilter" class="active">
+        <tr ng-repeat="event in vm.events | orderBy:['startDate', 'name'] | filter: vm.searchFilter" ng-class="vm.getStatusClass(event)">
           <td>{{event.name}}</td>
           <td>{{event.startDate | date:'mediumDate'}}</td>
           <td>{{event.endDate | date:'mediumDate'}}</td>
           <td>{{event.price | currency:''}}</td>
           <td>{{event.serverPrice | currency:''}}</td>
           <td>{{event.shirtPrice | currency:''}}</td>
+          <td>{{event.ended ? 'Finalizado' : 'Disponible'}}</td>
+          <td>{{!event.openEnrollment ? 'Inscripciones Cerradas' : 'Inscripciones Abiertas'}}</td>
+          <td>{{vm.getRegistrationType(event)}}</td>
           <td>    
             <a data-ui-sref="events.view({ eventId: event._id})">Detalles</a>    
           </td>

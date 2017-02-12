@@ -1,5 +1,5 @@
 //Organizations service used to communicate Organizations REST endpoints
-(function () {
+(function() {
   'use strict';
 
   angular

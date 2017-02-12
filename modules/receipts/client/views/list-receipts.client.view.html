@@ -23,7 +23,7 @@
   <a class="btn btn-primary" data-ui-sref="receipts.create">Nuevo Recibo</a>
   <br/> <br/>
   <div id="content" data-ng-if="vm.receipts.length">
-    <div class="col-md-6 form-group">        
+    <div class="col-md-6 form-group" ng-show="false">        
       <label class="control-label" for="event">Evento: </label>  
       <div class="input-group select2-bootstrap-append">
         <ui-select ng-model="vm.event">
@@ -68,7 +68,7 @@
         {{col.title()}}
       </label>
     </div>
-    <br />
+    <button class="btn btn-warning pull-right" ng-disabled="!vm.tableParams.hasFilter()" ng-click="vm.tableParams.filter({});vm.paymentDate = undefined;">Borrar Filtros de Búsqueda</button>
     <div id="exportable">
       <table ng-table="vm.tableParams" class="table" show-filter="true" ng-table-columns-binding="vm.cols" export-csv='csv'>
         <tbody>
@@ -77,15 +77,16 @@
                 {{receipt.eventRegistration.registrationNumber}}</td>
             <td class="col-md-1" title="'# Recibo'" filter="{ 'receiptNumber': 'number'}" sortable="'receiptNumber'" ng-if="true">
                 {{receipt.receiptNumber}}</td>
-            <td class="col-md-2" title="'Evento'" ng-if="true">
+            <td class="col-md-2" title="'Evento'" filter="{ 'event.name': 'select'}" filter-data="vm.eventsFilterArray" ng-if="true">
                 <span ng-if="receipt.eventRegistration">{{receipt.eventRegistration.event.name}}</span>
                 <span ng-if="!receipt.eventRegistration">{{receipt.event.name}}</span>  
             </td>
-            <td class="col-md-2" title="'Por concepto de'" filter="{ 'paymentOf': 'text'}" sortable="'paymentOf'" ng-if="true">
+            <td class="col-md-1" title="'Tipo de Persona'" filter="{ 'eventRegistration.personType.name': 'text'}" sortable="'eventRegistration.personType.name'" ng-if="true">{{receipt.eventRegistration.personType.name}}</td>  
+            <td class="col-md-1" title="'Por concepto de'" filter="{ 'paymentOf': 'text'}" sortable="'paymentOf'" ng-if="true">
                 {{receipt.paymentOf}}</td>  
-            <td class="col-md-2" title="'Forma de pago'" filter="{ 'paidBy': 'text'}" sortable="'paidBy'" ng-if="true">
+            <td class="col-md-1" title="'Forma de pago'" filter="{ 'paidBy': 'text'}" sortable="'paidBy'" ng-if="true">
                 {{receipt.paidBy}}</td>          
-            <td class="col-md-2" title="'Fecha de pago'" sortable="'paymentDate'" ng-if="true">
+            <td class="col-md-1" title="'Fecha de pago'" sortable="'paymentDate'" ng-if="true">
                 {{receipt.paymentDate | date:'dd-MMM-yyyy'}}</td>
             <td class="col-md-2" title="'Recibido de'" filter="{ 'receivedFrom': 'text'}" sortable="'receivedFrom'" ng-if="true">
                 {{receipt.receivedFrom}}</td>

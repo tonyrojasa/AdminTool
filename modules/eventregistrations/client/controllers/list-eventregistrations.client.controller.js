@@ -5,17 +5,50 @@
     .module('eventregistrations')
     .controller('EventregistrationsListController', EventregistrationsListController);
 
-  EventregistrationsListController.$inject = ['$scope', 'EventregistrationsService', 'EventsService', 'Authentication',
-    'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams', '$filter', 'moment'
+  EventregistrationsListController.$inject = ['$scope', 'CurrentEventregistrationsService', 'CurrentEventsService', 'Authentication',
+    'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams', '$filter', 'moment', 'EventpeoplegroupsService',
+    'PersontypesService', 'EventregistrationsService', 'Notification'
   ];
 
-  function EventregistrationsListController($scope, EventregistrationsService, EventsService, Authentication,
-    ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams, $filter, moment) {
+  function EventregistrationsListController($scope, CurrentEventregistrationsService, CurrentEventsService, Authentication,
+    ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams, $filter, moment, EventpeoplegroupsService,
+    PersontypesService, EventregistrationsService, Notification) {
     var vm = this;
     vm.moment = moment;
     vm.authentication = Authentication;
-    vm.events = EventsService.query();
-    vm.eventregistrations = EventregistrationsService.query(function(data) {
+
+
+    vm.eventsFilterArray = [];
+    vm.events = CurrentEventsService.query(function(data) {
+      _.each(data, function(event) {
+        vm.eventsFilterArray.push({
+          id: event.name,
+          title: event.name
+        });
+      });
+    });
+
+    vm.groupsFilterArray = [];
+    EventpeoplegroupsService.query(function(data) {
+      _.each(data, function(group) {
+        vm.groupsFilterArray.push({
+          id: group.name,
+          title: group.name
+        });
+      });
+    });
+
+    vm.personTypesFilterArray = [];
+    PersontypesService.query(function(data) {
+      _.each(data, function(personType) {
+        vm.personTypesFilterArray.push({
+          id: personType.name,
+          title: personType.name
+        });
+      });
+    });
+
+    vm.eventregistrations = CurrentEventregistrationsService.query(function(data) {
       _.each(data, function(eventregistration) {
         eventregistration.registrationDate = vm.moment(eventregistration.registrationDate).format('YYYY-MM-DD');
       });
@@ -30,6 +63,7 @@
       } else {
         vm.dateFilterValue = '';
       }
+      vm.tableParams.filter().registrationDate = vm.dateFilterValue;
     });
 
     vm.cols = [{
@@ -126,7 +160,7 @@
     //     var count = params.count();
     //     var page = params.page();
     //     // ajax request to api
-    //     return EventregistrationsService.query().$promise.then(function(data) {
+    //     return CurrentEventregistrationsService.query().$promise.then(function(data) {
     //       params.total(data.length); // recal. page nav controls
     //       vm.eventregistrations = data;
     //       return data;
@@ -161,7 +195,9 @@
           'eventRegistrationId': eventRegistration._id
         }, function(data) {
           if (data.length === 0) {
-            eventRegistration.$remove(function() {
+            EventregistrationsService.delete({
+              'eventregistrationId': eventRegistration._id
+            }, function() {
               vm.warning = 'Se eliminó la inscripción #' + eventRegistration.registrationNumber + '. ' +
                 'Sin embargo, la persona ha sido creada en la base de datos. ' +
                 'Si desea inscribir la misma persona, debe hacerlo por medio de la opción Miembro Existente. ' +
@@ -171,9 +207,19 @@
               });
               vm.tableParams.reload();
               $anchorScroll(document.body.scrollTop);
+              Notification.warning({
+                title: 'Operación ejecutada exitosamente!',
+                message: vm.warning,
+                delay: 15000
+              });
             });
           } else {
             vm.error = 'No se puede eliminar la inscripción #' + eventRegistration.registrationNumber + ' debido a que tiene recibos relacionados';
+            Notification.error({
+              title: 'Error al eliminar inscripción!',
+              message: vm.error,
+              delay: 10000
+            });
           }
         });
       }

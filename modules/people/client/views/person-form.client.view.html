@@ -1,6 +1,6 @@
-<div class="form-group" show-errors>        
-  <label class="control-label" for="organization">Organización *</label>  
-  <input name="organization" type="hidden" ng-model="person.organization" id="organization" class="form-control" required>
+<div class="form-group" ng-if="isFieldVisible('organization')" show-errors>        
+  <label class="control-label" for="organization">Organización <span ng-show="isFieldRequired('organization')">*</span></label>  
+  <input name="organization" type="hidden" ng-model="person.organization" id="organization" class="form-control" ng-required="isFieldRequired('organization')">
   <div class="input-group select2-bootstrap-append">
     <ui-select ng-model="person.organization">
       <ui-select-match  placeholder="Seleccione la organización...">
@@ -20,13 +20,13 @@
     <p class="help-block error-text" ng-message="required">Organización es requerido.</p>
   </div>
 </div>
-<div class="form-group" show-errors> 
-  <label class="control-label" for="maleSex">Sexo *</label>
-  <input name="isFemale" type="hidden" ng-model="person.isFemale" id="isFemale" class="form-control" placeholder="Sexo" required> 
+<div class="form-group" ng-if="isFieldVisible('sex')" show-errors> 
+  <label class="control-label" for="maleSex">Sexo <span ng-show="isFieldRequired('sex')">*</span></label>
+  <input name="isFemale" type="hidden" ng-model="person.isFemale" id="isFemale" class="form-control" placeholder="Sexo" ng-required="isFieldRequired('sex')"> 
   <div class="radio">
     <label>
       <input type="radio" class="radio-inline" ng-click="person.isFemale = false" name="sex" 
-      ng-checked="{{person.isFemale === true ? !person.isFemale : true}}">
+      ng-checked="isMaleSexChecked()">
       <b>Masculino</b>
     </label>
     <label>
@@ -38,60 +38,62 @@
     <p class="help-block error-text" ng-message="required">Sexo es requerido.</p>
   </div>
 </div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="personId">Identificación (cedula)</label>
-  <input name="personId" type="text" ng-model="person.personId" id="personId" autocomplete="off" class="form-control" placeholder="Identificación">
+<div class="form-group" ng-if="isFieldVisible('personId')" show-errors>
+  <label class="control-label" for="personId">Identificación (cedula) <span ng-show="isFieldRequired('personId')">*</span></label>
+  <input name="personId" type="text" ng-model="person.personId" id="personId" autocomplete="off" class="form-control" placeholder="Identificación" ng-required="isFieldRequired('personId')">
 </div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="firstName">Nombre *</label>
-  <input name="firstName" type="text" ng-model="person.firstName" id="firstName" autocomplete="off" class="form-control" placeholder="Nombre" required>
+<div class="form-group" ng-if="isFieldVisible('firstName')" show-errors>
+  <label class="control-label" for="firstName">Nombre <span ng-show="isFieldRequired('firstName')">*</span></label>
+  <input name="firstName" type="text" ng-model="person.firstName" id="firstName" autocomplete="off" class="form-control" placeholder="Nombre" ng-required="isFieldRequired('firstName')">
   <div ng-messages="form.firstName.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Nombre es requerido.</p>
   </div>
 </div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="lastName">Primer Apellido *</label>
-  <input name="lastName" type="text" ng-model="person.lastName" id="lastName" autocomplete="off" class="form-control" placeholder="Primer Apellido" required>
+<div class="form-group" ng-if="isFieldVisible('lastName')" show-errors>
+  <label class="control-label" for="lastName">Primer Apellido <span ng-show="isFieldRequired('lastName')">*</span></label>
+  <input name="lastName" type="text" ng-model="person.lastName" id="lastName" autocomplete="off" class="form-control" placeholder="Primer Apellido" ng-required="isFieldRequired('lastName')">
   <div ng-messages="form.lastName.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Primer Apellido es requerido.</p>
   </div>
 </div>
- <div class="form-group" show-errors>
-  <label class="control-label" for="secondLastName">Segundo Apellido *</label>
-  <input name="secondLastName" type="text" ng-model="person.secondLastName" id="secondLastName" autocomplete="off" class="form-control" placeholder="Segundo Apellido" required>
+ <div class="form-group" ng-if="isFieldVisible('secondLastName')" show-errors>
+  <label class="control-label" for="secondLastName">Segundo Apellido <span ng-show="isFieldRequired('secondLastName')">*</span></label>
+  <input name="secondLastName" type="text" ng-model="person.secondLastName" id="secondLastName" autocomplete="off" class="form-control" placeholder="Segundo Apellido" ng-required="isFieldRequired('secondLastName')">
   <div ng-messages="form.secondLastName.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Segundo Apellido es requerido.</p>
   </div>
 </div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="email">Email</label>
-  <input name="email" type="email" ng-model="person.email" id="email" autocomplete="off" class="form-control" placeholder="Email">
-  <div ng-messages="form.email.$error" role="alert">
-    <p class="help-block error-text" ng-message="email">Email es incorrecto.</p>
+<div class="form-group" ng-if="isFieldVisible('age')" show-errors>
+  <label class="control-label" for="birthDate">Fecha de Nacimiento <span ng-show="isFieldRequired('birthDate')">*</span></label>
+  <br />
+  <input name="birthDate" type="hidden" ng-model="person.birthDate" id="birthDate" class="form-control" ng-required="isFieldRequired('birthDate')">
+  <datetimepicker
+    date-options="dateOptions"
+    readonly-date="true"
+    ng-model="person.birthDate" 
+    hidden-time="true" 
+    date-format="dd-MMM-yyyy" 
+    current-text="Hoy"
+    clear-text="Limpiar"
+    close-text="Cerrar" />    
+</div>
+<div class="form-group" ng-if="isFieldVisible('age')" show-errors>
+  <label class="control-label" for="age">Edad <span ng-show="isFieldRequired('age')">*</span></label>
+  <input name="age" type="number" ng-model="person.age" id="age" autocomplete="off" class="form-control" placeholder="Edad" ng-disabled="person.birthDate" ng-required="isFieldRequired('age')">
+  <div ng-messages="form.age.$error" role="alert">
+    <p class="help-block error-text" ng-message="required">Edad es requerido.</p>
   </div>
 </div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="mobilePhone">Teléfono celular</label>
-  <input name="mobilePhone" mask="9999-9999" mask-restrict="reject" autocomplete="off" ng-model="person.mobilePhone" id="mobilePhone" model-view-value="true" ui-options="{clearOnBlur:false}" ng-minlength="8" class="form-control">
-</div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="homePhone">Teléfono casa</label>
-  <input name="homePhone" ng-model="person.homePhone" mask="9999-9999" mask-restrict="reject" autocomplete="off"  id="homePhone" model-view-value="true" ui-options="{clearOnBlur:false}" ng-minlength="8" class="form-control" >
-</div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="otherPhone">Teléfono (otro)</label>
-  <input name="otherPhone" mask="9999-9999" mask-restrict="reject" ng-model="person.otherPhone" autocomplete="off" id="otherPhone" model-view-value="true" ui-options="{clearOnBlur:false}" ng-minlength="8" class="form-control">
-</div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="address">Dirección *</label>
-  <input name="address" type="text" ng-model="person.address" id="address" class="form-control" autocomplete="off" placeholder="Dirección" required>
+<div class="form-group" ng-if="isFieldVisible('address')" show-errors>
+  <label class="control-label" for="address">Dirección <span ng-show="isFieldRequired('address')">*</span></label>
+  <input name="address" type="text" ng-model="person.address" id="address" class="form-control" autocomplete="off" placeholder="Dirección" ng-required="isFieldRequired('address')">
   <div ng-messages="form.address.$error" role="alert">
     <p class="help-block error-text" ng-message="required">Dirección es requerido.</p>
   </div>
 </div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="personType">Tipo de Persona *</label>
-  <input name="personType" type="hidden" ng-model="person.personType" id="personType" class="form-control" placeholder="Tipo de Persona" required>
+<div class="form-group" ng-if="isFieldVisible('personType')" show-errors>
+  <label class="control-label" for="personType">Tipo de Persona <span ng-show="isFieldRequired('personType')">*</span></label>
+  <input name="personType" type="hidden" ng-model="person.personType" id="personType" class="form-control" placeholder="Tipo de Persona" ng-required="isFieldRequired('personType')">
   <div class="dropdown" id="personTypeDropdown" uib-dropdown>
     <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
       <span ng-if="!person.personType">-- Seleccione uno --</span>
@@ -108,43 +110,9 @@
     <p class="help-block error-text" ng-message="required">Tipo de Persona es requerido</p>
   </div>
 </div>
-<div class="form-group">
-  <label class="control-label" for="organization">Área de Servicio</label>
-  <div class="select2-bootstrap-append">
-    <ui-select multiple ng-model="person.serviceArea">
-      <ui-select-match  placeholder="Seleccione a las que pertenece...">
-            <span>{{$item.name}}</span>
-        </ui-select-match>
-        <ui-select-choices repeat="item in (serviceAreas | filter: $select.search | filter:filterAlreadyAdded) track by item._id">
-            <div ng-bind-html="item.name | highlight: $select.search"></div>
-        </ui-select-choices>
-    </ui-select> 
-  </div>  
-</div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="birthDate">Fecha de Nacimiento</label>
-  <br />
-  <input name="birthDate" type="hidden" ng-model="person.birthDate" id="birthDate" class="form-control" ng-required="false">
-  <datetimepicker
-    date-options="dateOptions"
-    readonly-date="true"
-    ng-model="person.birthDate" 
-    hidden-time="true" 
-    date-format="dd-MMM-yyyy" 
-    current-text="Hoy"
-    clear-text="Limpiar"
-    close-text="Cerrar" />    
-</div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="age">Edad *</label>
-  <input name="age" type="number" ng-model="person.age" id="age" autocomplete="off" class="form-control" placeholder="Edad" ng-disabled="person.birthDate" required>
-  <div ng-messages="form.age.$error" role="alert">
-    <p class="help-block error-text" ng-message="required">Edad es requerido.</p>
-  </div>
-</div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="maritalStatus">Estado Civil *</label>
-  <input name="maritalStatus" type="hidden" ng-model="person.maritalStatus" id="maritalStatus" class="form-control" placeholder="Estado Civil" required>
+<div class="form-group" ng-if="isFieldVisible('maritalStatuses')" show-errors>
+  <label class="control-label" for="maritalStatus">Estado Civil <span ng-show="isFieldRequired('maritalStatus')">*</span></label>
+  <input name="maritalStatus" type="hidden" ng-model="person.maritalStatus" id="maritalStatus" class="form-control" placeholder="Estado Civil" ng-required="isFieldRequired('maritalStatus')">
   <div class="dropdown" id="maritalStatusDropdown" uib-dropdown>
     <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
       <span ng-if="!person.maritalStatus">-- Seleccione uno --</span>
@@ -161,9 +129,42 @@
     <p class="help-block error-text" ng-message="required">Estado Civil es requerido.</p>
   </div>
 </div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="grade">Educación</label>
-  <input name="grade" type="hidden" ng-model="person.grade" id="grade" class="form-control" placeholder="Educación">
+<div class="form-group" ng-if="isFieldVisible('email')" show-errors>
+  <label class="control-label" for="email">Email <span ng-show="isFieldRequired('email')">*</span></label>
+  <input name="email" type="email" ng-model="person.email" id="email" autocomplete="off" class="form-control" placeholder="Email" ng-required="isFieldRequired('email')">
+  <div ng-messages="form.email.$error" role="alert">
+    <p class="help-block error-text" ng-message="email">Email es incorrecto.</p>
+  </div>
+</div>
+<div class="form-group" ng-if="isFieldVisible('mobilePhone')" show-errors>
+  <label class="control-label" for="mobilePhone">Teléfono celular <span ng-show="isFieldRequired('mobilePhone')">*</span></label>
+  <input name="mobilePhone" mask="9999-9999" mask-restrict="reject" autocomplete="off" ng-model="person.mobilePhone" id="mobilePhone" model-view-value="true" ui-options="{clearOnBlur:false}" ng-minlength="8" class="form-control" ng-required="isFieldRequired('mobilePhone')">
+</div>
+<div class="form-group" ng-if="isFieldVisible('homePhone')" show-errors>
+  <label class="control-label" for="homePhone">Teléfono casa <span ng-show="isFieldRequired('homePhone')">*</span></label>
+  <input name="homePhone" ng-model="person.homePhone" mask="9999-9999" mask-restrict="reject" autocomplete="off"  id="homePhone" model-view-value="true" ui-options="{clearOnBlur:false}" ng-minlength="8" class="form-control" ng-required="isFieldRequired('homePhone')">
+</div>
+<div class="form-group" ng-if="isFieldVisible('otherPhone')" show-errors>
+  <label class="control-label" for="otherPhone">Teléfono (otro) <span ng-show="isFieldRequired('otherPhone')">*</span></label>
+  <input name="otherPhone" mask="9999-9999" mask-restrict="reject" ng-model="person.otherPhone" autocomplete="off" id="otherPhone" model-view-value="true" ui-options="{clearOnBlur:false}" ng-minlength="8" class="form-control" ng-required="isFieldRequired('otherPhone')">
+</div>
+<div class="form-group" ng-if="isFieldVisible('serviceArea')">
+  <label class="control-label" for="serviceArea">Área de Servicio <span ng-show="isFieldRequired('serviceArea')">*</span></label>  
+  <input name="serviceArea" type="hidden" ng-model="person.serviceArea" id="serviceArea" class="form-control" ng-required="isFieldRequired('serviceArea')">
+  <div class="select2-bootstrap-append">
+    <ui-select multiple ng-model="person.serviceArea">
+      <ui-select-match  placeholder="Seleccione a las que pertenece...">
+            <span>{{$item.name}}</span>
+        </ui-select-match>
+        <ui-select-choices repeat="item in (serviceAreas | filter: $select.search | filter:filterAlreadyAdded) track by item._id">
+            <div ng-bind-html="item.name | highlight: $select.search"></div>
+        </ui-select-choices>
+    </ui-select> 
+  </div>  
+</div>
+<div class="form-group" ng-if="isFieldVisible('grade')" show-errors>
+  <label class="control-label" for="grade">Educación <span ng-show="isFieldRequired('grade')">*</span></label>
+  <input name="grade" type="hidden" ng-model="person.grade" id="grade" class="form-control" placeholder="Educación" ng-required="isFieldRequired('grade')">
   <div class="dropdown" id="gradeDropdown" uib-dropdown>
     <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
       <span ng-if="!person.grade">-- Seleccione uno --</span>
@@ -177,17 +178,17 @@
     </ul>
   </div> 
 </div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="occupation">Profesión</label>
-  <input name="occupation" type="text" ng-model="person.occupation" id="occupation" autocomplete="off" class="form-control" placeholder="occupation">
+<div class="form-group" ng-if="isFieldVisible('occupation')" show-errors>
+  <label class="control-label" for="occupation">Profesión <span ng-show="isFieldRequired('occupation')">*</span></label>
+  <input name="occupation" type="text" ng-model="person.occupation" id="occupation" autocomplete="off" class="form-control" placeholder="occupation" ng-required="isFieldRequired('occupation')">
 </div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="employer">Empleador (Empresa donde labora)</label>
-  <input name="employer" type="text" ng-model="person.employer" id="employer" autocomplete="off" class="form-control" placeholder="Empleador">
+<div class="form-group" ng-if="isFieldVisible('employer')" show-errors>
+  <label class="control-label" for="employer">Empleador (Empresa donde labora) <span ng-show="isFieldRequired('employer')">*</span></label>
+  <input name="employer" type="text" ng-model="person.employer" id="employer" autocomplete="off" class="form-control" placeholder="Empleador" ng-required="isFieldRequired('employer')">
 </div>
-<div class="form-group" show-errors>
-  <label class="control-label" for="shirtSize">Talla de camiseta</label>
-  <input name="shirtSize" type="hidden" ng-model="person.shirtSize" id="shirtSize" class="form-control" placeholder="Talla de camiseta">
+<div class="form-group" ng-if="isFieldVisible('shirtSize')" show-errors>
+  <label class="control-label" for="shirtSize">Talla de camiseta <span ng-show="isFieldRequired('shirtSize')">*</span></label>
+  <input name="shirtSize" type="hidden" ng-model="person.shirtSize" id="shirtSize" class="form-control" placeholder="Talla de camiseta" ng-required="isFieldRequired('shirtSize')">
   <div class="dropdown" id="shirtSizeDropdown" uib-dropdown>
     <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
       <span ng-if="!person.shirtSize">-- Seleccione uno --</span>
@@ -201,7 +202,7 @@
     </ul>
   </div> 
 </div>
-<div class="form-group" show-errors>  
+<div class="form-group" ng-if="isFieldVisible('activeMember')" show-errors>  
   <input name="activeMember" type="hidden" ng-model="person.activeMember" id="activeMember" class="form-control">
   <div class="checkbox">
     <label>
@@ -210,11 +211,11 @@
     </label>
   </div>
 </div>
-<div ng-show="person.activeMember" class="form-group" show-errors>
-  <label class="control-label" for="memberTimeYears">Tiempo de asistir (años)</label>
-  <input name="memberTimeYears" type="Number" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" ng-model="person.memberTimeYears" id="memberTimeYears" class="form-control" placeholder="Años de asistir">
+<div ng-show="person.activeMember" ng-if="isFieldVisible('')" class="form-group" show-errors>
+  <label class="control-label" for="memberTimeYears">Tiempo de asistir (años) <span ng-show="isFieldRequired('memberTimeYears')">*</span></label>
+  <input name="memberTimeYears" type="Number" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" ng-model="person.memberTimeYears" id="memberTimeYears" class="form-control" placeholder="Años de asistir" ng-required="isFieldRequired('memberTimeYears')">
 </div>
-<div class="form-group" show-errors>  
+<div class="form-group" ng-if="isFieldVisible('medicalTreatment')" show-errors>  
   <input name="medicalTreatment" type="hidden" ng-model="person.medicalTreatment.exists" id="medicalTreatment" class="form-control">
   <div class="checkbox">
     <label>
@@ -223,7 +224,7 @@
     </label>
   </div>
 </div>
-<div ng-show="person.medicalTreatment.exists">
+<div ng-show="person.medicalTreatment.exists" ng-if="isFieldVisible('medicalTreatment')">
   <div class="form-group" show-errors>
     <label class="control-label" for="medicalTreatment">Comentarios del tratamiento medico</label>
     <input name="medicalTreatment" type="text" ng-model="person.medicalTreatment.comments" id="medicalTreatment" autocomplete="off" class="form-control" placeholder="Comentarios del tratamiento medico" />
@@ -237,7 +238,7 @@
     <input name="allergies" type="text" ng-model="person.medicalTreatment.allergies" id="allergies" autocomplete="off" class="form-control" placeholder="Alergias">
   </div>
 </div>
-<div class="form-group" show-errors>  
+<div class="form-group" show-errors ng-if="isFieldVisible('sponsorship')">  
   <input name="sponsorship" type="hidden" ng-model="person.sponsorship.exists" id="sponsorship" autocomplete="off" class="form-control">
   <div class="checkbox">
     <label>
@@ -246,7 +247,7 @@
     </label>
   </div>
 </div>
-<div ng-if="person.sponsorship.exists">
+<div ng-if="person.sponsorship.exists" ng-if="isFieldVisible('sponsorship')">
   <div class="form-group" show-errors>
     <label class="control-label" for="sponsorName">Nombre Patrocinador *</label>
     <input name="sponsorName" type="text" ng-model="person.sponsorship.sponsorName" id="sponsorName" autocomplete="off" class="form-control" placeholder="Nombre Patrocinador" required>

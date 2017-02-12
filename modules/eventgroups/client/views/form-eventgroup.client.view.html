@@ -1,0 +1,152 @@
+<section class="container">
+  <div ng-if="vm.error">
+    <br />
+    <div class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert" ng-click='vm.error = undefined'>&times;</a>
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <strong class="text-danger">Error:</strong>
+      <span ng-bind-html="vm.error"></span>
+    </div>
+  </div>
+  <div class="page-header">
+    <h1>{{vm.eventgroup._id ? 'Editar Cabaña' : 'Nueva Cabaña'}}</h1>
+  </div>
+  <div class="pull-left">
+     <a class="btn btn-secondary" data-ui-sref="eventgroups.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
+    </a>
+  </div>
+  <br /><br />
+  <div class="col-md-12">
+    <form name="vm.form.eventgroupForm" class="form-horizontal" ng-submit="vm.save(vm.form.eventgroupForm.$valid)" novalidate>
+      <fieldset>
+        <div class="form-group" show-errors>        
+          <label class="control-label" for="event">Evento *</label>  
+          <input name="event" type="hidden" ng-model="vm.eventgroup.event" id="event" class="form-control" required>
+          <div class="input-group select2-bootstrap-append">
+            <ui-select ng-model="vm.eventgroup.event" on-select="vm.setEvent(vm.eventgroup.event)" ng-disabled="vm.isOptionDisabled()">
+              <ui-select-match  placeholder="Seleccione el evento...">
+                    <span>{{$select.selected.name}}</span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (vm.events | filter: $select.search) track by item._id">
+                    <div ng-bind-html="item.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select> 
+            <span class="input-group-btn">
+              <button type="button" ng-click="vm.eventgroup.event = vm.eventgroup.eventPeopleGroup = vm.eventgroup.leader = vm.eventgroup.assistant = vm.eventgroup.members = undefined" class="btn btn-default"  data-toggle="tooltip" title="Borrar filtro de evento">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </span>  
+          </div>           
+          <div ng-messages="vm.form.eventgroupForm.event.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Evento es requerido.</p>
+          </div>
+        </div> 
+        <div class="form-group" show-errors>        
+          <label class="control-label" for="eventPeopleGroup">Grupo *</label>  
+          <input name="eventPeopleGroup" type="hidden" ng-model="vm.eventgroup.eventPeopleGroup" id="eventPeopleGroup" class="form-control" required>
+          <div class="input-group select2-bootstrap-append">
+            <ui-select ng-model="vm.eventgroup.eventPeopleGroup" on-select="vm.setEventPeopleGroup()"  ng-disabled="vm.isOptionDisabled()">
+              <ui-select-match  placeholder="Seleccione el grupo...">
+                    <span>{{$select.selected.name}}</span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (vm.eventPeopleGroups | filter: $select.search) track by item._id">
+                    <div ng-bind-html="item.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select> 
+            <span class="input-group-btn">
+              <button type="button" ng-click="vm.eventgroup.eventPeopleGroup = undefined" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </span>  
+          </div> 
+          <div ng-messages="vm.form.eventgroupForm.eventPeopleGroup.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Grupo es requerido.</p>
+          </div>
+        </div> 
+        <div class="form-group" show-errors>
+          <label class="control-label" for="eventGroupName">Nombre de cabaña *</label>
+          <input name="eventGroupName" type="text" ng-model="vm.eventgroup.name" id="eventGroupName" autocomplete="off" class="form-control" placeholder="Nombre de cabaña" required>
+          <div ng-messages="vm.form.eventgroupForm.eventGroupName.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Nombre de cabaña es requerido.</p>
+          </div>
+        </div>
+        <div class="form-group">        
+          <label class="control-label" for="leader">Líder</label>  
+          <div class="input-group select2-bootstrap-append">
+            <ui-select ng-model="vm.eventgroup.leader" ng-disabled="!vm.eventgroup.event || !vm.eventgroup.eventPeopleGroup">
+              <ui-select-match  placeholder="Seleccione el líder...">
+                    <span>{{$select.selected.person.firstName}} 
+                    {{$select.selected.person.lastName}} 
+                    {{$select.selected.person.secondLastName}}
+                    | {{$select.selected.person.age}} años
+                    | {{$select.selected.person.maritalStatus}}
+                    | {{$select.selected.person.personType.name}}</span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (vm.unassignedRegistrations | filter:{isEventServer:true} | filter:{eventPeopleGroup:{name: vm.eventgroup.eventPeopleGroup.name}} | filter: $select.search | orderBy:'person.age') track by item._id">
+                    <div ng-bind-html="item.person.firstName + ' ' + item.person.lastName 
+                    + ' ' + item.person.secondLastName+ ' | Edad: ' + item.person.age + 'años | ' + item.person.maritalStatus 
+                    +' | Tipo de persona: ' + item.person.personType.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select> 
+            <span class="input-group-btn">
+              <button type="button" ng-click="vm.eventgroup.leader = undefined" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </span>  
+          </div>
+        </div>  
+        <div class="form-group">        
+          <label class="control-label" for="assistant">Asistente</label>  
+          <div class="input-group select2-bootstrap-append">
+            <ui-select ng-model="vm.eventgroup.assistant" ng-disabled="!vm.eventgroup.event || !vm.eventgroup.eventPeopleGroup">
+              <ui-select-match  placeholder="Seleccione el asistente...">
+                    <span>{{$select.selected.person.firstName}} 
+                    {{$select.selected.person.lastName}} 
+                    {{$select.selected.person.secondLastName}}
+                    | {{$select.selected.person.age}} años
+                    | {{$select.selected.person.maritalStatus}}
+                    | {{$select.selected.person.personType.name}}</span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (vm.unassignedRegistrations | filter:{isEventServer:true} | filter:{eventPeopleGroup:{name: vm.eventgroup.eventPeopleGroup.name}} | filter: $select.search | orderBy:'person.age') track by item._id">  
+                    <div ng-bind-html="item.person.firstName + ' ' + item.person.lastName 
+                    + ' ' + item.person.secondLastName+ ' | Edad: ' + item.person.age + 'años | ' + item.person.maritalStatus 
+                    +' | Tipo de persona: ' + item.person.personType.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select> 
+            <span class="input-group-btn">
+              <button type="button" ng-click="vm.eventgroup.assistant = undefined" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </span>  
+          </div> 
+        </div>  
+        <div class="form-group"  ng-show="vm.eventgroup.event && vm.eventgroup.eventPeopleGroup">
+          <label class="control-label" for="members">Miembros</label>
+          <div class="select2-bootstrap-append">
+            <ui-select multiple ng-model="vm.eventgroup.members">
+              <ui-select-match  placeholder="Seleccione los miembros de la cabaña...">
+                    <span>{{$item.person.firstName}} 
+                    {{$item.person.lastName}} 
+                    {{$item.person.secondLastName}}
+                    | {{$item.person.age}} años
+                    | {{$item.person.maritalStatus}}
+                    | {{$item.person.personType.name}}</span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (vm.unassignedRegistrations | filter:{isEventServer:false} | filter:{eventExternalServer: {isEventExternalServer:false}} | filter:{eventPeopleGroup:{name: vm.eventgroup.eventPeopleGroup.name}} | filter: $select.search | filter:vm.membersFilterAlreadyAdded  | orderBy:'person.age') track by item._id">
+                    <div ng-bind-html="item.person.firstName + ' ' + item.person.lastName 
+                    + ' ' + item.person.secondLastName+ ' | Edad: ' + item.person.age + 'años | ' + item.person.maritalStatus 
+                    +' | Tipo de persona: ' + item.person.personType.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select> 
+          </div>  
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-default">{{vm.eventgroup._id ? 'Actualizar' : 'Crear'}}</button>
+        </div>
+        <br /><br />
+      </fieldset>
+    </form>
+  </div>
+</section>

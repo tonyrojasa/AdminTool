@@ -108,14 +108,22 @@
       ServiceAcademyClassStudents = _.map(ServiceAcademyClassStudents, function(item) {
         return item.person;
       });
+
       var pendingServiceAcademyClassStudents = _.differenceBy(ServiceAcademyClassStudents, oldAssistants, '_id');
+      var removedServiceAcademyClassStudents = _.differenceBy(oldAssistants, ServiceAcademyClassStudents, '_id');
 
       vm.assistance.assistants = vm.assistance.assistants ? vm.assistance.assistants : [];
 
       _.forEach(pendingServiceAcademyClassStudents, function(person) {
         vm.assistance.assistants.push({
           person: person,
-          status: ''
+          status: 'absent'
+        });
+      });
+
+      _.forEach(removedServiceAcademyClassStudents, function(person) {
+        vm.assistance.assistants = _.remove(vm.assistance.assistants, function(existingAsistant) {
+          return existingAsistant.person._id != person._id;
         });
       });
     }
