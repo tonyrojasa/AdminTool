@@ -5,12 +5,17 @@
     .module('events')
     .controller('EventsListController', EventsListController);
 
-  EventsListController.$inject = ['EventsService'];
+  EventsListController.$inject = ['$rootScope', 'EventsService'];
 
-  function EventsListController(EventsService) {
+  function EventsListController($rootScope, EventsService) {
     var vm = this;
-    vm.events = EventsService.query();
 
+    $rootScope.showLoadingSpinner = true;
+    vm.events = EventsService.query(function() {
+      $rootScope.showLoadingSpinner = false;
+    }, function() {
+      $rootScope.showLoadingSpinner = false;
+    });
 
     vm.getStatusClass = function(event) {
       if (event.ended) {

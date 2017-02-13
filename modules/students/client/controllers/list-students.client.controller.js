@@ -5,9 +5,9 @@
     .module('students')
     .controller('StudentsListController', StudentsListController);
 
-  StudentsListController.$inject = ['StudentsService', 'ServiceacademyclassesService', 'serviceacademyclassResolve'];
+  StudentsListController.$inject = ['$rootScope', 'StudentsService', 'ServiceacademyclassesService', 'serviceacademyclassResolve'];
 
-  function StudentsListController(StudentsService, ServiceacademyclassesService, serviceacademyclass) {
+  function StudentsListController($rootScope, StudentsService, ServiceacademyclassesService, serviceacademyclass) {
     var vm = this;
     vm.serviceAcademyClasses = ServiceacademyclassesService.query();
     vm.setServiceAcademyClass = setServiceAcademyClass;
@@ -16,7 +16,12 @@
       vm.serviceAcademyClass = serviceAcademyClass;
     }
 
-    vm.students = StudentsService.query();
+    $rootScope.showLoadingSpinner = true;
+    vm.students = StudentsService.query(function() {
+      $rootScope.showLoadingSpinner = false;
+    }, function() {
+      $rootScope.showLoadingSpinner = false;
+    });
     vm.serviceAcademyClass = serviceacademyclass;
 
     vm.getStatusClass = getStatusClass;
@@ -26,7 +31,7 @@
       if (studentScore === null) {
         return 'info';
       }
-      debugger;
+
       if (studentScore >= 80) {
         return 'success';
       } else if (studentScore >= 70) {

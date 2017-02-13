@@ -5,12 +5,12 @@
     .module('eventregistrations')
     .controller('EventregistrationsReportController', EventregistrationsReportController);
 
-  EventregistrationsReportController.$inject = ['$scope', 'EventregistrationsByEventService',
+  EventregistrationsReportController.$inject = ['$rootScope', '$scope', 'EventregistrationsByEventService',
     'EventsService', 'EventpeoplegroupsService', 'PersontypesService', 'ReceiptsByEventRegistrationService', '$timeout', 'moment',
     'EventgroupsService'
   ];
 
-  function EventregistrationsReportController($scope, EventregistrationsByEventService, EventsService,
+  function EventregistrationsReportController($rootScope, $scope, EventregistrationsByEventService, EventsService,
     EventpeoplegroupsService, PersontypesService, ReceiptsByEventRegistrationService, $timeout, moment, EventgroupsService) {
     var vm = this;
     vm.moment = moment;
@@ -29,17 +29,32 @@
     });
 
     vm.setEvent = function(event) {
+      $rootScope.showLoadingSpinner = true;
       vm.loadEventgroups(event._id, function(eventGroups) {
         vm.eventregistrations = EventregistrationsByEventService.query({
           'eventId': event._id
         }, function(data) {
-          _.each(data, function(eventregistration) {
+          if (data.length && data.length > 0) {
+            vm.lastIndex = data.length - 1;
+          } else {
+            vm.lastIndex = 0;
+            $rootScope.showLoadingSpinner = false;
+          }
+          _.each(data, function(eventregistration, index) {
             vm.setEventRegistrationEventGroup(eventGroups, eventregistration);
 
             eventregistration.registrationDate = vm.moment(eventregistration.registrationDate).format('YYYY-MM-DD');
             vm.getEventRegistrationTotalPayments(eventregistration);
+
+            if (index === vm.lastIndex) {
+              $rootScope.showLoadingSpinner = false;
+            }
           });
+        }, function() {
+          $rootScope.showLoadingSpinner = false;
         });
+      }, function() {
+        $rootScope.showLoadingSpinner = false;
       });
     };
 
