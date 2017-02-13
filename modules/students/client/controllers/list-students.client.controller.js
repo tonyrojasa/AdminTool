@@ -23,13 +23,18 @@
 
     function getStatusClass(student) {
       var studentScore = student.score;
-
+      if (studentScore === null) {
+        return 'info';
+      }
+      debugger;
       if (studentScore >= 80) {
         return 'success';
       } else if (studentScore >= 70) {
         return 'warning';
-      } else {
+      } else if (studentScore < 70 && studentScore >= 0) {
         return 'danger';
+      } else {
+        return 'info';
       }
     }
   }
