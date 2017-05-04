@@ -5,11 +5,11 @@
     .module('receipts')
     .controller('ReceiptsListController', ReceiptsListController);
 
-  ReceiptsListController.$inject = ['$scope', 'ReceiptsService', 'CurrentReceiptsService', '$state', 'CurrentEventsService', 'EventregistrationsService',
+  ReceiptsListController.$inject = ['$rootScope', '$scope', 'ReceiptsService', 'CurrentReceiptsService', '$state', 'CurrentEventsService', 'EventregistrationsService',
     'Authentication', '$anchorScroll', 'NgTableParams', 'moment', 'Notification'
   ];
 
-  function ReceiptsListController($scope, ReceiptsService, CurrentReceiptsService, $state, CurrentEventsService, EventregistrationsService,
+  function ReceiptsListController($rootScope, $scope, ReceiptsService, CurrentReceiptsService, $state, CurrentEventsService, EventregistrationsService,
     Authentication, $anchorScroll, NgTableParams, moment, Notification) {
     var vm = this;
     vm.moment = moment;
@@ -25,10 +25,22 @@
       });
     });
 
+    $rootScope.showLoadingSpinner = true;
     vm.receipts = CurrentReceiptsService.query(function(data) {
-      _.each(data, function(receipt) {
+      if (data.length && data.length > 0) {
+        vm.lastIndex = data.length - 1;
+      } else {
+        vm.lastIndex = 0;
+        $rootScope.showLoadingSpinner = false;
+      }
+      _.each(data, function(receipt, index) {
         receipt.paymentDate = vm.moment(receipt.paymentDate).format('YYYY-MM-DD');
+        if (index === vm.lastIndex) {
+          $rootScope.showLoadingSpinner = false;
+        }
       });
+    }, function() {
+      $rootScope.showLoadingSpinner = false;
     });
 
     $scope.$watch('vm.paymentDate', function(newVal, oldVal) {

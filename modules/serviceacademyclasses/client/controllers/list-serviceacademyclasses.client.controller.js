@@ -5,11 +5,18 @@
     .module('serviceacademyclasses')
     .controller('ServiceacademyclassesListController', ServiceacademyclassesListController);
 
-  ServiceacademyclassesListController.$inject = ['_', 'ServiceacademyclassesService', 'OrganizationsService'];
+  ServiceacademyclassesListController.$inject = ['$rootScope', '_', 'ServiceacademyclassesService', 'OrganizationsService'];
 
-  function ServiceacademyclassesListController(_, ServiceacademyclassesService, OrganizationsService) {
+  function ServiceacademyclassesListController($rootScope, _, ServiceacademyclassesService, OrganizationsService) {
     var vm = this;
-    vm.serviceacademyclasses = ServiceacademyclassesService.query();
+
+    $rootScope.showLoadingSpinner = true;
+    vm.serviceacademyclasses = ServiceacademyclassesService.query(function() {
+      $rootScope.showLoadingSpinner = false;
+    }, function() {
+      $rootScope.showLoadingSpinner = false;
+    });
+
     vm.organizations = OrganizationsService.query();
     vm.getStatusClass = getStatusClass;
     vm.setOrganization = setOrganization;

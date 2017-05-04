@@ -20,6 +20,9 @@ module.exports = function(app) {
     .put(receipts.update)
     .delete(receipts.delete);
 
+  app.route('/api/receipts/event/:eventId').all(receiptsPolicy.isAllowed)
+    .get(receipts.listByEventId);
+
   app.route('/api/receipts/eventregistration/:eventRegistrationId').all(receiptsPolicy.isAllowed)
     .get(receipts.listByEventRegistrationId);
 

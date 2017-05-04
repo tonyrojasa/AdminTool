@@ -29,5 +29,12 @@
       state: 'serviceacademyclasses.create',
       roles: ['admin', 'teacher', 'student']
     });
+
+    // Set top bar menu items
+    Menus.addSubMenuItem('topbar', 'serviceacademyclasses', {
+      title: 'Lista de Asistencias',
+      state: 'assistances.list',
+      roles: ['admin', 'teacher', 'student', 'user']
+    });
   }
 })();

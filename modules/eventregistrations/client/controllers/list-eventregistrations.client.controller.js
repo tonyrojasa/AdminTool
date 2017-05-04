@@ -5,12 +5,12 @@
     .module('eventregistrations')
     .controller('EventregistrationsListController', EventregistrationsListController);
 
-  EventregistrationsListController.$inject = ['$scope', 'CurrentEventregistrationsService', 'CurrentEventsService', 'Authentication',
+  EventregistrationsListController.$inject = ['$rootScope', '$scope', 'CurrentEventregistrationsService', 'CurrentEventsService', 'Authentication',
     'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams', '$filter', 'moment', 'EventpeoplegroupsService',
     'PersontypesService', 'EventregistrationsService', 'Notification'
   ];
 
-  function EventregistrationsListController($scope, CurrentEventregistrationsService, CurrentEventsService, Authentication,
+  function EventregistrationsListController($rootScope, $scope, CurrentEventregistrationsService, CurrentEventsService, Authentication,
     ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams, $filter, moment, EventpeoplegroupsService,
     PersontypesService, EventregistrationsService, Notification) {
     var vm = this;
@@ -48,10 +48,22 @@
       });
     });
 
+    $rootScope.showLoadingSpinner = true;
     vm.eventregistrations = CurrentEventregistrationsService.query(function(data) {
-      _.each(data, function(eventregistration) {
+      if (data.length && data.length > 0) {
+        vm.lastIndex = data.length - 1;
+      } else {
+        vm.lastIndex = 0;
+        $rootScope.showLoadingSpinner = false;
+      }
+      _.each(data, function(eventregistration, index) {
         eventregistration.registrationDate = vm.moment(eventregistration.registrationDate).format('YYYY-MM-DD');
+        if (index === vm.lastIndex) {
+          $rootScope.showLoadingSpinner = false;
+        }
       });
+    }, function() {
+      $rootScope.showLoadingSpinner = false;
     });
     vm.setEvent = setEvent;
     vm.remove = remove;

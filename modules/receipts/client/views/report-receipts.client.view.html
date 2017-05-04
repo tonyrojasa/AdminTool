@@ -7,7 +7,7 @@
     <div class="col-md-6 form-group">        
       <label class="control-label" for="event">Evento *</label>  
       <div class="input-group select2-bootstrap-append">
-        <ui-select ng-model="vm.event">
+        <ui-select ng-model="vm.event" on-select="vm.setEvent(vm.event)">
           <ui-select-match  placeholder="Seleccione el tipo de persona...">
                 <span>{{$select.selected.name}}</span>
             </ui-select-match>

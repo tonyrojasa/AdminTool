@@ -301,16 +301,15 @@
       }
     }
 
-     // Save Person
+    // Save Person
     function saveStudent() {
-      if(vm.eventregistration.event.serviceAcademyClass) {        
-        if(!vm.eventregistration._id) {//create student
+      if (vm.eventregistration.event.serviceAcademyClass) {
+        if (!vm.eventregistration._id) { //create student
           var student = {
             person: vm.eventregistration.person._id,
-            serviceAcademyClass: vm.eventregistration.event.serviceAcademyClass,
-            score: 0
+            serviceAcademyClass: vm.eventregistration.event.serviceAcademyClass
           };
-          StudentsService.create(student,successStudentCallback,errorStudentCallback);
+          StudentsService.create(student, successStudentCallback, errorStudentCallback);
         }
       }
 
@@ -325,8 +324,8 @@
       function errorStudentCallback(res) {
         $rootScope.showSpinner = false;
         Notification.error({
-          message: 'No se pudo registrar la persona en la academia asignada a este evento. '+
-          'Debe agregarla manualmente',
+          message: 'No se pudo registrar la persona en la academia asignada a este evento. ' +
+            'Debe agregarla manualmente',
           title: '<i class="glyphicon glyphicon-remove"></i> Error al agregar al estudiante!',
           delay: 6000
         });
