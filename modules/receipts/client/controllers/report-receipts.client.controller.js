@@ -5,11 +5,11 @@
     .module('eventregistrations')
     .controller('ReceiptsReportController', ReceiptsReportController);
 
-  ReceiptsReportController.$inject = ['$scope', 'ReceiptsService', '$state', 'EventsService', 'EventregistrationsService',
+  ReceiptsReportController.$inject = ['$rootScope', '$scope', 'ReceiptsByEventService', '$state', 'EventsService', 'EventregistrationsService',
     'Authentication', 'EventpeoplegroupsService', 'PersontypesService', 'moment'
   ];
 
-  function ReceiptsReportController($scope, ReceiptsService, $state, EventsService, EventregistrationsService,
+  function ReceiptsReportController($rootScope, $scope, ReceiptsByEventService, $state, EventsService, EventregistrationsService,
     Authentication, EventpeoplegroupsService, PersontypesService, moment) {
     var vm = this;
     vm.moment = moment;
@@ -28,12 +28,36 @@
       vm.events = EventsService.query();
       vm.eventPeopleGroups = EventpeoplegroupsService.query();
       vm.personTypes = PersontypesService.query();
-      vm.receipts = ReceiptsService.query(function(data) {
-        _.each(data, function(receipt) {
-          receipt.paymentDate = vm.moment(receipt.paymentDate).format('YYYY-MM-DD');
-        });
-      });
     }
+
+    // $scope.$watch('vm.receipts', function(newVal, oldVal) {
+    //   debugger;
+    //   if (newVal) {
+    //     $rootScope.showLoadingSpinner = false;
+    //   }
+    // });
+
+    vm.setEvent = function(event) {
+      $rootScope.showLoadingSpinner = true;
+      vm.receipts = ReceiptsByEventService.query({
+        'eventId': event._id
+      }, function(data) {
+        if (data.length && data.length > 0) {
+          vm.lastIndex = data.length - 1;
+        } else {
+          vm.lastIndex = 0;
+          $rootScope.showLoadingSpinner = false;
+        }
+        _.each(data, function(receipt, index) {
+          receipt.paymentDate = vm.moment(receipt.paymentDate).format('YYYY-MM-DD');
+          if (index === vm.lastIndex) {
+            $rootScope.showLoadingSpinner = false;
+          }
+        });
+      }, function() {
+        $rootScope.showLoadingSpinner = false;
+      });
+    };
 
     vm.getTotalClass = function(value) {
       if (value >= 0) {
