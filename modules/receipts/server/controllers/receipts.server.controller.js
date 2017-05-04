@@ -224,6 +224,53 @@ exports.listByEventRegistrationId = function(req, res) {
     });
 };
 
+
+/**
+ * List of Receipts by eventId
+ */
+exports.listByEventId = function(req, res) {
+  var eventId = req.params.eventId;
+  Receipt.where('event', eventId).sort('-created')
+    .populate('event')
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'event'
+      }
+    })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'eventPeopleGroup'
+      }
+    })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'personType'
+      }
+    })
+    .populate({
+      path: 'eventRegistration',
+      populate: {
+        path: 'person',
+        populate: {
+          path: 'personType',
+          model: 'Persontype'
+        }
+      }
+    })
+    .populate('user', 'displayName').exec(function(err, receipts) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(receipts);
+      }
+    });
+};
+
 /**
  * Receipt middleware
  */

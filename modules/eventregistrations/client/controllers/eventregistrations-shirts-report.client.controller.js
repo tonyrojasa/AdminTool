@@ -5,11 +5,11 @@
     .module('eventregistrations')
     .controller('EventregistrationsShirtsReportController', EventregistrationsShirtsReportController);
 
-  EventregistrationsShirtsReportController.$inject = ['$scope', 'EventregistrationsByEventService',
+  EventregistrationsShirtsReportController.$inject = ['$rootScope', '$scope', 'EventregistrationsByEventService',
     'EventsService', 'EventpeoplegroupsService', 'PersontypesService', '$timeout'
   ];
 
-  function EventregistrationsShirtsReportController($scope, EventregistrationsByEventService, EventsService,
+  function EventregistrationsShirtsReportController($rootScope, $scope, EventregistrationsByEventService, EventsService,
     EventpeoplegroupsService, PersontypesService, $timeout) {
     var vm = this;
     init();
@@ -23,13 +23,25 @@
 
     vm.onEventSelected = function(event) {
       if (event) {
+        $rootScope.showLoadingSpinner = true;
         vm.eventregistrations = EventregistrationsByEventService.query({
           'eventId': event._id
         }, function(data) {
           vm.shirtTypesGroups = [];
+          if (data.length && data.length > 0) {
+            vm.lastIndex = data.length - 1;
+          } else {
+            vm.lastIndex = 0;
+            $rootScope.showLoadingSpinner = false;
+          }
           _.each(data, function(eventregistration, key) {
             vm.getShirtTypes(eventregistration, vm.shirtTypesGroups);
+            if (key === vm.lastIndex) {
+              $rootScope.showLoadingSpinner = false;
+            }
           });
+        }, function() {
+          $rootScope.showLoadingSpinner = false;
         });
       }
     };

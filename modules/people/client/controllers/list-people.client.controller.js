@@ -5,20 +5,32 @@
     .module('people')
     .controller('PeopleListController', PeopleListController);
 
-  PeopleListController.$inject = ['$anchorScroll', 'PeopleService', 'PersontypesService', 'ServiceareasService', 'Authentication',
+  PeopleListController.$inject = ['$rootScope', '$anchorScroll', 'PeopleService', 'PersontypesService', 'ServiceareasService', 'Authentication',
     'EventregistrationsByPersonService', 'ServiceacademyclassesByPersonService', 'StudentsByPersonService', 'NgTableParams'
   ];
 
-  function PeopleListController($anchorScroll, PeopleService, PersontypesService, ServiceareasService, Authentication,
+  function PeopleListController($rootScope, $anchorScroll, PeopleService, PersontypesService, ServiceareasService, Authentication,
     EventregistrationsByPersonService, ServiceacademyclassesByPersonService, StudentsByPersonService, NgTableParams) {
     var vm = this;
     vm.personTypesFilterArray = [];
     vm.serviceAreasFilterArray = [];
     vm.getPeople = function() {
+      $rootScope.showLoadingSpinner = true;
       return PeopleService.query(function(data) {
-        _.each(data, function(person) {
+        if (data.length && data.length > 0) {
+          vm.lastIndex = data.length - 1;
+        } else {
+          vm.lastIndex = 0;
+          $rootScope.showLoadingSpinner = false;
+        }
+        _.each(data, function(person, index) {
           person.serviceAreas = vm.getServiceAreaNames(person.serviceArea);
+          if (index === vm.lastIndex) {
+            $rootScope.showLoadingSpinner = false;
+          }
         });
+      }, function() {
+        $rootScope.showLoadingSpinner = false;
       });
     };
     vm.people = vm.getPeople();
