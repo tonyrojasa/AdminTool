@@ -46,7 +46,37 @@ gulp.task('env:prod', function() {
 });
 
 // Nodemon task
+<<<<<<< HEAD
 gulp.task('nodemon', function() {
+  return plugins.nodemon({
+    script: 'server.js',
+    nodeArgs: ['--debug'],
+    ext: 'js,html',
+    verbose: true,
+    watch: _.union(defaultAssets.server.views, defaultAssets.server.allJS, defaultAssets.server.config)
+  });
+});
+
+gulp.task('node-inspector', function() {
+  gulp.src([])
+    .pipe(plugins.nodeInspector({
+      debugPort: 5858,
+      webHost: '0.0.0.0',
+      webPort: 1337,
+      saveLiveEdit: false,
+      preload: true,
+      inject: true,
+      hidden: [],
+      stackTraceLimit: 50,
+      sslKey: '',
+      sslCert: ''
+    }));
+});
+
+// Nodemon debug task
+gulp.task('nodemon-debug', function() {
+=======
+gulp.task('nodemon', function () {
 
   var nodeVersions = process.versions;
   var debugArgument = '--debug';
@@ -61,6 +91,7 @@ gulp.task('nodemon', function() {
       break;
   }
 
+>>>>>>> 7eedfcc6cf362af8c7363809d50e64d0aa636464
   return plugins.nodemon({
     script: 'server.js',
     nodeArgs: [debugArgument],
@@ -427,7 +458,11 @@ gulp.task('protractor_prep', function() {
 gulp.task('webdriver_standalone', webdriver_standalone);
 
 // Protractor test runner task
+<<<<<<< HEAD
+gulp.task('protractor', ['webdriver_update'], function() {
+=======
 gulp.task('protractor', ['webdriver_prep'], function () {
+>>>>>>> 7eedfcc6cf362af8c7363809d50e64d0aa636464
   gulp.src([])
     .pipe(protractor({
       configFile: 'protractor.conf.js'
@@ -485,11 +520,24 @@ gulp.task('test:coverage', function(done) {
   runSequence('env:test', ['copyLocalEnvConfig', 'makeUploadsDir', 'dropdb'], 'lint', 'mocha:coverage', 'karma:coverage', done);
 });
 
-// Run the project in development mode with node debugger enabled
+<<<<<<< HEAD
+// Run the project in development mode
 gulp.task('default', function(done) {
   runSequence('env:dev', ['copyLocalEnvConfig', 'makeUploadsDir'], 'lint', ['nodemon', 'watch'], done);
 });
 
+// Run the project in debug mode
+gulp.task('debug', function(done) {
+  runSequence('env:dev', ['copyLocalEnvConfig', 'makeUploadsDir'], 'lint', ['node-inspector', 'nodemon-debug', 'watch'], done);
+});
+
+=======
+// Run the project in development mode with node debugger enabled
+gulp.task('default', function (done) {
+  runSequence('env:dev', ['copyLocalEnvConfig', 'makeUploadsDir'], 'lint', ['nodemon', 'watch'], done);
+});
+
+>>>>>>> 7eedfcc6cf362af8c7363809d50e64d0aa636464
 // Run the project in production mode
 gulp.task('prod', function(done) {
   runSequence(['copyLocalEnvConfig', 'makeUploadsDir', 'templatecache'], 'build', 'env:prod', 'lint', ['nodemon-nodebug', 'watch'], done);
