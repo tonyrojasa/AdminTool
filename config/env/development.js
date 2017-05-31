@@ -4,13 +4,15 @@ var defaultEnvConfig = require('./default');
 
 module.exports = {
   db: {
-    uri: process.env.MONGOHQ_URL || process.env.MONGODB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/mean-dev',
+    uri: 'mongodb://tonyrojasa:22984271Tony@ds031895.mlab.com:31895/iglesiamiel',
+    //uri: process.env.MONGOHQ_URL || process.env.MONGODB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/mean-dev',
     options: {
       user: '',
       pass: ''
     },
     // Enable mongoose debug mode
-    debug: process.env.MONGODB_DEBUG || false
+    debug: false
+    //debug: process.env.MONGODB_DEBUG || false
   },
   log: {
     // logging with Morgan - https://github.com/expressjs/morgan
