@@ -58,7 +58,9 @@
           return (serviceAreaNames.indexOf(item.name) === -1);
         };
 
-        scope.organizations = OrganizationsService.query();
+        scope.organizations = OrganizationsService.query(function(organizations){
+          scope.person.organization = organizations.length === 1 ? organizations[0] : scope.person.organization;
+        });
         scope.setOrganization = function(organization) {
           scope.person.organization = organization;
         };

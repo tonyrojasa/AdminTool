@@ -23,8 +23,10 @@
     vm.parseSchedule = parseSchedule;
     vm.isGtToday = isGtToday;
 
-    vm.organizations = OrganizationsService.query();
     vm.people = PeopleService.query();
+    vm.organizations = OrganizationsService.query(function(organizations){
+      vm.serviceacademyclass.organization = organizations.length === 1 ? organizations[0] : vm.serviceacademyclass.organization;
+    });
     vm.setOrganization = function(organization) {
       vm.serviceacademyclass.organization = organization;
     };

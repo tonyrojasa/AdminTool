@@ -5,7 +5,6 @@ var defaultEnvConfig = require('./default');
 module.exports = {
   db: {
     uri: 'mongodb://tonyrojasa:22984271Tony@ds031895.mlab.com:31895/iglesiamiel',
-    //uri: process.env.MONGOHQ_URL || process.env.MONGODB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/mean-dev',
     options: {
       user: '',
       pass: ''
@@ -30,7 +29,7 @@ module.exports = {
     title: defaultEnvConfig.app.title + ' - Development Environment'
   },
   facebook: {
-    clientID: process.env.FACEBOOK_ID || '1363951373622177',
+    clientID: process.env.FACEBOOK_ID || '638944832960966',
     clientSecret: process.env.FACEBOOK_SECRET || '43316fb779880c4d5f44d32d5b05f349',
     callbackURL: '/api/auth/facebook/callback'
   },

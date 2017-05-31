@@ -39,7 +39,9 @@
 
     vm.serviceAcademyClasses = CurrentServiceAcademyClassesService.query();
 
-    vm.organizations = OrganizationsService.query();
+    vm.organizations = OrganizationsService.query(function(organizations){
+      vm.event.organization = organizations.length === 1 ? organizations[0] : vm.event.organization;
+    });
     vm.setOrganization = function(organization) {
       vm.event.organization = organization;
     };

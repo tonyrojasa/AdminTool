@@ -6,6 +6,6 @@ declared-services:
 applications:
 - name: mean
   host: mean-${random-word}
-  memory: 512M
+  memory: 1024M
   env:
     NODE_ENV: cloud-foundry

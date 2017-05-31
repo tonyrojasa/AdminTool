@@ -62,11 +62,13 @@
       'maritalStatus'
     ];
     vm.quickRegistrationRequiredFields = [
+      'personId',
       'organization',
       'sex',
       'firstName',
       'lastName',
-      'secondLastName'
+      'secondLastName',
+      'mobilePhone'
     ];
     init();
 
