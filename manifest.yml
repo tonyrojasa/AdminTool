@@ -7,7 +7,5 @@ applications:
 - name: mean
   host: mean-${random-word}
   memory: 512M
-  services:
-  - mean-mongo
   env:
     NODE_ENV: cloud-foundry
