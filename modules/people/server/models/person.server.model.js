@@ -47,7 +47,7 @@ var PersonSchema = new Schema({
     ref: 'Persontype'
   },
   personId: {
-    type: Number
+    type: String
   }, 
   personIdType: {
     type: String,
