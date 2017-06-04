@@ -48,6 +48,10 @@ var PersonSchema = new Schema({
   },
   personId: {
     type: Number
+  }, 
+  personIdType: {
+    type: String,
+    default: "physical"
   },
   firstName: {
     type: String,

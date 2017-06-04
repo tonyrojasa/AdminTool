@@ -40,7 +40,32 @@
 </div>
 <div class="form-group" ng-if="isFieldVisible('personId')" show-errors>
   <label class="control-label" for="personId">Identificación (cedula) <span ng-show="isFieldRequired('personId')">*</span></label>
-  <input name="personId" type="text" ng-model="person.personId" id="personId" autocomplete="off" class="form-control" placeholder="Identificación" ng-required="isFieldRequired('personId')">
+  <div>
+    <label class="checkbox-inline">
+      <input type="checkbox"  name="isPhysicalPersonIdCheckbox" type="checkbox" ng-model="personIdOptions.isPhysicalPersonId" ng-click="physicalPersonIdChanged()"/> 
+      <strong>Cédula Persona Fisica</strong>
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox"  name="isOtherPersonIdCheckbox" type="checkbox" ng-model="personIdOptions.isOtherPersonId" ng-click="otherPersonIdChanged()"/> 
+      <strong>Otra Identificación</strong>
+    </label>
+  </div>
+  <div ng-show="personIdOptions.isPhysicalPersonId">
+    <input name="personId"  type="text" mask="{{personIdOptions.mask}}" mask-restrict="reject" ng-model="person.personId" id="personId" autocomplete="off" mask-limit="true" ng-minlength="11" model-view-value="true" class="form-control" placeholder="Cédula Persona Fisica" ng-required="isFieldRequired('personId')">
+      <div ng-messages="form.personId.$error" role="alert">
+        <p class="help-block error-text" ng-message="required">Identificación es requerido.</p>
+        <p class="help-block error-text" ng-message="minlength">Ingrese una identificación correcta.</p>
+        <p class="help-block error-text" ng-message="maxlength">La identificación es muy larga.</p>
+      </div>
+  </div>
+  <div ng-show="personIdOptions.isOtherPersonId">
+    <input name="otherPersonId"  type="text" ng-model="person.personId" id="otherPersonId" autocomplete="off" mask-limit="true" ng-maxlength="20" model-view-value="true" class="form-control" placeholder="Cédula Persona Fisica" ng-required="isFieldRequired('personId')">
+      <div ng-messages="form.otherPersonId.$error" role="alert">
+        <p class="help-block error-text" ng-message="required">Identificación es requerido.</p>
+        <p class="help-block error-text" ng-message="minlength">Ingrese una identificación correcta.</p>
+        <p class="help-block error-text" ng-message="maxlength">La identificación es muy larga.</p>
+      </div>
+  </div>
 </div>
 <div class="form-group" ng-if="isFieldVisible('firstName')" show-errors>
   <label class="control-label" for="firstName">Nombre <span ng-show="isFieldRequired('firstName')">*</span></label>

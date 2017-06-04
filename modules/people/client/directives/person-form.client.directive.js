@@ -5,9 +5,9 @@
     .module('people')
     .directive('personForm', personForm);
 
-  personForm.$inject = ['$rootScope', 'OrganizationsService', 'PersontypesService', 'ServiceareasService'];
+  personForm.$inject = ['$rootScope', 'OrganizationsService', 'PersontypesService', 'ServiceareasService', '$window'];
 
-  function personForm($rootScope, OrganizationsService, PersontypesService, ServiceareasService) {
+  function personForm($rootScope, OrganizationsService, PersontypesService, ServiceareasService, $window) {
     return {
       templateUrl: 'modules/people/client/views/person-form.client.view.html',
       restrict: 'E',
@@ -30,6 +30,25 @@
         } else {
           scope.person.isFemale = false;
         }
+        scope.personIdOptions ={
+          isPhysicalPersonId: false,
+          isOtherPersonId: false,
+          mask: '9-9999-9999'
+        }
+        switch(scope.person.personIdType){
+          case 'physical':
+            scope.personIdOptions.isPhysicalPersonId = true;
+            scope.personIdOptions.mask = '9-9999-9999';
+            break;
+          case 'other':
+            scope.personIdOptions.isOtherPersonId = true;
+            scope.personIdMask = '';
+            break;
+          default:
+            scope.personIdOptions.isPhysicalPersonId = true;            
+            scope.person.personIdType = 'physical';
+            scope.personIdOptions.mask = '9-9999-9999';
+        };
 
         scope.isMaleSexChecked = function() {
           if (scope.person.isFemale) {
@@ -135,6 +154,32 @@
           ];
         scope.setGrade = function(grade) {
           scope.person.grade = grade;
+        };
+
+        scope.physicalPersonIdChanged = function() {
+          scope.personIdOptions.isOtherPersonId = scope.personIdOptions.isPhysicalPersonId ? false : true;
+          scope.personIdOptions.mask = scope.personIdOptions.isPhysicalPersonId ? '9-9999-9999' : '';
+          scope.person.personIdType = 'physical';
+          if(scope.personIdOptions.isPhysicalPersonId){
+            $window.document.getElementById('personId').click();
+            $window.document.getElementById('personId').focus();
+          }else{
+            $window.document.getElementById('otherPersonId').click();
+            $window.document.getElementById('otherPersonId').focus();
+          }
+        };
+
+        scope.otherPersonIdChanged = function() {
+          scope.personIdOptions.isPhysicalPersonId = scope.personIdOptions.isOtherPersonId ? false : true;
+          scope.personIdOptions.mask = scope.personIdOptions.isPhysicalPersonId ? '9-9999-9999' : '999';
+          scope.person.personIdType = 'other';
+          if(scope.personIdOptions.isPhysicalPersonId){
+            $window.document.getElementById('personId').click();
+            $window.document.getElementById('personId').focus();
+          }else{
+            $window.document.getElementById('otherPersonId').click();
+            $window.document.getElementById('otherPersonId').focus();
+          }
         };
 
       }
