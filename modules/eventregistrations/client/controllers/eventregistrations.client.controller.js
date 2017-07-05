@@ -35,7 +35,13 @@
       vm.eventregistration.shirtsQuantity = shirtsQuantity;
       vm.setEventPrice(vm.eventregistration.event);
     };
+    vm.quantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ,18, 19, 20];
+    vm.setQuantity = function(quantity) {
+      vm.eventregistration.quantity = quantity;
+      vm.setEventPrice(vm.eventregistration.event);
+    };
     vm.oldShirtsQuantity = vm.eventregistration.shirtsQuantity;
+    vm.oldQuantity = vm.eventregistration.quantity;
     vm.oldBalanceAmount = vm.eventregistration.balanceAmount;
     vm.shirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
     vm.setShirtSize = function(shirtSize) {
@@ -73,6 +79,7 @@
     init();
 
     function init() {
+      vm.eventregistration.quantity = vm.eventregistration.quantity ? vm.eventregistration.quantity : 1;
       loadDates();
       setShirtTypes();
       if (!vm.isNewMemberRegistration()) {
@@ -139,30 +146,39 @@
     }
 
     function setEventPrice(event) {
-      if (!vm.eventregistration._id) {
-        if (vm.eventregistration.isEventServer) {
+      if (!vm.eventregistration._id) {//if new eventregistration
+        if (vm.eventregistration.isEventServer) {// for event server registration 
           vm.eventregistration.balanceAmount = event.serverPrice;
           if (event.shirtPrice && vm.eventregistration.shirtsQuantity) {
             vm.eventregistration.balanceAmount += (event.shirtPrice * vm.eventregistration.shirtsQuantity);
           }
-        } else if (vm.eventregistration.eventExternalServer.isEventExternalServer) {
+        } else if (vm.eventregistration.eventExternalServer.isEventExternalServer) { //for external server
           vm.eventregistration.balanceAmount = vm.eventregistration.eventExternalServer.specialPrice;
           if (event.shirtPrice && vm.eventregistration.shirtsQuantity) {
             vm.eventregistration.balanceAmount += (event.shirtPrice * vm.eventregistration.shirtsQuantity);
           }
-        } else {
+        } else { //normal event registration price
           if (event.shirtPrice && vm.eventregistration.shirtsQuantity) {
-            vm.eventregistration.balanceAmount = event.price + (event.shirtPrice * vm.eventregistration.shirtsQuantity);
+            vm.eventregistration.balanceAmount = (event.price * vm.eventregistration.quantity) + 
+              (event.shirtPrice * vm.eventregistration.shirtsQuantity);
           } else {
-            vm.eventregistration.balanceAmount = event.price;
+            vm.eventregistration.balanceAmount = event.price * vm.eventregistration.quantity;
           }
         }
-      } else {
+      } else {//if existing eventregistration
+        //shirt price calculation
         var newShirtsQuantity = vm.eventregistration.shirtsQuantity - vm.oldShirtsQuantity;
         if (newShirtsQuantity === 0) {
           vm.eventregistration.balanceAmount = vm.oldBalanceAmount;
         } else {
           vm.eventregistration.balanceAmount = vm.oldBalanceAmount + (event.shirtPrice * newShirtsQuantity);
+        }
+        //event price calculation
+        var newQuantity = vm.eventregistration.quantity - vm.oldQuantity;
+        if (newQuantity === 0) {
+          vm.eventregistration.balanceAmount = vm.oldBalanceAmount;
+        } else {
+          vm.eventregistration.balanceAmount = vm.oldBalanceAmount + (event.price * newQuantity);
         }
       }
     }

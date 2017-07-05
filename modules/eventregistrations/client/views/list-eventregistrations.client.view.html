@@ -94,8 +94,10 @@
                 {{eventRegistration.person.mobilePhone}}</td>
             <td title="'Tel. Casa'" filter="{ 'person.homePhone': 'text'}" sortable="'person.homePhone'" ng-if="false">
                 {{eventRegistration.person.homePhone}}</td>
-             <td title="'Tel. Otro'" filter="{ 'person.otherPhone': 'text'}" sortable="'person.otherPhone'" ng-if="false">
+            <td title="'Tel. Otro'" filter="{ 'person.otherPhone': 'text'}" sortable="'person.otherPhone'" ng-if="false">
                 {{eventRegistration.person.otherPhone}}</td>
+            <td title="'Cant. Inscripciones'" filter="{ 'quantity': 'number'}" sortable="'quantity'" ng-if="true">
+              {{eventRegistration.quantity}}</td>
             <td class="col-md-1" title="'Saldo ₡ Pendiente'" filter="{ 'balanceAmount': 'text'}" sortable="'balanceAmount'" ng-if="true">
                 {{eventRegistration.balanceAmount | currency:''}} {{$data.$sum('balanceAmount')}}</td>
             <td class="col-md-1">    
@@ -121,7 +123,8 @@
             <td ng-if="vm.cols[5].show()"></td> 
             <td ng-if="vm.cols[6].show()"></td> 
             <td ng-if="vm.cols[7].show()"></td> 
-            <td ng-if="vm.cols[8].show()" ng-class="vm.getTotalClass($data | sumByKey:'balanceAmount')">
+            <td ng-if="vm.cols[8].show()"></td> 
+            <td ng-if="vm.cols[9].show()" ng-class="vm.getTotalClass($data | sumByKey:'balanceAmount')">
               <span><b>Total ₡ Pendiente:</b> {{$data | sumByKey:'balanceAmount'  | currency:''}}</span>
             </td>
             <td ng-if="true" class="text-center">            

@@ -143,6 +143,14 @@
         return true;
       }
     }, {
+      field: "quantity",
+      title: function() {
+        return "Cant. Inscripciones";
+      },
+      show: function() {
+        return true;
+      }
+    }, {
       field: "balanceAmount",
       title: function() {
         return "Saldo ₡ Pendiente";

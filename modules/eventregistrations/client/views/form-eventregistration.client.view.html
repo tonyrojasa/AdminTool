@@ -215,6 +215,26 @@
                 </div>
               </div>          
             </div>     
+            <div class="form-group" ng-if="!vm.eventregistration.eventExternalServer.isEventExternalServer && !vm.eventregistration.isEventServer" show-errors>
+              <label class="control-label" for="quantity">
+                Cantidad de inscripciones *
+              </label>
+              <input name="shirtsQuantity" type="hidden" ng-model="vm.eventregistration.quantity" id="quantity" class="form-control" placeholder="Cantidad de camisas" required>
+              <div class="dropdown" id="quantityDropdown" uib-dropdown>
+                <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button" ng-disabled="vm.isSelectionDisabled()">
+                  {{vm.eventregistration.quantity}}
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">    
+                  <li ng-repeat="quantity in vm.quantities">
+                    <a ng-click="vm.setQuantity(quantity)">{{quantity}}</a>
+                  </li>
+                </ul>
+              </div> 
+              <div ng-messages="vm.form.eventregistrationForm.shirtSize.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Cantidad de camisas es requerido.</p>
+              </div>
+            </div>  
             <div class="form-group" show-errors>
               <label class="control-label" for="balanceAmount">Saldo *</label>
               <input name="balanceAmount" type="text" ng-model="vm.eventregistration.balanceAmount" id="balanceAmount" autocomplete="off" class="form-control" placeholder="Saldo adeudado" required ng-disabled="true" >
