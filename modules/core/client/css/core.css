@@ -53,3 +53,8 @@ a:hover .header-profile-image {
 .table-nonfluid {
    width: auto !important;
 }
+.scrollableMenu
+{
+   max-height: 200px;
+   overflow-y: auto;
+}

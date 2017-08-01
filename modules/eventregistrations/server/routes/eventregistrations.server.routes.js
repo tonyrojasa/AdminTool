@@ -15,6 +15,11 @@ module.exports = function(app) {
   app.route('/api/eventregistrations/current').all(eventregistrationsPolicy.isAllowed)
     .get(eventregistrations.listAllCurrent);
 
+  app.route('/api/eventregistrations/current/:eventregistrationId').all(eventregistrationsPolicy.isAllowed)
+    .get(eventregistrations.read)
+    .put(eventregistrations.update)
+    .delete(eventregistrations.delete);
+
   app.route('/api/eventregistrations/:eventregistrationId').all(eventregistrationsPolicy.isAllowed)
     .get(eventregistrations.read)
     .put(eventregistrations.update)

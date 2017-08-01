@@ -219,20 +219,17 @@
               <label class="control-label" for="quantity">
                 Cantidad de inscripciones *
               </label>
-              <input name="shirtsQuantity" type="hidden" ng-model="vm.eventregistration.quantity" id="quantity" class="form-control" placeholder="Cantidad de camisas" required>
+              <input name="eventregistrationQuantity" type="hidden" ng-model="vm.eventregistration.quantity" id="quantity" class="form-control" placeholder="Cantidad de inscripciones" required>
               <div class="dropdown" id="quantityDropdown" uib-dropdown>
                 <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button" ng-disabled="vm.isSelectionDisabled()">
                   {{vm.eventregistration.quantity}}
                   <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" role="menu">    
+                <ul class="dropdown-menu scrollableMenu" uib-dropdown-menu role="menu">    
                   <li ng-repeat="quantity in vm.quantities">
                     <a ng-click="vm.setQuantity(quantity)">{{quantity}}</a>
                   </li>
                 </ul>
-              </div> 
-              <div ng-messages="vm.form.eventregistrationForm.shirtSize.$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Cantidad de camisas es requerido.</p>
               </div>
             </div>  
             <div class="form-group" show-errors>

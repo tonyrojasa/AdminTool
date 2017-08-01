@@ -100,7 +100,16 @@
     };
 
     vm.getStatusClass = function(eventRegistration) {
-      return vm.hasPendingPayment(eventRegistration) ? 'danger' : 'success';
+      var hasPendingPayment = vm.hasPendingPayment(eventRegistration);
+      if (hasPendingPayment && eventRegistration.status !== 'Entregado'){
+        return 'warning';
+      }else if(hasPendingPayment && eventRegistration.status === 'Entregado'){
+        return 'danger'
+      }else if (eventRegistration.status === 'Entregado'){
+        return  'info'
+      }else {
+        return 'success';
+      }
     };
 
     vm.orderByMe = function(x) {

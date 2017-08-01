@@ -131,6 +131,10 @@
 	          <input type="checkbox" ng-model="vm.showSponsorshipComments"/> 
 	          Comentarios Patrocinio
 	        </label>
+	         <label class="checkbox-inline">
+	          <input type="checkbox" ng-model="vm.showSponsorshipComments"/> 
+	          Estado
+	        </label>
       	</div>
   	</div>
   	<br />
@@ -308,11 +312,18 @@
 		        <span ng-show="vm.myOrderBy == 'balanceAmount' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 	      	</a>
 		  </th>
+		   <th>
+		  	<a href="#" ng-click="vm.orderByMe('status'); vm.sortReverse = !vm.sortReverse">
+	        	Estado 
+		        <span ng-show="vm.myOrderBy == 'status' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'status' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
 		</tr>
 		</thead>
 		<tbody>
 		<tr ng-repeat="eventRegistration in vm.filteredItems = (vm.eventregistrations | orderBy:['eventRegistration.balanceAmount', 'eventRegistration.person.firstName', 'eventRegistration.person.lastName', 'eventRegistration.person.secondLastName', 'eventRegistration.registrationDate','eventRegistration.registrationNumber'] | orderBy: vm.myOrderBy:vm.sortReverse | filter: vm.searchFilter | filter:{registrationDate:vm.dateFilterValue}:strict | filter: vm.event.name | filter: vm.eventPeopleGroup.name | filter:vm.personType.name)" ng-class="vm.getStatusClass(eventRegistration)">
-		  <td>{{eventRegistration.registrationNumber}}</td>
+		  <td><a data-ui-sref="eventregistrations.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })" target="_blank" data-toggle="tooltip" title="Editar inscripción #{{eventRegistration.registrationNumber}}">{{eventRegistration.registrationNumber}}</a></td>
 		  <td>{{eventRegistration.registrationDate | date:'dd-MMM-yyyy'}}</td>
 		  <td>{{eventRegistration.person.firstName}}</td>
 		  <td>{{eventRegistration.person.lastName}}</td>
@@ -344,6 +355,7 @@
 		  <td>{{eventRegistration.shirtsQuantity}}</td>		  
 		  <td>{{eventRegistration.totalPayments | currency:''}}</td>
 		  <td>{{eventRegistration.balanceAmount | currency:''}}</td>
+		  <td>{{eventRegistration.status}}</td>
 		</tr>
 		</tbody>
 		<tfoot>

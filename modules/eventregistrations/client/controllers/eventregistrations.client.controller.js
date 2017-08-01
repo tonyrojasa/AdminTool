@@ -35,7 +35,7 @@
       vm.eventregistration.shirtsQuantity = shirtsQuantity;
       vm.setEventPrice(vm.eventregistration.event);
     };
-    vm.quantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ,18, 19, 20];
+    vm.quantities = _.range(1,1001);
     vm.setQuantity = function(quantity) {
       vm.eventregistration.quantity = quantity;
       vm.setEventPrice(vm.eventregistration.event);

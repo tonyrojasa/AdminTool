@@ -67,6 +67,7 @@
     });
     vm.setEvent = setEvent;
     vm.remove = remove;
+    vm.updateStatus = updateStatus;
     vm.receiptsByEventRegistrationService = ReceiptsByEventRegistrationService;
 
     $scope.$watch('vm.registrationDate', function(newVal, oldVal) {
@@ -77,6 +78,13 @@
       }
       vm.tableParams.filter().registrationDate = vm.dateFilterValue;
     });
+
+    vm.eventRegistrationStatuses = ["En cobro", "Entregado"]
+
+    vm.filterEventRegistrationStatuses =  [
+    {id: "En cobro", title:" En cobro"}, 
+    {id: "Entregado", title:"Entregado"}];
+
 
     vm.cols = [{
       field: "registrationNumber",
@@ -205,8 +213,45 @@
     };
 
     vm.getStatusClass = function(eventRegistration) {
-      return vm.hasPendingPayment(eventRegistration) ? 'warning' : 'success';
+      var hasPendingPayment = vm.hasPendingPayment(eventRegistration);
+      if (hasPendingPayment && eventRegistration.status !== 'Entregado'){
+        return 'warning';
+      }else if(hasPendingPayment && eventRegistration.status === 'Entregado'){
+        return 'danger'
+      }else if (eventRegistration.status === 'Entregado'){
+        return  'info'
+      }else {
+        return 'success';
+      }
     };
+
+    // Remove existing Eventregistration
+    function updateStatus(eventRegistration, status) {
+      if(eventRegistration.status !== status) {
+        eventRegistration.status = status;
+        $rootScope.showLoadingSpinner = true;
+        eventRegistration.$update(successCallback, errorCallback);
+        function successCallback(res) {   
+            $rootScope.showLoadingSpinner = false;
+            Notification.info({
+              title: 'Estado de inscripción actualizado exitosamente!',
+              message: 'El nuevo estado de la inscripción # '+ eventRegistration.registrationNumber +
+              ' es: '+ eventRegistration.status,
+              delay: 1000
+            }); 
+        }
+
+        function errorCallback(res) {
+          vm.tableParams.reload();
+          $rootScope.showLoadingSpinner = false;
+          Notification.error({
+            title: 'Error al actualizar estado de inscripción!',
+            message: 'No se pudo actualizar el estado de inscripción # '+ eventRegistration.registrationNumber,
+            delay: 15000
+          }); 
+        }
+      }      
+    }
 
     // Remove existing Eventregistration
     function remove(eventRegistration) {

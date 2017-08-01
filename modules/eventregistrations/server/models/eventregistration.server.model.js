@@ -79,6 +79,11 @@ var EventregistrationSchema = new Schema({
   personType: {
     type: Schema.ObjectId,
     ref: 'Persontype'
+  },  
+  status: {
+    type: String,
+    default: 'En cobro',
+    trim: true
   },
   created: {
     type: Date,
