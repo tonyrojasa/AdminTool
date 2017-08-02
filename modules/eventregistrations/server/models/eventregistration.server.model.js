@@ -80,6 +80,10 @@ var EventregistrationSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Persontype'
   },  
+  notes: {
+    type: String,
+    trim: true
+  },
   status: {
     type: String,
     default: 'En cobro',

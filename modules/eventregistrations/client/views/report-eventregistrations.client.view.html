@@ -132,8 +132,12 @@
 	          Comentarios Patrocinio
 	        </label>
 	         <label class="checkbox-inline">
-	          <input type="checkbox" ng-model="vm.showSponsorshipComments"/> 
+	          <input type="checkbox" ng-model="vm.showStatus"/> 
 	          Estado
+	        </label>
+	        <label class="checkbox-inline">
+	          <input type="checkbox" ng-model="vm.showNotes"/> 
+	          Observaciones
 	        </label>
       	</div>
   	</div>
@@ -312,11 +316,18 @@
 		        <span ng-show="vm.myOrderBy == 'balanceAmount' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 	      	</a>
 		  </th>
-		   <th>
-		  	<a href="#" ng-click="vm.orderByMe('status'); vm.sortReverse = !vm.sortReverse">
+		  <th>
+		  	<a ng-if="vm.showStatus" href="#" ng-click="vm.orderByMe('status'); vm.sortReverse = !vm.sortReverse">
 	        	Estado 
 		        <span ng-show="vm.myOrderBy == 'status' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
 		        <span ng-show="vm.myOrderBy == 'status' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+	      	</a>
+		  </th>
+		  <th>
+		  	<a ng-if="vm.showNotes" href="#" ng-click="vm.orderByMe('notes'); vm.sortReverse = !vm.sortReverse">
+	        	Observaciones 
+		        <span ng-show="vm.myOrderBy == 'notes' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+		        <span ng-show="vm.myOrderBy == 'notes' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 	      	</a>
 		  </th>
 		</tr>
@@ -355,7 +366,8 @@
 		  <td>{{eventRegistration.shirtsQuantity}}</td>		  
 		  <td>{{eventRegistration.totalPayments | currency:''}}</td>
 		  <td>{{eventRegistration.balanceAmount | currency:''}}</td>
-		  <td>{{eventRegistration.status}}</td>
+		  <td><span ng-if="vm.showStatus">{{eventRegistration.status}}</span></td>
+		  <td><span ng-if="vm.showNotes">{{eventRegistration.notes}}</span></td>
 		</tr>
 		</tbody>
 		<tfoot>

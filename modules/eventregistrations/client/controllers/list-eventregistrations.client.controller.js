@@ -59,6 +59,7 @@
       _.each(data, function(eventregistration, index) {
         eventregistration.registrationDate = vm.moment(eventregistration.registrationDate).format('YYYY-MM-DD');
         if (index === vm.lastIndex) {
+          vm.originalData = angular.copy(data);
           $rootScope.showLoadingSpinner = false;
         }
       });
@@ -67,7 +68,6 @@
     });
     vm.setEvent = setEvent;
     vm.remove = remove;
-    vm.updateStatus = updateStatus;
     vm.receiptsByEventRegistrationService = ReceiptsByEventRegistrationService;
 
     $scope.$watch('vm.registrationDate', function(newVal, oldVal) {
@@ -223,35 +223,7 @@
       }else {
         return 'success';
       }
-    };
-
-    // Remove existing Eventregistration
-    function updateStatus(eventRegistration, status) {
-      if(eventRegistration.status !== status) {
-        eventRegistration.status = status;
-        $rootScope.showLoadingSpinner = true;
-        eventRegistration.$update(successCallback, errorCallback);
-        function successCallback(res) {   
-            $rootScope.showLoadingSpinner = false;
-            Notification.info({
-              title: 'Estado de inscripción actualizado exitosamente!',
-              message: 'El nuevo estado de la inscripción # '+ eventRegistration.registrationNumber +
-              ' es: '+ eventRegistration.status,
-              delay: 1000
-            }); 
-        }
-
-        function errorCallback(res) {
-          vm.tableParams.reload();
-          $rootScope.showLoadingSpinner = false;
-          Notification.error({
-            title: 'Error al actualizar estado de inscripción!',
-            message: 'No se pudo actualizar el estado de inscripción # '+ eventRegistration.registrationNumber,
-            delay: 15000
-          }); 
-        }
-      }      
-    }
+    };  
 
     // Remove existing Eventregistration
     function remove(eventRegistration) {
@@ -290,5 +262,64 @@
       }
     }
 
+    vm.update = function save(row, rowForm) {  
+      var originalDataRow = angular.copy(row);           
+      var originalRow = resetRow(row, rowForm); 
+      _.merge(originalRow, row);
+      var successMessage = 'Se actualizaron datos la inscripción # '+ row.registrationNumber;
+      vm.updateEventRegistration(row, successMessage).then(function(){        
+          //vm.tableParams.reload();
+      }, function(){ 
+          _.merge(row, originalDataRow);
+      });
+    };
+
+    vm.updateStatus = function (eventRegistration, status) {
+      if(eventRegistration.status !== status) {
+        eventRegistration.status = status;
+        var successMessage = 'El nuevo estado de la inscripción # '+ eventRegistration.registrationNumber +
+              ' es: '+ eventRegistration.status;
+        vm.updateEventRegistration(eventRegistration, successMessage);
+      }      
+    }
+
+    vm.updateEventRegistration = function (eventRegistration, successMessage) {
+      $rootScope.showLoadingSpinner = true;
+
+      function successCallback(res) {   
+          $rootScope.showLoadingSpinner = false;
+          Notification.info({
+            title: 'Inscripción actualizada exitosamente!',
+            message: successMessage,
+            delay: 1000
+          }); 
+      }
+
+      function errorCallback(res) {
+        vm.tableParams.reload();
+        $rootScope.showLoadingSpinner = false;
+        Notification.error({
+          title: 'Error al actualizar inscripción!',
+          message: 'No se pudo actualizar la inscripción # '+ eventRegistration.registrationNumber,
+          delay: 15000
+        }); 
+      }
+
+      return eventRegistration.$update(successCallback, errorCallback);
+    };
+
+    vm.cancel = function cancel(row, rowForm) {
+      var originalRow = resetRow(row, rowForm);
+      _.merge(row, originalRow);
+    };
+
+    function resetRow(row, rowForm){
+      row.isEditing = false;
+      rowForm.$setPristine();
+      //vm.tableTracker.untrack(row);
+      return _.find(vm.originalData, function(r){
+        return r._id === row._id;
+      });
+    }
   }
 })();

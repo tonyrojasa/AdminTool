@@ -71,9 +71,9 @@
     </div>
     <button class="btn btn-warning pull-right" ng-disabled="!vm.tableParams.hasFilter()" ng-click="vm.tableParams.filter({});vm.registrationDate = undefined;">Borrar Filtros de Búsqueda</button>
     <div id="exportable">        
-      <table ng-table="vm.tableParams" class="table" show-filter="true" ng-table-columns-binding="vm.cols" export-csv='csv'>
+      <table ng-table="vm.tableParams" class="table table-hover table-condensed editable-table" show-filter="true" ng-table-columns-binding="vm.cols" export-csv='csv' ng-form="vm.tableForm" disable-filter="vm.isAdding" demo-tracked-table="vm.tableTracker" >
         <tbody>
-          <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in $data">
+          <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in $data" ng-form="rowForm" demo-tracked-table-row="eventRegistration">
             <td class="col-md-1" title="'#'" filter="{ 'registrationNumber': 'number'}" sortable="'registrationNumber'" ng-if="true">
                 <a data-ui-sref="eventregistrations.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })" data-toggle="tooltip" title="Editar inscripción #{{eventRegistration.registrationNumber}}">{{eventRegistration.registrationNumber}}</a></td>
             <td title="'Evento'" filter="{ 'event.name': 'select'}" filter-data="vm.eventsFilterArray" sortable="'event.name'" ng-if="true">
@@ -87,7 +87,8 @@
             <td title="'1er. Apellido'" filter="{ 'person.lastName': 'text'}" sortable="'person.lastName'" ng-if="true">
                 {{eventRegistration.person.lastName}}</td>
             <td title="'2do. Apellido'" filter="{ 'person.secondLastName': 'text'}" sortable="'person.secondLastName'" ng-if="true">
-                {{eventRegistration.person.secondLastName}}</td>
+              {{eventRegistration.person.secondLastName}}
+            </td>
             <td title="'Tipo de Persona'" filter="{ 'personType.name': 'select'}" filter-data="vm.personTypesFilterArray" sortable="'personType.name'" ng-if="true">
                 {{eventRegistration.personType.name}}</td>
             <td title="'Tel. Celular'" filter="{ 'person.mobilePhone': 'text'}" sortable="'person.mobilePhone'" ng-if="true">
@@ -96,11 +97,11 @@
                 {{eventRegistration.person.homePhone}}</td>
             <td title="'Tel. Otro'" filter="{ 'person.otherPhone': 'text'}" sortable="'person.otherPhone'" ng-if="false">
                 {{eventRegistration.person.otherPhone}}</td>
-            <td title="'Cant. Inscripciones'" filter="{ 'quantity': 'number'}" sortable="'quantity'" ng-if="true">
+            <td title="'Cantidad'" filter="{ 'quantity': 'number'}" sortable="'quantity'" ng-if="true">
               {{eventRegistration.quantity}}</td>
             <td class="col-md-1" title="'Saldo ₡ Pendiente'" filter="{ 'balanceAmount': 'text'}" sortable="'balanceAmount'" ng-if="true">
                 {{eventRegistration.balanceAmount | currency:''}} {{$data.$sum('balanceAmount')}}</td>            
-            <td title="'Estado'" filter="{ 'status': 'select'}" filter-data="vm.filterEventRegistrationStatuses" sortable="'status'" ng-if="true">
+            <td class="col-md-1" title="'Estado'" filter="{ 'status': 'select'}" filter-data="vm.filterEventRegistrationStatuses" sortable="'status'" ng-if="true">
               <ui-select ng-model="eventRegistration.status" ng-disabled="!vm.authentication.isUserAdmin()">
                 <ui-select-match  placeholder="Seleccione el estado...">
                       <span>{{eventRegistration.status}}</span>
@@ -110,14 +111,22 @@
                   </ui-select-choices>
               </ui-select> 
             </td>
-            <td class="col-md-1">    
-              <a data-ui-sref="eventregistrations.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })"  data-toggle="tooltip" title="Editar inscripción #{{eventRegistration.registrationNumber}}">Editar</a>
+            <td class="col-md-1" title="'Observaciones'" filter="{ 'notes': 'text'}" sortable="'notes'" ng-if="true" ng-switch="eventRegistration.isEditing" ng-form="notes" demo-tracked-table-cell>
+              <span ng-switch-default class="editable-text">{{eventRegistration.notes}}</span>
+              <div class="controls" ng-class="notes.$invalid && notes.$dirty ? 'has-error' : ''" ng-switch-when="true">
+                <input type="text" name="notes" ng-model="eventRegistration.notes" class="editable-input form-control input-sm" required />
+              </div>
             </td>
-            <td>    
-              <a ng-if="vm.hasPendingPayment(eventRegistration) || vm.authentication.isUserAdmin()" data-ui-sref="receipts.createFromEventRegistration({ eventregistrationId: eventRegistration._id })"  data-toggle="tooltip" title="Realizar pago a inscripción #{{eventRegistration.registrationNumber}}">Realizar Pago</a>    
-            </td>
-            <td>
-              <a ng-if="vm.authentication.isUserAdmin()" class="btn btn-default" data-ng-click="vm.remove(eventRegistration)" data-toggle="tooltip" title="Eliminar inscripción #{{eventRegistration.registrationNumber}}">
+            <td class="col-md-3">    
+              <button class="btn btn-primary btn-sm" ng-click="vm.update(eventRegistration, rowForm)" ng-if="eventRegistration.isEditing" ng-disabled="rowForm.$pristine || rowForm.$invalid"><span class="glyphicon glyphicon-ok"></span></button>
+              <button class="btn btn-default btn-sm" ng-click="vm.cancel(eventRegistration, rowForm)" ng-if="eventRegistration.isEditing"><span class="glyphicon glyphicon-remove"></span></button>
+              <button class="btn btn-default btn-sm" ng-click="eventRegistration.isEditing = true" ng-if="!eventRegistration.isEditing" data-toggle="tooltip" title="Editar campos en linea para inscripción #{{eventRegistration.registrationNumber}}"><span class="glyphicon glyphicon-pencil"></span></button>
+
+              <a ng-if="vm.hasPendingPayment(eventRegistration) || vm.authentication.isUserAdmin()" data-ui-sref="receipts.createFromEventRegistration({ eventregistrationId: eventRegistration._id })"  data-toggle="tooltip" title="Realizar pago a inscripción #{{eventRegistration.registrationNumber}}" class="btn btn-default btn-sm"> 
+                <i class="glyphicon glyphicon-piggy-bank">Pago</i>
+              </a> 
+
+              <a ng-if="vm.authentication.isUserAdmin()" ng-show="!eventRegistration.isEditing" class="btn btn-danger btn-sm" data-ng-click="vm.remove(eventRegistration)" data-toggle="tooltip" title="Eliminar inscripción #{{eventRegistration.registrationNumber}}">
                 <i class="glyphicon glyphicon-trash"></i>
               </a>
             </td>
