@@ -114,7 +114,7 @@
             <td class="col-md-1" title="'Observaciones'" filter="{ 'notes': 'text'}" sortable="'notes'" ng-if="true" ng-switch="eventRegistration.isEditing" ng-form="notes" demo-tracked-table-cell>
               <span ng-switch-default class="editable-text">{{eventRegistration.notes}}</span>
               <div class="controls" ng-class="notes.$invalid && notes.$dirty ? 'has-error' : ''" ng-switch-when="true">
-                <input type="text" name="notes" ng-model="eventRegistration.notes" class="editable-input form-control input-sm" required />
+                <input type="text" name="notes" ng-model="eventRegistration.notes" class="editable-input form-control input-sm" />
               </div>
             </td>
             <td class="col-md-3">    
