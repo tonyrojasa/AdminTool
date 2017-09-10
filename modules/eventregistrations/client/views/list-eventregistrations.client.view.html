@@ -102,7 +102,7 @@
             <td class="col-md-1" title="'Saldo ₡ Pendiente'" filter="{ 'balanceAmount': 'text'}" sortable="'balanceAmount'" ng-if="true">
                 {{eventRegistration.balanceAmount | currency:''}} {{$data.$sum('balanceAmount')}}</td>            
             <td class="col-md-1" title="'Estado'" filter="{ 'status': 'select'}" filter-data="vm.filterEventRegistrationStatuses" sortable="'status'" ng-if="true">
-              <ui-select ng-model="eventRegistration.status" ng-disabled="!vm.authentication.isUserAdmin()">
+              <ui-select ng-model="eventRegistration.status">
                 <ui-select-match  placeholder="Seleccione el estado...">
                       <span>{{eventRegistration.status}}</span>
                   </ui-select-match>
