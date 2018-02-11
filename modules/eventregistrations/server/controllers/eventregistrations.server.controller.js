@@ -6,6 +6,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Eventregistration = mongoose.model('Eventregistration'),
+  Event = mongoose.model('Event'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -83,7 +84,7 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
   var query = _.forEach(req.query, function(value, key) {
     var queryParam = {
-      $regex: new RegExp('^' + value + '$', "i"),
+      $regex: new RegExp('^' + value + '$', 'i'),
       $options: 'i'
     };
     req.query[key] = _.zipObject([key], [queryParam]);
@@ -136,7 +137,7 @@ exports.list = function(req, res) {
 exports.listAllCurrent = function(req, res) {
   var query = _.forEach(req.query, function(value, key) {
     var queryParam = {
-      $regex: new RegExp('^' + value + '$', "i"),
+      $regex: new RegExp('^' + value + '$', 'i'),
       $options: 'i'
     };
     req.query[key] = _.zipObject([key], [queryParam]);
@@ -148,43 +149,54 @@ exports.listAllCurrent = function(req, res) {
     };
   }
 
-  Eventregistration.find(query).sort('-created')
-    .populate('user', 'displayName')
-    .populate({
-      path: 'person',
-      populate: {
-        path: 'personType'
-      }
-    })
-    .populate('personType', 'name')
-    .populate('event')
-    .populate('eventPeopleGroup', 'name')
-    .exec(function(err, eventregistrations) {
-      eventregistrations = eventregistrations.filter(function(eventregistration) {
-        return (eventregistration.event && (!eventregistration.event.ended || eventregistration.event.openEnrollment));
+  Event.find({ $or: [
+    { 'ended': false },
+    { 'openEnrollment': true }
+  ] }).exec(function(err, events) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
       });
+    } else {
+      Eventregistration.find(query).find({ event:  { $in: events } }).sort('-created')
+        .populate('user', 'displayName')
+        .populate({
+          path: 'person',
+          populate: {
+            path: 'personType'
+          }
+        })
+        .populate('personType', 'name')
+        .populate('event')
+        .populate('eventPeopleGroup', 'name')
+        .exec(function(err, eventregistrations) {
+         /* eventregistrations = eventregistrations.filter(function(eventregistration) {
+            return (eventregistration.event && (!eventregistration.event.ended || eventregistration.event.openEnrollment));
+          });*/
 
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
+          if (err) {
+            return res.status(400).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          } else {
 
-        var shirtTypesList = [];
-        _.each(eventregistrations, function(eventregistration, key) {
-          if (eventregistration.shirtTypes.length > 0) {
-            _.each(eventregistration.shirtTypes, function(shirtType) {
-              shirtType.shirtSize = eventregistration.person.shirtSize;
+            var shirtTypesList = [];
+            _.each(eventregistrations, function(eventregistration, key) {
+              if (eventregistration.shirtTypes.length > 0) {
+                _.each(eventregistration.shirtTypes, function(shirtType) {
+                  shirtType.shirtSize = eventregistration.person.shirtSize;
+                });
+              }
+
+              if (key === eventregistrations.length - 1) {
+                eventregistrations.shirtTypesList = shirtTypesList;
+                res.jsonp(eventregistrations);
+              }
             });
           }
-
-          if (key === eventregistrations.length - 1) {
-            eventregistrations.shirtTypesList = shirtTypesList;
-            res.jsonp(eventregistrations);
-          }
         });
-      }
-    });
+    }
+  });    
 };
 
 /**
