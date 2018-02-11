@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 var autoIncrement = require('mongoose-auto-increment');
+var mongoose_delete = require('mongoose-delete');
 
 /**
  * Eventregistration Schema
@@ -98,6 +99,14 @@ var EventregistrationSchema = new Schema({
     ref: 'User'
   }
 });
+
+EventregistrationSchema.plugin(mongoose_delete, {
+  deletedAt: true,
+  deletedBy: true
+});
+EventregistrationSchema.plugin(mongoose_delete, { indexFields: 'all' });
+// Override all methods 
+EventregistrationSchema.plugin(mongoose_delete, { overrideMethods: 'all' });
 
 autoIncrement.initialize(mongoose.connection);
 EventregistrationSchema.plugin(autoIncrement.plugin, {

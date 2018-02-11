@@ -208,7 +208,11 @@
     vm.remove = function(receipt) {
       if (confirm('Está seguro que desea eliminar el recibo # ' + receipt.receiptNumber + ' ?')) {
         var eventRegistrationSuccessMsg = '';
-        receipt.eventRegistration.balanceAmount += receipt.paymentAmount;
+
+        if (receipt.eventRegistration) {
+          receipt.eventRegistration.balanceAmount += receipt.paymentAmount;
+        }
+        
         receipt.$remove(function() {
           if (vm.isEventRegistrationReceipt(receipt)) {
             eventRegistrationSuccessMsg = 'Y se actualizó el saldo de la inscripción # ' + receipt.eventRegistration.registrationNumber;

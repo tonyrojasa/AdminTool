@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 var autoIncrement = require('mongoose-auto-increment');
-
+var mongoose_delete = require('mongoose-delete');
 /**
  * Receipt Schema
  */
@@ -95,6 +95,14 @@ var ReceiptSchema = new Schema({
     ref: 'User'
   }
 });
+
+ReceiptSchema.plugin(mongoose_delete, {
+  deletedAt: true,
+  deletedBy: true
+});
+ReceiptSchema.plugin(mongoose_delete, { indexFields: 'all' });
+// Override all methods 
+ReceiptSchema.plugin(mongoose_delete, { overrideMethods: 'all' });
 
 autoIncrement.initialize(mongoose.connection);
 ReceiptSchema.plugin(autoIncrement.plugin, {
