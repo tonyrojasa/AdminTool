@@ -6,6 +6,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Receipt = mongoose.model('Receipt'),
+  EventRegistration = mongoose.model('Eventregistration'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -15,16 +16,54 @@ var path = require('path'),
 exports.create = function(req, res) {
   var receipt = new Receipt(req.body);
   receipt.user = req.user;
-
-  receipt.save(function(err) {
+  updateEventRegistrationBalanceAmount(req.body.oldEventregistration, function(err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(receipt);
-    }
+      updateEventRegistrationBalanceAmount(req.body.eventregistration, function(err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          receipt.eventRegistration = req.body.eventregistration ? req.body.eventregistration : receipt.eventRegistration;
+          receipt.save(function(err) {
+            if (err) {
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              res.jsonp(receipt);
+            }
+          });
+        }    
+      });
+    }    
   });
+};
+
+var updateEventRegistrationBalanceAmount = function(eventRegistration, callback) {
+  if (eventRegistration) {
+    EventRegistration.findById(eventRegistration._id).exec(function(err, eventregistration) {
+      if (err) {
+        return callback(err);
+      } else {
+        eventregistration.balanceAmount = eventRegistration.balanceAmount;
+        eventregistration.save(function(err) {
+          eventregistration = EventRegistration(eventregistration);
+          if (err) {
+            return callback(err);
+          } else {
+            callback();
+          }
+        });
+      }
+    });
+  } else {    
+    callback();
+  }    
 };
 
 /**
@@ -46,17 +85,32 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
   var receipt = req.receipt;
-
   receipt = _.extend(receipt, req.body);
-
-  receipt.save(function(err) {
+  updateEventRegistrationBalanceAmount(req.body.oldEventregistration, function(err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(receipt);
-    }
+      updateEventRegistrationBalanceAmount(req.body.eventregistration, function(err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          receipt.eventRegistration = req.body.eventregistration ? req.body.eventregistration : receipt.eventRegistration;
+          receipt.save(function(err) {
+            if (err) {
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              res.jsonp(receipt);
+            }
+          });
+        }    
+      });
+    }    
   });
 };
 
@@ -66,14 +120,22 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
   var receipt = req.receipt;
 
-  receipt.remove(function(err) {
+  updateEventRegistrationBalanceAmount(req.body.eventregistration, function(err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(receipt);
-    }
+      receipt.remove(function(err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(receipt);
+        }
+      });
+    }    
   });
 };
 
@@ -83,7 +145,7 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
   var query = _.forEach(req.query, function(value, key) {
     var queryParam = {
-      $regex: new RegExp('^' + value + '$', "i"),
+      $regex: new RegExp('^' + value + '$', 'i'),
       $options: 'i'
     };
     req.query[key] = _.zipObject([key], [queryParam]);
@@ -142,7 +204,7 @@ exports.list = function(req, res) {
 exports.listAllCurrent = function(req, res) {
   var query = _.forEach(req.query, function(value, key) {
     var queryParam = {
-      $regex: new RegExp('^' + value + '$', "i"),
+      $regex: new RegExp('^' + value + '$', 'i'),
       $options: 'i'
     };
     req.query[key] = _.zipObject([key], [queryParam]);

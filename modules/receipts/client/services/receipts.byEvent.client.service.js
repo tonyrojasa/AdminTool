@@ -16,6 +16,12 @@
         method: 'GET',
         isArray: true,
         cache: false
+      },
+      update: {
+        method: 'PUT'
+      },
+      delete: {
+        method: 'DELETE'
       }
     });
   }
