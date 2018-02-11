@@ -179,20 +179,24 @@ exports.listAllCurrent = function(req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           } else {
-
             var shirtTypesList = [];
-            _.each(eventregistrations, function(eventregistration, key) {
-              if (eventregistration.shirtTypes.length > 0) {
-                _.each(eventregistration.shirtTypes, function(shirtType) {
-                  shirtType.shirtSize = eventregistration.person.shirtSize;
-                });
-              }
+            if (eventregistrations.length > 0) {
+              _.each(eventregistrations, function(eventregistration, key) {
+                if (eventregistration.shirtTypes.length > 0) {
+                  _.each(eventregistration.shirtTypes, function(shirtType) {
+                    shirtType.shirtSize = eventregistration.person.shirtSize;
+                  });
+                }
 
-              if (key === eventregistrations.length - 1) {
-                eventregistrations.shirtTypesList = shirtTypesList;
-                res.jsonp(eventregistrations);
-              }
-            });
+                if (key === eventregistrations.length - 1) {
+                  eventregistrations.shirtTypesList = shirtTypesList;
+                  res.jsonp(eventregistrations);
+                }
+              });
+            } else {
+              res.jsonp(eventregistrations);
+            }
+           
           }
         });
     }
