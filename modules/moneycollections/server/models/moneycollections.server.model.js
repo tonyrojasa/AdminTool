@@ -18,12 +18,12 @@ var MoneycollectionSchema = new Schema({
   },
   number: {
     type: Number
-  }, 
+  },
   name: {
     type: String,
     trim: true,
     required: 'name cannot be blank'
-  }, 
+  },
   date: {
     type: Date,
     default: Date.now
@@ -35,6 +35,10 @@ var MoneycollectionSchema = new Schema({
       required: 'type cannot be blank'
     },
     description: String,
+    date: {
+      type: Date,
+      default: Date.now
+    },
     isDetailed: {
       type: Boolean,
       default: true
@@ -68,12 +72,8 @@ var MoneycollectionSchema = new Schema({
       numberOf5: {
         type: Number,
         default: 0
-      },
-      numberOfDollars: {
-        type: Number,
-        default: 0
       }
-    },  
+    },
     bills: {
       numberOf50000: {
         type: Number,
@@ -100,7 +100,11 @@ var MoneycollectionSchema = new Schema({
         default: 0
       }
     },
-    collectors: [{        
+    numberOfDollars: {
+      type: Number,
+      default: 0
+    },
+    collectors: [{
       type: Schema.ObjectId,
       ref: 'User'
     }],
@@ -110,6 +114,10 @@ var MoneycollectionSchema = new Schema({
     },
     comments: String
   }],
+  reportedTotal: {
+    type: Number,
+    default: 0
+  },
   total: {
     type: Number,
     required: 'moneyCollectionTotal cannot be blank'

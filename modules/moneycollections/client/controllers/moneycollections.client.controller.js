@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   // Moneycollections controller
@@ -18,7 +18,26 @@
     vm.moneycollection = moneycollection;
     vm.error = null;
     vm.form = {};
-    vm.save = function(isValid) {
+
+    if (!vm.moneycollection._id) {
+      vm.moneycollection.date = new Date();
+      vm.moneycollection.total = 0;
+    }
+
+
+    vm.calculateFlowsTotal = function () {
+      debugger;
+      var flowsTotal = 0;
+      return _.each(vm.moneycollection.moneyFlows, function (flow, index) {
+        debugger;
+        flowsTotal += flow.total;
+        if (index === vm.moneycollection.moneyFlows.length - 1) {
+          vm.moneycollection.total = flowsTotal;
+        }
+      })
+    };
+
+    vm.save = function (isValid) {
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.moneycollectionForm');
         return false;

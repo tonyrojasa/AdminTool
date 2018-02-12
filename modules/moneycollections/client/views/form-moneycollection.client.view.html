@@ -19,9 +19,9 @@
   </div>
   <section>
     <div class="page-header">
-      <h1>{{vm.moneycollection._id ? 'Editar Diezmo/Ofrenda' : 'Nuevo Diezmo/Ofrenda'}} </h1>
+      <h1>{{vm.moneycollection._id ? 'Editar flujo de dinero (diezmo, ofrenda, etc)' : 'Nuevo flujo de dinero (diezmo, ofrenda, etc)'}} </h1>
 
-      <h2 ng-if="vm.moneycollection._id"># de Diezmos/Ofrendas: {{vm.moneycollection.number}}</h2>
+      <h2 ng-if="vm.moneycollection._id"># de Flujo de dinero: {{vm.moneycollection.number}}</h2>
         <small ng-if="vm.moneycollection._id">
           <em class="text-muted">
             Creado en
@@ -45,30 +45,42 @@
     <div class="col-md-12">
       <form name="vm.form.moneycollectionForm" class="form-horizontal" ng-submit="vm.save(vm.form.moneycollectionForm.$valid)" novalidate>
         <fieldset>              
-          <div class="form-group">
+          <div class="form-group form-group-sm">
             <button type="submit" class="btn btn-primary">{{vm.moneycollection._id ? 'Actualizar' : 'Crear'}}</button>
           </div>          
           <br />
-
-          <money-flow flows="vm.moneycollection.moneyFlows" show-labels="true" form="vm.form.moneycollectionForm"></money-flow>
-
-          <div ng-if="vm.moneycollection.isDetailed">
-            <div class="form-group" show-errors ng-if="!readonly">
-              <label class="control-label" ng-if="showLabels" for="numberOf500">Total</label>
-              <div class="form-inline">
-                <div class="input-group"> 
-                  <span class="input-group-addon">₡</span>
-                  <input type="number" name="numberOf500" type="number" ng-model="item.numberOf500" autocomplete="off" id="numberOf500" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Monedas de  {{500 | currency: '₡'}}" required>
-                </div> 
-                <b>Total:</b> {{calculateNumberOfTotal(item.numberOf500, 500) | currency: '₡'}}
-              </div>    
-              <div ng-messages="form.$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Monedas de {{500 | currency: '₡'}} es requerido.</p>
-              </div>
+          
+          <div class="form-group form-group-sm" show-errors>
+            <label class="control-label" for="name">Nombre *</label>
+            <input name="name" type="text" ng-model="vm.moneycollection.name" id="name" placeholder="Nombre" autocomplete="off" class="form-control" ng-required="true">  
+            <div ng-messages="vm.form.moneycollectionForm.name.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Nombre es requerido.</p>
             </div>
           </div>
+
+          <div class="form-group form-group-sm" show-errors>
+            <label class="control-label" for="date">Fecha de ingreso *</label>
+            <input name="date" type="hidden" ng-model="vm.moneycollection.date" id="date" class="form-control" ng-required="true">
+            <datetimepicker 
+                ng-model="vm.moneycollection.date" 
+                hidden-time="true" 
+                date-format="dd-MMM-yyyy" 
+                current-text="Hoy"
+                clear-text="Limpiar"
+                close-text="Cerrar"></datetimepicker>          
+            <div ng-messages="vm.form.moneycollectionForm.date.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Fecha de ingreso es requerido.</p>
+            </div>
+          </div>
+          <money-flow flows="vm.moneycollection.moneyFlows" show-labels="true" form="vm.form.moneycollectionForm"></money-flow>
+          <div class="form-group form-group-sm">
+              <br />
+          <h3>Total de Ingresos: </h3>
+          <h3>Total de Egresos: </h3>{{vm.calculateFlowsTotal() }}
+          <h2>Total: {{vm.moneycollection.total | currency: '₡'}}</h2>
+          </div>
           <br />
-          <div class="form-group">
+          <div class="form-group form-group-sm">
             <button type="submit" class="btn btn-primary">{{vm.moneycollection._id ? 'Actualizar' : 'Crear'}}</button>
           </div>
         </fieldset>

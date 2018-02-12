@@ -18,14 +18,14 @@ owasp.config(config.shared.owasp);
 /**
  * A Validation function for local strategy properties
  */
-var validateLocalStrategyProperty = function(property) {
+var validateLocalStrategyProperty = function (property) {
   return ((this.provider !== 'local' && !this.updated) || property.length);
 };
 
 /**
  * A Validation function for local strategy email
  */
-var validateLocalStrategyEmail = function(email) {
+var validateLocalStrategyEmail = function (email) {
   return ((this.provider !== 'local' && !this.updated) || validator.isEmail(email, {
     require_tld: false
   }));
@@ -41,7 +41,7 @@ var validateLocalStrategyEmail = function(email) {
  * - not begin or end with "."
  */
 
-var validateUsername = function(username) {
+var validateUsername = function (username) {
   var usernameRegex = /^(?=[\w.-]+$)(?!.*[._-]{2})(?!\.)(?!.*\.$).{3,34}$/;
   return (
     this.provider !== 'local' ||
@@ -108,7 +108,7 @@ var UserSchema = new Schema({
   roles: {
     type: [{
       type: String,
-      enum: ['guest', 'user', 'admin', 'inscriptor', 'teacher', 'student', 'accountant']
+      enum: ['guest', 'user', 'admin', 'inscriptor', 'teacher', 'student', 'accountant', 'boardDirector', 'boardReviewer']
     }],
     default: ['guest'],
     required: 'Please provide at least one role'
@@ -132,7 +132,7 @@ var UserSchema = new Schema({
 /**
  * Hook a pre save method to hash the password
  */
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', function (next) {
   if (this.password && this.isModified('password')) {
     this.salt = crypto.randomBytes(16).toString('base64');
     this.password = this.hashPassword(this.password);
@@ -144,7 +144,7 @@ UserSchema.pre('save', function(next) {
 /**
  * Hook a pre validate method to test the local password
  */
-UserSchema.pre('validate', function(next) {
+UserSchema.pre('validate', function (next) {
   if (this.provider === 'local' && this.password && this.isModified('password')) {
     var result = owasp.test(this.password);
     if (result.errors.length) {
@@ -159,7 +159,7 @@ UserSchema.pre('validate', function(next) {
 /**
  * Create instance method for hashing a password
  */
-UserSchema.methods.hashPassword = function(password) {
+UserSchema.methods.hashPassword = function (password) {
   if (this.salt && password) {
     return crypto.pbkdf2Sync(password, new Buffer(this.salt, 'base64'), 10000, 64, 'SHA1').toString('base64');
   } else {
@@ -170,20 +170,20 @@ UserSchema.methods.hashPassword = function(password) {
 /**
  * Create instance method for authenticating user
  */
-UserSchema.methods.authenticate = function(password) {
+UserSchema.methods.authenticate = function (password) {
   return this.password === this.hashPassword(password);
 };
 
 /**
  * Find possible not used username
  */
-UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
+UserSchema.statics.findUniqueUsername = function (username, suffix, callback) {
   var _this = this;
   var possibleUsername = username.toLowerCase() + (suffix || '');
 
   _this.findOne({
     username: possibleUsername
-  }, function(err, user) {
+  }, function (err, user) {
     if (!err) {
       if (!user) {
         callback(possibleUsername);
@@ -201,8 +201,8 @@ UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
  * Returns a promise that resolves with the generated passphrase, or rejects with an error if something goes wrong.
  * NOTE: Passphrases are only tested against the required owasp strength tests, and not the optional tests.
  */
-UserSchema.statics.generateRandomPassphrase = function() {
-  return new Promise(function(resolve, reject) {
+UserSchema.statics.generateRandomPassphrase = function () {
+  return new Promise(function (resolve, reject) {
     var password = '';
     var repeatingCharacters = new RegExp('(.)\\1{2,}', 'g');
 
@@ -235,9 +235,9 @@ UserSchema.statics.generateRandomPassphrase = function() {
 /**
  * Check if the user collection is currently empty
  */
-UserSchema.statics.isCollectionEmpty = function(callback) {
+UserSchema.statics.isCollectionEmpty = function (callback) {
   var _this = this;
-  _this.find({}).count(null, function(err, c) {
+  _this.find({}).count(null, function (err, c) {
     if (c === 0) {
       callback(true);
     } else {

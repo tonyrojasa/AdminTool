@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -13,9 +13,9 @@
     vm.figureOutItemsToDisplay = figureOutItemsToDisplay;
     vm.pageChanged = pageChanged;
 
-    vm.parseRoles = function(roleArray) {
+    vm.parseRoles = function (roleArray) {
       _.forEach(roleArray,
-        function(value, key) {
+        function (value, key) {
           switch (value) {
             case "admin":
               roleArray[key] = "Administrador";
@@ -38,13 +38,19 @@
             case "accountant":
               roleArray[key] = "Contador";
               break;
+            case "boardDirector":
+              roleArray[key] = "Directivo (junta directiva)";
+              break;
+            case "boardReviewer":
+              roleArray[key] = "Revisor (junta directiva)";
+              break;
           }
         });
       var roleValue = roleArray.join(', ');
       return roleValue;
     };
 
-    AdminService.query(function(data) {
+    AdminService.query(function (data) {
       vm.users = data;
       vm.buildPager();
     });

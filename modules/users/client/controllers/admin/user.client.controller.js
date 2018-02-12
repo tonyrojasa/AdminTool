@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -52,10 +52,27 @@
       vm.selectedRole = vm.user.roles;
     }
 
+    debugger;
+    if (vm.authentication.isBoardDirectorUser()) {
+      vm.roles.push({
+        name: 'Directivo (junta directiva)',
+        value: 'boardDirector',
+        selected: false
+      });
+    }
+
+    if (vm.authentication.isBoardDirectorUser() || vm.authentication.isBoardReviewerUser()) {
+      vm.roles.push({
+        name: 'Revisor (junta directiva)',
+        value: 'boardReviewer',
+        selected: false
+      });
+    }
+
     //check roles when edit mode
     if (vm.user.roles) {
-      _.forEach(vm.user.roles, function(value, key) {
-        _.find(vm.roles, function(o) {
+      _.forEach(vm.user.roles, function (value, key) {
+        _.find(vm.roles, function (o) {
           if (o.value === value) {
             o.selected = true;
             return true;
@@ -65,9 +82,9 @@
     }
 
 
-    vm.parseRoles = function(roleArray) {
+    vm.parseRoles = function (roleArray) {
       _.forEach(roleArray,
-        function(value, key) {
+        function (value, key) {
           switch (value) {
             case "admin":
               roleArray[key] = "Administrador";
@@ -89,6 +106,12 @@
               break;
             case "accountant":
               roleArray[key] = "Contador";
+              break;
+            case "boardDirector":
+              roleArray[key] = "Directivo (junta directiva)";
+              break;
+            case "boardReviewer":
+              roleArray[key] = "Revisor (junta directiva)";
               break;
           }
         });
@@ -120,7 +143,7 @@
           vm.users.splice(vm.users.indexOf(user), 1);
           Notification.success('User deleted successfully!');
         } else {
-          vm.user.$remove(function() {
+          vm.user.$remove(function () {
             $state.go('admin.users');
             Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> User deleted successfully!' });
           });
@@ -137,12 +160,13 @@
 
       var user = vm.user;
 
-      user.$update(function() {
+      user.$update(function (user) {
+        $window.user = user;
         $state.go('admin.user', {
           userId: user._id
         });
         Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> User saved successfully!' });
-      }, function(errorResponse) {
+      }, function (errorResponse) {
         Notification.error({ message: errorResponse.data.message, title: '<i class="glyphicon glyphicon-remove"></i> User update error!' });
       });
     }

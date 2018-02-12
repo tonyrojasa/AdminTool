@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   // https://gist.github.com/rhutchison/c8c14946e88a1c8f9216
@@ -20,8 +20,8 @@
 
     function compile(elem, attrs) {
       if (attrs.showErrors.indexOf('skipFormGroupCheck') === -1) {
-        if (!(elem.hasClass('form-group') || elem.hasClass('input-group'))) {
-          throw new Error('show-errors element does not have the \'form-group\' or \'input-group\' class');
+        if (!(elem.hasClass('form-group') || elem.hasClass('input-group') || elem.hasClass('form-group-sm'))) {
+          throw new Error('show-errors element does not have the \'form-group\' or \'input-group\' or \'form-group-sm\' class');
         }
       }
 
@@ -46,7 +46,7 @@
           throw new Error('show-errors element has no child input elements with a \'name\' attribute class');
         }
 
-        scope.$watch(function() {
+        scope.$watch(function () {
           return formCtrl[inputName] && formCtrl[inputName].$invalid;
         }, toggleClasses);
 
@@ -64,7 +64,7 @@
 
         function reset(event, name) {
           if (angular.isUndefined(name) || formCtrl.$name === name) {
-            return $timeout(function() {
+            return $timeout(function () {
               el.removeClass('has-error');
               el.removeClass('has-success');
               showValidationMessages = false;

@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -21,7 +21,7 @@
         controllerAs: 'vm',
         data: {
           roles: ['boardDirector', 'boardReviewer'],
-          pageTitle: 'Diezmos/Ofrendas - Reporte General'
+          pageTitle: 'Flujos de dinero - Reporte General'
         }
       })
       .state('moneycollections.list', {
@@ -31,7 +31,7 @@
         controllerAs: 'vm',
         data: {
           roles: ['boardDirector', 'boardReviewer'],
-          pageTitle: 'Lista de Diezmos/Ofrendas'
+          pageTitle: 'Lista de Flujos de dinero'
         }
       })
       .state('moneycollections.create', {
@@ -44,7 +44,7 @@
         },
         data: {
           roles: ['boardDirector'],
-          pageTitle: 'Crear Diezmos/Ofrendas'
+          pageTitle: 'Crear Flujos de dinero'
         }
       })
       .state('moneycollections.edit', {
@@ -57,7 +57,7 @@
         },
         data: {
           roles: ['boardDirector'],
-          pageTitle: 'Editar Diezmos/Ofrendas - {{ moneycollectionResolve.name }}'
+          pageTitle: 'Editar Flujos de dinero - {{ moneycollectionResolve.name }}'
         }
       })
       .state('moneycollections.view', {
@@ -70,7 +70,7 @@
         },
         data: {
           roles: ['boardDirector', 'boardReviewer'],
-          pageTitle: 'Diezmos/Ofrendas - {{ articleResolve.name }}'
+          pageTitle: 'Flujos de dinero - {{ articleResolve.name }}'
         }
       });
   }
