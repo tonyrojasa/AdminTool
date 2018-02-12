@@ -18,133 +18,25 @@
 </div>
 <section>
   <div class="page-header">
-    <h2>Lista de Inscritos</h2>
+    <h2>Lista de Diezmos/Ofrendas</h2>
   </div>
-  <a class="btn btn-primary" data-ui-sref="moneycollections.create">Nuevo Miembro</a>
-  <a class="btn btn-primary" data-ui-sref="moneycollections.create({newMember:false})">Miembro Existente</a>
+  <a class="btn btn-primary" data-ui-sref="moneycollections.create">Nuevo Diezmo/Ofrenda</a>
   <br /><br />
-  <div id="content" data-ng-if="vm.moneycollections.length">
-    <div class="col-md-6 form-group" ng-show="false">        
-      <label class="control-label" for="event">Evento: </label>  
-      <div class="input-group select2-bootstrap-append">
-        <ui-select ng-model="vm.event">
-          <ui-select-match  placeholder="Seleccione el tipo de persona...">
-                <span>{{$select.selected.name}}</span>
-            </ui-select-match>
-            <ui-select-choices repeat="item in (vm.events | filter: $select.search) track by item._id">
-                <div ng-bind-html="item.name | highlight: $select.search"></div>
-            </ui-select-choices>
-        </ui-select> 
-        <span class="input-group-btn">
-          <button type="button" ng-click="vm.event = undefined" class="btn btn-default"  data-toggle="tooltip" title="Borrar filtro de evento">
-            <span class="glyphicon glyphicon-trash"></span>
-          </button>
-        </span>  
-      </div> 
-    </div>  
-    <div class="form-group col-md-6">        
-      <label class="control-label" for="registrationDate">Fecha de inscripción</label>
-        <br />
-        <div class="input-group select2-bootstrap-append">
-            <datetimepicker ng-if="!vm.editMode"
-              ng-model="vm.registrationDate" 
-              hidden-time="true" 
-              date-format="dd-MMM-yyyy" 
-              current-text="Hoy"
-              clear-text="Limpiar"
-              close-text="Cerrar"></datetimepicker>         
-            <button type="button" ng-click="vm.registrationDate = undefined" class="btn btn-default" data-toggle="tooltip" title="Borrar filtro de fecha">
-                <span class="glyphicon glyphicon-trash"></span>
-            </button>
-        </div>
-    </div> 
-    <div class="col-md-12">
-     <strong>Columnas para mostrar <button type="button" class="btn btn-link" ng-click="vm.isCollapsed = !vm.isCollapsed">
-      {{vm.isCollapsed ? 'Ver opciones &gt;&gt;' : '&lt;&lt; Ocultar Opciones'}}</button>
-     </strong>
-    </div>
-    <div class="col-md-12 well well-lg" uib-collapse="vm.isCollapsed">
-      <label class="checkbox-inline" ng-repeat="col in vm.cols">
-        <input type="checkbox" ng-if="col.title()" ng-model-options="{ getterSetter: true }" ng-model="col.show"/> 
-        {{col.title()}}
-      </label>
-    </div>
+  <div id="content" data-ng-if="vm.moneycollections.length">    
     <button class="btn btn-warning pull-right" ng-disabled="!vm.tableParams.hasFilter()" ng-click="vm.tableParams.filter({});vm.registrationDate = undefined;">Borrar Filtros de Búsqueda</button>
     <div id="exportable">        
       <table ng-table="vm.tableParams" class="table table-hover table-condensed editable-table" show-filter="true" ng-table-columns-binding="vm.cols" export-csv='csv' ng-form="vm.tableForm" disable-filter="vm.isAdding" demo-tracked-table="vm.tableTracker" >
         <tbody>
-          <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in $data" ng-form="rowForm" demo-tracked-table-row="eventRegistration">
-            <td class="col-md-1" title="'#'" filter="{ 'registrationNumber': 'number'}" sortable="'registrationNumber'" ng-if="true">
-                <a data-ui-sref="moneycollections.edit({ moneycollectionId: eventRegistration._id, personId: eventRegistration.person._id })" data-toggle="tooltip" title="Editar inscripción #{{eventRegistration.registrationNumber}}">{{eventRegistration.registrationNumber}}</a></td>
-            <td title="'Evento'" filter="{ 'event.name': 'select'}" filter-data="vm.eventsFilterArray" sortable="'event.name'" ng-if="true">
-                {{eventRegistration.event.name}}</td>
-            <td title="'Fecha de Inscripción'" sortable="'registrationDate'" ng-if="true">
-                {{eventRegistration.registrationDate | date:'dd-MMM-yyyy'}}</td>
-            <td title="'Grupo'" filter="{ 'eventPeopleGroup.name': 'select'}" filter-data="vm.groupsFilterArray"  sortable="'eventPeopleGroup.name'" ng-if="true">
-                {{eventRegistration.eventPeopleGroup.name}}</td>
-            <td title="'Nombre'" filter="{ 'person.firstName': 'text'}" sortable="'person.firstName'" ng-if="true">
-                {{eventRegistration.person.firstName}}</td>
-            <td title="'1er. Apellido'" filter="{ 'person.lastName': 'text'}" sortable="'person.lastName'" ng-if="true">
-                {{eventRegistration.person.lastName}}</td>
-            <td title="'2do. Apellido'" filter="{ 'person.secondLastName': 'text'}" sortable="'person.secondLastName'" ng-if="true">
-              {{eventRegistration.person.secondLastName}}
-            </td>
-            <td title="'Tipo de Persona'" filter="{ 'personType.name': 'select'}" filter-data="vm.personTypesFilterArray" sortable="'personType.name'" ng-if="true">
-                {{eventRegistration.personType.name}}</td>
-            <td title="'Tel. Celular'" filter="{ 'person.mobilePhone': 'text'}" sortable="'person.mobilePhone'" ng-if="true">
-                {{eventRegistration.person.mobilePhone}}</td>
-            <td title="'Tel. Casa'" filter="{ 'person.homePhone': 'text'}" sortable="'person.homePhone'" ng-if="false">
-                {{eventRegistration.person.homePhone}}</td>
-            <td title="'Tel. Otro'" filter="{ 'person.otherPhone': 'text'}" sortable="'person.otherPhone'" ng-if="false">
-                {{eventRegistration.person.otherPhone}}</td>
-            <td title="'Cantidad'" filter="{ 'quantity': 'number'}" sortable="'quantity'" ng-if="true">
-              {{eventRegistration.quantity}}</td>
-            <td class="col-md-1" title="'Saldo ₡ Pendiente'" filter="{ 'balanceAmount': 'text'}" sortable="'balanceAmount'" ng-if="true">
-                {{eventRegistration.balanceAmount | currency:''}} {{$data.$sum('balanceAmount')}}</td>            
-            <td class="col-md-1" title="'Estado'" filter="{ 'status': 'select'}" filter-data="vm.filterEventRegistrationStatuses" sortable="'status'" ng-if="true">
-              <ui-select ng-model="eventRegistration.status">
-                <ui-select-match  placeholder="Seleccione el estado...">
-                      <span>{{eventRegistration.status}}</span>
-                  </ui-select-match>
-                  <ui-select-choices repeat="item in (vm.eventRegistrationStatuses | filter: $select.search)">
-                      <div ng-bind-html="item | highlight: $select.search" data-ng-click="vm.updateStatus(eventRegistration, item)"></div>
-                  </ui-select-choices>
-              </ui-select> 
-            </td>
-            <td class="col-md-1" title="'Observaciones'" filter="{ 'notes': 'text'}" sortable="'notes'" ng-if="true" ng-switch="eventRegistration.isEditing" ng-form="notes" demo-tracked-table-cell>
-              <span ng-switch-default class="editable-text">{{eventRegistration.notes}}</span>
-              <div class="controls" ng-class="notes.$invalid && notes.$dirty ? 'has-error' : ''" ng-switch-when="true">
-                <input type="text" name="notes" ng-model="eventRegistration.notes" class="editable-input form-control input-sm" />
-              </div>
-            </td>
-            <td class="col-md-3">    
-              <button class="btn btn-primary btn-sm" ng-click="vm.update(eventRegistration, rowForm)" ng-if="eventRegistration.isEditing" ng-disabled="rowForm.$pristine || rowForm.$invalid"><span class="glyphicon glyphicon-ok"></span></button>
-              <button class="btn btn-default btn-sm" ng-click="vm.cancel(eventRegistration, rowForm)" ng-if="eventRegistration.isEditing"><span class="glyphicon glyphicon-remove"></span></button>
-              <button class="btn btn-default btn-sm" ng-click="eventRegistration.isEditing = true" ng-if="!eventRegistration.isEditing" data-toggle="tooltip" title="Editar campos en linea para inscripción #{{eventRegistration.registrationNumber}}"><span class="glyphicon glyphicon-pencil"></span></button>
-
-              <a ng-if="vm.hasPendingPayment(eventRegistration) || vm.authentication.isUserAdmin()" data-ui-sref="receipts.createFromEventRegistration({ moneycollectionId: eventRegistration._id })"  data-toggle="tooltip" title="Realizar pago a inscripción #{{eventRegistration.registrationNumber}}" class="btn btn-default btn-sm"> 
-                <i class="glyphicon glyphicon-piggy-bank">Pago</i>
-              </a> 
-
-              <a ng-if="vm.authentication.isUserAdmin()" ng-show="!eventRegistration.isEditing" class="btn btn-danger btn-sm" data-ng-click="vm.remove(eventRegistration)" data-toggle="tooltip" title="Eliminar inscripción #{{eventRegistration.registrationNumber}}">
-                <i class="glyphicon glyphicon-trash"></i>
-              </a>
-            </td>
+          <tr ng-class="vm.getStatusClass(moneyCollection)" ng-repeat="moneyCollection in $data" ng-form="rowForm" demo-tracked-table-row="moneyCollection">
+            <td class="col-md-1" title="'#'" filter="{ 'number': 'number'}" sortable="'number'" ng-if="true">
+                <a data-ui-sref="moneycollections.edit({ moneycollectionId: moneyCollection._id})" data-toggle="tooltip" title="Editar inscripción #{{moneyCollection.number}}">{{moneyCollection.number}}</a></td>
           </tr>
         </tbody>
         <tfoot>
           <tr>          
             <td ng-if="vm.cols[0].show()"></td>  
-            <td ng-if="vm.cols[1].show()"></td> 
-            <td ng-if="vm.cols[2].show()"></td> 
-            <td ng-if="vm.cols[3].show()"></td>   
-            <td ng-if="vm.cols[4].show()"></td> 
-            <td ng-if="vm.cols[5].show()"></td> 
-            <td ng-if="vm.cols[6].show()"></td> 
-            <td ng-if="vm.cols[7].show()"></td> 
-            <td ng-if="vm.cols[8].show()"></td> 
-            <td ng-if="vm.cols[9].show()" ng-class="vm.getTotalClass($data | sumByKey:'balanceAmount')">
-              <span><b>Total ₡ Pendiente:</b> {{$data | sumByKey:'balanceAmount'  | currency:''}}</span>
+            <td ng-if="vm.cols[9].show()" ng-class="vm.getTotalClass($data | sumByKey:'total')">
+              <span><b>Total:</b> {{$data | sumByKey:'total'  | currency:'₡'}}</span>
             </td>
             <td ng-if="true" class="text-center">            
               <span><b>Inscripciones:</b> {{($data).length}}</span>
@@ -154,8 +46,7 @@
               <a class="btn" title="Export Table" ng-click='csv.generate()' ng-href="{{ csv.link() }}"
                  download="INSCRIPCIONES.csv">
                 <i class="glyphicon glyphicon-new-window"></i> &#160;Exportar
-              </a>  
-                <!-- <export-to-file link-text="Exportar" element-id="exportable" format="excel" file-name="INSCRIPCIONES"></export-to-file> -->
+              </a> 
               </div>
             </td>
           </tr>
@@ -164,6 +55,6 @@
     </div>    
   </div>   
   <div class="alert alert-warning text-center" data-ng-if="vm.moneycollections.$resolved && !vm.moneycollections.length">
-    No Moneycollections yet, why don't you <a data-ui-sref="moneycollections.create">create one</a>?
+    No hy Diezmos/Ofrendas Porqué no <a data-ui-sref="moneycollections.create">creas uno</a>?
   </div>
 </section>

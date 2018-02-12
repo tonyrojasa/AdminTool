@@ -13,7 +13,7 @@ acl = new acl(new acl.memoryBackend());
  */
 exports.invokeRolesPolicies = function() {
   acl.allow([{
-    roles: ['admin'],
+    roles: ['boardDirector'],
     allows: [{
       resources: '/api/moneycollections',
       permissions: '*'
@@ -28,22 +28,7 @@ exports.invokeRolesPolicies = function() {
       permissions: '*'
     }]
   }, {
-    roles: ['inscriptor'],
-    allows: [{
-      resources: '/api/moneycollections',
-      permissions: ['get', 'post', 'patch', 'put']
-    }, {
-      resources: '/api/moneycollections/:moneycollectionId',
-      permissions: ['get', 'post', 'patch', 'put']
-    }, {
-      resources: '/api/moneycollections/current',
-      permissions: ['get', 'post', 'patch', 'put']
-    }, {
-      resources: '/api/moneycollections/current/:moneycollectionId',
-      permissions: ['get', 'post', 'patch', 'put']
-    }]
-  }, {
-    roles: ['guest', 'user', 'teacher', 'student'],
+    roles: ['boardReviewer'],
     allows: [{
       resources: '/api/moneycollections',
       permissions: ['get']

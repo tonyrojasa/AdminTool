@@ -19,9 +19,9 @@
   </div>
   <section>
     <div class="page-header">
-      <h1>{{vm.moneycollection._id ? 'Editar' : 'Nueva Inscripción'}} <span ng-if="!vm.isNewMemberRegistration()"> - Miembro Existente</span></h1>
+      <h1>{{vm.moneycollection._id ? 'Editar Diezmo/Ofrenda' : 'Nuevo Diezmo/Ofrenda'}} </h1>
 
-      <h2 ng-if="vm.moneycollection._id"># de Inscripción: {{vm.moneycollection.registrationNumber}}</h2>
+      <h2 ng-if="vm.moneycollection._id"># de Diezmos/Ofrendas: {{vm.moneycollection.number}}</h2>
         <small ng-if="vm.moneycollection._id">
           <em class="text-muted">
             Creado en
@@ -41,253 +41,33 @@
       </a>
     </div>
     <br /><br />
-    <h3 class="bg-primary" for="event">Los campos marcados con asterisco (*) son requeridos.</h3> 
+    <h3 class="bg-primary">Los campos marcados con asterisco (*) son requeridos.</h3> 
     <div class="col-md-12">
       <form name="vm.form.moneycollectionForm" class="form-horizontal" ng-submit="vm.save(vm.form.moneycollectionForm.$valid)" novalidate>
         <fieldset>              
           <div class="form-group">
             <button type="submit" class="btn btn-primary">{{vm.moneycollection._id ? 'Actualizar' : 'Crear'}}</button>
-          </div>
-          <div class="form-group" show-errors>        
-            <label class="control-label" for="event">Evento *</label>  
-            <input name="event" type="hidden" ng-model="vm.moneycollection.event" id="event" class="form-control" required>
-            <div class="input-group select2-bootstrap-append">
-              <ui-select ng-model="vm.moneycollection.event"  on-select="vm.setEvent(vm.moneycollection.event)" ng-disabled="vm.isSelectionDisabled()">
-                <ui-select-match  placeholder="Seleccione el evento...">
-                      <span>{{$select.selected.name}}</span>
-                  </ui-select-match>
-                  <ui-select-choices repeat="item in (vm.events | filter: $select.search | filter: {nonRegistration:false}) track by item._id">
-                      <div ng-bind-html="item.name | highlight: $select.search"></div>
-                  </ui-select-choices>
-              </ui-select> 
-              <span class="input-group-btn">
-                <button type="button" ng-click="vm.clearEventSelection()" ng-disabled="vm.isSelectionDisabled()" class="btn btn-default">
-                  <span class="glyphicon glyphicon-trash"></span>
-                </button>
-              </span>  
-            </div> 
-            <div ng-messages="vm.form.moneycollectionForm.event.$error" role="alert">
-              <p class="help-block error-text" ng-message="required">Evento es requerido.</p>
-            </div>
-          </div>   
+          </div>          
           <br />
-          <fieldset ng-if="vm.moneycollection.event">
-          <legend>Datos para el Evento</legend>        
-            <div ng-if="!vm.isNewMemberRegistration()" class="form-group" show-errors>        
-              <label class="control-label" for="person">Persona *</label>
-              <input name="person" type="hidden" ng-model="vm.person" id="person" class="form-control" required>
-              <div class="input-group">
-                <ui-select ng-model="vm.person" ng-disabled="vm.moneycollection._id || !vm.moneycollection.event">
-                  <ui-select-match  placeholder="Seleccione la persona...">
-                        <span>{{$select.selected.firstName}} {{$select.selected.lastName}} {{$select.selected.secondLastName}}</span>
-                    </ui-select-match>
-                    <ui-select-choices repeat="item in (vm.people | filter: $select.search) track by item._id">
-                        <div ng-bind-html="[item.firstName +' '+ item.lastName +' '+ item.secondLastName] | highlight: $select.search"></div>
-                        <small ng-bind-html="item.personType.name | highlight: $select.search"></small>
-                    </ui-select-choices>
-                </ui-select> 
-                <span class="input-group-btn" ng-if="vm.moneycollection.event">
-                  <button type="button" ng-click="vm.person = undefined" class="btn btn-default">
-                    <span class="glyphicon glyphicon-trash"></span>
-                  </button>
-                </span>
-              </div>  
-              <div class="input-group" ng-if="!vm.people.length && vm.moneycollection.event">
-                <strong>No hay personas pendientes de agregar al evento seleccionado.</strong>
-              </div>     
-              <div ng-messages="vm.form.person.$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Persona es requerido.</p>
-              </div>
-            </div>      
-            <div class="form-group" ng-if="(vm.moneycollection.event && !vm.moneycollection._id) || (vm.moneycollection.isEventServer && vm.moneycollection._id)" show-errors>  
-              <input name="isEventServer" type="hidden" ng-model="vm.moneycollection.isEventServer" id="isEventServer" class="form-control" ng-disabled="vm.moneycollection._id">
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" ng-model="vm.moneycollection.isEventServer" ng-click="vm.moneycollection.eventExternalServer.isEventExternalServer = false; vm.setEventPrice(vm.moneycollection.event)" ng-disabled="vm.moneycollection._id">
-                  <b>Servidor del evento (aplicar precio de servidor)</b>
-                </label>
-              </div>
-            </div> 
-            <div ng-if="(vm.moneycollection.event && !vm.moneycollection._id) || (vm.moneycollection.eventExternalServer.isEventExternalServer && vm.moneycollection._id)">  
-              <div class="form-group">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" ng-model="vm.moneycollection.eventExternalServer.isEventExternalServer" ng-click="vm.moneycollection.isEventServer = false; vm.setEventPrice(vm.moneycollection.event)" ng-disabled="vm.moneycollection._id">
-                    <b>Servidor Externo (aplicar precio especial) *</b>
-                  </label>
-                </div>
-              </div>
-              <div class="form-group" ng-if="vm.moneycollection.eventExternalServer.isEventExternalServer" show-errors>
+
+          <money-flow flows="vm.moneycollection.moneyFlows" show-labels="true" form="vm.form.moneycollectionForm"></money-flow>
+
+          <div ng-if="vm.moneycollection.isDetailed">
+            <div class="form-group" show-errors ng-if="!readonly">
+              <label class="control-label" ng-if="showLabels" for="numberOf500">Total</label>
+              <div class="form-inline">
                 <div class="input-group"> 
                   <span class="input-group-addon">₡</span>
-                  <input type="number" name="specialPrice" id="specialPrice" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" ng-model="vm.moneycollection.eventExternalServer.specialPrice" ng-change="vm.setEventPrice(vm.moneycollection.event)" ng-disabled="vm.moneycollection._id" required>
-                </div>
-                <div ng-messages="vm.form.moneycollectionForm.specialPrice.$error" role="alert">
-                  <p class="help-block error-text" ng-message="required">Precio Especial es requerido.</p>
-                </div>
-              </div>
-            </div> 
-            <div class="form-group" ng-if="vm.person" show-errors>
-              <label class="control-label" for="eventPersonType">Tipo de Persona (en evento) <span ng-show="!vm.isQuickRegistration()">*</span></label>
-              <input name="eventPersonType" type="hidden" ng-model="vm.moneycollection.personType" id="eventPersonType" class="form-control" placeholder="Tipo de Persona" ng-required="!vm.isQuickRegistration()">
-              <div class="dropdown" id="eventPersonTypeTypeDropdown" uib-dropdown>
-                <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
-                  <span ng-if="!vm.moneycollection.personType">-- Seleccione uno --</span>
-                  {{vm.moneycollection.personType.name}}
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <li ng-repeat="personType in vm.personTypes">
-                    <a ng-click="vm.setPersonType(personType)">{{personType.name}}</a>
-                  </li>
-                </ul>
-              </div>          
-              <div ng-messages="vm.form.moneycollectionForm.eventPersonType.$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Tipo de Persona (en evento) es requerido</p>
+                  <input type="number" name="numberOf500" type="number" ng-model="item.numberOf500" autocomplete="off" id="numberOf500" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Monedas de  {{500 | currency: '₡'}}" required>
+                </div> 
+                <b>Total:</b> {{calculateNumberOfTotal(item.numberOf500, 500) | currency: '₡'}}
+              </div>    
+              <div ng-messages="form.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Monedas de {{500 | currency: '₡'}} es requerido.</p>
               </div>
             </div>
-            <div class="form-group" ng-if="vm.person && vm.moneycollection.event && vm.moneycollection.event.shirtPrice" show-errors>
-              <label class="control-label" for="shirtSizeEvent">Talla de camiseta *</label>
-              <input name="shirtSizeEvent" type="hidden" ng-model="vm.person.shirtSize" id="shirtSizeEvent" class="form-control" placeholder="Talla de camiseta" required>
-              <div class="dropdown" id="shirtSizeDropdown" uib-dropdown>
-                <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
-                  <span ng-if="!vm.person.shirtSize">-- Seleccione uno --</span>
-                  {{vm.person.shirtSize}}
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <li ng-repeat="shirtSize in vm.shirtSizes">
-                    <a ng-click="vm.setShirtSize(shirtSize)">{{shirtSize}}</a>
-                  </li>
-                </ul>
-              </div> 
-              <div ng-messages="vm.form.moneycollectionForm.shirtSizeEvent.$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Talla de camiseta es requerido.</p>
-              </div>
-            </div> 
-            <div class="form-group" ng-if="vm.moneycollection.event && vm.moneycollection.event.shirtPrice" show-errors>
-              <label class="control-label" for="shirtsQuantity">
-                Cantidad de camisas requeridas <span>({{vm.moneycollection.event.shirtPrice | currency:'₡'}} c/u)</span>*
-              </label>
-              <input name="shirtsQuantity" type="hidden" ng-model="vm.moneycollection.shirtsQuantity" id="shirtsQuantity" class="form-control" placeholder="Cantidad de camisas" required>
-              <div class="dropdown" id="shirtsQuantityDropdown" uib-dropdown>
-                <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button" ng-disabled="vm.isSelectionDisabled()">
-                  <span ng-if="vm.moneycollection.shirtsQuantity === undefined">-- Seleccione uno --</span>
-                  {{vm.moneycollection.shirtsQuantity}}
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">    
-                  <li ng-repeat="shirtQuantity in vm.shirtQuantities">
-                    <a ng-click="vm.setShirtsQuantity(shirtQuantity)">{{shirtQuantity}}</a>
-                  </li>
-                </ul>
-              </div> 
-              <div ng-messages="vm.form.moneycollectionForm.shirtSize.$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Cantidad de camisas es requerido.</p>
-              </div>
-            </div>                  
-            <div class="form-group" ng-if="vm.moneycollection.event && vm.moneycollection.event.shirtPrice && vm.moneycollection.shirtTypes.length  > 0" ng-repeat="shirtType in vm.moneycollection.shirtTypes track by $index">
-              <div class="col-md-2">
-                <label>{{shirtType.shirtTypeName}}</label> ->
-              </div>
-              <div class="col-md-1">
-                <input name="shirtTypeColor_{{$index}}" style="background-color: {{shirtType.shirtTypeColor}};color: {{shirtType.shirtTypeColor}};" class="col-xs-1 img-rounded" ng-disabled="true"/>
-              </div>
-              <div class="col-md-1">
-                <label class="control-label" for="shirtType_quantity_{{$index}}">Cantidad:</label>
-              </div>
-              <div class="col-md-8">
-                <div class="form-group" show-errors>
-                  <div class="col-md-2">
-                    <input name="shirtType_quantity_{{$index}}" ng-model="shirtType.quantity" ng-max="vm.getShirtTypesQuantityMax(vm.form.moneycollectionForm.shirtType_quantity_{{$index}})" type="number" min="0" step="1" id="shirtType_quantity_{{$index}}" autocomplete="off" class="form-control" placeholder="Cantidad de camisas">   
-                  </div>
-                  <div class="col-md-7">
-                    <div ng-messages="vm.form.moneycollectionForm.shirtType_quantity_0.$error" role="alert">
-                      <p class="help-block error-text" ng-message="minQuantity">
-                        Debe indicar la cantidad de camisas de cada tipo
-                      </p>
-                      <p class="help-block error-text" ng-message="maxQuantity">
-                        Cantidad de tipo de camisas no puede exeder la cantidad solicitada
-                      </p>
-                    </div>
-                  </div>           
-                  
-                </div>
-              </div>          
-            </div>     
-            <div class="form-group" ng-if="!vm.moneycollection.eventExternalServer.isEventExternalServer && !vm.moneycollection.isEventServer" show-errors>
-              <label class="control-label" for="quantity">
-                Cantidad de inscripciones *
-              </label>
-              <input name="moneycollectionQuantity" type="hidden" ng-model="vm.moneycollection.quantity" id="quantity" class="form-control" placeholder="Cantidad de inscripciones" required>
-              <div class="dropdown" id="quantityDropdown" uib-dropdown>
-                <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button" ng-disabled="vm.isSelectionDisabled()">
-                  {{vm.moneycollection.quantity}}
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu scrollableMenu" uib-dropdown-menu role="menu">    
-                  <li ng-repeat="quantity in vm.quantities">
-                    <a ng-click="vm.setQuantity(quantity)">{{quantity}}</a>
-                  </li>
-                </ul>
-              </div>
-            </div>  
-            <div class="form-group" show-errors>
-              <label class="control-label" for="balanceAmount">Saldo *</label>
-              <input name="balanceAmount" type="text" ng-model="vm.moneycollection.balanceAmount" id="balanceAmount" autocomplete="off" class="form-control" placeholder="Saldo adeudado" required ng-disabled="true" >
-              <div ng-messages="vm.form.moneycollectionForm.balanceAmount.$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Saldo es un campo requerido.</p>
-              </div>
-            </div>
-            <div class="form-group" show-errors>        
-              <label class="control-label" for="eventPeopleGroup">Grupo <span ng-show="!vm.isQuickRegistration()">*</span></label>  
-              <input name="eventPeopleGroup" type="hidden" ng-model="vm.moneycollection.eventPeopleGroup" id="eventPeopleGroup" class="form-control" ng-required="!vm.isQuickRegistration()">
-              <div class="input-group select2-bootstrap-append">
-                <ui-select ng-model="vm.moneycollection.eventPeopleGroup" >
-                  <ui-select-match  placeholder="Seleccione el grupo...">
-                        <span>{{$select.selected.name}}</span>
-                    </ui-select-match>
-                    <ui-select-choices repeat="item in (vm.eventPeopleGroups | filter: $select.search) track by item._id">
-                        <div ng-bind-html="item.name | highlight: $select.search"></div>
-                    </ui-select-choices>
-                </ui-select> 
-                <span class="input-group-btn">
-                  <button type="button" ng-click="vm.moneycollection.eventPeopleGroup = undefined" class="btn btn-default">
-                    <span class="glyphicon glyphicon-trash"></span>
-                  </button>
-                </span>  
-              </div> 
-              <div ng-messages="vm.form.moneycollectionForm.eventPeopleGroup.$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Grupo es requerido.</p>
-              </div>
-            </div>      
-            <div class="form-group" show-errors>
-              <label class="control-label" for="registrationDate">Fecha de inscripción *</label>
-              <br />
-              <input name="registrationDate" type="hidden" ng-model="vm.moneycollection.registrationDate" id="registrationDate" class="form-control" required>
-              <input name="registrationDate" ng-if="vm.editMode && !vm.authentication.isUserAdmin()" type="text" value="{{vm.moneycollection.registrationDate | date:'dd-MMM-yyyy'}}" id="registrationDate" class="form-control" ng-disabled="true" required>
-              <datetimepicker ng-if="!vm.editMode || vm.authentication.isUserAdmin()"
-                ng-model="vm.moneycollection.registrationDate" 
-                hidden-time="true" 
-                date-format="dd-MMM-yyyy" 
-                current-text="Hoy"
-                clear-text="Limpiar"
-                close-text="Cerrar"></datetimepicker>          
-              <div ng-messages="vm.form.eventForm.registrationDate.$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Fecha de inscripción es requerido.</p>
-              </div>
-            </div>
-          </fieldset>
+          </div>
           <br />
-          <fieldset ng-if="vm.isNewMemberRegistration() && vm.moneycollection.event">
-          <legend>Datos Personales</legend>
-            <div ng-if="vm.isNewMemberRegistration() && vm.moneycollection.event && !vm.isQuickRegistration()">
-              <person-form id="1" person="vm.person" form="vm.form.moneycollectionForm" required-fields="vm.regularRegistrationRequiredFields" error="vm.error"></person-form>
-            </div>
-            <div ng-if="vm.isNewMemberRegistration() && vm.moneycollection.event && vm.isQuickRegistration()">
-              <person-form id="2" person="vm.person" form="vm.form.moneycollectionForm" required-fields="vm.quickRegistrationRequiredFields" hide-optional-fields="true" error="vm.error"></person-form>
-            </div>
-          </fieldset>
           <div class="form-group">
             <button type="submit" class="btn btn-primary">{{vm.moneycollection._id ? 'Actualizar' : 'Crear'}}</button>
           </div>

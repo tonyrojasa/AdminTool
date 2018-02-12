@@ -10,37 +10,27 @@
   function menuConfig(Menus) {
     // Set top bar menu items
     Menus.addMenuItem('topbar', {
-      title: 'Inscripciones',
+      title: 'Diezmos/Ofrendas',
       state: 'moneycollections',
       type: 'dropdown',
-      roles: ['admin', 'inscriptor', 'user']
+      roles: ['boardDirector']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'moneycollections', {
-      title: 'Inscripciones',
+      title: 'Diezmos/Ofrendas',
       state: 'moneycollections.list',
-      roles: ['admin', 'inscriptor', 'user']
+      roles: ['boardDirector', 'boardReviewer']
     });
     Menus.addSubMenuItem('topbar', 'moneycollections', {
       title: 'Reporte General',
       state: 'moneycollections.report',
-      roles: ['admin', 'inscriptor', 'user']
+      roles: ['boardDirector', 'boardReviewer']
     });
     Menus.addSubMenuItem('topbar', 'reports', {
-      title: 'Inscripciones - Reporte General',
+      title: 'Diezmos/Ofrendas - Reporte General',
       state: 'moneycollections.report',
-      roles: ['admin', 'inscriptor', 'user']
-    });
-    Menus.addSubMenuItem('topbar', 'moneycollections', {
-      title: 'Reporte de Camisas',
-      state: 'moneycollections.shirtsReport',
-      roles: ['admin', 'inscriptor', 'user']
-    });
-    Menus.addSubMenuItem('topbar', 'reports', {
-      title: 'Inscripciones - Reporte de Camisas',
-      state: 'moneycollections.shirtsReport',
-      roles: ['admin', 'inscriptor', 'user']
+      roles: ['boardDirector', 'boardReviewer']
     });
   }
 })();

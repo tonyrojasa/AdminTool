@@ -6,22 +6,40 @@
     .module('moneycollections')
     .controller('MoneycollectionsController', MoneycollectionsController);
 
-  MoneycollectionsController.$inject = ['$scope', '$anchorScroll', '$state', '$stateParams', 'Authentication',
-    'moneycollectionResolve', 'CurrentEventsService', 'EventpeoplegroupsService', 'personResolve',
-    'PeopleService', 'MoneycollectionsByEventService', '$rootScope', 'PersontypesService', 'Notification',
-    'StudentsService'
+  MoneycollectionsController.$inject = ['$scope', '$state', '$stateParams', 'Authentication',
+    'moneycollectionResolve', '$rootScope', 'Notification'
   ];
 
-  function MoneycollectionsController($scope, $anchorScroll, $state, $stateParams, Authentication, moneycollection,
-    CurrentEventsService, EventpeoplegroupsService, person, PeopleService, MoneycollectionsByEventService, $rootScope,
-    PersontypesService, Notification, StudentsService) {
+  function MoneycollectionsController($scope, $state, $stateParams, Authentication, moneycollection,
+    $rootScope, Notification) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.moneycollection = moneycollection;
     vm.error = null;
     vm.form = {};
-    vm.events = CurrentEventsService.query();
-    vm.eventPeopleGroups = EventpeoplegroupsService.query();
+    vm.save = function(isValid) {
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'vm.form.moneycollectionForm');
+        return false;
+      }
+
+      // TODO: move create/update logic to service
+      if (vm.moneycollection._id) {
+        vm.moneycollection.$update(successCallback, errorCallback);
+      } else {
+        vm.moneycollection.$save(successCallback, errorCallback);
+      }
+
+      function successCallback(res) {
+        $state.go('moneycollection.view', {
+          moneycollectionId: res._id
+        });
+      }
+
+      function errorCallback(res) {
+        vm.error = res.data.message;
+      }
+    };
   }
 })();

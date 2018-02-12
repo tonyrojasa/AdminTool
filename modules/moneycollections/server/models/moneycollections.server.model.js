@@ -28,12 +28,13 @@ var MoneycollectionSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  moneyFlow: [{
+  moneyFlows: [{
     type: {
       type: String,
       trim: true,
       required: 'type cannot be blank'
     },
+    description: String,
     isDetailed: {
       type: Boolean,
       default: true
@@ -44,69 +45,65 @@ var MoneycollectionSchema = new Schema({
     },
     exchangeRate: Number,
     coins: {
-      totalOf500: {
+      numberOf500: {
         type: Number,
         default: 0
       },
-      totalOf100: {
+      numberOf100: {
         type: Number,
         default: 0
       },
-      totalOf50: {
+      numberOf50: {
         type: Number,
         default: 0
       },
-      totalOf25: {
+      numberOf25: {
         type: Number,
         default: 0
       },
-      totalOf10: {
+      numberOf10: {
         type: Number,
         default: 0
       },
-      totalOf5: {
+      numberOf5: {
         type: Number,
         default: 0
       },
-      totalOfDolars: {
-        type: Number,
-        default: 0
-      },
-      coinsTotal: {
+      numberOfDollars: {
         type: Number,
         default: 0
       }
     },  
     bills: {
-      total50000: {
+      numberOf50000: {
         type: Number,
         default: 0
       },
-      total20000: {
+      numberOf20000: {
         type: Number,
         default: 0
       },
-      total10000: {
+      numberOf10000: {
         type: Number,
         default: 0
       },
-      total5000: {
+      numberOf5000: {
         type: Number,
         default: 0
       },
-      total2000: {
+      numberOf2000: {
         type: Number,
         default: 0
       },
-      total000: {
-        type: Number,
-        default: 0
-      },
-      billsTotal: {
+      numberOf1000: {
         type: Number,
         default: 0
       }
     },
+    collectors: [{        
+      type: Schema.ObjectId,
+      ref: 'User'
+    }],
     total: {
       type: Number,
       required: 'moneyFlowTotal cannot be blank'

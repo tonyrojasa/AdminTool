@@ -20,8 +20,8 @@
         controller: 'MoneycollectionsReportController',
         controllerAs: 'vm',
         data: {
-          roles: ['admin', 'inscriptor', 'user'],
-          pageTitle: 'Inscripciones - Reporte General'
+          roles: ['boardDirector', 'boardReviewer'],
+          pageTitle: 'Diezmos/Ofrendas - Reporte General'
         }
       })
       .state('moneycollections.list', {
@@ -30,43 +30,34 @@
         controller: 'MoneycollectionsListController',
         controllerAs: 'vm',
         data: {
-          roles: ['admin', 'inscriptor', 'user'],
-          pageTitle: 'Lista de Inscripciones'
+          roles: ['boardDirector', 'boardReviewer'],
+          pageTitle: 'Lista de Diezmos/Ofrendas'
         }
       })
       .state('moneycollections.create', {
-        url: '/create/:newMember',
-        params: {
-          newMember: 'true'
-        },
+        url: '/create',
         templateUrl: 'modules/moneycollections/client/views/form-moneycollection.client.view.html',
         controller: 'MoneycollectionsController',
         controllerAs: 'vm',
         resolve: {
-          moneycollectionResolve: newMoneycollection,
-          personResolve: newPerson
+          moneycollectionResolve: newMoneycollection
         },
         data: {
-          roles: ['admin', 'inscriptor'],
-          pageTitle: 'Crear Inscripcion'
+          roles: ['boardDirector'],
+          pageTitle: 'Crear Diezmos/Ofrendas'
         }
       })
       .state('moneycollections.edit', {
-        url: '/:moneycollectionId/edit/:newMember',
-        params: {
-          'newMember': 'true',
-          'personId': null
-        },
+        url: '/:moneycollectionId/edit',
         templateUrl: 'modules/moneycollections/client/views/form-moneycollection.client.view.html',
         controller: 'MoneycollectionsController',
         controllerAs: 'vm',
         resolve: {
-          moneycollectionResolve: getMoneycollection,
-          personResolve: getPerson
+          moneycollectionResolve: getMoneycollection
         },
         data: {
-          roles: ['admin', 'inscriptor'],
-          pageTitle: 'Editar Inscripcion - {{ moneycollectionResolve.name }}'
+          roles: ['boardDirector'],
+          pageTitle: 'Editar Diezmos/Ofrendas - {{ moneycollectionResolve.name }}'
         }
       })
       .state('moneycollections.view', {
@@ -75,12 +66,11 @@
         controller: 'MoneycollectionsController',
         controllerAs: 'vm',
         resolve: {
-          moneycollectionResolve: getMoneycollection,
-          personResolve: newPerson
+          moneycollectionResolve: getMoneycollection
         },
         data: {
-          roles: ['admin', 'inscriptor'],
-          pageTitle: 'Inscripcion - {{ articleResolve.name }}'
+          roles: ['boardDirector', 'boardReviewer'],
+          pageTitle: 'Diezmos/Ofrendas - {{ articleResolve.name }}'
         }
       });
   }
@@ -108,11 +98,4 @@
       }).$promise;
     }
   }
-
-  newPerson.$inject = ['PeopleService'];
-
-  function newPerson(PeopleService) {
-    return new PeopleService();
-  }
-
 })();
