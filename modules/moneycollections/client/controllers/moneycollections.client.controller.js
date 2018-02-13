@@ -22,19 +22,23 @@
     if (!vm.moneycollection._id) {
       vm.moneycollection.date = new Date();
       vm.moneycollection.total = 0;
+      vm.moneycollection.exchangeRate = 0;
     }
 
 
     vm.calculateFlowsTotal = function () {
-      debugger;
       var flowsTotal = 0;
-      return _.each(vm.moneycollection.moneyFlows, function (flow, index) {
-        debugger;
-        flowsTotal += flow.total;
+      _.each(vm.moneycollection.moneyFlows, function (flow, index) {
+        if (flow.isExpense) {
+          flowsTotal - flow.total;
+        } else {
+          flowsTotal += flow.total;
+        }
+
         if (index === vm.moneycollection.moneyFlows.length - 1) {
           vm.moneycollection.total = flowsTotal;
         }
-      })
+      });
     };
 
     vm.save = function (isValid) {

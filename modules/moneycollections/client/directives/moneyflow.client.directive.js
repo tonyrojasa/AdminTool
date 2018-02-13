@@ -12,6 +12,7 @@
       replace: true,
       scope: {
         flows: '=',
+        exchangeRate: '=',
         form: '=',
         readonly: '=',
         report: '=',
@@ -58,8 +59,12 @@
 
         scope.calculateCoinsAndBillsTotal = function (item) {
           item.total = scope.getCoinsTotal(item) + scope.getBillsTotal(item) +
-            scope.calculateNumberOfTotal(item.numberOfDollars, scope.flows.exchangeRate);
+            scope.calculateNumberOfTotal(item.numberOfDollars, scope.exchangeRate);
           return item.total;
+        };
+
+        scope.setDescription = function (item, date) {
+          item.description = item.description + ' ' + item.type + ' ' + date;
         };
 
         scope.addFlow = function () {
@@ -71,7 +76,6 @@
             description: '',
             isDetailed: true,
             isExpense: false,
-            exchangeRate: 0,
             numberOfDollars: 0,
             date: new Date(),
             coins: {

@@ -1,18 +1,6 @@
 <div>        
   <fieldset class="fieldset"> 
-    <legend ng-if="!report">Flujos de dinero</legend> 
-    
-    <div class="form-group-sm" show-errors>
-      <label class="control-label" for="description">Tipo de cambio $ (solo si hay dolares)</label>
-      <input type="number" name="exchangeRate" type="number" ng-model="flows.exchangeRate"  autocomplete="off" id="exchangeRate" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Tipo de cambio $" value="{{flows.exchangeRate}}" ng-required="exchangeRateRequired">
-
-      <div ng-messages="form.$error" role="alert">
-        <p class="help-block error-text" ng-message="required">Tipo de cambio $ es requerido.</p>
-      </div>
-    </div>
-    <div ng-if="readonly">
-      {{item.exchangeRate}}
-    </div>   
+    <legend ng-if="!report">Flujos de dinero</legend>   
 
     <div ng-repeat="item in flows track by $index">  
       <div ng-if="!readonly" class="col-md-12">
@@ -285,7 +273,7 @@
                 <span class="input-group-addon">$</span>
                 <input type="number" name="numberOfDollars_{{$index}}" type="number" ng-model="item.numberOfDollars"  autocomplete="off" id="numberOfDollars_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Total de dolares $" required>
               </div> 
-              <b>Total:</b> {{calculateNumberOfTotal(item.numberOfDollars, flows.exchangeRate) | currency: '$'}} 
+              <b>Total:</b> {{calculateNumberOfTotal(item.numberOfDollars, exchangeRate) | currency: '$'}} 
             </div>    
             <div ng-messages="form.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Total de dolares $ es requerido.</p>
@@ -296,15 +284,20 @@
           </div>
         
         <div class="col-md-12 ">
-          <h3>Total de #{{$index+1}} {{item.type}}: {{calculateCoinsAndBillsTotal(item) | currency: '₡'}}</h3>
+          <h3>Total de #{{$index+1}} {{item.type}} {{item.description}}: {{calculateCoinsAndBillsTotal(item) | currency: '₡'}}</h3>
         </div>
       </div> 
 
-      <div ng-if="!item.isDetailed" class="col-md-12">
+      <div ng-if="!item.isDetailed" >
         <div ng-if="!item.isExpense">          
           <div class="form-group-sm" show-errors>
             <label class="control-label" for="name">Total reportado *</label>
-            <input type="number" name="moneyFlowReportedTotal_{{$index}}" type="number" ng-model="item.reportedTotal" class="form-control" autocomplete="off" id="moneyFlowReportedTotal_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Total reportado" required>  
+            <div class="form-inline">
+              <div class="input-group"> 
+                <span class="input-group-addon">₡</span>
+                <input type="number" name="moneyFlowReportedTotal_{{$index}}" type="number" ng-model="item.reportedTotal" class="form-control" autocomplete="off" id="moneyFlowReportedTotal_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Total reportado" required>  
+              </div>   
+            </div>          
             <div ng-messages="form.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Total reportado es requerido.</p>
             </div>
@@ -316,7 +309,12 @@
 
         <div class="form-group-sm" show-errors>
           <label class="control-label" for="name">Total real *</label>
-          <input type="number" name="moneyFlowtotal_{{$index}}" type="number" ng-model="item.total" class="form-control" autocomplete="off" id="moneyFlowtotal_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Total real" required>  
+          <div class="form-inline">
+            <div class="input-group"> 
+              <span class="input-group-addon">₡</span>
+              <input type="number" name="moneyFlowtotal_{{$index}}" type="number" ng-model="item.total" class="form-control" autocomplete="off" id="moneyFlowtotal_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Total real" required>  
+            </div> 
+          </div>
           <div ng-messages="form.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Total real es requerido.</p>
           </div>

@@ -71,13 +71,24 @@
             <div ng-messages="vm.form.moneycollectionForm.date.$error" role="alert">
                 <p class="help-block error-text" ng-message="required">Fecha de ingreso es requerido.</p>
             </div>
+          </div>         
+    
+          <div class="form-group form-group-sm" show-errors>
+            <label class="control-label" for="description">Tipo de cambio $ (solo si hay dolares)</label>
+            <input type="number" name="exchangeRate" type="number" ng-model="vm.moneycollection.exchangeRate"  autocomplete="off" id="exchangeRate" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Tipo de cambio $" ng-required="exchangeRateRequired">
+
+            <div ng-messages="form.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Tipo de cambio $ es requerido.</p>
+            </div>
           </div>
-          <money-flow flows="vm.moneycollection.moneyFlows" show-labels="true" form="vm.form.moneycollectionForm"></money-flow>
+          <div ng-if="readonly">
+            {{vm.moneycollection.exchangeRate}}
+          </div> 
+
+          <money-flow flows="vm.moneycollection.moneyFlows" exchange-rate="vm.moneycollection.exchangeRate" show-labels="true" form="vm.form.moneycollectionForm"></money-flow>
           <div class="form-group form-group-sm">
-              <br />
-          <h3>Total de Ingresos: </h3>
-          <h3>Total de Egresos: </h3>{{vm.calculateFlowsTotal() }}
-          <h2>Total: {{vm.moneycollection.total | currency: '₡'}}</h2>
+          <br />
+          <h2>Total: {{vm.calculateFlowsTotal(); vm.moneycollection.total | currency: '₡'}}</h2>
           </div>
           <br />
           <div class="form-group form-group-sm">

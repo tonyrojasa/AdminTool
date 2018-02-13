@@ -28,6 +28,7 @@ var MoneycollectionSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  exchangeRate: Number,
   moneyFlows: [{
     type: {
       type: String,
@@ -47,7 +48,6 @@ var MoneycollectionSchema = new Schema({
       type: Boolean,
       default: false
     },
-    exchangeRate: Number,
     coins: {
       numberOf500: {
         type: Number,

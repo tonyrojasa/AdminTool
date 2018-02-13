@@ -16,6 +16,7 @@
     var vm = this;
     vm.moment = moment;
     vm.authentication = Authentication;
+    vm.moneycollections = MoneycollectionsService.query();
 
     vm.getTotalClass = function(value) {
       if (value >= 0) {
