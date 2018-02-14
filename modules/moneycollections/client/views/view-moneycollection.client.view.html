@@ -1,25 +1,188 @@
-<section>
+<section class="container">
   <div class="page-header">
     <h1 data-ng-bind="vm.moneycollection.name"></h1>
   </div>
   <div class="pull-right"
        data-ng-show="vm.moneycollection.isCurrentUserOwner">
     <a class="btn btn-primary" data-ui-sref="moneycollections.edit({ moneycollectionId: vm.moneycollection._id })">
-      <i class="glyphicon glyphicon-edit"></i>
+      <i class="glyphicon glyphicon-edit"></i> Editar
     </a>
-    <a class="btn btn-primary" data-ng-show="vm.authentication.isUserAdmin()" data-ng-click="vm.remove()">
-      <i class="glyphicon glyphicon-trash"></i>
+    <a class="btn btn-danger" data-ng-show="vm.authentication.isUserAdmin() && vm.authentication.isBoardDirectorUser()" data-ng-click="vm.remove()">
+      <i class="glyphicon glyphicon-trash"></i> Eliminar
+    </a>
+  </div>  
+  <div class="pull-left">
+    <a class="btn btn-secondary"
+      data-ui-sref="moneycollections.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
     </a>
   </div>
-  <small>
-    <em class="text-muted">
-      Posted on
-      <span data-ng-bind="vm.moneycollection.created | date:'mediumDate'"></span>
-      by
-      <span data-ng-if="vm.moneycollection.user"
-            data-ng-bind="vm.moneycollection.user.displayName"></span>
-      <span data-ng-if="!vm.moneycollection.user">Deleted User</span>
-    </em>
-  </small>
-  <p class="lead" data-ng-bind="vm.moneycollection.content"></p>
+  <br /><br /><br />
+  
+  </div>
+  <div class="row">
+      <div  class="col-md-6">
+        <div  class="text-center">
+          <h2>Ingresos</h2>
+        </div>
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Total de Ingresos</th>
+              <th>Descripciones Egresos (gastos)</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th>Diezmos</th>
+            <td>  
+                {{vm.moneycollection.summary.totalDiezmos | currency: '₡'}}
+            </td>
+            <td>  
+                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesDiezmos)}}
+            </td>
+          </tr>
+          <tr>
+            <th>Ofrendas</th>
+            <td>  
+              {{vm.moneycollection.summary.totalOfrendas | currency: '₡'}}
+            </td>
+            <td>  
+                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesOfrendas)}}
+            </td>
+          </tr>
+          <tr>      
+            <th>Grupos Vida</th>
+            <td>  
+                {{vm.moneycollection.summary.totalGruposVida | currency: '₡'}}
+            </td>
+            <td>  
+                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesGruposVida)}}
+            </td>
+          </tr>
+          <tr>
+            <th>Dicipulados</th>
+            <td>  
+                {{vm.moneycollection.summary.totalDicipulados | currency: '₡'}}
+            </td>
+            <td>  
+                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesDicipulados)}}
+            </td>
+          </tr>
+          <tr>      
+            <th>Sodas</th>
+            <td>  
+                {{vm.moneycollection.summary.totalSodas | currency: '₡'}}
+            </td>
+            <td>  
+                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesSodas)}}
+            </td>
+          </tr>
+          <tr>
+            <th>Otros</th>
+            <td>  
+                {{vm.moneycollection.summary.totalOtros | currency: '₡'}}
+            </td>
+            <td>  
+                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesOtros)}}
+            </td>
+          </tr>
+          <tr>
+              <th><span class="pull-right">Total Ingresos</span></th>
+              <td>  
+                  {{vm.moneycollection.total + vm.moneycollection.summary.totalEgresos | currency: '₡'}}
+              </td>
+              <td>  
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div  class="col-md-6">
+        <div  class="text-center">
+          <h2>Egresos (gastos)</h2>
+        </div>
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Total de Egresos (gastos)</th>
+              <th>Descripciones Egresos (gastos)</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th>Diezmos</th>
+            <td>  
+                {{vm.moneycollection.summary.totalDiezmosEgresos | currency: '₡'}}
+            </td>
+            <td>  
+                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesDiezmosEgresos)}}
+            </td>
+          </tr>
+          <tr>
+            <th>Ofrendas</th>
+            <td>  
+              {{vm.moneycollection.summary.totalOfrendasEgresos | currency: '₡'}}
+            </td>
+            <td>  
+                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesOfrendasEgresos)}}
+            </td>
+          </tr>
+          <tr>      
+            <th>Grupos Vida</th>
+            <td>  
+                {{vm.moneycollection.summary.totalGruposVidaEgresos | currency: '₡'}}
+            </td>
+            <td>  
+                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesGruposVidaEgresos)}}
+            </td>
+          </tr>
+          <tr>
+            <th>Dicipulados</th>
+            <td>  
+                {{vm.moneycollection.summary.totalDicipuladosEgresos | currency: '₡'}}
+            </td>
+            <td>  
+                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesDicipuladosEgresos)}}
+            </td>
+          </tr>
+          <tr>      
+            <th>Sodas</th>
+            <td>  
+                {{vm.moneycollection.summary.totalSodasEgresos | currency: '₡'}}
+            </td>
+            <td>  
+                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesSodasEgresos)}}
+            </td>
+          </tr>
+          <tr>
+            <th>Otros</th>
+            <td>  
+                {{vm.moneycollection.summary.totalOtrosEgresos | currency: '₡'}}
+            </td>
+            <td>  
+                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesOtrosEgresos)}}
+            </td>
+          </tr>
+          <tr>
+              <th><span class="pull-right">Total Egresos</span></th>
+              <td>  
+                  {{vm.moneycollection.summary.totalEgresos | currency: '₡'}}
+              </td>
+              <td>  
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+  
+  <div class="row text-center">
+    <h2>TOTAL:  {{vm.moneycollection.total | currency: '₡'}}</h2>
+  </div>
+    
 </section>

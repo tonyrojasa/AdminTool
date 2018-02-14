@@ -78,7 +78,6 @@
   getMoneycollection.$inject = ['$stateParams', 'MoneycollectionsService'];
 
   function getMoneycollection($stateParams, MoneycollectionsService) {
-    debugger;
     return MoneycollectionsService.get({
       moneycollectionId: $stateParams.moneycollectionId
     }).$promise;

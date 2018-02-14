@@ -29,7 +29,18 @@
       vm.moneycollection.date = new Date(vm.moneycollection.date);
     }
 
-
+    vm.getTextFromSummaryDescriptionArray = function (summaryDescriptionArray) {
+      var textDescription = '';
+      if (summaryDescriptionArray && summaryDescriptionArray.length) {
+        for (var i = 0; i <= summaryDescriptionArray.length - 1; i++) {
+          textDescription += summaryDescriptionArray[i];
+          if (i < summaryDescriptionArray.length - 1) {
+            textDescription += ', ';
+          }
+        }
+      }
+      return textDescription;
+    };
 
     vm.calculateFlowsTotal = function () {
       var flowsTotal = 0;

@@ -11,66 +11,95 @@ var path = require('path'),
   _ = require('lodash');
 
 
-var setTotalPerType = function (moneycollection, flow) {
+var setReportingData = function (moneycollection, flow) {
   if (!moneycollection.summary) {
     moneycollection.summary = {};
     moneycollection.summary.totalDiezmos = 0;
+    moneycollection.summary.descripcionesDiezmos = [];
     moneycollection.summary.totalDiezmosEgresos = 0;
+    moneycollection.summary.descripcionesDiezmosEgresos = [];
+
     moneycollection.summary.totalOfrendas = 0;
+    moneycollection.summary.descripcionesOfrendas = [];
     moneycollection.summary.totalOfrendasEgresos = 0;
+    moneycollection.summary.descripcionesOfrendasEgresos = [];
+
     moneycollection.summary.totalGruposVida = 0;
+    moneycollection.summary.descripcionesGruposVida = [];
     moneycollection.summary.totalGruposVidaEgresos = 0;
+    moneycollection.summary.descripcionesGruposVidaEgresos = [];
+
     moneycollection.summary.totalDicipulados = 0;
+    moneycollection.summary.descripcionesDicipulados = [];
     moneycollection.summary.totalDicipuladosEgresos = 0;
+    moneycollection.summary.descripcionesDicipuladosEgresos = [];
+
     moneycollection.summary.totalSodas = 0;
+    moneycollection.summary.descripcionesSodas = [];
     moneycollection.summary.totalSodasEgresos = 0;
+    moneycollection.summary.descripcionesSodasEgresos = [];
+
     moneycollection.summary.totalOtros = 0;
+    moneycollection.summary.descripcionesOtros = [];
     moneycollection.summary.totalOtrosEgresos = 0;
+    moneycollection.summary.descripcionesOtrosEgresos = [];
+
     moneycollection.summary.totalEgresos = 0;
   }
   switch (flow.type) {
     case 'Diezmo':
       if (flow.isExpense) {
         moneycollection.summary.totalDiezmosEgresos = moneycollection.summary.totalDiezmosEgresos + flow.total;
+        moneycollection.summary.descripcionesDiezmosEgresos.push(flow.description);
       } else {
         moneycollection.summary.totalDiezmos = moneycollection.summary.totalDiezmos + flow.total;
-     
+        moneycollection.summary.descripcionesDiezmos.push(flow.description);
       }
       break;
     case 'Ofrenda':
       if (flow.isExpense) {
-        moneycollection.summary.totalOfrendasEgresos = moneycollection.summary.totalOfrendasEgresos + flow.total;        
+        moneycollection.summary.totalOfrendasEgresos = moneycollection.summary.totalOfrendasEgresos + flow.total;
+        moneycollection.summary.descripcionesOfrendasEgresos.push(flow.description);
       } else {
         moneycollection.summary.totalOfrendas = moneycollection.summary.totalOfrendas + flow.total;
+        moneycollection.summary.descripcionesOfrendas.push(flow.description);
       }
       break;
     case 'Grupo vida':
       if (flow.isExpense) {
-        moneycollection.summary.totalGruposVidaEgresos = moneycollection.summary.totalGruposVidaEgresos + flow.total;      
+        moneycollection.summary.totalGruposVidaEgresos = moneycollection.summary.totalGruposVidaEgresos + flow.total;
+        moneycollection.summary.descripcionesGruposVidaEgresos.push(flow.description);
       } else {
-        moneycollection.summary.totalGruposVida = moneycollection.summary.totalGruposVida + flow.total;      
+        moneycollection.summary.totalGruposVida = moneycollection.summary.totalGruposVida + flow.total;
+        moneycollection.summary.descripcionesGruposVida.push(flow.description);
       }
       break;
     case 'Dicipulado':
       if (flow.isExpense) {
-        moneycollection.summary.totalDicipuladosEgresos = moneycollection.summary.totalDicipuladosEgresos + flow.total;          
+        moneycollection.summary.totalDicipuladosEgresos = moneycollection.summary.totalDicipuladosEgresos + flow.total;
+        moneycollection.summary.descripcionesDicipuladosEgresos.push(flow.description);
       } else {
-        moneycollection.summary.totalDicipulados = moneycollection.summary.totalDicipulados + flow.total;          
+        moneycollection.summary.totalDicipulados = moneycollection.summary.totalDicipulados + flow.total;
+        moneycollection.summary.descripcionesDicipulados.push(flow.description);
       }
       break;
     case 'Soda':
       if (flow.isExpense) {
         moneycollection.summary.totalSodasEgresos = moneycollection.summary.totalSodasEgresos + flow.total;
-         
+        moneycollection.summary.descripcionesSodasEgresos.push(flow.description);
+
       } else {
-        moneycollection.summary.totalSodas = moneycollection.summary.totalSodas + flow.total;         
+        moneycollection.summary.totalSodas = moneycollection.summary.totalSodas + flow.total;
+        moneycollection.summary.descripcionesSodas.push(flow.description);
       }
       break;
     case 'Otro':
       if (flow.isExpense) {
-        moneycollection.summary.totalOtrosEgresos = moneycollection.summary.totalOtrosEgresos + flow.total;         
+        moneycollection.summary.totalOtrosEgresos = moneycollection.summary.totalOtrosEgresos + flow.total;
+        moneycollection.summary.descripcionesOtrosEgresos.push(flow.description);
       } else {
-        moneycollection.summary.totalOtros = moneycollection.summary.totalOtros + flow.total;         
+        moneycollection.summary.totalOtros = moneycollection.summary.totalOtros + flow.total;
+        moneycollection.summary.descripcionesOtros.push(flow.description);
       }
       break;
   }
@@ -176,8 +205,8 @@ exports.list = function (req, res) {
         });
       } else {
         _.each(moneycollections, function (moneycollection, key) {
-          if (moneycollection.moneyFlows.length > 0) {                         
-            moneycollection = setTotalPerType(moneycollection);
+          if (moneycollection.moneyFlows.length > 0) {
+            moneycollection = setReportingData(moneycollection);
           }
           if (key === moneycollections.length - 1) {
             res.jsonp(moneycollections);
@@ -215,9 +244,9 @@ exports.listAllCurrent = function (req, res) {
         });
       } else {
         _.each(moneycollections, function (moneycollection, key) {
-          
-          _.each(moneycollection.moneyFlows, function(flow) {              
-            setTotalPerType(moneycollection, flow);
+
+          _.each(moneycollection.moneyFlows, function (flow) {
+            setReportingData(moneycollection, flow);
           });
 
           if (key === moneycollections.length - 1) {
@@ -250,7 +279,12 @@ exports.moneycollectionByID = function (req, res, next, id) {
           message: 'No Moneycollection with that identifier has been found'
         });
       }
-      req.moneycollection = moneycollection;
-      next();
+      _.each(moneycollection.moneyFlows, function (flow, key) {
+        setReportingData(moneycollection, flow);
+        if (key === moneycollection.moneyFlows.length - 1) {
+          req.moneycollection = moneycollection;
+          next();
+        }
+      });
     });
 };

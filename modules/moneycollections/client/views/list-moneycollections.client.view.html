@@ -34,7 +34,7 @@
                     {{moneyCollection.date | date:'dd-MMM-yyyy'}}</td>
             <td title="'Nombre'" filter="{ 'moneyCollection.name': 'select'}" filter-data="vm.groupsFilterArray"  sortable="'moneyCollection.name'" ng-if="true">
                 {{moneyCollection.name}}</td>
-            <td  class="col-md-1" title="'Total Diezmos'" filter="{ 'summary.totalDiezmos': 'number'}" sortable="'totalDiezmos'" ng-if="true">
+            <td  class="col-md-1" title="'Diezmos'" filter="{ 'summary.totalDiezmos': 'number'}" sortable="'totalDiezmos'" ng-if="true">
                 {{moneyCollection.summary.totalDiezmos | currency:'₡'}}
             </td> 
             <td  class="col-md-1" title="'Ofrendas'" filter="{ 'summary.totalOfrendas': 'number'}" sortable="'totalOfrendas'" ng-if="true">
