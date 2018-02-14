@@ -67,12 +67,26 @@
             <td ng-if="vm.cols[2].show()"></td>  
             <td ng-if="vm.cols[3].show()"></td>  
             <td ng-if="vm.cols[4].show()"></td>  
-            <td ng-if="vm.cols[5].show()" ng-class="vm.getTotalClass($data | sumByKey:'total')">
+            <td ng-if="vm.cols[5].show()"></td>  
+            <td ng-if="vm.cols[6].show()"></td>  
+            <td ng-if="vm.cols[7].show()"></td> 
+            <td ng-if="vm.cols[8].show()"></td> 
+            <td ng-if="vm.cols[9].show()"></td>  
+            <td ng-if="vm.cols[10].show()" ng-class="vm.getTotalClass($data | sumByKey:'total')">
               <span><b>Total:</b> {{$data | sumByKey:'total' | currency:'₡'}}</span>
             </td>
-            <td ng-if="true" class="text-center">            
-              <span><b>Flujos de dinero:</b> {{($data).length}}</span>
-            </td>
+          </tr>
+          <tr>          
+            <td ng-if="vm.cols[0].show()"></td>  
+            <td ng-if="vm.cols[1].show()"></td>  
+            <td ng-if="vm.cols[2].show()"></td>  
+            <td ng-if="vm.cols[3].show()"></td>  
+            <td ng-if="vm.cols[4].show()"></td>  
+            <td ng-if="vm.cols[5].show()"></td>  
+            <td ng-if="vm.cols[6].show()"></td>  
+            <td ng-if="vm.cols[7].show()"></td> 
+            <td ng-if="vm.cols[8].show()"></td>
+            <td ng-if="vm.cols[9].show()"></td> 
             <td>
               <div class="text-right">
               <a class="btn" title="Export Table" ng-click='csv.generate()' ng-href="{{ csv.link() }}"

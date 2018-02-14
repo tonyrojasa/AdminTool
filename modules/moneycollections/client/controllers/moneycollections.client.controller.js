@@ -29,6 +29,66 @@
       vm.moneycollection.date = new Date(vm.moneycollection.date);
     }
 
+    vm.flowTypes = [
+      'Diezmo',
+      'Ofrenda',
+      'Grupo vida',
+      'Dicipulado',
+      'Soda',
+      'Otro'
+    ];
+    vm.getFlowTypeTotal = function (type, accountingType) {
+      var isExpense = accountingType === 'Egresos' ? true : false;
+      var result = 0;
+      switch (type) {
+        case 'Diezmo':
+          result = isExpense ? vm.moneycollection.summary.totalDiezmosEgresos : vm.moneycollection.summary.totalDiezmos;
+          break;
+        case 'Ofrenda':
+          result = isExpense ? vm.moneycollection.summary.totalOfrendasEgresos : vm.moneycollection.summary.totalOfrendas;
+          break;
+        case 'Grupo vida':
+          result = isExpense ? vm.moneycollection.summary.totalGruposVidaEgresos : vm.moneycollection.summary.totalGruposVida;
+          break;
+        case 'Dicipulado':
+          result = isExpense ? vm.moneycollection.summary.totalDicipuladosEgresos : vm.moneycollection.summary.totalDicipulados;
+          break;
+        case 'Soda':
+          result = isExpense ? vm.moneycollection.summary.totalSodasEgresos : vm.moneycollection.summary.totalSodas;
+          break;
+        case 'Otro':
+          result = isExpense ? vm.moneycollection.summary.totalOtrosEgresos : vm.moneycollection.summary.totalOtros;
+          break;
+      }
+      return result;
+    }
+
+    vm.getFlowTypeDescription = function (type, accountingType) {
+      var isExpense = accountingType === 'Egresos' ? true : false;
+      var result = '';
+      switch (type) {
+        case 'Diezmo':
+          result = isExpense ? vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesDiezmosEgresos) : vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesDiezmos);
+          break;
+        case 'Ofrenda':
+          result = isExpense ? vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesOfrendasEgresos) : vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesOfrendas);
+          break;
+        case 'Grupo vida':
+          result = isExpense ? vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesGruposVidaEgresos) : vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesGruposVida);
+          break;
+        case 'Dicipulado':
+          result = isExpense ? vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesDicipuladosEgresos) : vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesDicipulados);
+          break;
+        case 'Soda':
+          result = isExpense ? vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesSodasEgresos) : vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesSodas);
+          break;
+        case 'Otro':
+          result = isExpense ? vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesOtrosEgresos) : vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesOtros);
+          break;
+      }
+      return result;
+    }
+
     vm.getTextFromSummaryDescriptionArray = function (summaryDescriptionArray) {
       var textDescription = '';
       if (summaryDescriptionArray && summaryDescriptionArray.length) {

@@ -20,169 +20,94 @@
   </div>
   <br /><br /><br />
   
-  </div>
   <div class="row">
-      <div  class="col-md-6">
-        <div  class="text-center">
-          <h2>Ingresos</h2>
+      <h1 class="row text-center">Informe General</h1>
+      <div ng-repeat="accountingType in ['Ingresos', 'Egresos']">
+        <div class="col-md-6">      
+          <div class="text-center">
+              <h3>{{accountingType}}</h3>
+          </div>
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Total de {{accountingType}}</th>
+                <th>Descripciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="flowType in vm.flowTypes" >
+                <th>  
+                    {{flowType}}
+                </th>
+                <td>  
+                    {{vm.getFlowTypeTotal(flowType, accountingType) | currency: '₡'}}
+                </td>
+                <td>  
+                    {{vm.getFlowTypeDescription(flowType, accountingType)}}
+                </td>
+              </tr>   
+            </tbody> 
+            <tfoot>
+              <tr>  
+                <th><span class="pull-right">Total {{accountingType}}:</span></th>    
+                <td  colspan="2">
+                    {{accountingType === 'Ingresos' ? (vm.moneycollection.total + vm.moneycollection.summary.totalEgresos): vm.moneycollection.summary.totalEgresos  | currency: '₡'}}  
+                </td>        
+              </tr>
+            </tfoot>
+          </table>
         </div>
-        <table class="table table-condensed">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Total de Ingresos</th>
-              <th>Descripciones Egresos (gastos)</th>
-            </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <th>Diezmos</th>
-            <td>  
-                {{vm.moneycollection.summary.totalDiezmos | currency: '₡'}}
-            </td>
-            <td>  
-                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesDiezmos)}}
-            </td>
-          </tr>
-          <tr>
-            <th>Ofrendas</th>
-            <td>  
-              {{vm.moneycollection.summary.totalOfrendas | currency: '₡'}}
-            </td>
-            <td>  
-                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesOfrendas)}}
-            </td>
-          </tr>
-          <tr>      
-            <th>Grupos Vida</th>
-            <td>  
-                {{vm.moneycollection.summary.totalGruposVida | currency: '₡'}}
-            </td>
-            <td>  
-                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesGruposVida)}}
-            </td>
-          </tr>
-          <tr>
-            <th>Dicipulados</th>
-            <td>  
-                {{vm.moneycollection.summary.totalDicipulados | currency: '₡'}}
-            </td>
-            <td>  
-                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesDicipulados)}}
-            </td>
-          </tr>
-          <tr>      
-            <th>Sodas</th>
-            <td>  
-                {{vm.moneycollection.summary.totalSodas | currency: '₡'}}
-            </td>
-            <td>  
-                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesSodas)}}
-            </td>
-          </tr>
-          <tr>
-            <th>Otros</th>
-            <td>  
-                {{vm.moneycollection.summary.totalOtros | currency: '₡'}}
-            </td>
-            <td>  
-                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesOtros)}}
-            </td>
-          </tr>
-          <tr>
-              <th><span class="pull-right">Total Ingresos</span></th>
-              <td>  
-                  {{vm.moneycollection.total + vm.moneycollection.summary.totalEgresos | currency: '₡'}}
-              </td>
-              <td>  
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
-
-      <div  class="col-md-6">
-        <div  class="text-center">
-          <h2>Egresos (gastos)</h2>
-        </div>
-        <table class="table table-condensed">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Total de Egresos (gastos)</th>
-              <th>Descripciones Egresos (gastos)</th>
-            </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <th>Diezmos</th>
-            <td>  
-                {{vm.moneycollection.summary.totalDiezmosEgresos | currency: '₡'}}
-            </td>
-            <td>  
-                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesDiezmosEgresos)}}
-            </td>
-          </tr>
-          <tr>
-            <th>Ofrendas</th>
-            <td>  
-              {{vm.moneycollection.summary.totalOfrendasEgresos | currency: '₡'}}
-            </td>
-            <td>  
-                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesOfrendasEgresos)}}
-            </td>
-          </tr>
-          <tr>      
-            <th>Grupos Vida</th>
-            <td>  
-                {{vm.moneycollection.summary.totalGruposVidaEgresos | currency: '₡'}}
-            </td>
-            <td>  
-                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesGruposVidaEgresos)}}
-            </td>
-          </tr>
-          <tr>
-            <th>Dicipulados</th>
-            <td>  
-                {{vm.moneycollection.summary.totalDicipuladosEgresos | currency: '₡'}}
-            </td>
-            <td>  
-                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesDicipuladosEgresos)}}
-            </td>
-          </tr>
-          <tr>      
-            <th>Sodas</th>
-            <td>  
-                {{vm.moneycollection.summary.totalSodasEgresos | currency: '₡'}}
-            </td>
-            <td>  
-                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesSodasEgresos)}}
-            </td>
-          </tr>
-          <tr>
-            <th>Otros</th>
-            <td>  
-                {{vm.moneycollection.summary.totalOtrosEgresos | currency: '₡'}}
-            </td>
-            <td>  
-                {{vm.getTextFromSummaryDescriptionArray(vm.moneycollection.summary.descripcionesOtrosEgresos)}}
-            </td>
-          </tr>
-          <tr>
-              <th><span class="pull-right">Total Egresos</span></th>
-              <td>  
-                  {{vm.moneycollection.summary.totalEgresos | currency: '₡'}}
-              </td>
-              <td>  
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-  </div>
+    </div>
   
   <div class="row text-center">
     <h2>TOTAL:  {{vm.moneycollection.total | currency: '₡'}}</h2>
   </div>
-    
+  <hr />
+  <div class="row">
+    <h1 class="row text-center">Informe Detallado</h1>
+    <div ng-repeat="accountingType in ['Ingresos', 'Egresos']">
+      <div class="col-md-6">      
+        <div class="text-center">
+            <h3>{{accountingType}}</h3>
+        </div>
+        <table class="table table-condensed" ng-repeat="flowType in vm.flowTypes"  ng-if="vm.getFlowTypeTotal(flowType, accountingType) > 0">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Descipcion</th>
+              <th>Ingresos</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="flows in vm.moneycollection.moneyFlows | filter: {'type': flowType, 'isExpense': (accountingType === 'Ingresos' ? false: true)}" ng-if="flows.total > 0">
+            <td>  
+                {{flows.type}}
+            </td>
+            <td>  
+                {{flows.description}}
+            </td>
+            <td>  
+                {{flows.total | currency: '₡'}}
+            </td>
+          </tr>         
+          </tbody>
+          <tfoot>
+            <tr>  
+              <th colspan="2"><span class="pull-right">Total {{flowType}}:</span></th>    
+              <td>
+                  {{vm.getFlowTypeTotal(flowType, accountingType) | currency: '₡'}}
+              </td>        
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <h2>TOTAL:  {{vm.moneycollection.total | currency: '₡'}}</h2>
+  </div>    
+  <hr />
 </section>
