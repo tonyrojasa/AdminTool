@@ -10,7 +10,7 @@
       <div ng-if="readonly">
               {{item.type}}
       </div> 
-      <div class="form-group-sm" show-errors>
+      <div class="form-group-sm row col-md-12" show-errors>
         <label class="control-label" for="description">Descripción *</label>
         <input type="text" name="description_{{$index}}"  ng-model="item.description" class="form-control" autocomplete="off" id="description_{{$index}}" placeholder="Descripción" required>  
         <div ng-messages="form.$error" role="alert">
@@ -21,7 +21,7 @@
         {{item.description}}
       </div> 
       <br>
-      <div class="form-group form-group-sm col-md-12" show-errors>
+      <div class="form-group form-group-sm row row col-md-12" show-errors>
         <label class="control-label" for="date_{{$index}}">Fecha *</label>
         <input name="date_{{$index}}" type="hidden" ng-model="item.date" id="date_{{$index}}" class="form-control" ng-required="true">
         <datetimepicker 
@@ -283,7 +283,7 @@
             {{item.numberOfDollars}}
           </div>
         
-        <div class="col-md-12 ">
+        <div class="row col-md-12 ">
           <h3>Total de #{{$index+1}} {{item.type}} {{item.description}}: {{calculateCoinsAndBillsTotal(item) | currency: '₡'}}</h3>
         </div>
       </div> 
@@ -323,7 +323,7 @@
           {{item.total}}
         </div>
       </div>  
-      <div class="col-md-12 ">
+      <div class="row col-md-12 ">
         <div class="pull-right">
           <a class="form-group-sm btn btn-xs btn-danger" ng-click="removeFlow($index)" ng-if="!readonly">
             <i class="glyphicon glyphicon-trash"></i> 
@@ -331,7 +331,7 @@
           </a>  
         </div>
       </div>        
-      <div class="col-md-12 ">
+      <div class="row col-md-12 ">
         <hr />
       </div>
     </fieldset> 

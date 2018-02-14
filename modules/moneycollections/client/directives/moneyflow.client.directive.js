@@ -5,6 +5,7 @@
     .module('people')
     .directive('moneyFlow', moneyFlow);
 
+  moneyFlow.$inject = ['moment'];
   function moneyFlow() {
     return {
       templateUrl: 'modules/moneycollections/client/views/moneyflow.client.view.html',
@@ -27,6 +28,12 @@
           'Soda',
           'Otro'
         ];
+
+        if (scope.flows && scope.flows.length) {
+          _.each(scope.flows, function (flow, index) {
+            flow.date = new Date(flow.date);
+          });
+        }
 
         scope.calculateNumberOfTotal = function (quantity, amount) {
           amount = amount ? amount : 0;

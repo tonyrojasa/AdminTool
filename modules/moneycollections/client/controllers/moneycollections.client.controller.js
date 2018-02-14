@@ -7,11 +7,11 @@
     .controller('MoneycollectionsController', MoneycollectionsController);
 
   MoneycollectionsController.$inject = ['$scope', '$state', '$stateParams', 'Authentication',
-    'moneycollectionResolve', '$rootScope', 'Notification'
+    'moneycollectionResolve', '$rootScope', 'Notification', '$filter'
   ];
 
   function MoneycollectionsController($scope, $state, $stateParams, Authentication, moneycollection,
-    $rootScope, Notification) {
+    $rootScope, Notification, $filter) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -20,19 +20,25 @@
     vm.form = {};
 
     if (!vm.moneycollection._id) {
+      var stringDate = $filter('date')(new Date(), 'dd-MMM-yyyy');
+      vm.moneycollection.name = 'Conteo ' + stringDate;
       vm.moneycollection.date = new Date();
       vm.moneycollection.total = 0;
       vm.moneycollection.exchangeRate = 0;
+    } else {
+      vm.moneycollection.date = new Date(vm.moneycollection.date);
     }
+
 
 
     vm.calculateFlowsTotal = function () {
       var flowsTotal = 0;
       _.each(vm.moneycollection.moneyFlows, function (flow, index) {
+        var total = flow.total ? flow.total : 0;
         if (flow.isExpense) {
-          flowsTotal - flow.total;
+          flowsTotal = flowsTotal - total;
         } else {
-          flowsTotal += flow.total;
+          flowsTotal += total;
         }
 
         if (index === vm.moneycollection.moneyFlows.length - 1) {
@@ -55,7 +61,7 @@
       }
 
       function successCallback(res) {
-        $state.go('moneycollection.view', {
+        $state.go('moneycollections.view', {
           moneycollectionId: res._id
         });
       }

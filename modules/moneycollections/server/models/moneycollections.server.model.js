@@ -72,7 +72,8 @@ var MoneycollectionSchema = new Schema({
       numberOf5: {
         type: Number,
         default: 0
-      }
+      },
+      reportTotals: {}
     },
     bills: {
       numberOf50000: {
@@ -108,16 +109,16 @@ var MoneycollectionSchema = new Schema({
       type: Schema.ObjectId,
       ref: 'User'
     }],
+    reportedTotal: {
+      type: Number,
+      default: 0
+    },
     total: {
       type: Number,
       required: 'moneyFlowTotal cannot be blank'
     },
     comments: String
   }],
-  reportedTotal: {
-    type: Number,
-    default: 0
-  },
   total: {
     type: Number,
     required: 'moneyCollectionTotal cannot be blank'

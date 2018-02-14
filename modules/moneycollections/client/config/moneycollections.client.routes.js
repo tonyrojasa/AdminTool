@@ -70,7 +70,7 @@
         },
         data: {
           roles: ['boardDirector', 'boardReviewer'],
-          pageTitle: 'Flujos de dinero - {{ articleResolve.name }}'
+          pageTitle: 'Flujos de dinero - {{ moneycollectionResolve.name }}'
         }
       });
   }
@@ -78,6 +78,7 @@
   getMoneycollection.$inject = ['$stateParams', 'MoneycollectionsService'];
 
   function getMoneycollection($stateParams, MoneycollectionsService) {
+    debugger;
     return MoneycollectionsService.get({
       moneycollectionId: $stateParams.moneycollectionId
     }).$promise;
