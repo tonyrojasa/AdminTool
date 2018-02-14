@@ -74,14 +74,37 @@
           item.description = item.description + ' ' + item.type + ' ' + date;
         };
 
+        scope.selectFlowType = function (type) {
+          if (type) {
+            switch (type) {
+              case 'Diezmo':
+                if (currentItem.description != undefined && currentItem.description.toLowerCase().indexOf('Conteo de Diezmos') < 0) {
+                  currentItem.description = 'Conteo de Diezmos';
+                }
+                break;
+              case 'Ofrenda':
+                if (currentItem.description != undefined && currentItem.description.toLowerCase().indexOf('Conteo de Ofrendas') < 0) {
+                  currentItem.description = 'Conteo de Ofrendas';
+                }
+              default:
+                currentItem.description = '';
+                break;
+            }
+          }
+        }
+
         scope.addFlow = function () {
           if (!scope.flows) {
             scope.flows = [];
           }
-          scope.flows.push({
+          scope.flows.push(scope.getNewFlow(true));
+        };
+
+        scope.getNewFlow = function (isDetailed) {
+          return {
             type: '',
             description: '',
-            isDetailed: true,
+            isDetailed: isDetailed,
             isExpense: false,
             numberOfDollars: 0,
             date: new Date(),
@@ -105,11 +128,22 @@
             reportedTotal: 0,
             total: 0,
             comments: ''
-          });
-        };
+          };
+        }
+
+        scope.checkIsDetailed = function (flow) {
+          if (flow.isDetailed === false) {
+            if (confirm('Si deshabilita flujo detallado perdera los cambios. Seguro que desea deshabilitarlo?')) {
+              flow = scope.getNewFlow(false);
+            } else {
+              flow.isDetailed = true;
+            }
+          }
+          return flow;
+        }
 
         scope.removeFlow = function (index) {
-          if (confirm('Seguro que desea eliminar el flujo #' + (index + 1) + '?')) {
+          if (confirm('Seguro que desea eliminar el flujo #' + (index + 1) + '? Perdera todos los cambios')) {
             scope.flows.splice(index, 1);
           }
         };

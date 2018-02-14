@@ -21,6 +21,7 @@
         {{item.description}}
       </div> 
       <br>
+      <div class="row col-md-12"></div>
       <div class="form-group form-group-sm row row col-md-12" show-errors>
         <label class="control-label" for="date_{{$index}}">Fecha *</label>
         <input name="date_{{$index}}" type="hidden" ng-model="item.date" id="date_{{$index}}" class="form-control" ng-required="true">
@@ -43,7 +44,7 @@
       </div>
       <div class="col-md-12">   
         <div class="col-md-12 form-group-sm">
-          <label class="checkbox"><input type="checkbox" ng-model="item.isDetailed">Flujo detallado</label>
+          <label class="checkbox"><input type="checkbox" ng-click="item = checkIsDetailed(item)" ng-model="item.isDetailed">Flujo detallado</label>
         </div>
       </div>
       <div ng-if="item.isDetailed && flows.length">
