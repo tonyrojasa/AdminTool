@@ -72,8 +72,7 @@ var MoneycollectionSchema = new Schema({
       numberOf5: {
         type: Number,
         default: 0
-      },
-      reportTotals: {}
+      }
     },
     bills: {
       numberOf50000: {
@@ -127,6 +126,7 @@ var MoneycollectionSchema = new Schema({
     type: String,
     trim: true
   },
+  summary: {},
   created: {
     type: Date,
     default: Date.now

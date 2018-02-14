@@ -11,33 +11,71 @@ var path = require('path'),
   _ = require('lodash');
 
 
-var setTotalPerType = function (flow) {
-  flow.reportTotals = {};
-  flow.reportTotals.totalDiezmos = 0;
-  flow.reportTotals.totalOfrendas = 0;
-  flow.reportTotals.totalGruposVida = 0;
-  flow.reportTotals.totalDicipulados = 0;
-  flow.reportTotals.totalSodas = 0;
-  flow.reportTotals.totalOtros = 0;
+var setTotalPerType = function (moneycollection, flow) {
+  if (!moneycollection.summary) {
+    moneycollection.summary = {};
+    moneycollection.summary.totalDiezmos = 0;
+    moneycollection.summary.totalDiezmosEgresos = 0;
+    moneycollection.summary.totalOfrendas = 0;
+    moneycollection.summary.totalOfrendasEgresos = 0;
+    moneycollection.summary.totalGruposVida = 0;
+    moneycollection.summary.totalGruposVidaEgresos = 0;
+    moneycollection.summary.totalDicipulados = 0;
+    moneycollection.summary.totalDicipuladosEgresos = 0;
+    moneycollection.summary.totalSodas = 0;
+    moneycollection.summary.totalSodasEgresos = 0;
+    moneycollection.summary.totalOtros = 0;
+    moneycollection.summary.totalOtrosEgresos = 0;
+    moneycollection.summary.totalEgresos = 0;
+  }
   switch (flow.type) {
     case 'Diezmo':
-      flow.reportTotals.totalDiezmos = flow.isExpense ? flow.reportTotals.totalDiezmos - flow.total : flow.reportTotals.totalDiezmos + flow.total;
+      if (flow.isExpense) {
+        moneycollection.summary.totalDiezmosEgresos = moneycollection.summary.totalDiezmosEgresos + flow.total;
+      } else {
+        moneycollection.summary.totalDiezmos = moneycollection.summary.totalDiezmos + flow.total;
+     
+      }
       break;
     case 'Ofrenda':
-      flow.reportTotals.totalOfrendas = flow.isExpense ? flow.reportTotals.totalOfrendas - flow.total : flow.reportTotals.totalOfrendas + flow.total;
+      if (flow.isExpense) {
+        moneycollection.summary.totalOfrendasEgresos = moneycollection.summary.totalOfrendasEgresos + flow.total;        
+      } else {
+        moneycollection.summary.totalOfrendas = moneycollection.summary.totalOfrendas + flow.total;
+      }
       break;
     case 'Grupo vida':
-      flow.reportTotals.totalGruposVida = flow.isExpense ? flow.reportTotals.totalGruposVida - flow.total : flow.reportTotals.totalGruposVida + flow.total;
+      if (flow.isExpense) {
+        moneycollection.summary.totalGruposVidaEgresos = moneycollection.summary.totalGruposVidaEgresos + flow.total;      
+      } else {
+        moneycollection.summary.totalGruposVida = moneycollection.summary.totalGruposVida + flow.total;      
+      }
       break;
     case 'Dicipulado':
-      flow.reportTotals.totalDicipulados = flow.isExpense ? flow.reportTotals.totalDicipulados - flow.total : flow.reportTotals.totalDicipulados + flow.total;
+      if (flow.isExpense) {
+        moneycollection.summary.totalDicipuladosEgresos = moneycollection.summary.totalDicipuladosEgresos + flow.total;          
+      } else {
+        moneycollection.summary.totalDicipulados = moneycollection.summary.totalDicipulados + flow.total;          
+      }
       break;
     case 'Soda':
-      flow.reportTotals.totalSodas = flow.isExpense ? flow.reportTotals.totalSodas - flow.total : flow.reportTotals.totalSodas + flow.total;
+      if (flow.isExpense) {
+        moneycollection.summary.totalSodasEgresos = moneycollection.summary.totalSodasEgresos + flow.total;
+         
+      } else {
+        moneycollection.summary.totalSodas = moneycollection.summary.totalSodas + flow.total;         
+      }
       break;
     case 'Otro':
-      flow.reportTotals.totalOtros = flow.isExpense ? flow.reportTotals.totalOtros - flow.total : flow.reportTotals.totalOtros + flow.total;
+      if (flow.isExpense) {
+        moneycollection.summary.totalOtrosEgresos = moneycollection.summary.totalOtrosEgresos + flow.total;         
+      } else {
+        moneycollection.summary.totalOtros = moneycollection.summary.totalOtros + flow.total;         
+      }
       break;
+  }
+  if (flow.isExpense) {
+    moneycollection.summary.totalEgresos = moneycollection.summary.totalEgresos + flow.total;
   }
   return flow;
 };
@@ -115,7 +153,6 @@ exports.delete = function (req, res) {
  * List of Moneycollections
  */
 exports.list = function (req, res) {
-  debugger;
   var query = _.forEach(req.query, function (value, key) {
     var queryParam = {
       $regex: new RegExp('^' + value + '$', 'i'),
@@ -138,12 +175,10 @@ exports.list = function (req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        debugger;
         _.each(moneycollections, function (moneycollection, key) {
-          for (var i = 0; i <= moneycollection.moneyFlows.length - 1; i++) {
-            moneycollection.moneyFlows[i] = setTotalPerType(moneycollection.moneyFlows[i]);
+          if (moneycollection.moneyFlows.length > 0) {                         
+            moneycollection = setTotalPerType(moneycollection);
           }
-          moneycollections[key] = moneycollection;
           if (key === moneycollections.length - 1) {
             res.jsonp(moneycollections);
           }
@@ -156,7 +191,6 @@ exports.list = function (req, res) {
  * List of current Moneycollections
  */
 exports.listAllCurrent = function (req, res) {
-  debugger;
   var query = _.forEach(req.query, function (value, key) {
     var queryParam = {
       $regex: new RegExp('^' + value + '$', 'i'),
@@ -180,12 +214,12 @@ exports.listAllCurrent = function (req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        debugger;
         _.each(moneycollections, function (moneycollection, key) {
-          for (var i = 0; i <= moneycollection.moneyFlows.length - 1; i++) {
-            moneycollection.moneyFlows[i] = setTotalPerType(moneycollection.moneyFlows[i]);
-          }
-          moneycollections[key] = moneycollection;
+          
+          _.each(moneycollection.moneyFlows, function(flow) {              
+            setTotalPerType(moneycollection, flow);
+          });
+
           if (key === moneycollections.length - 1) {
             res.jsonp(moneycollections);
           }
