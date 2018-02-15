@@ -97,11 +97,15 @@
           if (!scope.flows) {
             scope.flows = [];
           }
+          _.each(scope.flows, function (flow) {
+            flow.open = false;
+          });
           scope.flows.push(scope.getNewFlow());
         };
 
         scope.getNewFlow = function (type, description, isExpense, isDetailed, date) {
           return {
+            open: true,
             type: type ? type : '',
             description: description ? description : '',
             isDetailed: isDetailed != undefined ? isDetailed : true,

@@ -14,6 +14,29 @@
     $rootScope, Notification, $filter) {
     var vm = this;
 
+    $scope.groups = [
+      {
+        title: 'Dynamic Group Header - 1',
+        content: 'Dynamic Group Body - 1'
+      },
+      {
+        title: 'Dynamic Group Header - 2',
+        content: 'Dynamic Group Body - 2'
+      }
+    ];
+
+    $scope.items = ['Item 1', 'Item 2', 'Item 3'];
+
+    $scope.addItem = function () {
+      var newItemNo = $scope.items.length + 1;
+      $scope.items.push('Item ' + newItemNo);
+    };
+
+    $scope.status = {
+      isFirstOpen: true,
+      isFirstDisabled: false
+    };
+
     vm.authentication = Authentication;
     vm.moneycollection = moneycollection;
     vm.error = null;
@@ -126,7 +149,7 @@
     vm.save = function (isValid) {
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.moneycollectionForm');
-        Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove">Error en el formulario</i> Complete todos los campos requeridos' });
+        Notification.error({ message: 'Complete todos los campos requeridos', title: '<i class="glyphicon glyphicon-remove"> Error en el formulario</i>' });
         return false;
       }
 
