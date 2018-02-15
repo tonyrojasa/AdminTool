@@ -34,29 +34,29 @@
                     {{moneyCollection.date | date:'dd-MM-yyyy'}}</td>
             <td title="'Nombre'" filter="{ 'name': 'text'}" sortable="'name'" ng-if="true">
                 {{moneyCollection.name}}</td>
-            <td  class="col-md-1" title="'Diezmos'" filter="{ 'summary.totalDiezmos': 'number'}" sortable="'totalDiezmos'" ng-if="true">
-                {{moneyCollection.summary.totalDiezmos | currency:'₡'}}
+            <td  class="col-md-1" title="'Diezmos ₡'" filter="{ 'summary.totalDiezmos': 'number'}" sortable="'totalDiezmos'" ng-if="true">
+                {{moneyCollection.summary.totalDiezmos | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Ofrendas'" filter="{ 'summary.totalOfrendas': 'number'}" sortable="'totalOfrendas'" ng-if="true">
-                {{moneyCollection.summary.totalOfrendas | currency:'₡'}}
+            <td  class="col-md-1" title="'Ofrendas ₡'" filter="{ 'summary.totalOfrendas': 'number'}" sortable="'totalOfrendas'" ng-if="true">
+                {{moneyCollection.summary.totalOfrendas | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Grupos Vida'" filter="{ 'summary.totalGruposVida': 'number'}" sortable="'totalGruposVida'" ng-if="true">
-                {{moneyCollection.summary.totalGruposVida | currency:'₡'}}
+            <td  class="col-md-1" title="'Grupos Vida ₡'" filter="{ 'summary.totalGruposVida': 'number'}" sortable="'totalGruposVida'" ng-if="true">
+                {{moneyCollection.summary.totalGruposVida | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Dicipulados'" filter="{ 'summary.totalDicipulados': 'number'}" sortable="'totalDicipulados'" ng-if="true">
-                {{moneyCollection.summary.totalDicipulados | currency:'₡'}}
+            <td  class="col-md-1" title="'Dicipulados ₡'" filter="{ 'summary.totalDicipulados': 'number'}" sortable="'totalDicipulados'" ng-if="true">
+                {{moneyCollection.summary.totalDicipulados | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Sodas'" filter="{ 'summary.totalSodas': 'number'}" sortable="'totalSodas'" ng-if="true">
-                {{moneyCollection.summary.totalSodas | currency:'₡'}}
+            <td  class="col-md-1" title="'Sodas ₡'" filter="{ 'summary.totalSodas': 'number'}" sortable="'totalSodas'" ng-if="true">
+                {{moneyCollection.summary.totalSodas | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Otros'" filter="{ 'summary.totalOtros': 'number'}" sortable="'totalOtros'" ng-if="true">
-                {{moneyCollection.summary.totalOtros | currency:'₡'}}
+            <td  class="col-md-1" title="'Otros ₡'" filter="{ 'summary.totalOtros': 'number'}" sortable="'totalOtros'" ng-if="true">
+                {{moneyCollection.summary.totalOtros | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Total Egresos (gastos)'" filter="{ 'summary.totalEgresos': 'number'}" sortable="'totalEgresos'" ng-if="true">
-                {{moneyCollection.summary.totalEgresos | currency:'₡'}}
+            <td  class="col-md-1" title="'Total Egresos (gastos) ₡'" filter="{ 'summary.totalEgresos': 'number'}" sortable="'totalEgresos'" ng-if="true">
+                {{moneyCollection.summary.totalEgresos | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Total Ingresos'" filter="{ 'total': 'number'}" sortable="'total'" ng-if="true">
-                {{moneyCollection.total | currency:'₡'}}
+            <td  class="col-md-1" title="'Total Ingresos ₡'" filter="{ 'total': 'number'}" sortable="'total'" ng-if="true">
+                {{moneyCollection.total | currency:''}}
             </td> 
           </tr>
         </tbody>
@@ -73,7 +73,7 @@
             <td ng-if="vm.cols[8].show()"></td> 
             <td ng-if="vm.cols[9].show()"></td>  
             <td ng-if="vm.cols[10].show()" ng-class="vm.getTotalClass($data | sumByKey:'total')">
-              <span><b>Total:</b> {{$data | sumByKey:'total' | currency:'₡'}}</span>
+              <span><b>Total:</b> {{$data | sumByKey:'total' | currency:''}}</span>
             </td>
           </tr>
           <tr>          
