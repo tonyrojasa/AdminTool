@@ -116,6 +116,8 @@ exports.create = function (req, res) {
   var moneycollection = new Moneycollection(req.body);
   moneycollection.user = req.user;
 
+  moneycollection.summary = undefined;
+
   moneycollection.save(function (err) {
     if (err) {
       return res.status(400).send({
@@ -145,9 +147,10 @@ exports.read = function (req, res) {
  * Update a Moneycollection
  */
 exports.update = function (req, res) {
+  debugger;
   var moneycollection = req.moneycollection;
-
   moneycollection = _.extend(moneycollection, req.body);
+  moneycollection.summary = undefined;
 
   moneycollection.save(function (err) {
     if (err) {
@@ -205,7 +208,7 @@ exports.list = function (req, res) {
         });
       } else {
         _.each(moneycollections, function (moneycollection, key) {
-          if (moneycollection.moneyFlows.length > 0) {
+          if (moneycollection.moneyFlows && moneycollection.moneyFlows.length > 0) {
             moneycollection = setReportingData(moneycollection);
           }
           if (key === moneycollections.length - 1) {
@@ -245,7 +248,7 @@ exports.listAllCurrent = function (req, res) {
       } else {
         _.each(moneycollections, function (moneycollection, key) {
 
-          _.each(moneycollection.moneyFlows, function (flow) {
+          _.each(moneycollection.moneyFlows && moneycollection.moneyFlows, function (flow) {
             setReportingData(moneycollection, flow);
           });
 
@@ -279,12 +282,17 @@ exports.moneycollectionByID = function (req, res, next, id) {
           message: 'No Moneycollection with that identifier has been found'
         });
       }
-      _.each(moneycollection.moneyFlows, function (flow, key) {
-        setReportingData(moneycollection, flow);
-        if (key === moneycollection.moneyFlows.length - 1) {
-          req.moneycollection = moneycollection;
-          next();
-        }
-      });
+      if (moneycollection.moneyFlows && moneycollection.moneyFlows.length) {
+        _.each(moneycollection.moneyFlows, function (flow, key) {
+          setReportingData(moneycollection, flow);
+          if (key === moneycollection.moneyFlows.length - 1) {
+            req.moneycollection = moneycollection;
+            next();
+          }
+        });
+      } else {
+        req.moneycollection = moneycollection;
+        next();
+      }
     });
 };

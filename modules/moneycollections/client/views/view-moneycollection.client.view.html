@@ -21,7 +21,9 @@
   <br /><br /><br />
   
   <div class="row">
-      <h1 class="row text-center">Informe General</h1>
+      <h1 class="row text-center">{{vm.moneycollection.name}}</h1>
+      <h3 class="row text-center">{{vm.moneycollection.date | date: 'dd-MMM-yyyy'}}</h3>
+      <h2 class="row text-center">Informe General</h2>
       <div ng-repeat="accountingType in ['Ingresos', 'Egresos']">
         <div class="col-md-6">      
           <div class="text-center">
@@ -62,21 +64,24 @@
     </div>
   
   <div class="row text-center">
-    <h2>TOTAL:  {{vm.moneycollection.total | currency: '₡'}}</h2>
+    <h3>TOTAL:  {{vm.moneycollection.total | currency: '₡'}}</h3>
   </div>
   <hr />
   <div class="row">
-    <h1 class="row text-center">Informe Detallado</h1>
+    <h2 class="row text-center">Informe Detallado</h2>
     <div ng-repeat="accountingType in ['Ingresos', 'Egresos']">
       <div class="col-md-6">      
         <div class="text-center">
             <h3>{{accountingType}}</h3>
         </div>
+        
         <table class="table table-condensed" ng-repeat="flowType in vm.flowTypes"  ng-if="vm.getFlowTypeTotal(flowType, accountingType) > 0">
           <thead>
             <tr>
               <th>Tipo</th>
+              <th>Fecha</th>
               <th>Descipcion</th>
+              <th>Reportado</th>
               <th>Ingresos</th>
             </tr>
           </thead>
@@ -86,7 +91,14 @@
                 {{flows.type}}
             </td>
             <td>  
+                {{flows.date | date: 'dd-MMM-yyyy'}}
+            </td>
+            <td>  
                 {{flows.description}}
+            </td>
+            <td>  
+                <span ng-if="flows.reportedTotal > 0">{{flows.reportedTotal | currency: '₡'}}</span>
+                <span ng-if="flows.reportedTotal === 0">N/A</span>
             </td>
             <td>  
                 {{flows.total | currency: '₡'}}
@@ -95,7 +107,7 @@
           </tbody>
           <tfoot>
             <tr>  
-              <th colspan="2"><span class="pull-right">Total {{flowType}}:</span></th>    
+              <th colspan="4"><span class="pull-right">Total {{flowType}}:</span></th>    
               <td>
                   {{vm.getFlowTypeTotal(flowType, accountingType) | currency: '₡'}}
               </td>        
@@ -107,7 +119,7 @@
   </div>
 
   <div class="row text-center">
-    <h2>TOTAL:  {{vm.moneycollection.total | currency: '₡'}}</h2>
+    <h3>TOTAL:  {{vm.moneycollection.total | currency: '₡'}}</h3>
   </div>    
   <hr />
 </section>

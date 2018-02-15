@@ -33,13 +33,20 @@
           </em>
         </small>
     </div>  
-    <div class="pull-left">
+    <div class="pull-left" ng-if="vm.moneycollection._id">
        <a class="btn btn-secondary"
          data-ui-sref="moneycollections.view({ moneycollectionId: vm.moneycollection._id})">
         <i class="glyphicon glyphicon-arrow-left"></i>
         Regresar
       </a>
-    </div>
+    </div>    
+    <div class="pull-left" ng-if="!vm.moneycollection._id">
+        <a class="btn btn-secondary"
+          data-ui-sref="moneycollections.list()">
+         <i class="glyphicon glyphicon-arrow-left"></i>
+         Regresar
+       </a>
+     </div>
     <br /><br />
     <h3 class="bg-primary">Los campos marcados con asterisco (*) son requeridos.</h3> 
     <div class="col-md-12">

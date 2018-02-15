@@ -44,7 +44,7 @@
       </div>
       <div class="col-md-12">   
         <div class="col-md-12 form-group-sm">
-          <label class="checkbox"><input type="checkbox" ng-click="item = checkIsDetailed(item)" ng-model="item.isDetailed">Flujo detallado</label>
+          <label class="checkbox"><input type="checkbox" ng-click="checkIsDetailed($index)" ng-model="item.isDetailed">Flujo detallado</label>
         </div>
       </div>
       <div ng-if="item.isDetailed && flows.length">
@@ -163,16 +163,16 @@
           <br />
           <legend ng-if="!report">Billetes</legend> 
           <div class="form-group-sm" show-errors ng-if="!readonly">
-            <label class="control-label" ng-if="showLabels" for="numberOf50000">Monedas de {{50000 | currency: '₡'}}</label>
+            <label class="control-label" ng-if="showLabels" for="numberOf50000">Billetes de {{50000 | currency: '₡'}}</label>
             <div class="form-inline">
               <div class="input-group"> 
                 <span class="input-group-addon">₡</span>
-                <input type="number" name="numberOf50000_{{$index}}" type="number" ng-model="item.bills.numberOf50000"  autocomplete="off" id="numberOf50000_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Monedas de  {{50000 | currency: '₡'}}" required>
+                <input type="number" name="numberOf50000_{{$index}}" type="number" ng-model="item.bills.numberOf50000"  autocomplete="off" id="numberOf50000_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Billetes de  {{50000 | currency: '₡'}}" required>
               </div> 
               <b>Total:</b> {{calculateNumberOfTotal(item.bills.numberOf50000, 50000) | currency: '₡'}} 
             </div>    
             <div ng-messages="form.$error" role="alert">
-              <p class="help-block error-text" ng-message="required">Monedas de {{50000 | currency: '₡'}} es requerido.</p>
+              <p class="help-block error-text" ng-message="required">Billetes de {{50000 | currency: '₡'}} es requerido.</p>
             </div>
           </div>
           <div ng-if="readonly">
@@ -180,16 +180,16 @@
           </div>
 
           <div class="form-group-sm" show-errors ng-if="!readonly">
-            <label class="control-label" ng-if="showLabels" for="numberOf20000">Monedas de {{20000 | currency: '₡'}}</label>
+            <label class="control-label" ng-if="showLabels" for="numberOf20000">Billetes de {{20000 | currency: '₡'}}</label>
             <div class="form-inline">
               <div class="input-group"> 
                 <span class="input-group-addon">₡</span>
-                <input type="number" name="numberOf20000_{{$index}}" type="number" ng-model="item.bills.numberOf20000"  autocomplete="off" id="numberOf20000_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Monedas de  {{20000 | currency: '₡'}}" required>
+                <input type="number" name="numberOf20000_{{$index}}" type="number" ng-model="item.bills.numberOf20000"  autocomplete="off" id="numberOf20000_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Billetes de  {{20000 | currency: '₡'}}" required>
               </div> 
               <b>Total:</b> {{calculateNumberOfTotal(item.bills.numberOf20000, 20000) | currency: '₡'}} 
             </div>    
             <div ng-messages="form.$error" role="alert">
-              <p class="help-block error-text" ng-message="required">Monedas de {{20000 | currency: '₡'}} es requerido.</p>
+              <p class="help-block error-text" ng-message="required">Billetes de {{20000 | currency: '₡'}} es requerido.</p>
             </div>
           </div>
           <div ng-if="readonly">
@@ -197,16 +197,16 @@
           </div>
 
           <div class="form-group-sm" show-errors ng-if="!readonly">
-            <label class="control-label" ng-if="showLabels" for="numberOf10000">Monedas de {{10000 | currency: '₡'}}</label>
+            <label class="control-label" ng-if="showLabels" for="numberOf10000">Billetes de {{10000 | currency: '₡'}}</label>
             <div class="form-inline">
               <div class="input-group"> 
                 <span class="input-group-addon">₡</span>
-                <input type="number" name="numberOf10000_{{$index}}" type="number" ng-model="item.bills.numberOf10000"  autocomplete="off" id="numberOf10000_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Monedas de  {{10000 | currency: '₡'}}" required>
+                <input type="number" name="numberOf10000_{{$index}}" type="number" ng-model="item.bills.numberOf10000"  autocomplete="off" id="numberOf10000_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Billetes de  {{10000 | currency: '₡'}}" required>
               </div> 
               <b>Total:</b> {{calculateNumberOfTotal(item.bills.numberOf10000, 10000) | currency: '₡'}} 
             </div>    
             <div ng-messages="form.$error" role="alert">
-              <p class="help-block error-text" ng-message="required">Monedas de {{10000 | currency: '₡'}} es requerido.</p>
+              <p class="help-block error-text" ng-message="required">Billetes de {{10000 | currency: '₡'}} es requerido.</p>
             </div>
           </div>
           <div ng-if="readonly">
@@ -214,16 +214,16 @@
           </div>
 
           <div class="form-group-sm" show-errors ng-if="!readonly">
-            <label class="control-label" ng-if="showLabels" for="numberOf5000">Monedas de {{5000 | currency: '₡'}}</label>
+            <label class="control-label" ng-if="showLabels" for="numberOf5000">Billetes de {{5000 | currency: '₡'}}</label>
             <div class="form-inline">
               <div class="input-group"> 
                 <span class="input-group-addon">₡</span>
-                <input type="number" name="numberOf5000_{{$index}}" type="number" ng-model="item.bills.numberOf5000"  autocomplete="off" id="numberOf5000_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Monedas de  {{5000 | currency: '₡'}}" required>
+                <input type="number" name="numberOf5000_{{$index}}" type="number" ng-model="item.bills.numberOf5000"  autocomplete="off" id="numberOf5000_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Billetes de  {{5000 | currency: '₡'}}" required>
               </div> 
               <b>Total:</b> {{calculateNumberOfTotal(item.bills.numberOf5000, 5000) | currency: '₡'}} 
             </div>    
             <div ng-messages="form.$error" role="alert">
-              <p class="help-block error-text" ng-message="required">Monedas de {{5000 | currency: '₡'}} es requerido.</p>
+              <p class="help-block error-text" ng-message="required">Billetes de {{5000 | currency: '₡'}} es requerido.</p>
             </div>
           </div>
           <div ng-if="readonly">
@@ -231,16 +231,16 @@
           </div>
 
           <div class="form-group-sm" show-errors ng-if="!readonly">
-            <label class="control-label" ng-if="showLabels" for="numberOf2000">Monedas de {{2000 | currency: '₡'}}</label>
+            <label class="control-label" ng-if="showLabels" for="numberOf2000">Billetes de {{2000 | currency: '₡'}}</label>
             <div class="form-inline">
               <div class="input-group"> 
                 <span class="input-group-addon">₡</span>
-                <input type="number" name="numberOf2000_{{$index}}" type="number" ng-model="item.bills.numberOf2000"  autocomplete="off" id="numberOf2000_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Monedas de  {{2000 | currency: '₡'}}" required>
+                <input type="number" name="numberOf2000_{{$index}}" type="number" ng-model="item.bills.numberOf2000"  autocomplete="off" id="numberOf2000_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Billetes de  {{2000 | currency: '₡'}}" required>
               </div> 
               <b>Total:</b> {{calculateNumberOfTotal(item.bills.numberOf2000, 2000) | currency: '₡'}} 
             </div>    
             <div ng-messages="form.$error" role="alert">
-              <p class="help-block error-text" ng-message="required">Monedas de {{2000 | currency: '₡'}} es requerido.</p>
+              <p class="help-block error-text" ng-message="required">Billetes de {{2000 | currency: '₡'}} es requerido.</p>
             </div>
           </div>
           <div ng-if="readonly">
@@ -248,16 +248,16 @@
           </div>
 
           <div class="form-group-sm" show-errors ng-if="!readonly">
-            <label class="control-label" ng-if="showLabels" for="numberOf1000">Monedas de {{1000 | currency: '₡'}}</label>
+            <label class="control-label" ng-if="showLabels" for="numberOf1000">Billetes de {{1000 | currency: '₡'}}</label>
             <div class="form-inline">
               <div class="input-group"> 
                 <span class="input-group-addon">₡</span>
-                <input type="number" name="numberOf1000_{{$index}}" type="number" ng-model="item.bills.numberOf1000"  autocomplete="off" id="numberOf1000_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Monedas de  {{1000 | currency: '₡'}}" required>
+                <input type="number" name="numberOf1000_{{$index}}" type="number" ng-model="item.bills.numberOf1000"  autocomplete="off" id="numberOf1000_{{$index}}" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Billetes de  {{1000 | currency: '₡'}}" required>
               </div> 
               <b>Total:</b> {{calculateNumberOfTotal(item.bills.numberOf1000, 1000) | currency: '₡'}} 
             </div>    
             <div ng-messages="form.$error" role="alert">
-              <p class="help-block error-text" ng-message="required">Monedas de {{1000 | currency: '₡'}} es requerido.</p>
+              <p class="help-block error-text" ng-message="required">Billetes de {{1000 | currency: '₡'}} es requerido.</p>
             </div>
           </div>
           <div ng-if="readonly">

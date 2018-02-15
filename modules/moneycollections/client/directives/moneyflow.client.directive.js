@@ -97,17 +97,17 @@
           if (!scope.flows) {
             scope.flows = [];
           }
-          scope.flows.push(scope.getNewFlow(true));
+          scope.flows.push(scope.getNewFlow());
         };
 
-        scope.getNewFlow = function (isDetailed) {
+        scope.getNewFlow = function (type, description, isExpense, isDetailed, date) {
           return {
-            type: '',
-            description: '',
-            isDetailed: isDetailed,
-            isExpense: false,
+            type: type ? type : '',
+            description: description ? description : '',
+            isDetailed: isDetailed != undefined ? isDetailed : true,
+            isExpense: isExpense ? isExpense : false,
             numberOfDollars: 0,
-            date: new Date(),
+            date: date ? date : new Date(),
             coins: {
               numberOf500: 0,
               numberOf100: 0,
@@ -131,15 +131,20 @@
           };
         }
 
-        scope.checkIsDetailed = function (flow) {
-          if (flow.isDetailed === false) {
+        scope.checkIsDetailed = function (flowIndex) {
+          debugger
+          if (scope.flows[flowIndex].isDetailed === false) {
             if (confirm('Si deshabilita flujo detallado perdera los cambios. Seguro que desea deshabilitarlo?')) {
-              flow = scope.getNewFlow(false);
+              scope.flows[flowIndex] = scope.getNewFlow(scope.flows[flowIndex].type,
+                scope.flows[flowIndex].description,
+                scope.flows[flowIndex].isExpense,
+                false,
+                scope.flows[flowIndex].date);
             } else {
-              flow.isDetailed = true;
+              scope.flows[flowIndex].isDetailed = true;
             }
           }
-          return flow;
+          return scope.flows[flowIndex];
         }
 
         scope.removeFlow = function (index) {
