@@ -30,9 +30,9 @@
           <tr ng-repeat="moneyCollection in $data" ng-form="rowForm" demo-tracked-table-row="moneyCollection">
             <td class="col-md-1" title="'#'" filter="{ 'number': 'number'}" sortable="'number'" ng-if="true">
                 <a data-ui-sref="moneycollections.view({ moneycollectionId: moneyCollection._id})" data-toggle="tooltip" title="Editar inscripción #{{moneyCollection.number}}">{{moneyCollection.number}}</a></td>
-            <td title="'Fecha de registro'" sortable="'date'" ng-if="true">
-                    {{moneyCollection.date | date:'dd-MMM-yyyy'}}</td>
-            <td title="'Nombre'" filter="{ 'moneyCollection.name': 'select'}" filter-data="vm.groupsFilterArray"  sortable="'moneyCollection.name'" ng-if="true">
+            <td title="'Fecha de registro'" filter="{ 'date': 'text'}" sortable="'date'" ng-if="true">
+                    {{moneyCollection.date | date:'dd-MM-yyyy'}}</td>
+            <td title="'Nombre'" filter="{ 'name': 'text'}" sortable="'name'" ng-if="true">
                 {{moneyCollection.name}}</td>
             <td  class="col-md-1" title="'Diezmos'" filter="{ 'summary.totalDiezmos': 'number'}" sortable="'totalDiezmos'" ng-if="true">
                 {{moneyCollection.summary.totalDiezmos | currency:'₡'}}

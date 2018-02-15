@@ -43,6 +43,13 @@
         dataset: vm.moneycollections
       });
 
+    vm.flowTypeFilterArray = [
+      { id: 'Diezmo', title: 'Diezmo' },
+      { id: 'Ofrenda', title: 'Ofrenda' },
+      { id: 'Grupo vida', title: 'Dicipulado' },
+      { id: 'Soda', title: 'Soda' },
+      { id: 'Otro', title: 'Otro' }];
+
     /*$scope.$watch('vm.initDate', function(newVal, oldVal) {
       if (newVal) {
         vm.dateFilterValue = vm.moment(vm.registrationDate).format('YYYY-MM-DD');
