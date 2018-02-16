@@ -199,7 +199,7 @@ exports.list = function (req, res) {
     };
   }
 
-  Moneycollection.find(query).sort('-created')
+  Moneycollection.find(query).sort('-date')
     .populate('user', 'displayName')
     .populate('organization').exec(function (err, moneycollections) {
       if (err) {
@@ -237,7 +237,7 @@ exports.listAllCurrent = function (req, res) {
     };
   }
 
-  Moneycollection.find(query).sort('-created')
+  Moneycollection.find(query).sort('-date')
     .populate('user', 'displayName')
     .populate('organization')
     .exec(function (err, moneycollections) {

@@ -26,7 +26,7 @@
         $rootScope.showLoadingSpinner = false;
       }
       _.each(data, function (moneycollection, index) {
-        moneycollection.date = vm.moment(moneycollection.date).format('YYYY-MM-DD');
+        moneycollection.date = vm.moment(moneycollection.date).format('DD-MM-YYYY');
         if (index === vm.lastIndex) {
           vm.originalData = angular.copy(data);
           $rootScope.showLoadingSpinner = false;
@@ -42,6 +42,12 @@
     }, {
         dataset: vm.moneycollections
       });
+
+    vm.sumSummaryTotals = function (data, field) {
+      return _.sumBy(data, function (o) {
+        return o.summary && o.summary[field] ? o.summary[field] : 0;
+      });
+    };
 
     vm.flowTypeFilterArray = [
       { id: 'Diezmo', title: 'Diezmo' },
