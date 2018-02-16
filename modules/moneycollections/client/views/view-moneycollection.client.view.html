@@ -1,9 +1,8 @@
 <section class="container">
   <div class="page-header">
-    <h1 data-ng-bind="vm.moneycollection.name"></h1>
   </div>
   <div class="pull-right"
-       data-ng-show="vm.moneycollection.isCurrentUserOwner">
+       data-ng-show="vm.authentication.isUserAdmin() || vm.authentication.isBoardDirectorUser()">
     <a class="btn btn-primary" data-ui-sref="moneycollections.edit({ moneycollectionId: vm.moneycollection._id })">
       <i class="glyphicon glyphicon-edit"></i> Editar
     </a>

@@ -92,7 +92,7 @@
             {{vm.moneycollection.exchangeRate}}
           </div> 
 
-          <money-flow flows="vm.moneycollection.moneyFlows" exchange-rate="vm.moneycollection.exchangeRate" show-labels="true" form="vm.form.moneycollectionForm"></money-flow>
+          <money-flow flows="vm.moneycollection.moneyFlows" money-collection-id="vm.moneycollection._id" exchange-rate="vm.moneycollection.exchangeRate" show-labels="true" form="vm.form.moneycollectionForm"></money-flow>
           <div class="form-group form-group-sm">
           <br />
           <h2>Total: {{vm.calculateFlowsTotal(); vm.moneycollection.total | currency: '₡'}}</h2>

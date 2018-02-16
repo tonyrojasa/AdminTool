@@ -2,22 +2,26 @@
   'use strict';
 
   angular
-    .module('people')
+    .module('core')
     .directive('moneyFlow', moneyFlow);
 
-  moneyFlow.$inject = ['moment'];
+  moneyFlow.$inject = ['moment', 'Authentication'];
   function moneyFlow() {
     return {
       templateUrl: 'modules/moneycollections/client/views/moneyflow.client.view.html',
       restrict: 'E',
       replace: true,
       scope: {
+        moneyCollectionId: '=',
         flows: '=',
         exchangeRate: '=',
         form: '=',
         readonly: '=',
         report: '=',
         showLabels: '='
+      },
+      controller: function ($scope, moment, Authentication) {
+        $scope.authentication = Authentication;
       },
       link: function postLink(scope, element, attrs) {
         scope.types = [
@@ -86,7 +90,7 @@
           item.description = item.description + ' ' + item.type + ' ' + date;
         };
 
-        scope.isDescriptionVivible = function(item) {
+        scope.isDescriptionVivible = function (item) {
           return item.type !== 'Grupo vida' || item.isExpense;
         };
 
@@ -175,7 +179,7 @@
           } else {
             if (scope.flows[flowIndex].type && (scope.flows[flowIndex].type === 'Grupo vida')) {
               scope.flows[flowIndex].description = '';
-            } 
+            }
           }
         };
 
