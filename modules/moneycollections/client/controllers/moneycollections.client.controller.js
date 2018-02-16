@@ -7,12 +7,20 @@
     .controller('MoneycollectionsController', MoneycollectionsController);
 
   MoneycollectionsController.$inject = ['$scope', '$state', '$stateParams', 'Authentication',
-    'moneycollectionResolve', '$rootScope', 'Notification', '$filter'
+    'moneycollectionResolve', '$rootScope', 'Notification', '$filter', 'UsersService'
   ];
 
   function MoneycollectionsController($scope, $state, $stateParams, Authentication, moneycollection,
-    $rootScope, Notification, $filter) {
+    $rootScope, Notification, $filter, UsersService) {
     var vm = this;
+    UsersService.query(function (users) {
+      vm.recollectorUsers = _.filter(users, function (o) {
+        o.boardRole = '';
+        o.boardRole = _.indexOf(o.roles, 'boardReviewer') > -1 ? 'Revisor de junta' : o.boardRole;
+        o.boardRole = _.indexOf(o.roles, 'boardDirector') > -1 ? 'Director de junta' : o.boardRole;
+        return _.indexOf(o.roles, 'boardReviewer') > -1 || _.indexOf(o.roles, 'boardDirector') > -1;
+      });
+    });
 
     $scope.groups = [
       {
@@ -153,7 +161,21 @@
       }
     }
 
+    vm.collectorsChange = function () {
+      debugger
+      if (vm.moneycollection.collectors.length > 0) {
+        vm.form.moneycollectionForm.collectors.$setValidity('emptyArray', true);
+      } else {
+        vm.form.moneycollectionForm.collectors.$setValidity('emptyArray', false);
+      }
+    };
+
     vm.save = function (isValid) {
+      debugger;
+      if (vm.moneycollection.collectors.length === 0) {
+        isValid = false;
+        vm.form.moneycollectionForm.collectors.$setValidity("emptyArray", false);
+      }
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.moneycollectionForm');
         Notification.error({ message: 'Complete todos los campos requeridos', title: '<i class="glyphicon glyphicon-remove"> Error en el formulario</i>' });

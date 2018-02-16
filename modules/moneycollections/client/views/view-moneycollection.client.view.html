@@ -17,11 +17,38 @@
       Regresar
     </a>
   </div>
-  <br /><br /><br />
-  
+  <br />
+
   <div class="row">
-      <h1 class="row text-center">{{vm.moneycollection.name}}</h1>
-      <h3 class="row text-center">{{vm.moneycollection.date | date: 'dd-MMM-yyyy'}}</h3>
+    <h1 class="row text-center">{{vm.moneycollection.name}}</h1>
+    <h3 class="row text-center">{{vm.moneycollection.date | date: 'dd-MMM-yyyy'}}</h3>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">      
+      <div class="text-center">
+          <h3>Recolectores</h3>
+      </div>
+      <table class="table table-condensed text-center">
+        <thead>
+          <tr>
+            <th class="text-center">Nombre</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="collector in vm.moneycollection.collectors" >
+            <td>  
+                {{collector.displayName}}
+            </td>
+          </tr>   
+        </tbody> 
+      </table>
+    </div>    
+    <div class="col-md-4"></div>
+  </div>
+  <br />
+  <div class="row">      
       <h2 class="row text-center">Informe General</h2>
       <div ng-repeat="accountingType in ['Ingresos', 'Egresos']">
         <div class="col-md-6">      

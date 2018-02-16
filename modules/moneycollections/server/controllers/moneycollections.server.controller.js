@@ -201,6 +201,7 @@ exports.list = function (req, res) {
 
   Moneycollection.find(query).sort('-date')
     .populate('user', 'displayName')
+    .populate('collectors', 'displayName')
     .populate('organization').exec(function (err, moneycollections) {
       if (err) {
         return res.status(400).send({
@@ -239,6 +240,7 @@ exports.listAllCurrent = function (req, res) {
 
   Moneycollection.find(query).sort('-date')
     .populate('user', 'displayName')
+    .populate('collectors', 'displayName')
     .populate('organization')
     .exec(function (err, moneycollections) {
       if (err) {
@@ -273,6 +275,7 @@ exports.moneycollectionByID = function (req, res, next, id) {
 
   Moneycollection.findById(id)
     .populate('user', 'displayName')
+    .populate('collectors', 'displayName')
     .populate('organization')
     .exec(function (err, moneycollection) {
       if (err) {

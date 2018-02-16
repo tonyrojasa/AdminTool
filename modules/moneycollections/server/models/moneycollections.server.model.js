@@ -105,10 +105,6 @@ var MoneycollectionSchema = new Schema({
       type: Number,
       default: 0
     },
-    collectors: [{
-      type: Schema.ObjectId,
-      ref: 'User'
-    }],
     reportedTotal: {
       type: Number,
       default: 0
@@ -122,6 +118,10 @@ var MoneycollectionSchema = new Schema({
     type: Number,
     required: 'moneyCollectionTotal cannot be blank'
   },
+  collectors: [{
+    type: Schema.ObjectId,
+    ref: 'User'
+  }],
   status: {
     type: String,
     trim: true
