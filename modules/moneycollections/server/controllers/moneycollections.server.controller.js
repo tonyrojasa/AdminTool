@@ -208,14 +208,18 @@ exports.list = function (req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        _.each(moneycollections, function (moneycollection, key) {
-          if (moneycollection.moneyFlows && moneycollection.moneyFlows.length > 0) {
-            moneycollection = setReportingData(moneycollection);
-          }
-          if (key === moneycollections.length - 1) {
-            res.jsonp(moneycollections);
-          }
-        });
+        if (moneycollections.length > 0) {
+          _.each(moneycollections, function (moneycollection, key) {
+            if (moneycollection.moneyFlows && moneycollection.moneyFlows.length > 0) {
+              moneycollection = setReportingData(moneycollection);
+            }
+            if (key === moneycollections.length - 1) {
+              res.jsonp(moneycollections);
+            }
+          });
+        } else {
+          res.jsonp(moneycollections);
+        }
       }
     });
 };
@@ -224,6 +228,7 @@ exports.list = function (req, res) {
  * List of current Moneycollections
  */
 exports.listAllCurrent = function (req, res) {
+  debugger;
   var query = _.forEach(req.query, function (value, key) {
     var queryParam = {
       $regex: new RegExp('^' + value + '$', 'i'),
@@ -248,16 +253,20 @@ exports.listAllCurrent = function (req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        _.each(moneycollections, function (moneycollection, key) {
+        if (moneycollections.length > 0) {
+          _.each(moneycollections, function (moneycollection, key) {
 
-          _.each(moneycollection.moneyFlows && moneycollection.moneyFlows, function (flow) {
-            setReportingData(moneycollection, flow);
+            _.each(moneycollection.moneyFlows && moneycollection.moneyFlows, function (flow) {
+              setReportingData(moneycollection, flow);
+            });
+
+            if (key === moneycollections.length - 1) {
+              res.jsonp(moneycollections);
+            }
           });
-
-          if (key === moneycollections.length - 1) {
-            res.jsonp(moneycollections);
-          }
-        });
+        } else {
+          res.jsonp(moneycollections);
+        }
       }
     });
 };
