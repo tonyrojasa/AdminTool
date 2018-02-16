@@ -228,7 +228,6 @@ exports.list = function (req, res) {
  * List of current Moneycollections
  */
 exports.listAllCurrent = function (req, res) {
-  debugger;
   var query = _.forEach(req.query, function (value, key) {
     var queryParam = {
       $regex: new RegExp('^' + value + '$', 'i'),
