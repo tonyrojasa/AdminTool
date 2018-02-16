@@ -36,6 +36,7 @@ var MoneycollectionSchema = new Schema({
       required: 'type cannot be blank'
     },
     description: String,
+    comments: String,
     date: {
       type: Date,
       default: Date.now
@@ -115,8 +116,7 @@ var MoneycollectionSchema = new Schema({
     total: {
       type: Number,
       required: 'moneyFlowTotal cannot be blank'
-    },
-    comments: String
+    }
   }],
   total: {
     type: Number,

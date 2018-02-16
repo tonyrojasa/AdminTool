@@ -15,12 +15,17 @@
           <div ng-if="readonly">
                   {{item.type}}
           </div> 
-          <div class="form-group-sm row col-md-12" show-errors>
-            <label class="control-label" for="description">Descripción *</label>
-            <input type="text" name="description_{{$index}}"  ng-model="item.description" class="form-control" autocomplete="off" id="description_{{$index}}" placeholder="Descripción" required>  
-            <div ng-messages="form.$error" role="alert">
-              <p class="help-block error-text" ng-message="required">Descripción es requerido.</p>
-            </div>
+          <div class="form-group-sm row col-md-12">
+            <label class="control-label" for="description" ng-if="isDescriptionVivible(item)">Descripción</label>
+            <input type="text" name="description_{{$index}}" ng-if="isDescriptionVivible(item)" ng-disabled="onFlowDescriptionDisabled(item)"  ng-model="item.description" class="form-control" autocomplete="off" id="description_{{$index}}" placeholder="Descripción">
+            <dropdowncontrol class="col-md-12" model="item.description" collection="gruposVida" required="true" labelvalue="Nombre del Grupo vida" fieldname="flowDescriptionGrupoVida_{{$index}}" form="form" simple="true" show-labels="true" ng-if="item.type === 'Grupo vida' && !item.isExpense"></dropdowncontrol>     
+          </div>
+          <div ng-if="readonly">
+            {{item.description}}
+          </div> 
+          <div class="form-group-sm row col-md-12">
+            <label class="control-label" for="comments">Observaciones</label>
+            <textarea name="comments_{{$index}}" ng-model="item.comments" class="form-control" autocomplete="off" id="comments_{{$index}}" placeholder="Observaciones"> </textarea>
           </div>
           <div ng-if="readonly">
             {{item.description}}
@@ -44,7 +49,7 @@
           
           <div class="col-md-12">   
             <div class="col-md-12 form-group-sm">
-              <label class="checkbox"><input type="checkbox" ng-model="item.isExpense">Salida de dinero (egreso)</label>
+              <label class="checkbox"><input type="checkbox" ng-click="checkIsExpense($index)" ng-model="item.isExpense">Salida de dinero (egreso)</label>
             </div>
           </div>
           <div class="col-md-12">   
