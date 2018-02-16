@@ -62,7 +62,7 @@
               <br />
               <legend ng-if="!report">Monedas</legend> 
               <div class="form-group-sm" show-errors ng-if="!readonly">
-                <label class="control-label" ng-if="showLabels" for="numberOf500">Monedas de 500</label>
+                <label class="control-label" ng-if="showLabels" for="numberOf500">Monedas de {{500 | currency: '₡'}}</label>
                 <div class="form-inline">
                   <div class="input-group"> 
                     <span class="input-group-addon">₡</span>
@@ -79,7 +79,7 @@
               </div>
 
               <div class="form-group-sm" show-errors ng-if="!readonly">
-                <label class="control-label" ng-if="showLabels" for="numberOf100">Monedas de 100</label>
+                <label class="control-label" ng-if="showLabels" for="numberOf100">Monedas de {{100 | currency: '₡'}}</label>
                 <div class="form-inline">
                   <div class="input-group"> 
                     <span class="input-group-addon">₡</span>
@@ -96,7 +96,7 @@
               </div>
 
               <div class="form-group-sm" show-errors ng-if="!readonly">
-                <label class="control-label" ng-if="showLabels" for="numberOf50">Monedas de 50</label>
+                <label class="control-label" ng-if="showLabels" for="numberOf50">Monedas de {{50 | currency: '₡'}}</label>
                 <div class="form-inline">
                   <div class="input-group"> 
                     <span class="input-group-addon">₡</span>
@@ -113,7 +113,7 @@
               </div>
 
               <div class="form-group-sm" show-errors ng-if="!readonly">
-                <label class="control-label" ng-if="showLabels" for="numberOf25">Monedas de 25</label>
+                <label class="control-label" ng-if="showLabels" for="numberOf25">Monedas de {{25 | currency: '₡'}}</label>
                 <div class="form-inline">
                   <div class="input-group"> 
                     <span class="input-group-addon">₡</span>
@@ -130,7 +130,7 @@
               </div>
 
               <div class="form-group-sm" show-errors ng-if="!readonly">
-                <label class="control-label" ng-if="showLabels" for="numberOf10">Monedas de 10</label>
+                <label class="control-label" ng-if="showLabels" for="numberOf10">Monedas de {{10 | currency: '₡'}}</label>
                 <div class="form-inline">
                   <div class="input-group"> 
                     <span class="input-group-addon">₡</span>
@@ -147,7 +147,7 @@
               </div>
 
               <div class="form-group-sm" show-errors ng-if="!readonly">
-                <label class="control-label" ng-if="showLabels" for="numberOf5">Monedas de 5</label>
+                <label class="control-label" ng-if="showLabels" for="numberOf5">Monedas de {{5 | currency: '₡'}}</label>
                 <div class="form-inline">
                   <div class="input-group"> 
                     <span class="input-group-addon">₡</span>
