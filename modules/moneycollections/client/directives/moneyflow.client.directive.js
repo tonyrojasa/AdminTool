@@ -143,7 +143,8 @@
             },
             collectors: [],
             reportedTotal: '',
-            total: ''
+            total: '',
+            isNewFlow: true
           };
         };
 

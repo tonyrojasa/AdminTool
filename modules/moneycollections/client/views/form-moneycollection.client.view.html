@@ -19,9 +19,9 @@
   </div>
   <section>
     <div class="page-header">
-      <h1>{{vm.moneycollection._id ? 'Editar flujo de dinero (diezmo, ofrenda, etc)' : 'Nuevo flujo de dinero (diezmo, ofrenda, etc)'}} </h1>
+      <h1>{{vm.moneycollection._id ? 'Editar flujo de dinero' : 'Nuevo flujo de dinero'}} </h1>
 
-      <h2 ng-if="vm.moneycollection._id"># de Flujo de dinero: {{vm.moneycollection.number}}</h2>
+      <h2 ng-if="vm.moneycollection._id">{{vm.moneycollection.name}}</h2>
         <small ng-if="vm.moneycollection._id">
           <em class="text-muted">
             Creado en

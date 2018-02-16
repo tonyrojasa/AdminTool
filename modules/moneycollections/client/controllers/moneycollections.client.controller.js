@@ -146,6 +146,13 @@
       });
     };
 
+    // Remove existing Event
+    vm.remove = function remove() {
+      if (confirm('Seguro que desea eliminar este flujo de dinero?')) {
+        vm.moneycollection.$remove($state.go('moneycollections.list'));
+      }
+    }
+
     vm.save = function (isValid) {
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.moneycollectionForm');

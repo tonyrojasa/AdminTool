@@ -334,7 +334,7 @@
               {{item.total}}
             </div>
           </div>  
-          <div class="row col-md-12 " data-ng-show="!moneyCollectionId || (authentication.isUserAdmin() && authentication.isBoardDirectorUser())">
+          <div class="row col-md-12 " data-ng-show="!moneyCollectionId || item.isNewFlow || (authentication.isUserAdmin() && authentication.isBoardDirectorUser())">
             <div class="pull-right">
               <a class="form-group-sm btn btn-xs btn-danger" ng-click="removeFlow($index)" ng-if="!readonly">
                 <i class="glyphicon glyphicon-trash"></i> 
