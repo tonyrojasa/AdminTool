@@ -122,7 +122,11 @@ var MoneycollectionSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   }],
-  status: {
+  depositCollector: {
+    type: Schema.ObjectId,
+    ref: 'User'
+  },
+  depositReferenceNumber: {
     type: String,
     trim: true
   },

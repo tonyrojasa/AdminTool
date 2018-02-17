@@ -126,24 +126,24 @@
             numberOfDollars: 0,
             date: date ? date : new Date(),
             coins: {
-              numberOf500: '',
-              numberOf100: '',
-              numberOf50: '',
-              numberOf25: '',
-              numberOf10: '',
-              numberOf5: ''
+              numberOf500: 0,
+              numberOf100: 0,
+              numberOf50: 0,
+              numberOf25: 0,
+              numberOf10: 0,
+              numberOf5: 0
             },
             bills: {
-              numberOf50000: '',
-              numberOf20000: '',
-              numberOf10000: '',
-              numberOf5000: '',
-              numberOf2000: '',
-              numberOf1000: ''
+              numberOf50000: 0,
+              numberOf20000: 0,
+              numberOf10000: 0,
+              numberOf5000: 0,
+              numberOf2000: 0,
+              numberOf1000: 0
             },
             collectors: [],
-            reportedTotal: '',
-            total: '',
+            reportedTotal: 0,
+            total: 0,
             isNewFlow: true
           };
         };

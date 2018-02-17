@@ -25,8 +25,8 @@
   </div>
   <br />
   <div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">      
+    <div class="col-md-3"></div>
+    <div class="col-md-6">      
       <div class="text-center">
           <h3>Recolectores</h3>
       </div>
@@ -38,14 +38,19 @@
         </thead>
         <tbody>
           <tr ng-repeat="collector in vm.moneycollection.collectors" >
-            <td>  
-                {{collector.displayName}}
+            <td>                  
+                {{collector.displayName}} <b>{{collector._id === vm.moneycollection.depositCollector._id ? '- Encargado de deposito' : ''}}</b>
             </td>
           </tr>   
+          <tr ng-if="vm.moneycollection.depositReferenceNumber" >
+              <td>                  
+                  <b># Ref deposito:</b> {{vm.moneycollection.depositReferenceNumber}}
+              </td>
+            </tr>   
         </tbody> 
       </table>
     </div>    
-    <div class="col-md-4"></div>
+    <div class="col-md-3"></div>
   </div>
   <br />
   <div class="row">      

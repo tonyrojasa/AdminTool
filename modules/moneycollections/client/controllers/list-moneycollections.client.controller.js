@@ -56,14 +56,13 @@
       { id: 'Soda', title: 'Soda' },
       { id: 'Otro', title: 'Otro' }];
 
-    /*$scope.$watch('vm.initDate', function(newVal, oldVal) {
-      if (newVal) {
-        vm.dateFilterValue = vm.moment(vm.registrationDate).format('YYYY-MM-DD');
+    vm.getStatusClass = function (item) {
+      if (item.depositReferenceNumber) {
+        return 'info';
       } else {
-        vm.dateFilterValue = '';
+        return 'danger';
       }
-      vm.tableParams.filter().registrationDate = vm.dateFilterValue;
-    });*/
+    };
 
     vm.getTotalClass = function (value) {
       if (value >= 0) {

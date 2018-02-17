@@ -147,7 +147,6 @@ exports.read = function (req, res) {
  * Update a Moneycollection
  */
 exports.update = function (req, res) {
-  debugger;
   var moneycollection = req.moneycollection;
   moneycollection = _.extend(moneycollection, req.body);
   moneycollection.summary = undefined;
@@ -202,6 +201,7 @@ exports.list = function (req, res) {
   Moneycollection.find(query).sort('-date')
     .populate('user', 'displayName')
     .populate('collectors', 'displayName')
+    .populate('depositCollector')
     .populate('organization').exec(function (err, moneycollections) {
       if (err) {
         return res.status(400).send({
@@ -245,6 +245,7 @@ exports.listAllCurrent = function (req, res) {
   Moneycollection.find(query).sort('-date')
     .populate('user', 'displayName')
     .populate('collectors', 'displayName')
+    .populate('depositCollector')
     .populate('organization')
     .exec(function (err, moneycollections) {
       if (err) {
@@ -284,6 +285,7 @@ exports.moneycollectionByID = function (req, res, next, id) {
   Moneycollection.findById(id)
     .populate('user', 'displayName')
     .populate('collectors', 'displayName')
+    .populate('depositCollector')
     .populate('organization')
     .exec(function (err, moneycollection) {
       if (err) {

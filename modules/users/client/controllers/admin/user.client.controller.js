@@ -52,7 +52,6 @@
       vm.selectedRole = vm.user.roles;
     }
 
-    debugger;
     if (vm.authentication.isBoardDirectorUser()) {
       vm.roles.push({
         name: 'Directivo (junta directiva)',

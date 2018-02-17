@@ -16,8 +16,8 @@
     UsersService.query(function (users) {
       vm.recollectorUsers = _.filter(users, function (o) {
         o.boardRole = '';
-        o.boardRole = _.indexOf(o.roles, 'boardReviewer') > -1 ? 'Revisor de junta' : o.boardRole;
-        o.boardRole = _.indexOf(o.roles, 'boardDirector') > -1 ? 'Director de junta' : o.boardRole;
+        o.boardRole = _.indexOf(o.roles, 'boardReviewer') > -1 ? 'Revisor de junta directiva' : o.boardRole;
+        o.boardRole = _.indexOf(o.roles, 'boardDirector') > -1 ? 'Junta directiva' : o.boardRole;
         return _.indexOf(o.roles, 'boardReviewer') > -1 || _.indexOf(o.roles, 'boardDirector') > -1;
       });
     });
@@ -162,7 +162,6 @@
     }
 
     vm.collectorsChange = function () {
-      debugger
       if (vm.moneycollection.collectors.length > 0) {
         vm.form.moneycollectionForm.collectors.$setValidity('emptyArray', true);
       } else {
@@ -171,7 +170,6 @@
     };
 
     vm.save = function (isValid) {
-      debugger;
       if (vm.moneycollection.collectors.length === 0) {
         isValid = false;
         vm.form.moneycollectionForm.collectors.$setValidity("emptyArray", false);

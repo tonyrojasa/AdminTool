@@ -27,7 +27,7 @@
     <div id="exportable">        
       <table ng-table="vm.tableParams" class="table table-hover table-condensed editable-table" show-filter="true" ng-table-columns-binding="vm.cols" export-csv='csv' ng-form="vm.tableForm" disable-filter="vm.isAdding" demo-tracked-table="vm.tableTracker" >
         <tbody>
-          <tr ng-repeat="moneyCollection in $data" ng-form="rowForm" demo-tracked-table-row="moneyCollection">
+          <tr ng-repeat="moneyCollection in $data" ng-form="rowForm"ng-class="vm.getStatusClass(moneyCollection)" demo-tracked-table-row="moneyCollection">
             <td title="'Nombre'" filter="{ 'name': 'text'}" sortable="'name'" ng-if="true"> 
               <a data-ui-sref="moneycollections.view({ moneycollectionId: moneyCollection._id})" data-toggle="tooltip" title="Editar flujo: {{moneyCollection.name}}">{{moneyCollection.name}}</a>
             </td>
