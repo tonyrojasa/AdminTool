@@ -47,16 +47,16 @@
          Regresar
        </a>
      </div>
+    <br /><br />            
+    <div class="row pull-right">
+      <button ng-click="vm.save(vm.form.moneycollectionForm.$valid, false)" class="btn btn-primary"> <i class="glyphicon glyphicon-floppy-disk"></i> {{'Guardar'}}</button>
+      <button ng-click="vm.save(vm.form.moneycollectionForm.$valid, true)" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-saved"></i> {{vm.moneycollection._id ? 'Guardar y Cerrar' : 'Crear y Cerrar'}}</button>
+    </div>          
     <br /><br />
-    <h3 class="bg-primary">Los campos marcados con asterisco (*) son requeridos.</h3> 
+    <h4 class="bg-primary">Los campos marcados con asterisco (*) son requeridos.</h4> 
     <div class="col-md-12">
-      <form name="vm.form.moneycollectionForm" class="form-horizontal" ng-submit="vm.save(vm.form.moneycollectionForm.$valid)" novalidate>
-        <fieldset>              
-          <div class="form-group form-group-sm">
-            <button type="submit" class="btn btn-primary">{{vm.moneycollection._id ? 'Actualizar' : 'Crear'}}</button>
-          </div>          
-          <br />
-          
+      <form name="vm.form.moneycollectionForm" class="form-horizontal" novalidate>
+        <fieldset>            
           <div class="form-group form-group-sm" show-errors>
             <label class="control-label" for="name">Nombre *</label>
             <input name="name" type="text" ng-model="vm.moneycollection.name" id="name" placeholder="Nombre" autocomplete="off" class="form-control" ng-required="true">  
@@ -138,14 +138,13 @@
           <br />
           <h2>Total: {{vm.calculateFlowsTotal(); vm.moneycollection.total | currency: '₡'}}</h2>
           </div>
-          <br />
-          <div class="form-group form-group-sm">
-            <button type="submit" class="btn btn-primary">{{vm.moneycollection._id ? 'Actualizar' : 'Crear'}}</button>
-          </div>
         </fieldset>
-      </form>
-      <br /><br />
-    </div>
+      </form> 
+    </div>               
+    <div class="row pull-right">
+      <button ng-click="vm.save(vm.form.moneycollectionForm.$valid, false)" class="btn btn-primary"> <i class="glyphicon glyphicon-floppy-disk"></i> {{'Guardar'}}</button>
+      <button ng-click="vm.save(vm.form.moneycollectionForm.$valid, true)" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-saved"></i> {{vm.moneycollection._id ? 'Guardar y Cerrar' : 'Crear y Cerrar'}}</button>
+    </div> 
   </section>
 </div>
         

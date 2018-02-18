@@ -169,8 +169,8 @@
       }
     };
 
-    vm.save = function (isValid) {
-      if (vm.moneycollection.collectors.length === 0) {
+    vm.save = function (isValid, saveDataAndClose) {
+      if (!vm.moneycollection.collectors || (vm.moneycollection.collectors.length && vm.moneycollection.collectors.length === 0)) {
         isValid = false;
         vm.form.moneycollectionForm.collectors.$setValidity("emptyArray", false);
       }
@@ -180,7 +180,7 @@
         return false;
       }
 
-      // TODO: move create/update logic to service
+      vm.saveDataAndClose = saveDataAndClose;
       if (vm.moneycollection._id) {
         vm.moneycollection.$update(successCallback, errorCallback);
       } else {
@@ -188,9 +188,20 @@
       }
 
       function successCallback(res) {
-        $state.go('moneycollections.view', {
-          moneycollectionId: res._id
-        });
+        if (!vm.saveDataAndClose) {
+          if ($state.current.name === 'moneycollections.create') {
+            $state.go('moneycollections.edit', {
+              moneycollectionId: res._id
+            });
+          } else {
+            $state.reload();
+          }
+        } else {
+          $state.go('moneycollections.view', {
+            moneycollectionId: res._id
+          });
+        }
+        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Datos del Flujo de dinero guardados!' });
       }
 
       function errorCallback(res) {
