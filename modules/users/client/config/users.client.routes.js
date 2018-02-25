@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   // Setting up route
@@ -37,7 +37,10 @@
         controllerAs: 'vm',
         data: {
           pageTitle: 'Ajustes - Contraseña'
-        }
+        },
+        resolve: {
+          userResolve: function () { return null; }
+        },
       })
       .state('settings.accounts', {
         url: '/accounts',

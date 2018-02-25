@@ -30,7 +30,7 @@
           <input type="text" id="username" name="username" class="form-control" ng-model="vm.credentials.username" ng-pattern="vm.usernameRegex" placeholder="Username" lowercase required>
           <div ng-messages="vm.userForm.username.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Usuario es requerido.</p>
-            <p class="help-block error-text" ng-message="pattern">Please enter a valid username: 3+ characters long, non restricted word, characters "_-.", no consecutive dots, does not begin or end with dots, letters a-z and numbers 0-9.</p>
+            <p class="help-block error-text" ng-message="pattern">Por favor ingrese un usuario de mas de 3 letras, y que no contenga los caracteres: "_-.", sin puntos seguidos, que no comience o termine con puntos y que tenga letras a-z y números 0-9.</p>
           </div>
         </div>
         <div class="form-group" show-errors>

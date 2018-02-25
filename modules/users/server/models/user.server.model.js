@@ -84,7 +84,7 @@ var UserSchema = new Schema({
     type: String,
     unique: 'Username already exists',
     required: 'Please fill in a username',
-    validate: [validateUsername, 'Please enter a valid username: 3+ characters long, non restricted word, characters "_-.", no consecutive dots, does not begin or end with dots, letters a-z and numbers 0-9.'],
+    validate: [validateUsername, 'Por favor ingrese un usuario de mas de 3 letras, y que no contenga los caracteres: "_-.", sin puntos seguidos, que no comience o termine con puntos y que tenga letras a-z y números 0-9.'],
     lowercase: true,
     trim: true
   },

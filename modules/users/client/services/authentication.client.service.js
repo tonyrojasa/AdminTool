@@ -21,7 +21,7 @@
       if (!auth.user) {
         return false;
       }
-      return (auth.user.roles.indexOf('admin') > -1);
+      return (auth.user && auth.user.roles && auth.user.roles.indexOf('admin') > -1);
     };
 
     auth.isGuestUser = function () {
@@ -29,9 +29,9 @@
         user: $window.user
       }
       if (!auth.user) {
-        return false;
+        return true;
       }
-      return (auth.user.roles.indexOf('guest') > -1);
+      return (auth.user.roles && auth.user.roles.indexOf('guest') > -1);
     };
 
     auth.isBoardDirectorUser = function () {
@@ -41,7 +41,7 @@
       if (!auth.user) {
         return false;
       }
-      return (auth.user.roles.indexOf('boardDirector') > -1);
+      return (auth.user && auth.user.roles && auth.user.roles.indexOf('boardDirector') > -1);
     };
 
     auth.isBoardReviewerUser = function () {
@@ -51,7 +51,7 @@
       if (!auth.user) {
         return false;
       }
-      return (auth.user.roles.indexOf('boardReviewer') > -1);
+      return (auth.user && auth.user.roles && auth.user.roles.indexOf('boardReviewer') > -1);
     };
 
     return auth;
