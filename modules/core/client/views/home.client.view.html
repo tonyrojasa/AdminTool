@@ -17,7 +17,7 @@
         <a class="btn btn-primary" data-ui-sref="moneycollections.list">Flujos de dinero</a>
       </div>
     </div> 
-    <div class="row" ng-show="!vm.authentication.isGuestUser()">    
+    <div class="row" ng-show="!vm.authentication.isGuestUser() && vm.authentication.isInscriptorUser()">    
       <h5 class="text-muted">Accesos directos:</h5>
       <div class="form-group" ng-if="vm.authentication.user">
         <a class="btn btn-primary" data-ui-sref="eventregistrations.list">Inscripciones</a>
@@ -33,7 +33,7 @@
         </div>
       </div> 
     </div> 
-    <div class="row" ng-show="vm.authentication.isGuestUser()">    
+    <div class="row" ng-show="vm.authentication.user && vm.authentication.isGuestUser()">    
       <h3 class="text-danger">Contacte algún Administrador del sistema</h1>
       <h4 class="text-danger">Debe solicitar permisos para acceder a las diferentes secciones.</h2>
     </div>   

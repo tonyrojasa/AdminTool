@@ -34,6 +34,16 @@
       return (auth.user.roles && auth.user.roles.indexOf('guest') > -1);
     };
 
+    auth.isInscriptorUser = function () {
+      auth = {
+        user: $window.user
+      }
+      if (!auth.user) {
+        return false;
+      }
+      return (auth.user && auth.user.roles && auth.user.roles.indexOf('inscriptor') > -1);
+    };
+
     auth.isBoardDirectorUser = function () {
       auth = {
         user: $window.user

@@ -21,6 +21,15 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/users/:userId',
       permissions: '*'
     }]
+  }, {
+    roles: ['boardReviewer', 'boardDirector', 'inscriptor', 'accountant'],
+    allows: [{
+      resources: '/api/users',
+      permissions: ['get']
+    }, {
+      resources: '/api/users/:userId',
+      permissions: ['get']
+    }]
   }]);
 };
 
