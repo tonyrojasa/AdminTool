@@ -20,7 +20,7 @@
 
     function compile(elem, attrs) {
       if (attrs.showErrors.indexOf('skipFormGroupCheck') === -1) {
-        if (!(elem.hasClass('form-group') || elem.hasClass('input-group') || elem.hasClass('form-group-sm'))) {
+        if (!(elem.hasClass('form-group') || elem.hasClass('input-group') || elem.hasClass('form-group-sm') || elem.hasClass('form-inline'))) {
           throw new Error('show-errors element does not have the \'form-group\' or \'input-group\' or \'form-group-sm\' class');
         }
       }

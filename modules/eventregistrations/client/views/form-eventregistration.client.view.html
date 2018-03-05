@@ -19,8 +19,10 @@
   </div>
   <section>
     <div class="page-header">
-      <h1>{{vm.eventregistration._id ? 'Editar' : 'Nueva Inscripción'}} <span ng-if="!vm.isNewMemberRegistration()"> - Miembro Existente</span></h1>
-
+      <h1>{{vm.eventregistration._id ? 'Editar' : 'Nueva Inscripción'}} <span ng-if="vm.isNewMemberRegistration()"> - Nuevo Miembro</span> <span ng-if="!vm.isNewMemberRegistration()"> - Miembro Existente</span></h1>
+      
+      <a class="btn btn-info btn-lg" ng-if="!vm.isNewMemberRegistration()" data-ui-sref="eventregistrations.create({newMember:true})">Ir a página de Nuevo Miembro</a>  
+      <a class="btn btn-info btn-lg" ng-if="vm.isNewMemberRegistration()" data-ui-sref="eventregistrations.create({newMember:false})">Ir a página de Miembro Existente</a> 
       <h2 ng-if="vm.eventregistration._id"># de Inscripción: {{vm.eventregistration.registrationNumber}}</h2>
         <small ng-if="vm.eventregistration._id">
           <em class="text-muted">
@@ -41,7 +43,7 @@
       </a>
     </div>
     <br /><br />
-    <h3 class="bg-primary" for="event">Los campos marcados con asterisco (*) son requeridos.</h3> 
+    <h3 class="bg-warning" for="event">Los campos marcados con asterisco (*) son requeridos.</h3> 
     <div class="col-md-12">
       <form name="vm.form.eventregistrationForm" class="form-horizontal" ng-submit="vm.save(vm.form.eventregistrationForm.$valid)" novalidate>
         <fieldset>              
@@ -73,32 +75,37 @@
           <br />
           <fieldset ng-if="vm.eventregistration.event">
           <legend>Datos para el Evento</legend>        
-            <div ng-if="!vm.isNewMemberRegistration()" class="form-group" show-errors>        
-              <label class="control-label" for="person">Persona *</label>
-              <input name="person" type="hidden" ng-model="vm.person" id="person" class="form-control" required>
-              <div class="input-group">
-                <ui-select ng-model="vm.person" ng-disabled="vm.eventregistration._id || !vm.eventregistration.event">
-                  <ui-select-match  placeholder="Seleccione la persona...">
-                        <span>{{$select.selected.firstName}} {{$select.selected.lastName}} {{$select.selected.secondLastName}}</span>
-                    </ui-select-match>
-                    <ui-select-choices repeat="item in (vm.people | filter: $select.search) track by item._id">
-                        <div ng-bind-html="[item.firstName +' '+ item.lastName +' '+ item.secondLastName] | highlight: $select.search"></div>
-                        <small ng-bind-html="item.personType.name | highlight: $select.search"></small>
-                    </ui-select-choices>
-                </ui-select> 
-                <span class="input-group-btn" ng-if="vm.eventregistration.event">
-                  <button type="button" ng-click="vm.person = undefined" class="btn btn-default">
-                    <span class="glyphicon glyphicon-trash"></span>
-                  </button>
-                </span>
-              </div>  
-              <div class="input-group" ng-if="!vm.people.length && vm.eventregistration.event">
-                <strong>No hay personas pendientes de agregar al evento seleccionado.</strong>
-              </div>     
-              <div ng-messages="vm.form.person.$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Persona es requerido.</p>
-              </div>
-            </div>      
+            <div ng-if="!vm.isNewMemberRegistration()" class="form-inline">        
+              <div class="form-group"  show-errors>
+                <input name="person" type="hidden" ng-model="vm.person" id="person" class="form-control" required>
+
+                <label class="control-label" for="searchPerson">Filtro de busqueda de Persona</label>
+                <input name="searchPerson" type="text" ng-disabled="!vm.filteredPeopleItems" ng-model="vm.searchPerson" ng-change="vm.figureOutPeopleItemsToDisplay()" autocomplete="off" placeholder="Buscar.." id="searchPerson" class="form-control" autofocus> 
+
+                <label class="control-label" ng-if="vm.filteredPeopleItems" for="personSelect">Persona seleccionada: *</label>
+                <div class="input-group">
+                    <select class="form-control" ng-if="vm.filteredPeopleItems" ng-disabled="vm.filteredPeopleItems && vm.filteredPeopleItems.length === 0" name="personSelect" id="personSelect" ng-model="vm.person" ng-change="window.alert('')">
+                      <option ng-repeat="person in vm.filteredPeopleItems">{{person.displayName}}</option>
+                    </select>    
+                    <span class="input-group-btn">          
+                      <button type="button" ng-if="vm.filteredPeopleItems" ng-disabled="vm.filteredPeopleItems && vm.filteredPeopleItems.length === 0" ng-click="vm.person = undefined" ng-disabled="vm.isSelectionDisabled()" class="btn btn-default">
+                      <span class="glyphicon glyphicon-trash"></span>
+                      </button>
+                    </span>
+                </div>                     
+                <div class="form-control" ng-if="!vm.people.length && vm.eventregistration.event">
+                  <strong class="bg-warning">No hay personas pendientes de agregar al evento seleccionado.</strong>
+                </div>  
+                      
+                <div ng-messages="vm.form.eventregistrationForm.person.$error" role="alert">
+                    <p class="help-block error-text" ng-message="required">Persona es requerido.</p>
+                </div>    
+
+              </div> 
+              
+              <a class="btn btn-info pull-right" ng-if="!vm.isNewMemberRegistration()" data-ui-sref="eventregistrations.create({newMember:true})">Ir a página de Nuevo Miembro</a>    
+            </div>   
+            <br />   
             <div class="form-group" ng-if="(vm.eventregistration.event && !vm.eventregistration._id) || (vm.eventregistration.isEventServer && vm.eventregistration._id)" show-errors>  
               <input name="isEventServer" type="hidden" ng-model="vm.eventregistration.isEventServer" id="isEventServer" class="form-control" ng-disabled="vm.eventregistration._id">
               <div class="checkbox">
@@ -120,7 +127,7 @@
               <div class="form-group" ng-if="vm.eventregistration.eventExternalServer.isEventExternalServer" show-errors>
                 <div class="input-group"> 
                   <span class="input-group-addon">₡</span>
-                  <input type="number" name="specialPrice" id="specialPrice" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" ng-model="vm.eventregistration.eventExternalServer.specialPrice" ng-change="vm.setEventPrice(vm.eventregistration.event)" ng-disabled="vm.eventregistration._id" required>
+                  <input type="number" name="specialPrice" id="specialPrice" onwheel="return false;" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" ng-model="vm.eventregistration.eventExternalServer.specialPrice" ng-change="vm.setEventPrice(vm.eventregistration.event)" ng-disabled="vm.eventregistration._id" required>
                 </div>
                 <div ng-messages="vm.form.eventregistrationForm.specialPrice.$error" role="alert">
                   <p class="help-block error-text" ng-message="required">Precio Especial es requerido.</p>

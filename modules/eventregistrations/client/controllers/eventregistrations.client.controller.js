@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   // Eventregistrations controller
@@ -9,12 +9,12 @@
   EventregistrationsController.$inject = ['$scope', '$anchorScroll', '$state', '$stateParams', 'Authentication',
     'eventregistrationResolve', 'CurrentEventsService', 'EventpeoplegroupsService', 'personResolve',
     'PeopleService', 'EventregistrationsByEventService', '$rootScope', 'PersontypesService', 'Notification',
-    'StudentsService'
+    'StudentsService', '$filter'
   ];
 
   function EventregistrationsController($scope, $anchorScroll, $state, $stateParams, Authentication, eventregistration,
     CurrentEventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService, $rootScope,
-    PersontypesService, Notification, StudentsService) {
+    PersontypesService, Notification, StudentsService, $filter) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -31,12 +31,12 @@
     vm.isSelectionDisabled = isSelectionDisabled;
     vm.setEventPrice = setEventPrice;
     vm.shirtQuantities = [0, 1, 2, 3, 4, 5];
-    vm.setShirtsQuantity = function(shirtsQuantity) {
+    vm.setShirtsQuantity = function (shirtsQuantity) {
       vm.eventregistration.shirtsQuantity = shirtsQuantity;
       vm.setEventPrice(vm.eventregistration.event);
     };
-    vm.quantities = _.range(1,1001);
-    vm.setQuantity = function(quantity) {
+    vm.quantities = _.range(1, 1001);
+    vm.setQuantity = function (quantity) {
       vm.eventregistration.quantity = quantity;
       vm.setEventPrice(vm.eventregistration.event);
     };
@@ -44,11 +44,11 @@
     vm.oldQuantity = vm.eventregistration.quantity;
     vm.oldBalanceAmount = vm.eventregistration.balanceAmount;
     vm.shirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
-    vm.setShirtSize = function(shirtSize) {
+    vm.setShirtSize = function (shirtSize) {
       vm.person.shirtSize = shirtSize;
     };
     vm.personTypes = PersontypesService.query();
-    vm.setPersonType = function(personType) {
+    vm.setPersonType = function (personType) {
       vm.eventregistration.personType = personType;
       if (vm.person && !vm.person.personType) {
         vm.person.personType = personType;
@@ -107,13 +107,13 @@
       if (vm.eventregistration.event && vm.eventregistration.event.shirtTypes.length > 0) {
         if (!vm.eventregistration.shirtTypes ||
           (vm.eventregistration.shirtTypes && vm.eventregistration.shirtTypes.length === 0)) {
-          vm.eventregistration.shirtTypes = _.map(vm.eventregistration.event.shirtTypes, function(shirtType) {
+          vm.eventregistration.shirtTypes = _.map(vm.eventregistration.event.shirtTypes, function (shirtType) {
             shirtType.quantity = 0;
             return shirtType;
           });
         } else {
-          _.each(vm.eventregistration.event.shirtTypes, function(shirtType) {
-            var existingShirtTypeIndex = _.findIndex(vm.eventregistration.shirtTypes, function(o) {
+          _.each(vm.eventregistration.event.shirtTypes, function (shirtType) {
+            var existingShirtTypeIndex = _.findIndex(vm.eventregistration.shirtTypes, function (o) {
               return (o.shirtTypeName === shirtType.shirtTypeName &&
                 o.shirtTypeColor === shirtType.shirtTypeColor);
             });
@@ -128,7 +128,7 @@
 
     function getShirtTypesQuantityMax(selectedShirtType) {
       var TotalShirtTypesQuantity = 0;
-      vm.eventregistration.shirtTypes.forEach(function(shirtType, key) {
+      vm.eventregistration.shirtTypes.forEach(function (shirtType, key) {
         if (shirtType.quantity) {
           TotalShirtTypesQuantity += shirtType.quantity;
         }
@@ -159,7 +159,7 @@
           }
         } else { //normal event registration price
           if (event.shirtPrice && vm.eventregistration.shirtsQuantity) {
-            vm.eventregistration.balanceAmount = (event.price * vm.eventregistration.quantity) + 
+            vm.eventregistration.balanceAmount = (event.price * vm.eventregistration.quantity) +
               (event.shirtPrice * vm.eventregistration.shirtsQuantity);
           } else {
             vm.eventregistration.balanceAmount = event.price * vm.eventregistration.quantity;
@@ -196,7 +196,7 @@
       loadDates();
       PeopleService.get({
         personId: vm.eventregistration.person._id
-      }, function(data) {
+      }, function (data) {
         vm.person = data;
         loadDates();
       });
@@ -241,23 +241,36 @@
       setShirtTypes();
 
       if (!vm.isNewMemberRegistration()) {
-        PeopleService.query(null, function(data) {
+        $rootScope.showLoadingSpinner = true;
+        vm.figureOutPeopleItemsToDisplay = function () {
+          vm.filteredPeopleItems = $filter('filter')(vm.people, {
+            displayName: vm.searchPerson
+          });
+        };
+
+        PeopleService.query(null, function (data) {
+          _.each(data, function (person) {
+            person.displayName = person.firstName + ' ' + person.lastName + ' ' + person.secondLastName;
+          })
           vm.people = data;
           vm.eventRegistrations = EventregistrationsByEventService.query({
             'eventId': event._id
-          }, function(data) {
-            filterPeopleListBySelectedEvent(vm.people, data);
+          }, function (data) {
+            vm.people = filterPeopleListBySelectedEvent(vm.people, data);
+            vm.figureOutPeopleItemsToDisplay();
+            $rootScope.showLoadingSpinner = false;
+          }, function (error) {
+            $rootScope.showLoadingSpinner = false;
           });
         });
-
       }
     }
 
     function filterPeopleListBySelectedEvent(people, eventPeople) {
-      var registeredPeopleInSelectedEvent = _.map(eventPeople, function(item) {
+      var registeredPeopleInSelectedEvent = _.map(eventPeople, function (item) {
         return item.person;
       });
-      vm.people = _.differenceBy(people, registeredPeopleInSelectedEvent, '_id');
+      return _.differenceBy(people, registeredPeopleInSelectedEvent, '_id');
     }
 
     // Save Person
@@ -275,7 +288,7 @@
       }
 
       function errorPersonCallback(res) {
-        $rootScope.showSpinner = false;
+        $rootScope.showLoadingSpinner = false;
         vm.error = res.data.message;
         if (vm.error === 'Email already exists') {
           vm.error = 'El Email pertenece a otra persona';
@@ -340,7 +353,7 @@
       }
 
       function errorStudentCallback(res) {
-        $rootScope.showSpinner = false;
+        $rootScope.showLoadingSpinner = false;
         Notification.error({
           message: 'No se pudo registrar la persona en la academia asignada a este evento. ' +
             'Debe agregarla manualmente',
@@ -379,11 +392,11 @@
         };
 
         //verify if person names already exist
-        PeopleService.query(query, function(data) {
+        PeopleService.query(query, function (data) {
           var continueOperation = true;
           var existingPersonIndex = -1;
           if (vm.editMode) {
-            existingPersonIndex = _.findIndex(data, function(o) {
+            existingPersonIndex = _.findIndex(data, function (o) {
               return (o._id === vm.person._id &&
                 o.firstName === vm.person.firstName &&
                 o.lastName === vm.person.lastName &&
