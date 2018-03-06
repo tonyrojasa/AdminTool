@@ -45,6 +45,7 @@ var setReportingData = function (moneycollection, flow) {
     moneycollection.summary.descripcionesOtrosEgresos = [];
 
     moneycollection.summary.totalEgresos = 0;
+    moneycollection.summary.totalIngresos = 0;
   }
   switch (flow.type) {
     case 'Diezmo':
@@ -105,6 +106,8 @@ var setReportingData = function (moneycollection, flow) {
   }
   if (flow.isExpense) {
     moneycollection.summary.totalEgresos = moneycollection.summary.totalEgresos + flow.total;
+  } else {
+    moneycollection.summary.totalIngresos = moneycollection.summary.totalIngresos + flow.total;
   }
   return flow;
 };

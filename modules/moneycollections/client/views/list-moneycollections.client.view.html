@@ -34,28 +34,31 @@
             <td title="'Fecha de registro'" filter="{ 'date': 'text'}" sortable="'date'" ng-if="true">            
               {{moneyCollection.date | date:'dd-MM-yyyy'}}
             </td>
-            <td  class="col-md-1" title="'Diezmos ₡'" filter="{ 'summary.totalDiezmos': 'number'}" sortable="'totalDiezmos'" ng-if="true">
+            <td  class="col-md-1" title="'Diezmos ₡'" filter="{ 'summary.totalDiezmos': 'number'}" sortable="'summary.totalDiezmos'" ng-if="true">
                 {{moneyCollection.summary.totalDiezmos | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Ofrendas ₡'" filter="{ 'summary.totalOfrendas': 'number'}" sortable="'totalOfrendas'" ng-if="true">
+            <td  class="col-md-1" title="'Ofrendas ₡'" filter="{ 'summary.totalOfrendas': 'number'}" sortable="'summary.totalOfrendas'" ng-if="true">
                 {{moneyCollection.summary.totalOfrendas | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Grupos Vida ₡'" filter="{ 'summary.totalGruposVida': 'number'}" sortable="'totalGruposVida'" ng-if="true">
+            <td  class="col-md-1" title="'Grupos Vida ₡'" filter="{ 'summary.totalGruposVida': 'number'}" sortable="'summary.totalGruposVida'" ng-if="true">
                 {{moneyCollection.summary.totalGruposVida | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Dicipulados ₡'" filter="{ 'summary.totalDicipulados': 'number'}" sortable="'totalDicipulados'" ng-if="true">
+            <td  class="col-md-1" title="'Dicipulados ₡'" filter="{ 'summary.totalDicipulados': 'number'}" sortable="'summary.totalDicipulados'" ng-if="true">
                 {{moneyCollection.summary.totalDicipulados | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Sodas ₡'" filter="{ 'summary.totalSodas': 'number'}" sortable="'totalSodas'" ng-if="true">
+            <td  class="col-md-1" title="'Sodas ₡'" filter="{ 'summary.totalSodas': 'number'}" sortable="'summary.totalSodas'" ng-if="true">
                 {{moneyCollection.summary.totalSodas | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Otros ₡'" filter="{ 'summary.totalOtros': 'number'}" sortable="'totalOtros'" ng-if="true">
+            <td  class="col-md-1" title="'Otros ₡'" filter="{ 'summary.totalOtros': 'number'}" sortable="'summary.totalOtros'" ng-if="true">
                 {{moneyCollection.summary.totalOtros | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Egresos ₡'" filter="{ 'summary.totalEgresos': 'number'}" sortable="'totalEgresos'" ng-if="true">
+            <td  class="col-md-1" title="'Ingresos ₡'" filter="{ 'total': 'number'}" sortable="'summary.totalIngresos'" ng-if="true">
+                {{(moneyCollection.summary.totalIngresos) | currency:''}}
+            </td> 
+            <td  class="col-md-1" title="'Egresos ₡'" filter="{ 'summary.totalEgresos': 'number'}" sortable="'summary.totalEgresos'" ng-if="true">
                 {{moneyCollection.summary.totalEgresos | currency:''}}
             </td> 
-            <td  class="col-md-1" title="'Ingresos ₡'" filter="{ 'total': 'number'}" sortable="'total'" ng-if="true">
+            <td  class="col-md-1" title="'Balance ₡'" filter="{ 'total': 'number'}" sortable="'total'" ng-if="true">
                 {{moneyCollection.total | currency:''}}
             </td> 
           </tr>
@@ -89,9 +92,12 @@
               <p><b>Egresos:</b> {{vm.sumSummaryTotals($data, "totalOtrosEgresos") | currency:''}}</p>
             </td> 
             <td ng-if="vm.cols[8].show()">
+              <span><b>Total:</b> {{vm.sumSummaryTotals($data, "totalIngresos") | currency:'₡'}}</span>
+            </td>
+            <td ng-if="vm.cols[8].show()">
               <span><b>Total:</b> {{vm.sumSummaryTotals($data, "totalEgresos") | currency:'₡'}}</span>
             </td> 
-            <td ng-if="vm.cols[9].show()">
+            <td ng-if="vm.cols[9].show()"  ng-class="vm.getTotalClass(($data | sumByKey:'total'))">
               <span><b>Total:</b> {{$data | sumByKey:'total' | currency:'₡'}}</span>
             </td>
           </tr>
@@ -104,9 +110,8 @@
             <td ng-if="vm.cols[5].show()"></td>  
             <td ng-if="vm.cols[6].show()"></td>  
             <td ng-if="vm.cols[7].show()"></td> 
-            <td ng-if="vm.cols[8].show()" ng-class="vm.getTotalClass(($data | sumByKey:'total') - vm.sumSummaryTotals($data, 'totalEgresos'))">
-                <b>Balance:</b> {{($data | sumByKey:'total') - vm.sumSummaryTotals($data, 'totalEgresos') | currency:'₡'}}
-            </td>
+            <td ng-if="vm.cols[8].show()"></td> 
+            <td ng-if="vm.cols[9].show()"></td>
             <td>
               <div class="text-right">
               <a class="btn" title="Export Table" ng-click='csv.generate()' ng-href="{{ csv.link() }}"
