@@ -84,8 +84,8 @@
 
                 <label class="control-label" ng-if="vm.filteredPeopleItems" for="personSelect">Persona seleccionada: *</label>
                 <div class="input-group">
-                    <select class="form-control" ng-if="vm.filteredPeopleItems" ng-disabled="vm.filteredPeopleItems && vm.filteredPeopleItems.length === 0" name="personSelect" id="personSelect" ng-model="vm.person" ng-change="window.alert('')">
-                      <option ng-repeat="person in vm.filteredPeopleItems">{{person.displayName}}</option>
+                    <select class="form-control" ng-if="vm.filteredPeopleItems" ng-disabled="vm.filteredPeopleItems && vm.filteredPeopleItems.length === 0" name="personSelect" id="personSelect" ng-model="vm.selectedPersonId" ng-change="vm.setPerson(vm.selectedPersonId)">
+                      <option ng-repeat="person in vm.filteredPeopleItems" value="{{person._id}}">{{person.displayName}}</option>
                     </select>    
                     <span class="input-group-btn">          
                       <button type="button" ng-if="vm.filteredPeopleItems" ng-disabled="vm.filteredPeopleItems && vm.filteredPeopleItems.length === 0" ng-click="vm.person = undefined" ng-disabled="vm.isSelectionDisabled()" class="btn btn-default">
