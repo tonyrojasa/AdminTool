@@ -161,7 +161,7 @@ exports.list = function (req, res) {
     };
   }
 
-  Receipt.find(query).sort('-created')
+  Receipt.find(query).where('deleted', false).sort('-created')
     .populate('event')
     .populate({
       path: 'eventRegistration',
@@ -220,7 +220,7 @@ exports.listAllCurrent = function (req, res) {
     };
   }
 
-  Receipt.find(query).sort('-created')
+  Receipt.find(query).where('deleted', false).sort('-created')
     .populate('event')
     .populate({
       path: 'eventRegistration',
@@ -368,6 +368,7 @@ exports.receiptByID = function (req, res, next, id) {
         path: 'personType'
       }
     })
+    .where('deleted', false)
     .exec(function (err, receipt) {
       if (err) {
         return next(err);

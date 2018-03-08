@@ -108,6 +108,7 @@ exports.list = function (req, res) {
     .populate('personType', 'name')
     .populate('event', 'name')
     .populate('eventPeopleGroup', 'name')
+    .where('deleted', false)
     .exec(function (err, eventregistrations) {
       if (err) {
         return res.status(400).send({
@@ -172,6 +173,7 @@ exports.listAllCurrent = function (req, res) {
         .populate('personType', 'name')
         .populate('event')
         .populate('eventPeopleGroup', 'name')
+        .where('deleted', false)
         .exec(function (err, eventregistrations) {
           /* eventregistrations = eventregistrations.filter(function(eventregistration) {
              return (eventregistration.event && (!eventregistration.event.ended || eventregistration.event.openEnrollment));
@@ -222,6 +224,7 @@ exports.listByEventId = function (req, res) {
     .populate('personType', 'name')
     .populate('event', 'name')
     .populate('eventPeopleGroup', 'name')
+    .where('deleted', false)
     .exec(function (err, eventregistrations) {
       if (err) {
         return res.status(400).send({
@@ -265,6 +268,7 @@ exports.listByPersonId = function (req, res) {
     .populate('personType', 'name')
     .populate('event', 'name')
     .populate('eventPeopleGroup', 'name')
+    .where('deleted', false)
     .exec(function (err, eventregistrations) {
       if (err) {
         return res.status(400).send({
@@ -298,6 +302,7 @@ exports.eventregistrationByID = function (req, res, next, id) {
     .populate('personType', 'name')
     .populate('event')
     .populate('eventPeopleGroup')
+    .where('deleted', false)
     .exec(function (err, eventregistration) {
       if (err) {
         return next(err);
