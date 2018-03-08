@@ -229,7 +229,6 @@
     }
 
     vm.setPerson = function (personId) {
-      debugger;
       vm.person = _.find(vm.filteredPeopleItems, function (o) {
         return o._id === personId;
       });

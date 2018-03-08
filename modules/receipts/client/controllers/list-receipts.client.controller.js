@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -16,8 +16,8 @@
     vm.authentication = Authentication;
 
     vm.eventsFilterArray = [];
-    vm.events = CurrentEventsService.query(function(data) {
-      _.each(data, function(event) {
+    vm.events = CurrentEventsService.query(function (data) {
+      _.each(data, function (event) {
         vm.eventsFilterArray.push({
           id: event.name,
           title: event.name
@@ -26,24 +26,24 @@
     });
 
     $rootScope.showLoadingSpinner = true;
-    vm.receipts = CurrentReceiptsService.query(function(data) {
+    vm.receipts = CurrentReceiptsService.query(function (data) {
       if (data.length && data.length > 0) {
         vm.lastIndex = data.length - 1;
       } else {
         vm.lastIndex = 0;
         $rootScope.showLoadingSpinner = false;
       }
-      _.each(data, function(receipt, index) {
+      _.each(data, function (receipt, index) {
         receipt.paymentDate = vm.moment(receipt.paymentDate).format('YYYY-MM-DD');
         if (index === vm.lastIndex) {
           $rootScope.showLoadingSpinner = false;
         }
       });
-    }, function() {
+    }, function () {
       $rootScope.showLoadingSpinner = false;
     });
 
-    $scope.$watch('vm.paymentDate', function(newVal, oldVal) {
+    $scope.$watch('vm.paymentDate', function (newVal, oldVal) {
       if (newVal) {
         vm.dateFilterValue = vm.moment(vm.paymentDate).format('YYYY-MM-DD');
       } else {
@@ -60,15 +60,15 @@
       page: 1,
       count: 10
     }, {
-      dataset: vm.receipts
-    });
+        dataset: vm.receipts
+      });
 
     //set receipt event
     function setEvent(event) {
       vm.event = event;
     }
 
-    vm.getTotalClass = function(value) {
+    vm.getTotalClass = function (value) {
       if (value >= 0) {
         return 'success';
       } else {
@@ -76,30 +76,30 @@
       }
     };
 
-    vm.getStatusClass = function(receipt) {
+    vm.getStatusClass = function (receipt) {
       if (receipt.paymentAmount >= 0) {
         return 'success';
       } else {
         return 'danger';
       }
     };
+
     // Remove existing Receipt
-    vm.remove = function(receipt) {
+    vm.remove = function (receipt) {
       if (confirm('Está seguro que desea eliminar el recibo # ' + receipt.receiptNumber + ' ?')) {
         var eventRegistrationSuccessMsg = '';
+
         ReceiptsService.delete({
           'receiptId': receipt._id
-        }, function() {
+        }, function () {
           if (vm.isEventRegistrationReceipt(receipt)) {
-            vm.updateEventRegistration(receipt);
             eventRegistrationSuccessMsg = 'Y se actualizó el saldo de la inscripción # ' + receipt.eventRegistration.registrationNumber;
           }
-          vm.success = 'Se eliminó el recibo #' + receipt.receiptNumber + '. ' + eventRegistrationSuccessMsg;
+          vm.success = 'El recibo # ' + receipt.receiptNumber + '  ha sido eliminado. ' + eventRegistrationSuccessMsg + '.';
           _.remove(vm.receipts, {
             _id: receipt._id
           });
           vm.tableParams.reload();
-          $anchorScroll(document.body.scrollTop);
           Notification.info({
             title: 'Operación ejecutada exitosamente!',
             message: vm.success,
@@ -109,14 +109,7 @@
       }
     };
 
-    vm.updateEventRegistration = function(receipt) {
-      receipt.eventRegistration.balanceAmount += receipt.paymentAmount;
-      EventregistrationsService.update({
-        eventregistrationId: receipt.eventRegistration._id
-      }, receipt.eventRegistration);
-    };
-
-    vm.isEventRegistrationReceipt = function(receipt) {
+    vm.isEventRegistrationReceipt = function (receipt) {
       return receipt.eventRegistration !== undefined;
     };
   }

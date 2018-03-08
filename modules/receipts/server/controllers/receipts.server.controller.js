@@ -13,23 +13,23 @@ var path = require('path'),
 /**
  * Create a Receipt
  */
-exports.create = function(req, res) {
+exports.create = function (req, res) {
   var receipt = new Receipt(req.body);
   receipt.user = req.user;
-  updateEventRegistrationBalanceAmount(req.body.oldEventregistration, function(err) {
+  updateEventRegistrationBalanceAmount(req.body.oldEventregistration, function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      updateEventRegistrationBalanceAmount(req.body.eventregistration, function(err) {
+      updateEventRegistrationBalanceAmount(req.body.eventregistration, function (err) {
         if (err) {
           return res.status(400).send({
             message: errorHandler.getErrorMessage(err)
           });
         } else {
           receipt.eventRegistration = req.body.eventregistration ? req.body.eventregistration : receipt.eventRegistration;
-          receipt.save(function(err) {
+          receipt.save(function (err) {
             if (err) {
               return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
@@ -38,20 +38,20 @@ exports.create = function(req, res) {
               res.jsonp(receipt);
             }
           });
-        }    
+        }
       });
-    }    
+    }
   });
 };
 
-var updateEventRegistrationBalanceAmount = function(eventRegistration, callback) {
+var updateEventRegistrationBalanceAmount = function (eventRegistration, callback) {
   if (eventRegistration) {
-    EventRegistration.findById(eventRegistration._id).exec(function(err, eventregistration) {
+    EventRegistration.findById(eventRegistration._id).exec(function (err, eventregistration) {
       if (err) {
         return callback(err);
       } else {
         eventregistration.balanceAmount = eventRegistration.balanceAmount;
-        eventregistration.save(function(err) {
+        eventregistration.save(function (err) {
           eventregistration = EventRegistration(eventregistration);
           if (err) {
             return callback(err);
@@ -61,15 +61,15 @@ var updateEventRegistrationBalanceAmount = function(eventRegistration, callback)
         });
       }
     });
-  } else {    
+  } else {
     callback();
-  }    
+  }
 };
 
 /**
  * Show the current Receipt
  */
-exports.read = function(req, res) {
+exports.read = function (req, res) {
   // convert mongoose document to JSON
   var receipt = req.receipt ? req.receipt.toJSON() : {};
 
@@ -83,23 +83,23 @@ exports.read = function(req, res) {
 /**
  * Update a Receipt
  */
-exports.update = function(req, res) {
+exports.update = function (req, res) {
   var receipt = req.receipt;
   receipt = _.extend(receipt, req.body);
-  updateEventRegistrationBalanceAmount(req.body.oldEventregistration, function(err) {
+  updateEventRegistrationBalanceAmount(req.body.oldEventregistration, function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      updateEventRegistrationBalanceAmount(req.body.eventregistration, function(err) {
+      updateEventRegistrationBalanceAmount(req.body.eventregistration, function (err) {
         if (err) {
           return res.status(400).send({
             message: errorHandler.getErrorMessage(err)
           });
         } else {
           receipt.eventRegistration = req.body.eventregistration ? req.body.eventregistration : receipt.eventRegistration;
-          receipt.save(function(err) {
+          receipt.save(function (err) {
             if (err) {
               return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
@@ -108,26 +108,29 @@ exports.update = function(req, res) {
               res.jsonp(receipt);
             }
           });
-        }    
+        }
       });
-    }    
+    }
   });
 };
 
 /**
  * Delete an Receipt
  */
-exports.delete = function(req, res) {
+exports.delete = function (req, res) {
   var receipt = req.receipt;
+  var eventRegistration = req.receipt.eventRegistration;
+  if (eventRegistration) {
+    eventRegistration.balanceAmount += receipt.paymentAmount;
+  }
   var idUser = req.user;
-
-  updateEventRegistrationBalanceAmount(req.body.eventregistration, function(err) {
+  updateEventRegistrationBalanceAmount(eventRegistration, function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      receipt.delete(idUser, function(err) {
+      receipt.delete(idUser, function (err) {
         if (err) {
           return res.status(400).send({
             message: errorHandler.getErrorMessage(err)
@@ -136,15 +139,15 @@ exports.delete = function(req, res) {
           res.jsonp(receipt);
         }
       });
-    }    
+    }
   });
 };
 
 /**
  * List of Receipts
  */
-exports.list = function(req, res) {
-  var query = _.forEach(req.query, function(value, key) {
+exports.list = function (req, res) {
+  var query = _.forEach(req.query, function (value, key) {
     var queryParam = {
       $regex: new RegExp('^' + value + '$', 'i'),
       $options: 'i'
@@ -188,7 +191,7 @@ exports.list = function(req, res) {
         }
       }
     })
-    .populate('user', 'displayName').exec(function(err, receipts) {
+    .populate('user', 'displayName').exec(function (err, receipts) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
@@ -202,8 +205,8 @@ exports.list = function(req, res) {
 /**
  * List of Current Receipts (related event is not ended)
  */
-exports.listAllCurrent = function(req, res) {
-  var query = _.forEach(req.query, function(value, key) {
+exports.listAllCurrent = function (req, res) {
+  var query = _.forEach(req.query, function (value, key) {
     var queryParam = {
       $regex: new RegExp('^' + value + '$', 'i'),
       $options: 'i'
@@ -247,8 +250,8 @@ exports.listAllCurrent = function(req, res) {
         }
       }
     })
-    .populate('user', 'displayName').exec(function(err, receipts) {
-      receipts = receipts.filter(function(receipt) {
+    .populate('user', 'displayName').exec(function (err, receipts) {
+      receipts = receipts.filter(function (receipt) {
         return ((receipt.event && (!receipt.event.ended || receipt.event.openEnrollment)) ||
           (receipt.eventRegistration && receipt.eventRegistration.event &&
             (!receipt.eventRegistration.event.ended || receipt.eventRegistration.event.openEnrollment)));
@@ -266,9 +269,9 @@ exports.listAllCurrent = function(req, res) {
 /**
  * List of Receipts by EventRegistrationId
  */
-exports.listByEventRegistrationId = function(req, res) {
+exports.listByEventRegistrationId = function (req, res) {
   var eventRegistrationId = req.params.eventRegistrationId;
-  Receipt.where('eventRegistration', eventRegistrationId).sort('-created')
+  Receipt.where('eventRegistration', eventRegistrationId).where('deleted', false).sort('-created')
     .populate('event')
     .populate({
       path: 'eventRegistration',
@@ -276,7 +279,7 @@ exports.listByEventRegistrationId = function(req, res) {
         path: 'event'
       }
     })
-    .populate('user', 'displayName').exec(function(err, receipts) {
+    .populate('user', 'displayName').exec(function (err, receipts) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
@@ -291,7 +294,7 @@ exports.listByEventRegistrationId = function(req, res) {
 /**
  * List of Receipts by eventId
  */
-exports.listByEventId = function(req, res) {
+exports.listByEventId = function (req, res) {
   var eventId = req.params.eventId;
   Receipt.where('event', eventId).sort('-created')
     .populate('event')
@@ -323,7 +326,7 @@ exports.listByEventId = function(req, res) {
         }
       }
     })
-    .populate('user', 'displayName').exec(function(err, receipts) {
+    .populate('user', 'displayName').exec(function (err, receipts) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
@@ -337,7 +340,7 @@ exports.listByEventId = function(req, res) {
 /**
  * Receipt middleware
  */
-exports.receiptByID = function(req, res, next, id) {
+exports.receiptByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
@@ -365,7 +368,7 @@ exports.receiptByID = function(req, res, next, id) {
         path: 'personType'
       }
     })
-    .exec(function(err, receipt) {
+    .exec(function (err, receipt) {
       if (err) {
         return next(err);
       } else if (!receipt) {
