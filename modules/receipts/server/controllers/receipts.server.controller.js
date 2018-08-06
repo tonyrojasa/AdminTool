@@ -8,6 +8,7 @@ var path = require('path'),
   Receipt = mongoose.model('Receipt'),
   EventRegistration = mongoose.model('Eventregistration'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  nexmo = require(path.resolve('./modules/core/server/controllers/nexmo.server.controller')),
   _ = require('lodash');
 
 /**
@@ -15,6 +16,11 @@ var path = require('path'),
  */
 exports.create = function (req, res) {
   var receipt = new Receipt(req.body);
+  var eventRegistration = req.body.eventregistration;
+  var registrationNumber = eventRegistration && eventRegistration.registrationNumber ? eventRegistration.registrationNumber : "";
+  var mobilePhone = eventRegistration && eventRegistration.person.mobilePhone ? eventRegistration.person.mobilePhone.replace("-", "") : "";
+  var eventName = eventRegistration && eventRegistration.event.name ? eventRegistration.event.name : "";
+
   receipt.user = req.user;
   updateEventRegistrationBalanceAmount(req.body.oldEventregistration, function (err) {
     if (err) {
@@ -35,6 +41,14 @@ exports.create = function (req, res) {
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
+              if (mobilePhone) {
+                try {
+                  var message = "Evento: " + eventName + ". Inscripcion #" + registrationNumber + ". Recibo #" + receipt.receiptNumber + ". Pago: " + receipt.paymentAmount + " colones. Saldo: " + receipt.balanceDue + " colones. Recibido de: " + receipt.receivedBy;
+                  nexmo.sendSms("506" + mobilePhone, message);
+                } catch (error) {
+                  console.error(error);
+                }
+              }
               res.jsonp(receipt);
             }
           });

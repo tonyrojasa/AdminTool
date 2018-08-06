@@ -108,5 +108,13 @@ module.exports = {
         roles: ['user', 'admin']
       }
     }
+  },
+  nexmo: {
+    sms: {
+      url: 'https://rest.nexmo.com/sms/json',
+      apiKey: '4c39a456',
+      apiSecret: 'dNaj15AWZgqIHLyG',
+      from: 'iglesiamiel'
+    }
   }
 };
