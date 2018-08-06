@@ -28,6 +28,11 @@ var ReceiptSchema = new Schema({
     required: 'Please fill receivedFrom',
     trim: true
   },
+  receivedFromPhone: {
+    type: String,
+    default: '',
+    trim: true
+  },
   receivedBy: {
     type: String,
     default: '',

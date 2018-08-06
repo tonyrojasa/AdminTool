@@ -119,6 +119,7 @@
           vm.eventregistration.person.lastName + ' ' + vm.eventregistration.person.secondLastName;
         vm.receipt.currentBalance = vm.eventregistration.balanceAmount;
       }
+      vm.receipt.receivedFromPhone = !vm.receipt.receivedFromPhone && (vm.eventregistration && vm.eventregistration.person) ? vm.eventregistration.person.mobilePhone : vm.receipt.receivedFromPhone;
 
       if (vm.receipt.paymentDate) {
         vm.receipt.paymentDate = new Date(vm.receipt.paymentDate);

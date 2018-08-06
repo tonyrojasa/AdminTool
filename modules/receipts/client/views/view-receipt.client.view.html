@@ -106,6 +106,10 @@
             <td><strong>Recibido de:</strong></td>
             <td><span><strong>{{vm.receipt.receivedFrom}}</strong></span></td>
           </tr>
+          <tr ng-if="vm.receipt.receivedFromPhone">
+            <td><strong>Teléfono Celular (para notificicación):</strong></td>
+            <td><span><strong>{{vm.receipt.receivedFromPhone}}</strong></span></td>
+          </tr>
           <tr>
             <td><strong>Por concepto de:</strong></td>
             <td><span><strong>{{vm.receipt.paymentOf}}</strong></span></td>

@@ -140,6 +140,13 @@
             </div>
           </div>
           <div class="form-group" show-errors>
+            <label class="control-label" for="receivedFromPhone">Teléfono Celular (para notificicación)</label>
+            <input name="receivedFromPhone" mask="9999-9999" mask-restrict="reject" autocomplete="off" ng-model="vm.receipt.receivedFromPhone" id="receivedFromPhone" model-view-value="true" ui-options="{clearOnBlur:false}" ng-minlength="8" class="form-control" placeholder="Teléfono Celular">
+            <div ng-messages="vm.form.receiptForm.receivedFromPhone.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Formato incorrecto.</p>
+            </div>
+          </div>
+          <div class="form-group" show-errors>
             <label class="control-label" for="shirtSize">Por concepto de *</label>
             <input name="paymentOf" type="hidden" ng-model="vm.receipt.paymentOf" id="paymentOf" class="form-control" placeholder="Por concepto de" required>
             <div class="dropdown" id="paymentOfDropdown" uib-dropdown>
