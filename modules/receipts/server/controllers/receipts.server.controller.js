@@ -43,7 +43,7 @@ exports.create = function (req, res) {
             } else {
               if (mobilePhone) {
                 try {
-                  var message = "Iglesia Miel. Evento: " + eventName + ". Inscripcion #" + registrationNumber + ". Recibo #" + receipt.receiptNumber + ". Pago: " + receipt.paymentAmount + " colones. Saldo: " + receipt.balanceDue + " colones. Recibido de: " + receipt.receivedFrom;
+                  var message = "IglesiaMiel-Evento: " + eventName + ". Ins#" + registrationNumber + " Recibo#" + receipt.receiptNumber + " Pago: " + receipt.paymentAmount + " Saldo: " + receipt.balanceDue + ". De: " + receipt.receivedFrom;
                   nexmo.sendSms("506" + mobilePhone, message);
                 } catch (error) {
                   console.error(error);
@@ -126,7 +126,7 @@ exports.update = function (req, res) {
             } else {
               if (mobilePhone) {
                 try {
-                  var message = "Iglesia Miel. Evento: " + eventName + ". Inscripcion #" + registrationNumber + ". Recibo #" + receipt.receiptNumber + ". Pago: " + receipt.paymentAmount + " colones. Saldo: " + receipt.balanceDue + " colones. Recibido de: " + receipt.receivedBy;
+                  var message = "IglesiaMiel-Evento: " + eventName + ". Ins#" + registrationNumber + " Recibo#" + receipt.receiptNumber + " Pago: " + receipt.paymentAmount + " Saldo: " + receipt.balanceDue + ". De: " + receipt.receivedFrom;
                   nexmo.sendSms("506" + mobilePhone, message);
                 } catch (error) {
                   console.error(error);
