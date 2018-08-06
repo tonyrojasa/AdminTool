@@ -1,0 +1,20 @@
+{
+    "apps": [
+        {
+            "name": "AdminTool",
+            "script": "./server.js",
+            "env": {
+                "NODE_ENV": "production",
+                "PORT": "80"
+            }
+        },
+        {
+            "name": "AdminToolQA",
+            "script": "./server.js",
+            "env": {
+                "NODE_ENV": "test",
+                "PORT": "3000"
+            }
+        }
+    ]
+}
