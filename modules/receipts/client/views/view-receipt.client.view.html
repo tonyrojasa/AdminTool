@@ -46,19 +46,18 @@
       data-ui-sref="receipts.createForNonRegistrationEvents">Nueva Entrada / Tiquete</a>
     </div>
   </section>
-  <section class="row">
-    <div class="col-md-6 pull-right">
+  <section>
+    <div class="col-md-2 pull-right">
+      <a class="btn btn-danger" data-ng-click="vm.remove(vm.receipt)" ng-if="vm.authentication.isUserAdmin()">
+        <i class="glyphicon glyphicon-trash"></i>
+        Eliminar
+      </a>
+    </div>
+    <div class="col-md-4 pull-right">
       <a class="btn btn-primary" data-ng-show="vm.authentication.isUserAdmin()" data-ui-sref="receipts.edit({ receiptId: vm.receipt._id })">
         <i class="glyphicon glyphicon-edit"></i>
         Editar
       </a>
-      <a class="btn btn-primary" data-ng-click="vm.remove(vm.receipt)" ng-if="vm.authentication.isUserAdmin()">
-        <i class="glyphicon glyphicon-trash"></i>
-        Eliminar
-      </a>
-      <!-- <a class="btn btn-primary" data-ng-click="vm.remove()">
-        <i class="glyphicon glyphicon-trash"></i>
-      </a> -->
       <a class="btn btn-primary" data-ng-click="vm.print('receiptContent')">
         <i class="glyphicon glyphicon-print"></i> 
         Imprimir
@@ -107,6 +106,10 @@
             <td><strong>Recibido de:</strong></td>
             <td><span><strong>{{vm.receipt.receivedFrom}}</strong></span></td>
           </tr>
+          <tr ng-if="vm.receipt.receivedFromPhone">
+            <td><strong>Teléfono Celular (para notificicación):</strong></td>
+            <td><span><strong>{{vm.receipt.receivedFromPhone}}</strong></span></td>
+          </tr>
           <tr>
             <td><strong>Por concepto de:</strong></td>
             <td><span><strong>{{vm.receipt.paymentOf}}</strong></span></td>
@@ -145,6 +148,11 @@
           </tr>
         </tbody>   
       </table>  
+      
+      <a class="btn btn-primary pull-right" data-ng-click="vm.print('receiptContent')">
+        <i class="glyphicon glyphicon-print"></i> 
+        Imprimir
+      </a>
       <div ng-show="vm.error" class="text-danger">
         <strong ng-bind="vm.error"></strong>
       </div>

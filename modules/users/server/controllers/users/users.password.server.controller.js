@@ -206,12 +206,15 @@ exports.reset = function (req, res, next) {
 exports.changePassword = function (req, res, next) {
   // Init Variables
   var passwordDetails = req.body;
+  var isManagedUser = req.body.user ? true : false;
+  var reqUser = isManagedUser ? req.body.user : req.user;
+  reqUser.id = isManagedUser ? reqUser._id : reqUser.id;
 
-  if (req.user) {
+  if (reqUser) {
     if (passwordDetails.newPassword) {
-      User.findById(req.user.id, function (err, user) {
+      User.findById(reqUser.id, function (err, user) {
         if (!err && user) {
-          if (user.authenticate(passwordDetails.currentPassword)) {
+          if (isManagedUser || user.authenticate(passwordDetails.currentPassword)) {
             if (passwordDetails.newPassword === passwordDetails.verifyPassword) {
               user.password = passwordDetails.newPassword;
 
@@ -221,15 +224,21 @@ exports.changePassword = function (req, res, next) {
                     message: errorHandler.getErrorMessage(err)
                   });
                 } else {
-                  req.login(user, function (err) {
-                    if (err) {
-                      res.status(400).send(err);
-                    } else {
-                      res.send({
-                        message: 'Password changed successfully'
-                      });
-                    }
-                  });
+                  if (isManagedUser) {
+                    res.send({
+                      message: 'Password changed successfully'
+                    });
+                  } else {
+                    req.login(user, function (err) {
+                      if (err) {
+                        res.status(400).send(err);
+                      } else {
+                        res.send({
+                          message: 'Password changed successfully'
+                        });
+                      }
+                    });
+                  }
                 }
               });
             } else {

@@ -1,0 +1,156 @@
+<section class="container">
+  <div class="page-header">
+  </div>
+  <div class="pull-right"
+       data-ng-show="vm.authentication.isUserAdmin() || vm.authentication.isBoardDirectorUser()">
+    <a class="btn btn-primary" data-ui-sref="moneycollections.edit({ moneycollectionId: vm.moneycollection._id })">
+      <i class="glyphicon glyphicon-edit"></i> Editar
+    </a>
+    <a class="btn btn-danger" data-ng-show="vm.authentication.isUserAdmin() && vm.authentication.isBoardDirectorUser()" data-ng-click="vm.remove()">
+      <i class="glyphicon glyphicon-trash"></i> Eliminar
+    </a>
+  </div>  
+  <div class="pull-left">
+    <a class="btn btn-secondary"
+      data-ui-sref="moneycollections.list()">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      Regresar
+    </a>
+  </div>
+  <br />
+
+  <div class="row">
+    <h1 class="row text-center">{{vm.moneycollection.name}}</h1>
+    <h3 class="row text-center">{{vm.moneycollection.date | date: 'dd-MMM-yyyy'}}</h3>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">      
+      <div class="text-center">
+          <h3>Recolectores</h3>
+      </div>
+      <table class="table table-condensed text-center">
+        <thead>
+          <tr>
+            <th class="text-center">Nombre</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="collector in vm.moneycollection.collectors" >
+            <td>                  
+                {{collector.displayName}} <b>{{collector._id === vm.moneycollection.depositCollector._id ? '- Encargado de deposito' : ''}}</b>
+            </td>
+          </tr>   
+          <tr ng-if="vm.moneycollection.depositReferenceNumber" >
+              <td>                  
+                  <b># Ref deposito:</b> {{vm.moneycollection.depositReferenceNumber}}
+              </td>
+            </tr>   
+        </tbody> 
+      </table>
+    </div>    
+    <div class="col-md-3"></div>
+  </div>
+  <br />
+  <div class="row">      
+      <h2 class="row text-center">Informe General</h2>
+      <div ng-repeat="accountingType in ['Ingresos', 'Egresos']">
+        <div class="col-md-6">      
+          <div class="text-center">
+              <h3>{{accountingType}}</h3>
+          </div>
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Total de {{accountingType}}</th>
+                <th>Descripciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="flowType in vm.flowTypes" >
+                <th>  
+                    {{flowType}}
+                </th>
+                <td>  
+                    {{vm.getFlowTypeTotal(flowType, accountingType) | currency: '₡'}}
+                </td>
+                <td>  
+                    {{vm.getFlowTypeDescription(flowType, accountingType)}}
+                </td>
+              </tr>   
+            </tbody> 
+            <tfoot>
+              <tr>  
+                <th><span class="pull-right">Total {{accountingType}}:</span></th>    
+                <td  colspan="2">
+                    {{accountingType === 'Ingresos' ? (vm.moneycollection.total + vm.moneycollection.summary.totalEgresos): vm.moneycollection.summary.totalEgresos  | currency: '₡'}}  
+                </td>        
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+  <div class="row text-center">
+    <h3>TOTAL:  {{vm.moneycollection.total | currency: '₡'}}</h3>
+  </div>
+  <hr />
+  <div class="row">
+    <h2 class="row text-center">Informe Detallado</h2>
+    <div ng-repeat="accountingType in ['Ingresos', 'Egresos']">
+      <div class="col-md-6">      
+        <div class="text-center">
+            <h3>{{accountingType}}</h3>
+        </div>
+        
+        <table class="table table-condensed" ng-repeat="flowType in vm.flowTypes"  ng-if="vm.getFlowTypeTotal(flowType, accountingType) > 0">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Fecha</th>
+              <th>Descipcion</th>
+              <th>Reportado</th>
+              <th>Ingresos</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="flows in vm.moneycollection.moneyFlows | filter: {'type': flowType, 'isExpense': (accountingType === 'Ingresos' ? false: true)}" ng-if="flows.total > 0">
+            <td>  
+                {{flows.type}}
+            </td>
+            <td>  
+                {{flows.date | date: 'dd-MMM-yyyy'}}
+            </td>
+            <td>  
+                {{flows.description}}
+            </td>
+            <td>  
+                <span ng-if="flows.reportedTotal > 0">{{flows.reportedTotal | currency: '₡'}}</span>
+                <span ng-if="flows.reportedTotal === 0">N/A</span>
+            </td>
+            <td>  
+                {{flows.total | currency: '₡'}}
+            </td>
+          </tr>         
+          </tbody>
+          <tfoot>
+            <tr>  
+              <th colspan="4"><span class="pull-right">Total {{flowType}}:</span></th>    
+              <td>
+                  {{vm.getFlowTypeTotal(flowType, accountingType) | currency: '₡'}}
+              </td>        
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <h3>TOTAL:  {{vm.moneycollection.total | currency: '₡'}}</h3>
+  </div>    
+  <hr />
+</section>

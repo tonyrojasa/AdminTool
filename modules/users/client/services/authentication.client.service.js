@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   // Authentication service for user variables
@@ -14,14 +14,55 @@
       user: $window.user
     };
 
-    auth.isUserAdmin = function() {
-      return (auth.user.roles.indexOf('admin') > -1);
+    auth.isUserAdmin = function () {
+      auth = {
+        user: $window.user
+      }
+      if (!auth.user) {
+        return false;
+      }
+      return (auth.user && auth.user.roles && auth.user.roles.indexOf('admin') > -1);
     };
 
-    auth.isGuestUser = function() {
-      return (auth.user.roles.indexOf('guest') > -1);
+    auth.isGuestUser = function () {
+      auth = {
+        user: $window.user
+      }
+      if (!auth.user) {
+        return true;
+      }
+      return (auth.user.roles && auth.user.roles.indexOf('guest') > -1);
     };
 
+    auth.isInscriptorUser = function () {
+      auth = {
+        user: $window.user
+      }
+      if (!auth.user) {
+        return false;
+      }
+      return (auth.user && auth.user.roles && auth.user.roles.indexOf('inscriptor') > -1);
+    };
+
+    auth.isBoardDirectorUser = function () {
+      auth = {
+        user: $window.user
+      }
+      if (!auth.user) {
+        return false;
+      }
+      return (auth.user && auth.user.roles && auth.user.roles.indexOf('boardDirector') > -1);
+    };
+
+    auth.isBoardReviewerUser = function () {
+      auth = {
+        user: $window.user
+      }
+      if (!auth.user) {
+        return false;
+      }
+      return (auth.user && auth.user.roles && auth.user.roles.indexOf('boardReviewer') > -1);
+    };
 
     return auth;
   }

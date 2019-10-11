@@ -1,26 +1,30 @@
 <section class="container">
   <div class="page-header">
     <div class="row">
-      <div class="col-md-6">
-        <h1 ng-bind="vm.user.username"></h1>
+      <div class="col-md-12">
+        <h1>Usuario: {{vm.user.username}}</h1>
       </div>
-      <div class="col-md-4">
+    </div>
+    <div class="row">
+      <div class="pull-left col-md-2">
+        <a class="btn btn-secondary" data-ui-sref="admin.users">
+          <i class="glyphicon glyphicon-arrow-left"></i>
+          Regresar
+        </a>
+      </div>
+      <div class="pull-right col-md-5">
         <a class="btn btn-primary" ui-sref="admin.user-edit({userId: vm.user._id})">
           <i class="glyphicon glyphicon-edit"> Editar</i>
+        </a>      
+        <a class="btn btn-default" ng-show="vm.user.provider === 'local'" ui-sref="admin.user-password({userId: vm.user._id})">
+          <i class="glyphicon glyphicon-edit"></i> Cambiar Contraseña
         </a>
-        <a class="btn btn-primary" ng-click="vm.remove()" ng-if="vm.user.username !== vm.authentication.user.username && !vm.isContextUserSelf()">
+        <a class="btn btn-danger" ng-click="vm.remove()" ng-if="vm.user.username !== vm.authentication.user.username && !vm.isContextUserSelf()">
           <i class="glyphicon glyphicon-trash"> Eliminar</i>
         </a>
       </div>
     </div>
   </div>
-  <div class="row">
-     <a class="btn btn-secondary" data-ui-sref="admin.users">
-      <i class="glyphicon glyphicon-arrow-left"></i>
-      Regresar
-    </a>
-  </div>
-  <br />
   <div class="row">
     <div class="col-md-8">
       <div class="row">
@@ -45,7 +49,7 @@
       <hr/>
       <div class="row">
         <div class="col-md-3"><strong>Creado en</strong></div>
-        <div class="col-md-6" ng-bind="vm.user.created | date:'mediumDate'""></div>
+        <div class="col-md-6" ng-bind="vm.user.created | date:'mediumDate'"></div>
       </div>
       <hr/>
       <div class="row">

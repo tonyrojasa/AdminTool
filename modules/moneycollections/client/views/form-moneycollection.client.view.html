@@ -1,0 +1,150 @@
+<div class="container">
+  <div ng-if="vm.error">
+    <br />
+    <div class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert" ng-click='vm.error = undefined'>&times;</a>
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <strong class="text-danger">Error:</strong>
+      <span ng-bind-html="vm.error"></span>
+    </div>
+  </div>
+  <div ng-if="vm.warning">
+    <br />
+    <div class="alert alert-warning" role="alert">
+      <a href="#" class="close" data-dismiss="alert" ng-click='vm.warning = undefined'>&times;</a>
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <strong class="text-warning">Alerta:</strong>
+      <span ng-bind-html="vm.warning"></span>
+    </div>
+  </div>
+  <section>
+    <div class="page-header">
+      <h1>{{vm.moneycollection._id ? 'Editar flujo de dinero' : 'Nuevo flujo de dinero'}} </h1>
+
+      <h2 ng-if="vm.moneycollection._id">{{vm.moneycollection.name}}</h2>
+        <small ng-if="vm.moneycollection._id">
+          <em class="text-muted">
+            Creado en
+            <span data-ng-bind="vm.moneycollection.created | date:'mediumDate'"></span>
+            Por
+            <span data-ng-if="vm.moneycollection.user"
+                  data-ng-bind="vm.moneycollection.user.displayName"></span>
+            <span data-ng-if="!vm.moneycollection.user">Deleted User</span>
+          </em>
+        </small>
+    </div>  
+    <div class="pull-left" ng-if="vm.moneycollection._id">
+       <a class="btn btn-secondary"
+         data-ui-sref="moneycollections.view({ moneycollectionId: vm.moneycollection._id})">
+        <i class="glyphicon glyphicon-arrow-left"></i>
+        Regresar
+      </a>
+    </div>    
+    <div class="pull-left" ng-if="!vm.moneycollection._id">
+        <a class="btn btn-secondary"
+          data-ui-sref="moneycollections.list()">
+         <i class="glyphicon glyphicon-arrow-left"></i>
+         Regresar
+       </a>
+     </div>
+    <br /><br />            
+    <div class="row pull-right">
+      <button ng-click="vm.save(vm.form.moneycollectionForm.$valid, false)" class="btn btn-primary"> <i class="glyphicon glyphicon-floppy-disk"></i> {{'Guardar'}}</button>
+      <button ng-click="vm.save(vm.form.moneycollectionForm.$valid, true)" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-saved"></i> {{vm.moneycollection._id ? 'Guardar y Cerrar' : 'Crear y Cerrar'}}</button>
+    </div>          
+    <br /><br />
+    <h4 class="bg-primary">Los campos marcados con asterisco (*) son requeridos.</h4> 
+    <div class="col-md-12">
+      <form name="vm.form.moneycollectionForm" class="form-horizontal" novalidate>
+        <fieldset>            
+          <div class="form-group form-group-sm" show-errors>
+            <label class="control-label" for="name">Nombre *</label>
+            <input name="name" type="text" ng-model="vm.moneycollection.name" id="name" placeholder="Nombre" autocomplete="off" class="form-control" ng-required="true">  
+            <div ng-messages="vm.form.moneycollectionForm.name.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Nombre es requerido.</p>
+            </div>
+          </div>
+
+          <div class="form-group form-group-sm" show-errors> 
+            <label class="control-label" for="depositCollector">Encargado de deposito *</label>            
+            <input name="depositCollector" type="hidden" ng-model="vm.moneycollection.depositCollector" id="depositCollector" class="form-control" required>
+            <div class="select2-bootstrap-append">
+              <ui-select ng-model="vm.moneycollection.depositCollector">
+                <ui-select-match placeholder="Seleccione los encargado de deposito...">
+                      <span>{{vm.moneycollection.depositCollector.displayName}} - {{vm.moneycollection.depositCollector.boardRole}} </span>
+                  </ui-select-match>
+                  <ui-select-choices repeat="user in (vm.recollectorUsers | filter: $select.search | orderBy:'name') track by $index">  
+                      <div ng-bind-html="user.firstName + ' ' + user.lastName + ' | Rol: '+ user.boardRole | highlight: $select.search"></div>
+                  </ui-select-choices>
+              </ui-select> 
+            </div> 
+            <div ng-messages="vm.form.moneycollectionForm.depositCollector.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Encargado de deposito es requerido.</p>
+            </div>       
+          </div>
+
+          <div class="form-group form-group-sm">
+            <label class="control-label" for="depositReferenceNumber"># Ref deposito</label>
+            <input name="depositReferenceNumber" type="text" ng-model="vm.moneycollection.depositReferenceNumber" id="depositReferenceNumber" placeholder="# Ref deposito" autocomplete="off" class="form-control" ng-required="false"> 
+          </div>
+
+          <div class="form-group form-group-sm" show-errors>
+            <label class="control-label" for="date">Fecha de ingreso *</label>
+            <input name="date" type="hidden" ng-model="vm.moneycollection.date" id="date" class="form-control" ng-required="true">
+            <datetimepicker 
+                ng-model="vm.moneycollection.date" 
+                hidden-time="true" 
+                date-format="dd-MMM-yyyy" 
+                current-text="Hoy"
+                clear-text="Limpiar"
+                close-text="Cerrar"></datetimepicker>          
+            <div ng-messages="vm.form.moneycollectionForm.date.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Fecha de ingreso es requerido.</p>
+            </div>
+          </div>       
+                    
+          <div class="form-group form-group-sm" show-errors>        
+            <label class="control-label" for="assistant">Recolectores (asistentes) *</label>
+            <input name="collectors" type="hidden" ng-model="vm.moneycollection.collectors" id="collectors" class="form-control" required>
+            <div class="select2-bootstrap-append">
+              <ui-select multiple ng-model="vm.moneycollection.collectors" ng-change="vm.collectorsChange()">
+                <ui-select-match placeholder="Seleccione los recolectores asistentes)...">
+                      <span>{{$item.displayName}} - {{$item.boardRole}} </span>
+                  </ui-select-match>
+                  <ui-select-choices repeat="user in (vm.recollectorUsers | filter: $select.search | orderBy:'name') track by $index">  
+                      <div ng-bind-html="user.firstName + ' ' + user.lastName + ' | Rol: '+ user.boardRole | highlight: $select.search"></div>
+                  </ui-select-choices>
+              </ui-select> 
+            </div> 
+            <div ng-messages="vm.form.moneycollectionForm.collectors.$error || vm.form.moneycollectionForm.collectors.length === 0" role="alert">
+              <p class="help-block error-text" ng-message="required">Recolectores (asistentes) es requerido.</p>
+            </div> 
+          </div> 
+      
+          <div class="form-group form-group-sm" show-errors>
+            <label class="control-label" for="description">Tipo de cambio $ (solo si hay dolares)</label>
+            <input type="number" name="exchangeRate" type="number" ng-model="vm.moneycollection.exchangeRate"  autocomplete="off" id="exchangeRate" step="1" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" placeholder="Tipo de cambio $" ng-required="exchangeRateRequired">
+
+            <div ng-messages="form.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Tipo de cambio $ es requerido.</p>
+            </div>
+          </div>
+          <div ng-if="readonly">
+            {{vm.moneycollection.exchangeRate}}
+          </div> 
+
+          <money-flow flows="vm.moneycollection.moneyFlows" money-collection-id="vm.moneycollection._id" exchange-rate="vm.moneycollection.exchangeRate" show-labels="true" form="vm.form.moneycollectionForm"></money-flow>
+          <div class="form-group form-group-sm">
+          <br />
+          <h2>Total: {{vm.calculateFlowsTotal(); vm.moneycollection.total | currency: '₡'}}</h2>
+          </div>
+        </fieldset>
+      </form> 
+    </div>               
+    <div class="row pull-right">
+      <button ng-click="vm.save(vm.form.moneycollectionForm.$valid, false)" class="btn btn-primary"> <i class="glyphicon glyphicon-floppy-disk"></i> {{'Guardar'}}</button>
+      <button ng-click="vm.save(vm.form.moneycollectionForm.$valid, true)" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-saved"></i> {{vm.moneycollection._id ? 'Guardar y Cerrar' : 'Crear y Cerrar'}}</button>
+    </div> 
+  </section>
+</div>
+        

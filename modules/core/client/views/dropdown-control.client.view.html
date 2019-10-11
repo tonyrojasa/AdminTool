@@ -1,0 +1,33 @@
+<div class="form-group" show-errors>
+  <label ng-if="showLabels" class="control-label" for="dropdown_{{fieldname}}">{{labelvalue}} <span ng-show="required">*</span></label>
+  <input name="dropdown_{{fieldname}}" type="hidden" ng-model="model" id="dropdown_{{fieldname}}" class="form-control" placeholder="{{labelvalue}}" ng-required="required">
+  <div ng-if="simple">
+    <div class="dropdown" id="storeLocationDropdown" uib-dropdown>
+        <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+          <span ng-if="!model">-- Seleccione una opción --</span>
+          {{model}}
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li ng-repeat="item in collection">
+            <a ng-click="this.selectItem(item)">{{item}}</a>
+          </li>
+        </ul>
+      </div>      
+  </div>
+  <div ng-if="!simple">
+    <div class="select2-bootstrap-append">
+        <ui-select ng-model="model" on-select="this.selectItem($select.selected)">
+          <ui-select-match  allow-clear="true" placeholder="Seleccione una opción...">
+                <span>{{$select.selected.name}}</span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (collection | filter: $select.search) track by item._id">
+                <div ng-bind-html="getBindHtmlOption(item) | highlight: $select.search"></div>
+            </ui-select-choices>
+        </ui-select>              
+      </div> 
+  </div>
+  <div ng-messages="form['dropdown_'+fieldname].$error" role="alert">
+    <p class="help-block error-text" ng-message="required">{{labelvalue}} es requerido.</p>
+  </div>
+</div>

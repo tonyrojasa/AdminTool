@@ -13,11 +13,11 @@ var path = require('path'),
 /**
  * Create a Eventregistration
  */
-exports.create = function(req, res) {
+exports.create = function (req, res) {
   var eventregistration = new Eventregistration(req.body);
   eventregistration.user = req.user;
 
-  eventregistration.save(function(err) {
+  eventregistration.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -31,7 +31,7 @@ exports.create = function(req, res) {
 /**
  * Show the current Eventregistration
  */
-exports.read = function(req, res) {
+exports.read = function (req, res) {
   // convert mongoose document to JSON
   var eventregistration = req.eventregistration ? req.eventregistration.toJSON() : {};
 
@@ -45,12 +45,12 @@ exports.read = function(req, res) {
 /**
  * Update a Eventregistration
  */
-exports.update = function(req, res) {
+exports.update = function (req, res) {
   var eventregistration = req.eventregistration;
 
   eventregistration = _.extend(eventregistration, req.body);
 
-  eventregistration.save(function(err) {
+  eventregistration.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -64,11 +64,11 @@ exports.update = function(req, res) {
 /**
  * Delete an Eventregistration
  */
-exports.delete = function(req, res) {
+exports.delete = function (req, res) {
   var eventregistration = req.eventregistration;
   var idUser = req.user;
 
-  eventregistration.delete(idUser, function(err) {
+  eventregistration.delete(idUser, function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -82,8 +82,8 @@ exports.delete = function(req, res) {
 /**
  * List of Eventregistrations
  */
-exports.list = function(req, res) {
-  var query = _.forEach(req.query, function(value, key) {
+exports.list = function (req, res) {
+  var query = _.forEach(req.query, function (value, key) {
     var queryParam = {
       $regex: new RegExp('^' + value + '$', 'i'),
       $options: 'i'
@@ -108,7 +108,8 @@ exports.list = function(req, res) {
     .populate('personType', 'name')
     .populate('event', 'name')
     .populate('eventPeopleGroup', 'name')
-    .exec(function(err, eventregistrations) {
+    .where('deleted', false)
+    .exec(function (err, eventregistrations) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
@@ -116,9 +117,9 @@ exports.list = function(req, res) {
       } else {
 
         var shirtTypesList = [];
-        _.each(eventregistrations, function(eventregistration, key) {
+        _.each(eventregistrations, function (eventregistration, key) {
           if (eventregistration.shirtTypes.length > 0) {
-            _.each(eventregistration.shirtTypes, function(shirtType) {
+            _.each(eventregistration.shirtTypes, function (shirtType) {
               shirtType.shirtSize = eventregistration.person.shirtSize;
             });
           }
@@ -135,8 +136,8 @@ exports.list = function(req, res) {
 /**
  * List of current Eventregistrations
  */
-exports.listAllCurrent = function(req, res) {
-  var query = _.forEach(req.query, function(value, key) {
+exports.listAllCurrent = function (req, res) {
+  var query = _.forEach(req.query, function (value, key) {
     var queryParam = {
       $regex: new RegExp('^' + value + '$', 'i'),
       $options: 'i'
@@ -150,16 +151,18 @@ exports.listAllCurrent = function(req, res) {
     };
   }
 
-  Event.find({ $or: [
-    { 'ended': false },
-    { 'openEnrollment': true }
-  ] }).exec(function(err, events) {
+  Event.find({
+    $or: [
+      { 'ended': false },
+      { 'openEnrollment': true }
+    ]
+  }).exec(function (err, events) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      Eventregistration.find(query).find({ event:  { $in: events } }).sort('-created')
+      Eventregistration.find(query).find({ event: { $in: events } }).sort('-created')
         .populate('user', 'displayName')
         .populate({
           path: 'person',
@@ -170,10 +173,11 @@ exports.listAllCurrent = function(req, res) {
         .populate('personType', 'name')
         .populate('event')
         .populate('eventPeopleGroup', 'name')
-        .exec(function(err, eventregistrations) {
-         /* eventregistrations = eventregistrations.filter(function(eventregistration) {
-            return (eventregistration.event && (!eventregistration.event.ended || eventregistration.event.openEnrollment));
-          });*/
+        .where('deleted', false)
+        .exec(function (err, eventregistrations) {
+          /* eventregistrations = eventregistrations.filter(function(eventregistration) {
+             return (eventregistration.event && (!eventregistration.event.ended || eventregistration.event.openEnrollment));
+           });*/
 
           if (err) {
             return res.status(400).send({
@@ -182,9 +186,9 @@ exports.listAllCurrent = function(req, res) {
           } else {
             var shirtTypesList = [];
             if (eventregistrations.length > 0) {
-              _.each(eventregistrations, function(eventregistration, key) {
+              _.each(eventregistrations, function (eventregistration, key) {
                 if (eventregistration.shirtTypes.length > 0) {
-                  _.each(eventregistration.shirtTypes, function(shirtType) {
+                  _.each(eventregistration.shirtTypes, function (shirtType) {
                     shirtType.shirtSize = eventregistration.person.shirtSize;
                   });
                 }
@@ -197,17 +201,17 @@ exports.listAllCurrent = function(req, res) {
             } else {
               res.jsonp(eventregistrations);
             }
-           
+
           }
         });
     }
-  });    
+  });
 };
 
 /**
  * List of Eventregistrations by eventId
  */
-exports.listByEventId = function(req, res) {
+exports.listByEventId = function (req, res) {
   var eventId = req.params.eventId;
   Eventregistration.where('event', eventId).sort('-created')
     .populate('user', 'displayName')
@@ -220,25 +224,30 @@ exports.listByEventId = function(req, res) {
     .populate('personType', 'name')
     .populate('event', 'name')
     .populate('eventPeopleGroup', 'name')
-    .exec(function(err, eventregistrations) {
+    .where('deleted', false)
+    .exec(function (err, eventregistrations) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
         });
       } else {
         var shirtTypesList = [];
-        _.each(eventregistrations, function(eventregistration, key) {
-          if (eventregistration.shirtTypes.length > 0) {
-            _.each(eventregistration.shirtTypes, function(shirtType) {
-              shirtType.shirtSize = eventregistration.person.shirtSize;
-            });
-          }
+        if (eventregistrations.length > 0) {
+          _.each(eventregistrations, function (eventregistration, key) {
+            if (eventregistration.shirtTypes.length > 0) {
+              _.each(eventregistration.shirtTypes, function (shirtType) {
+                shirtType.shirtSize = eventregistration.person.shirtSize;
+              });
+            }
 
-          if (key === eventregistrations.length - 1) {
-            eventregistrations.shirtTypesList = shirtTypesList;
-            res.jsonp(eventregistrations);
-          }
-        });
+            if (key === eventregistrations.length - 1) {
+              eventregistrations.shirtTypesList = shirtTypesList;
+              res.jsonp(eventregistrations);
+            }
+          });
+        } else {
+          res.jsonp(eventregistrations);
+        }
       }
     });
 };
@@ -246,7 +255,7 @@ exports.listByEventId = function(req, res) {
 /**
  * List of Eventregistrations by personId
  */
-exports.listByPersonId = function(req, res) {
+exports.listByPersonId = function (req, res) {
   var personId = req.params.personId;
   Eventregistration.where('person', personId).sort('-created')
     .populate('user', 'displayName')
@@ -259,7 +268,8 @@ exports.listByPersonId = function(req, res) {
     .populate('personType', 'name')
     .populate('event', 'name')
     .populate('eventPeopleGroup', 'name')
-    .exec(function(err, eventregistrations) {
+    .where('deleted', false)
+    .exec(function (err, eventregistrations) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
@@ -273,7 +283,7 @@ exports.listByPersonId = function(req, res) {
 /**
  * Eventregistration middleware
  */
-exports.eventregistrationByID = function(req, res, next, id) {
+exports.eventregistrationByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
@@ -292,7 +302,8 @@ exports.eventregistrationByID = function(req, res, next, id) {
     .populate('personType', 'name')
     .populate('event')
     .populate('eventPeopleGroup')
-    .exec(function(err, eventregistration) {
+    .where('deleted', false)
+    .exec(function (err, eventregistration) {
       if (err) {
         return next(err);
       } else if (!eventregistration) {

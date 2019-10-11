@@ -59,9 +59,17 @@ module.exports = {
     owasp: {
       allowPassphrases: true,
       maxLength: 128,
-      minLength: 10,
+      minLength: 5,
       minPhraseLength: 20,
       minOptionalTestsToPass: 4
+    }
+  },
+  nexmo: {
+    sms: {
+      url: 'https://rest.nexmo.com/sms/json',
+      apiKey: '4c39a456',
+      apiSecret: 'dNaj15AWZgqIHLyG',
+      from: 'iglesiamiel'
     }
   }
 

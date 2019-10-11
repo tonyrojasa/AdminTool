@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   // Setting up route
@@ -42,7 +42,19 @@
         data: {
           pageTitle: 'Editar Usuario {{ userResolve.displayName }}'
         }
-      });
+      })
+      .state('admin.user-password', {
+        url: '/users/:userId/password',
+        templateUrl: '/modules/users/client/views/admin/edit-user-password.client.view.html',
+        controller: 'ChangePasswordController',
+        controllerAs: 'vm',
+        data: {
+          pageTitle: 'Settings password'
+        },
+        resolve: {
+          userResolve: getUser
+        },
+      })
 
     getUser.$inject = ['$stateParams', 'AdminService'];
 

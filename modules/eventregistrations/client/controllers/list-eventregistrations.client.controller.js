@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -19,8 +19,8 @@
 
 
     vm.eventsFilterArray = [];
-    vm.events = CurrentEventsService.query(function(data) {
-      _.each(data, function(event) {
+    vm.events = CurrentEventsService.query(function (data) {
+      _.each(data, function (event) {
         vm.eventsFilterArray.push({
           id: event.name,
           title: event.name
@@ -29,8 +29,8 @@
     });
 
     vm.groupsFilterArray = [];
-    EventpeoplegroupsService.query(function(data) {
-      _.each(data, function(group) {
+    EventpeoplegroupsService.query(function (data) {
+      _.each(data, function (group) {
         vm.groupsFilterArray.push({
           id: group.name,
           title: group.name
@@ -39,8 +39,8 @@
     });
 
     vm.personTypesFilterArray = [];
-    PersontypesService.query(function(data) {
-      _.each(data, function(personType) {
+    PersontypesService.query(function (data) {
+      _.each(data, function (personType) {
         vm.personTypesFilterArray.push({
           id: personType.name,
           title: personType.name
@@ -49,28 +49,28 @@
     });
 
     $rootScope.showLoadingSpinner = true;
-    vm.eventregistrations = CurrentEventregistrationsService.query(function(data) {
+    vm.eventregistrations = CurrentEventregistrationsService.query(function (data) {
       if (data.length && data.length > 0) {
         vm.lastIndex = data.length - 1;
       } else {
         vm.lastIndex = 0;
         $rootScope.showLoadingSpinner = false;
       }
-      _.each(data, function(eventregistration, index) {
+      _.each(data, function (eventregistration, index) {
         eventregistration.registrationDate = vm.moment(eventregistration.registrationDate).format('YYYY-MM-DD');
         if (index === vm.lastIndex) {
           vm.originalData = angular.copy(data);
           $rootScope.showLoadingSpinner = false;
         }
       });
-    }, function() {
+    }, function () {
       $rootScope.showLoadingSpinner = false;
     });
     vm.setEvent = setEvent;
     vm.remove = remove;
     vm.receiptsByEventRegistrationService = ReceiptsByEventRegistrationService;
 
-    $scope.$watch('vm.registrationDate', function(newVal, oldVal) {
+    $scope.$watch('vm.registrationDate', function (newVal, oldVal) {
       if (newVal) {
         vm.dateFilterValue = vm.moment(vm.registrationDate).format('YYYY-MM-DD');
       } else {
@@ -81,89 +81,89 @@
 
     vm.eventRegistrationStatuses = ["En cobro", "Entregado"]
 
-    vm.filterEventRegistrationStatuses =  [
-    {id: "En cobro", title:" En cobro"}, 
-    {id: "Entregado", title:"Entregado"}];
+    vm.filterEventRegistrationStatuses = [
+      { id: "En cobro", title: " En cobro" },
+      { id: "Entregado", title: "Entregado" }];
 
 
     vm.cols = [{
       field: "registrationNumber",
-      title: function() {
+      title: function () {
         return "#";
       },
-      show: function() {
+      show: function () {
         return true;
       }
     }, {
       field: "event.name",
-      title: function() {
+      title: function () {
         return "Evento";
       },
-      show: function() {
+      show: function () {
         return true;
       }
     }, {
       field: "registrationDate",
-      title: function() {
+      title: function () {
         return "Fecha de Inscripción";
       },
-      show: function() {
+      show: function () {
         return true;
       }
     }, {
       field: "eventPeopleGroup.name",
-      title: function() {
+      title: function () {
         return "Grupo";
       },
-      show: function() {
+      show: function () {
         return true;
       }
     }, {
       field: "person.firstName",
-      title: function() {
+      title: function () {
         return "Nombre";
       },
-      show: function() {
+      show: function () {
         return true;
       }
     }, {
       field: "person.lastName",
-      title: function() {
+      title: function () {
         return "Apellido 1";
       },
-      show: function() {
+      show: function () {
         return true;
       }
     }, {
       field: "person.secondLastName",
-      title: function() {
+      title: function () {
         return "Apellido 2";
       },
-      show: function() {
+      show: function () {
         return true;
       }
     }, {
       field: "person.personType.name",
-      title: function() {
+      title: function () {
         return "Tipo de Persona";
       },
-      show: function() {
+      show: function () {
         return true;
       }
     }, {
       field: "quantity",
-      title: function() {
+      title: function () {
         return "Cant. Inscripciones";
       },
-      show: function() {
+      show: function () {
         return true;
       }
     }, {
       field: "balanceAmount",
-      title: function() {
+      title: function () {
         return "Saldo ₡ Pendiente";
       },
-      show: function() {
+      show: function () {
         return true;
       }
     }];
@@ -174,8 +174,8 @@
       page: 1,
       count: 10
     }, {
-      dataset: vm.eventregistrations
-    });
+        dataset: vm.eventregistrations
+      });
 
     // vm.tableParams = new NgTableParams({
     //   page: 1,
@@ -200,7 +200,7 @@
     function setEvent(event) {
       vm.event = event;
     }
-    vm.getTotalClass = function(value) {
+    vm.getTotalClass = function (value) {
       if (value >= 0) {
         return 'success';
       } else {
@@ -208,33 +208,33 @@
       }
     };
 
-    vm.hasPendingPayment = function(eventRegistration) {
+    vm.hasPendingPayment = function (eventRegistration) {
       return eventRegistration.balanceAmount > 0;
     };
 
-    vm.getStatusClass = function(eventRegistration) {
+    vm.getStatusClass = function (eventRegistration) {
       var hasPendingPayment = vm.hasPendingPayment(eventRegistration);
-      if (hasPendingPayment && eventRegistration.status !== 'Entregado'){
+      if (hasPendingPayment && eventRegistration.status !== 'Entregado') {
         return 'warning';
-      }else if(hasPendingPayment && eventRegistration.status === 'Entregado'){
+      } else if (hasPendingPayment && eventRegistration.status === 'Entregado') {
         return 'danger'
-      }else if (eventRegistration.status === 'Entregado'){
-        return  'info'
-      }else {
+      } else if (eventRegistration.status === 'Entregado') {
+        return 'info'
+      } else {
         return 'success';
       }
-    };  
+    };
 
     // Remove existing Eventregistration
     function remove(eventRegistration) {
       if (confirm('Está seguro que desea eliminar la inscripción # ' + eventRegistration.registrationNumber + '?')) {
         vm.receiptsByEventRegistrationService.query({
           'eventRegistrationId': eventRegistration._id
-        }, function(data) {
+        }, function (data) {
           if (data.length === 0) {
             EventregistrationsService.delete({
               'eventregistrationId': eventRegistration._id
-            }, function() {
+            }, function () {
               vm.warning = 'Se eliminó la inscripción #' + eventRegistration.registrationNumber + '. ' +
                 'Sin embargo, la persona ha sido creada en la base de datos. ' +
                 'Si desea inscribir la misma persona, debe hacerlo por medio de la opción Miembro Existente. ' +
@@ -262,37 +262,37 @@
       }
     }
 
-    vm.update = function save(row, rowForm) {  
-      var originalDataRow = angular.copy(row);           
-      var originalRow = resetRow(row, rowForm); 
+    vm.update = function save(row, rowForm) {
+      var originalDataRow = angular.copy(row);
+      var originalRow = resetRow(row, rowForm);
       _.merge(originalRow, row);
-      var successMessage = 'Se actualizaron datos la inscripción # '+ row.registrationNumber;
-      vm.updateEventRegistration(row, successMessage).then(function(){        
-          //vm.tableParams.reload();
-      }, function(){ 
-          _.merge(row, originalDataRow);
+      var successMessage = 'Se actualizaron datos la inscripción # ' + row.registrationNumber;
+      vm.updateEventRegistration(row, successMessage).then(function () {
+        //vm.tableParams.reload();
+      }, function () {
+        _.merge(row, originalDataRow);
       });
     };
 
     vm.updateStatus = function (eventRegistration, status) {
-      if(eventRegistration.status !== status) {
+      if (eventRegistration.status !== status) {
         eventRegistration.status = status;
-        var successMessage = 'El nuevo estado de la inscripción # '+ eventRegistration.registrationNumber +
-              ' es: '+ eventRegistration.status;
+        var successMessage = 'El nuevo estado de la inscripción # ' + eventRegistration.registrationNumber +
+          ' es: ' + eventRegistration.status;
         vm.updateEventRegistration(eventRegistration, successMessage);
-      }      
+      }
     }
 
     vm.updateEventRegistration = function (eventRegistration, successMessage) {
       $rootScope.showLoadingSpinner = true;
 
-      function successCallback(res) {   
-          $rootScope.showLoadingSpinner = false;
-          Notification.info({
-            title: 'Inscripción actualizada exitosamente!',
-            message: successMessage,
-            delay: 1000
-          }); 
+      function successCallback(res) {
+        $rootScope.showLoadingSpinner = false;
+        Notification.info({
+          title: 'Inscripción actualizada exitosamente!',
+          message: successMessage,
+          delay: 1000
+        });
       }
 
       function errorCallback(res) {
@@ -300,9 +300,9 @@
         $rootScope.showLoadingSpinner = false;
         Notification.error({
           title: 'Error al actualizar inscripción!',
-          message: 'No se pudo actualizar la inscripción # '+ eventRegistration.registrationNumber,
+          message: 'No se pudo actualizar la inscripción # ' + eventRegistration.registrationNumber,
           delay: 15000
-        }); 
+        });
       }
 
       return eventRegistration.$update(successCallback, errorCallback);
@@ -313,11 +313,11 @@
       _.merge(row, originalRow);
     };
 
-    function resetRow(row, rowForm){
+    function resetRow(row, rowForm) {
       row.isEditing = false;
       rowForm.$setPristine();
       //vm.tableTracker.untrack(row);
-      return _.find(vm.originalData, function(r){
+      return _.find(vm.originalData, function (r) {
         return r._id === row._id;
       });
     }

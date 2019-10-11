@@ -8,10 +8,16 @@
         Iglesia Miel - Herramienta de Administración
       </h4>
        <h5 class="text-muted">
-        BETA v7
+         v1.0
       </h5> 
+    </div>     
+    <div class="row" ng-show="vm.authentication.isBoardDirectorUser() || vm.authentication.isBoardReviewerUser() ">    
+      <h5 class="text-muted">Junta directiva:</h5>
+      <div class="form-group" ng-if="vm.authentication.user">
+        <a class="btn btn-primary" data-ui-sref="moneycollections.list">Flujos de dinero</a>
+      </div>
     </div> 
-    <div class="row" ng-show="vm.authentication.user && !vm.authentication.isGuestUser()">    
+    <div class="row" ng-show="!vm.authentication.isGuestUser() && (vm.authentication.isInscriptorUser() || vm.authentication.isUserAdmin())">    
       <h5 class="text-muted">Accesos directos:</h5>
       <div class="form-group" ng-if="vm.authentication.user">
         <a class="btn btn-primary" data-ui-sref="eventregistrations.list">Inscripciones</a>
