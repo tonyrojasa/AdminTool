@@ -18,6 +18,11 @@
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'eventregistrations', {
+      title: 'Solicitudes de Inscripcion',
+      state: 'eventregistrationrequests.list',
+      roles: ['admin', 'inscriptor', 'user']
+    });
+    Menus.addSubMenuItem('topbar', 'eventregistrations', {
       title: 'Inscripciones',
       state: 'eventregistrations.list',
       roles: ['admin', 'inscriptor', 'user']

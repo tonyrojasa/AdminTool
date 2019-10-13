@@ -1,0 +1,307 @@
+<div class="container">
+  <div ng-if="vm.error">
+    <br />
+    <div class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert" ng-click='vm.error = undefined'>&times;</a>
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <strong class="text-danger">Error:</strong>
+      <span ng-bind-html="vm.error"></span>
+    </div>
+  </div>
+  <div ng-if="vm.warning">
+    <br />
+    <div class="alert alert-warning" role="alert">
+      <a href="#" class="close" data-dismiss="alert" ng-click='vm.warning = undefined'>&times;</a>
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <strong class="text-warning">Alerta:</strong>
+      <span ng-bind-html="vm.warning"></span>
+    </div>
+  </div>
+  <section>
+    <div class="page-header">
+      <h1>{{vm.eventregistration._id ? 'Editar' : 'Nueva Inscripción'}} <span ng-if="vm.isNewMemberRegistration()"> - Nuevo Miembro</span> <span ng-if="!vm.isNewMemberRegistration()"> - Miembro Existente</span></h1>
+      
+      <a class="btn btn-info btn-lg" ng-if="!vm.isNewMemberRegistration()" data-ui-sref="eventregistrationrequests.create({newMember:true})">Ir a página de Nuevo Miembro</a>  
+      <a class="btn btn-info btn-lg" ng-if="vm.isNewMemberRegistration()" data-ui-sref="eventregistrationrequests.create({newMember:false})">Ir a página de Miembro Existente</a> 
+      <h2 ng-if="vm.eventregistration._id"># de Inscripción: {{vm.eventregistration.registrationNumber}}</h2>
+        <small ng-if="vm.eventregistration._id">
+          <em class="text-muted">
+            Creado en
+            <span data-ng-bind="vm.eventregistration.created | date:'mediumDate'"></span>
+            Por
+            <span data-ng-if="vm.eventregistration.user"
+                  data-ng-bind="vm.eventregistration.user.displayName"></span>
+            <span data-ng-if="!vm.eventregistration.user">Deleted User</span>
+          </em>
+        </small>
+    </div>  
+    <div class="pull-left">
+       <a class="btn btn-secondary"
+         data-ui-sref="eventregistrationrequests.list()">
+        <i class="glyphicon glyphicon-arrow-left"></i>
+        Regresar
+      </a>
+    </div>
+    <br /><br />
+    <h3 class="bg-warning" for="event">Los campos marcados con asterisco (*) son requeridos.</h3> 
+    <div class="col-md-12">
+      <form name="vm.form.eventregistrationForm" class="form-horizontal" ng-submit="vm.save(vm.form.eventregistrationForm.$valid)" novalidate>
+        <fieldset>              
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">{{vm.eventregistration._id ? 'Actualizar' : 'Crear'}}</button>
+          </div>
+          <div class="form-group" show-errors>        
+            <label class="control-label" for="event">Evento *</label>  
+            <input name="event" type="hidden" ng-model="vm.eventregistration.event" id="event" class="form-control" required>
+            <div class="input-group select2-bootstrap-append">
+              <ui-select ng-model="vm.eventregistration.event"  on-select="vm.setEvent(vm.eventregistration.event)" ng-disabled="vm.isSelectionDisabled()">
+                <ui-select-match  placeholder="Seleccione el evento...">
+                      <span>{{$select.selected.name}}</span>
+                  </ui-select-match>
+                  <ui-select-choices repeat="item in (vm.events | filter: $select.search | filter: {nonRegistration:false}) track by item._id">
+                      <div ng-bind-html="item.name | highlight: $select.search"></div>
+                  </ui-select-choices>
+              </ui-select> 
+              <span class="input-group-btn">
+                <button type="button" ng-click="vm.clearEventSelection()" ng-disabled="vm.isSelectionDisabled()" class="btn btn-default">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+              </span>  
+            </div> 
+            <div ng-messages="vm.form.eventregistrationForm.event.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Evento es requerido.</p>
+            </div>
+          </div>   
+          <br />
+          <fieldset ng-if="vm.eventregistration.event">
+          <legend>Datos para el Evento</legend>        
+            <div ng-if="!vm.isNewMemberRegistration()" class="form-inline">        
+              <div class="form-group"  show-errors>
+                <input name="person" type="hidden" ng-model="vm.person" id="person" class="form-control" required>
+
+                <label class="control-label" for="searchPerson">Filtro de busqueda de Persona</label>
+                <input name="searchPerson" type="text" ng-disabled="!vm.filteredPeopleItems" ng-model="vm.searchPerson" ng-change="vm.figureOutPeopleItemsToDisplay()" autocomplete="off" placeholder="Buscar.." id="searchPerson" class="form-control" autofocus> 
+
+                <label class="control-label" ng-if="vm.filteredPeopleItems" for="personSelect">Persona seleccionada: *</label>
+                <div class="input-group">
+                    <select class="form-control" ng-if="vm.filteredPeopleItems" ng-disabled="vm.filteredPeopleItems && vm.filteredPeopleItems.length === 0" name="personSelect" id="personSelect" ng-model="vm.selectedPersonId" ng-change="vm.setPerson(vm.selectedPersonId)">
+                      <option ng-repeat="person in vm.filteredPeopleItems" value="{{person._id}}">{{person.displayName}}</option>
+                    </select>    
+                    <span class="input-group-btn">          
+                      <button type="button" ng-if="vm.filteredPeopleItems" ng-disabled="vm.filteredPeopleItems && vm.filteredPeopleItems.length === 0" ng-click="vm.person = undefined" ng-disabled="vm.isSelectionDisabled()" class="btn btn-default">
+                      <span class="glyphicon glyphicon-trash"></span>
+                      </button>
+                    </span>
+                </div>                     
+                <div class="form-control" ng-if="!vm.people.length && vm.eventregistration.event">
+                  <strong class="bg-warning">No hay personas pendientes de agregar al evento seleccionado.</strong>
+                </div>  
+                      
+                <div ng-messages="vm.form.eventregistrationForm.person.$error" role="alert">
+                    <p class="help-block error-text" ng-message="required">Persona es requerido.</p>
+                </div>    
+
+              </div> 
+              
+              <a class="btn btn-info pull-right" ng-if="!vm.isNewMemberRegistration()" data-ui-sref="eventregistrationrequests.create({newMember:true})">Ir a página de Nuevo Miembro</a>    
+            </div>   
+            <br />   
+            <div class="form-group" ng-if="(vm.eventregistration.event && !vm.eventregistration._id) || (vm.eventregistration.isEventServer && vm.eventregistration._id)" show-errors>  
+              <input name="isEventServer" type="hidden" ng-model="vm.eventregistration.isEventServer" id="isEventServer" class="form-control" ng-disabled="vm.eventregistration._id">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" ng-model="vm.eventregistration.isEventServer" ng-click="vm.eventregistration.eventExternalServer.isEventExternalServer = false; vm.setEventPrice(vm.eventregistration.event)" ng-disabled="vm.eventregistration._id">
+                  <b>Servidor del evento (aplicar precio de servidor)</b>
+                </label>
+              </div>
+            </div> 
+            <div ng-if="(vm.eventregistration.event && !vm.eventregistration._id) || (vm.eventregistration.eventExternalServer.isEventExternalServer && vm.eventregistration._id)">  
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" ng-model="vm.eventregistration.eventExternalServer.isEventExternalServer" ng-click="vm.eventregistration.isEventServer = false; vm.setEventPrice(vm.eventregistration.event)" ng-disabled="vm.eventregistration._id">
+                    <b>Servidor Externo (aplicar precio especial) *</b>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group" ng-if="vm.eventregistration.eventExternalServer.isEventExternalServer" show-errors>
+                <div class="input-group"> 
+                  <span class="input-group-addon">₡</span>
+                  <input type="number" name="specialPrice" id="specialPrice" onwheel="return false;" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" ng-model="vm.eventregistration.eventExternalServer.specialPrice" ng-change="vm.setEventPrice(vm.eventregistration.event)" ng-disabled="vm.eventregistration._id" required>
+                </div>
+                <div ng-messages="vm.form.eventregistrationForm.specialPrice.$error" role="alert">
+                  <p class="help-block error-text" ng-message="required">Precio Especial es requerido.</p>
+                </div>
+              </div>
+            </div> 
+            <div class="form-group" ng-if="vm.person" show-errors>
+              <label class="control-label" for="eventPersonType">Tipo de Persona (en evento) <span ng-show="!vm.isQuickRegistration()">*</span></label>
+              <input name="eventPersonType" type="hidden" ng-model="vm.eventregistration.personType" id="eventPersonType" class="form-control" placeholder="Tipo de Persona" ng-required="!vm.isQuickRegistration()">
+              <div class="dropdown" id="eventPersonTypeTypeDropdown" uib-dropdown>
+                <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+                  <span ng-if="!vm.eventregistration.personType">-- Seleccione uno --</span>
+                  {{vm.eventregistration.personType.name}}
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li ng-repeat="personType in vm.personTypes">
+                    <a ng-click="vm.setPersonType(personType)">{{personType.name}}</a>
+                  </li>
+                </ul>
+              </div>          
+              <div ng-messages="vm.form.eventregistrationForm.eventPersonType.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Tipo de Persona (en evento) es requerido</p>
+              </div>
+            </div>
+            <div class="form-group" ng-if="vm.person && vm.eventregistration.event && vm.eventregistration.event.shirtPrice" show-errors>
+              <label class="control-label" for="shirtSizeEvent">Talla de camiseta *</label>
+              <input name="shirtSizeEvent" type="hidden" ng-model="vm.person.shirtSize" id="shirtSizeEvent" class="form-control" placeholder="Talla de camiseta" required>
+              <div class="dropdown" id="shirtSizeDropdown" uib-dropdown>
+                <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button">
+                  <span ng-if="!vm.person.shirtSize">-- Seleccione uno --</span>
+                  {{vm.person.shirtSize}}
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li ng-repeat="shirtSize in vm.shirtSizes">
+                    <a ng-click="vm.setShirtSize(shirtSize)">{{shirtSize}}</a>
+                  </li>
+                </ul>
+              </div> 
+              <div ng-messages="vm.form.eventregistrationForm.shirtSizeEvent.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Talla de camiseta es requerido.</p>
+              </div>
+            </div> 
+            <div class="form-group" ng-if="vm.eventregistration.event && vm.eventregistration.event.shirtPrice" show-errors>
+              <label class="control-label" for="shirtsQuantity">
+                Cantidad de camisas requeridas <span>({{vm.eventregistration.event.shirtPrice | currency:'₡'}} c/u)</span>*
+              </label>
+              <input name="shirtsQuantity" type="hidden" ng-model="vm.eventregistration.shirtsQuantity" id="shirtsQuantity" class="form-control" placeholder="Cantidad de camisas" required>
+              <div class="dropdown" id="shirtsQuantityDropdown" uib-dropdown>
+                <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button" ng-disabled="vm.isSelectionDisabled()">
+                  <span ng-if="vm.eventregistration.shirtsQuantity === undefined">-- Seleccione uno --</span>
+                  {{vm.eventregistration.shirtsQuantity}}
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">    
+                  <li ng-repeat="shirtQuantity in vm.shirtQuantities">
+                    <a ng-click="vm.setShirtsQuantity(shirtQuantity)">{{shirtQuantity}}</a>
+                  </li>
+                </ul>
+              </div> 
+              <div ng-messages="vm.form.eventregistrationForm.shirtSize.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Cantidad de camisas es requerido.</p>
+              </div>
+            </div>                  
+            <div class="form-group" ng-if="vm.eventregistration.event && vm.eventregistration.event.shirtPrice && vm.eventregistration.shirtTypes.length  > 0" ng-repeat="shirtType in vm.eventregistration.shirtTypes track by $index">
+              <div class="col-md-2">
+                <label>{{shirtType.shirtTypeName}}</label> ->
+              </div>
+              <div class="col-md-1">
+                <input name="shirtTypeColor_{{$index}}" style="background-color: {{shirtType.shirtTypeColor}};color: {{shirtType.shirtTypeColor}};" class="col-xs-1 img-rounded" ng-disabled="true"/>
+              </div>
+              <div class="col-md-1">
+                <label class="control-label" for="shirtType_quantity_{{$index}}">Cantidad:</label>
+              </div>
+              <div class="col-md-8">
+                <div class="form-group" show-errors>
+                  <div class="col-md-2">
+                    <input name="shirtType_quantity_{{$index}}" ng-model="shirtType.quantity" ng-max="vm.getShirtTypesQuantityMax(vm.form.eventregistrationForm.shirtType_quantity_{{$index}})" type="number" min="0" step="1" id="shirtType_quantity_{{$index}}" autocomplete="off" class="form-control" placeholder="Cantidad de camisas">   
+                  </div>
+                  <div class="col-md-7">
+                    <div ng-messages="vm.form.eventregistrationForm.shirtType_quantity_0.$error" role="alert">
+                      <p class="help-block error-text" ng-message="minQuantity">
+                        Debe indicar la cantidad de camisas de cada tipo
+                      </p>
+                      <p class="help-block error-text" ng-message="maxQuantity">
+                        Cantidad de tipo de camisas no puede exeder la cantidad solicitada
+                      </p>
+                    </div>
+                  </div>           
+                  
+                </div>
+              </div>          
+            </div>     
+            <div class="form-group" ng-if="!vm.eventregistration.eventExternalServer.isEventExternalServer && !vm.eventregistration.isEventServer" show-errors>
+              <label class="control-label" for="quantity">
+                Cantidad de inscripciones *
+              </label>
+              <input name="eventregistrationQuantity" type="hidden" ng-model="vm.eventregistration.quantity" id="quantity" class="form-control" placeholder="Cantidad de inscripciones" required>
+              <div class="dropdown" id="quantityDropdown" uib-dropdown>
+                <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle role="button" ng-disabled="vm.isSelectionDisabled()">
+                  {{vm.eventregistration.quantity}}
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu scrollableMenu" uib-dropdown-menu role="menu">    
+                  <li ng-repeat="quantity in vm.quantities">
+                    <a ng-click="vm.setQuantity(quantity)">{{quantity}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>  
+            <div class="form-group" show-errors>
+              <label class="control-label" for="balanceAmount">Saldo *</label>
+              <input name="balanceAmount" type="text" ng-model="vm.eventregistration.balanceAmount" id="balanceAmount" autocomplete="off" class="form-control" placeholder="Saldo adeudado" required ng-disabled="true" >
+              <div ng-messages="vm.form.eventregistrationForm.balanceAmount.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Saldo es un campo requerido.</p>
+              </div>
+            </div>
+            <div class="form-group" show-errors>        
+              <label class="control-label" for="eventPeopleGroup">Grupo <span ng-show="!vm.isQuickRegistration()">*</span></label>  
+              <input name="eventPeopleGroup" type="hidden" ng-model="vm.eventregistration.eventPeopleGroup" id="eventPeopleGroup" class="form-control" ng-required="!vm.isQuickRegistration()">
+              <div class="input-group select2-bootstrap-append">
+                <ui-select ng-model="vm.eventregistration.eventPeopleGroup" >
+                  <ui-select-match  placeholder="Seleccione el grupo...">
+                        <span>{{$select.selected.name}}</span>
+                    </ui-select-match>
+                    <ui-select-choices repeat="item in (vm.eventPeopleGroups | filter: $select.search) track by item._id">
+                        <div ng-bind-html="item.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select> 
+                <span class="input-group-btn">
+                  <button type="button" ng-click="vm.eventregistration.eventPeopleGroup = undefined" class="btn btn-default">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+                </span>  
+              </div> 
+              <div ng-messages="vm.form.eventregistrationForm.eventPeopleGroup.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Grupo es requerido.</p>
+              </div>
+            </div>      
+            <div class="form-group" show-errors>
+              <label class="control-label" for="registrationDate">Fecha de inscripción *</label>
+              <br />
+              <input name="registrationDate" type="hidden" ng-model="vm.eventregistration.registrationDate" id="registrationDate" class="form-control" required>
+              <input name="registrationDate" ng-if="vm.editMode && !vm.authentication.isUserAdmin()" type="text" value="{{vm.eventregistration.registrationDate | date:'dd-MMM-yyyy'}}" id="registrationDate" class="form-control" ng-disabled="true" required>
+              <datetimepicker ng-if="!vm.editMode || vm.authentication.isUserAdmin()"
+                ng-model="vm.eventregistration.registrationDate" 
+                hidden-time="true" 
+                date-format="dd-MMM-yyyy" 
+                current-text="Hoy"
+                clear-text="Limpiar"
+                close-text="Cerrar"></datetimepicker>          
+              <div ng-messages="vm.form.eventForm.registrationDate.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Fecha de inscripción es requerido.</p>
+              </div>
+            </div>
+          </fieldset>
+          <br />
+          <fieldset ng-if="vm.isNewMemberRegistration() && vm.eventregistration.event">
+          <legend>Datos Personales</legend>
+            <div ng-if="vm.isNewMemberRegistration() && vm.eventregistration.event && !vm.isQuickRegistration()">
+              <person-form id="1" person="vm.person" form="vm.form.eventregistrationForm" required-fields="vm.regularRegistrationRequiredFields" error="vm.error"></person-form>
+            </div>
+            <div ng-if="vm.isNewMemberRegistration() && vm.eventregistration.event && vm.isQuickRegistration()">
+              <person-form id="2" person="vm.person" form="vm.form.eventregistrationForm" required-fields="vm.quickRegistrationRequiredFields" hide-optional-fields="true" error="vm.error"></person-form>
+            </div>
+          </fieldset>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">{{vm.eventregistration._id ? 'Actualizar' : 'Crear'}}</button>
+          </div>
+        </fieldset>
+      </form>
+      <br /><br />
+    </div>
+  </section>
+</div>
+        
