@@ -13,7 +13,7 @@ module.exports = function(app) {
     .post(eventregistrationrequests.create);
 
   app.route('/api/eventregistrationrequests/current').all(eventregistrationrequestsPolicy.isAllowed)
-    .get(eventregistrationrequests.listAllCurrent);
+    .get(eventregistrationrequests.listAllPending);
 
   app.route('/api/eventregistrationrequests/current/:eventRegistrationRequestId').all(eventregistrationrequestsPolicy.isAllowed)
     .get(eventregistrationrequests.read)

@@ -99,15 +99,8 @@ exports.list = function (req, res) {
 
   EventRegistrationRequest.find(query).sort('-created')
     .populate('user', 'displayName')
-    .populate({
-      path: 'person',
-      populate: {
-        path: 'personType'
-      }
-    })
     .populate('personType', 'name')
     .populate('event', 'name')
-    .populate('eventPeopleGroup', 'name')
     .where('deleted', false)
     .exec(function (err, eventRegistrationRequests) {
       if (err) {
@@ -115,28 +108,15 @@ exports.list = function (req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-
-        var shirtTypesList = [];
-        _.each(eventRegistrationRequests, function (eventRegistrationRequest, key) {
-          if (eventRegistrationRequest.shirtTypes.length > 0) {
-            _.each(eventRegistrationRequest.shirtTypes, function (shirtType) {
-              shirtType.shirtSize = eventRegistrationRequest.person.shirtSize;
-            });
-          }
-
-          if (key === eventRegistrationRequests.length - 1) {
-            eventRegistrationRequests.shirtTypesList = shirtTypesList;
-            res.jsonp(eventRegistrationRequests);
-          }
-        });
+        res.jsonp(eventRegistrationRequests);
       }
     });
 };
 
 /**
- * List of current EventRegistrationRequests
+ * List of AllPending EventRegistrationRequests
  */
-exports.listAllCurrent = function (req, res) {
+exports.listAllPending = function (req, res) {
   var query = _.forEach(req.query, function (value, key) {
     var queryParam = {
       $regex: new RegExp('^' + value + '$', 'i'),
@@ -153,8 +133,7 @@ exports.listAllCurrent = function (req, res) {
 
   Event.find({
     $or: [
-      { 'ended': false },
-      { 'openEnrollment': true }
+      { 'status': 'pendiente' }
     ]
   }).exec(function (err, events) {
     if (err) {
@@ -164,44 +143,16 @@ exports.listAllCurrent = function (req, res) {
     } else {
       EventRegistrationRequest.find(query).find({ event: { $in: events } }).sort('-created')
         .populate('user', 'displayName')
-        .populate({
-          path: 'person',
-          populate: {
-            path: 'personType'
-          }
-        })
         .populate('personType', 'name')
-        .populate('event')
-        .populate('eventPeopleGroup', 'name')
+        .populate('event', 'name')
         .where('deleted', false)
         .exec(function (err, eventRegistrationRequests) {
-          /* eventRegistrationRequests = eventRegistrationRequests.filter(function(eventRegistrationRequest) {
-             return (eventRegistrationRequest.event && (!eventRegistrationRequest.event.ended || eventRegistrationRequest.event.openEnrollment));
-           });*/
-
           if (err) {
             return res.status(400).send({
               message: errorHandler.getErrorMessage(err)
             });
           } else {
-            var shirtTypesList = [];
-            if (eventRegistrationRequests.length > 0) {
-              _.each(eventRegistrationRequests, function (eventRegistrationRequest, key) {
-                if (eventRegistrationRequest.shirtTypes.length > 0) {
-                  _.each(eventRegistrationRequest.shirtTypes, function (shirtType) {
-                    shirtType.shirtSize = eventRegistrationRequest.person.shirtSize;
-                  });
-                }
-
-                if (key === eventRegistrationRequests.length - 1) {
-                  eventRegistrationRequests.shirtTypesList = shirtTypesList;
-                  res.jsonp(eventRegistrationRequests);
-                }
-              });
-            } else {
-              res.jsonp(eventRegistrationRequests);
-            }
-
+            res.jsonp(eventRegistrationRequests);
           }
         });
     }
@@ -215,15 +166,8 @@ exports.listByEventId = function (req, res) {
   var eventId = req.params.eventId;
   EventRegistrationRequest.where('event', eventId).sort('-created')
     .populate('user', 'displayName')
-    .populate({
-      path: 'person',
-      populate: {
-        path: 'personType'
-      }
-    })
     .populate('personType', 'name')
     .populate('event', 'name')
-    .populate('eventPeopleGroup', 'name')
     .where('deleted', false)
     .exec(function (err, eventRegistrationRequests) {
       if (err) {
@@ -259,15 +203,8 @@ exports.listByPersonId = function (req, res) {
   var personId = req.params.personId;
   EventRegistrationRequest.where('person', personId).sort('-created')
     .populate('user', 'displayName')
-    .populate({
-      path: 'person',
-      populate: {
-        path: 'personType'
-      }
-    })
     .populate('personType', 'name')
     .populate('event', 'name')
-    .populate('eventPeopleGroup', 'name')
     .where('deleted', false)
     .exec(function (err, eventRegistrationRequests) {
       if (err) {
@@ -291,17 +228,10 @@ exports.eventRegistrationRequestByID = function (req, res, next, id) {
     });
   }
 
-  EventRegistrationRequest.findById(id).populate('user', 'displayName')
-    .populate('organization')
-    .populate({
-      path: 'person',
-      populate: {
-        path: 'personType'
-      }
-    })
+  EventRegistrationRequest.findById(id)
+    .populate('user', 'displayName')
     .populate('personType', 'name')
-    .populate('event')
-    .populate('eventPeopleGroup')
+    .populate('event', 'name')
     .where('deleted', false)
     .exec(function (err, eventRegistrationRequest) {
       if (err) {
