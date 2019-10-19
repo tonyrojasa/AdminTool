@@ -144,254 +144,256 @@
   	<br />
     <div id="exportable" ng-show="vm.event">
     	<div>
-    	</div>
-		<table class="table table-condensed">
-		<thead>
-		<tr>
-		  <th>
-			<a href="#" ng-click="vm.orderByMe('registrationNumber'); vm.sortReverse = !vm.sortReverse">
-	        	# Inscripción
-		        <span ng-show="vm.myOrderBy == 'registrationNumber' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'registrationNumber' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a href="#" ng-click="vm.orderByMe('registrationDate'); vm.sortReverse = !vm.sortReverse">
-	        	Fecha Inscripción
-		        <span ng-show="vm.myOrderBy == 'registrationDate' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'registrationDate' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a href="#" ng-click="vm.orderByMe('person.firstName'); vm.sortReverse = !vm.sortReverse">
-	        	Nombre
-		        <span ng-show="vm.myOrderBy == 'person.firstName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.firstName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a href="#" ng-click="vm.orderByMe('person.lastName'); vm.sortReverse = !vm.sortReverse">
-	        	1er Apellido
-		        <span ng-show="vm.myOrderBy == 'person.lastName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.lastName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>		  	
-		  	<a href="#" ng-click="vm.orderByMe('person.secondLastName'); vm.sortReverse = !vm.sortReverse">
-	        	2do Apellido
-		        <span ng-show="vm.myOrderBy == 'person.secondLastName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.secondLastName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a href="#" ng-click="vm.orderByMe('person.age'); vm.sortReverse = !vm.sortReverse">
-	        	Edad
-		        <span ng-show="vm.myOrderBy == 'person.age' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.age' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a href="#" ng-click="vm.orderByMe('person.maritalStatus'); vm.sortReverse = !vm.sortReverse">
-	        	Estado civil
-		        <span ng-show="vm.myOrderBy == 'person.maritalStatus' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.maritalStatus' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a ng-if="!vm.eventPeopleGroup" href="#" ng-click="vm.orderByMe('eventPeopleGroup.name'); vm.sortReverse = !vm.sortReverse">
-	        	Grupo
-		        <span ng-show="vm.myOrderBy == 'eventPeopleGroup.name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'eventPeopleGroup.name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a ng-if="!vm.personType" href="#" ng-click="vm.orderByMe('personType.name'); vm.sortReverse = !vm.sortReverse">
-	        	Tipo de Persona
-		        <span ng-show="vm.myOrderBy == 'personType.name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'personType.name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th> 
-		  <th>
-		  	<a ng-if="vm.showMobilePhone" href="#" ng-click="vm.orderByMe('person.mobilePhone'); vm.sortReverse = !vm.sortReverse">
-	        	Tel. Celular
-		        <span ng-show="vm.myOrderBy == 'person.mobilePhone' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.mobilePhone' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th> 
-		  <th>
-		  	<a ng-if="vm.showHomePhone" href="#" ng-click="vm.orderByMe('person.homePhone'); vm.sortReverse = !vm.sortReverse">
-	        	Tel. Casa
-		        <span ng-show="vm.myOrderBy == 'person.homePhone' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.homePhone' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th> 
-		  <th>
-		  	<a ng-if="vm.showOtherPhone" href="#" ng-click="vm.orderByMe('person.otherPhone'); vm.sortReverse = !vm.sortReverse">
-	        	Tel. Otro
-		        <span ng-show="vm.myOrderBy == 'person.otherPhone' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.otherPhone' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th> 
-		  <th colspan="2">
-		  	<a ng-if="vm.showContactInfo" href="#" ng-click="vm.orderByMe('person.contactInfo'); vm.sortReverse = !vm.sortReverse">
-	        	Información de Contacto
-		        <span ng-show="vm.myOrderBy == 'person.contactInfo' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.contactInfo' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th> 
-		  <th>
-		  	<a ng-if="vm.showEventGroup" href="#" ng-click="vm.orderByMe('eventGroup'); vm.sortReverse = !vm.sortReverse">
-	        	Cabaña
-		        <span ng-show="vm.myOrderBy == 'eventGroup' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'eventGroup' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th> 
-		  <th>
-		  	<a ng-if="vm.showMedicalTreatmentComments" href="#" ng-click="vm.orderByMe('person.medicalTreatment.comments'); vm.sortReverse = !vm.sortReverse">
-	        	Tratamiento medico
-		        <span ng-show="vm.myOrderBy == 'person.medicalTreatment.comments' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.medicalTreatment.comments' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th> 
-		  <th>
-		  	<a ng-if="vm.showMedicalTreatmentMedicineType" href="#" ng-click="vm.orderByMe('person.medicalTreatment.medicineType'); vm.sortReverse = !vm.sortReverse">
-	        	Tipo de Medicina
-		        <span ng-show="vm.myOrderBy == 'person.medicalTreatment.medicineType' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.medicalTreatment.medicineType' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a ng-if="vm.showMedicalTreatmentAllergies" href="#" ng-click="vm.orderByMe('person.medicalTreatment.allergies'); vm.sortReverse = !vm.sortReverse">
-	        	Alergias
-		        <span ng-show="vm.myOrderBy == 'person.medicalTreatment.allergies' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.medicalTreatment.allergies' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a ng-if="vm.showSponsorshipSponsorName" href="#" ng-click="vm.orderByMe('person.sponsorship.sponsorName'); vm.sortReverse = !vm.sortReverse">
-	        	Patrocinador
-		        <span ng-show="vm.myOrderBy == 'person.sponsorship.sponsorName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.sponsorship.sponsorName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th> 
-		  <th>
-		  	<a ng-if="vm.showSponsorshipPhoneNumber" href="#" ng-click="vm.orderByMe('person.sponsorship.phoneNumber'); vm.sortReverse = !vm.sortReverse">
-	        	Tel. Patrocinador
-		        <span ng-show="vm.myOrderBy == 'person.sponsorship.phoneNumber' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.sponsorship.phoneNumber' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a ng-if="vm.showSponsorshipComments" href="#" ng-click="vm.orderByMe('person.sponsorship.comments'); vm.sortReverse = !vm.sortReverse">
-	        	Comentarios Patrocinio
-		        <span ng-show="vm.myOrderBy == 'person.sponsorship.comments' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.sponsorship.comments' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a href="#" ng-click="vm.orderByMe('person.shirtSize'); vm.sortReverse = !vm.sortReverse">
-        		Talla
-		        <span ng-show="vm.myOrderBy == 'person.shirtSize' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'person.shirtSize' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a href="#" ng-click="vm.orderByMe('shirtsQuantity'); vm.sortReverse = !vm.sortReverse">
-        		Cantidad Camisas
-		        <span ng-show="vm.myOrderBy == 'shirtsQuantity' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'shirtsQuantity' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a href="#" ng-click="vm.orderByMe('totalPayments'); vm.sortReverse = !vm.sortReverse">
-        		Pagos ₡ 
-		        <span ng-show="vm.myOrderBy == 'totalPayments' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'totalPayments' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a href="#" ng-click="vm.orderByMe('balanceAmount'); vm.sortReverse = !vm.sortReverse">
-	        	Saldo Pendiente ₡ 
-		        <span ng-show="vm.myOrderBy == 'balanceAmount' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'balanceAmount' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a ng-if="vm.showStatus" href="#" ng-click="vm.orderByMe('status'); vm.sortReverse = !vm.sortReverse">
-	        	Estado 
-		        <span ng-show="vm.myOrderBy == 'status' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'status' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		  <th>
-		  	<a ng-if="vm.showNotes" href="#" ng-click="vm.orderByMe('notes'); vm.sortReverse = !vm.sortReverse">
-	        	Observaciones 
-		        <span ng-show="vm.myOrderBy == 'notes' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-		        <span ng-show="vm.myOrderBy == 'notes' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-	      	</a>
-		  </th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr ng-repeat="eventRegistration in vm.filteredItems = (vm.eventregistrations | orderBy:['eventRegistration.balanceAmount', 'eventRegistration.person.firstName', 'eventRegistration.person.lastName', 'eventRegistration.person.secondLastName', 'eventRegistration.registrationDate','eventRegistration.registrationNumber'] | orderBy: vm.myOrderBy:vm.sortReverse | filter: vm.searchFilter | filter:{registrationDate:vm.dateFilterValue}:strict | filter: vm.event.name | filter: vm.eventPeopleGroup.name | filter:vm.personType.name)" ng-class="vm.getStatusClass(eventRegistration)">
-		  <td><a data-ui-sref="eventregistrations.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })" target="_blank" data-toggle="tooltip" title="Editar inscripción #{{eventRegistration.registrationNumber}}">{{eventRegistration.registrationNumber}}</a></td>
-		  <td>{{eventRegistration.registrationDate | date:'dd-MMM-yyyy'}}</td>
-		  <td>{{eventRegistration.person.firstName}}</td>
-		  <td>{{eventRegistration.person.lastName}}</td>
-		  <td>{{eventRegistration.person.secondLastName}}</td>
-		  <td>{{eventRegistration.person.age}}</td>
-		  <td>{{eventRegistration.person.maritalStatus}}</td>
-		  <td><span ng-if="!vm.eventPeopleGroup">{{eventRegistration.eventPeopleGroup.name}}</span></td>
-		  <td><span ng-if="!vm.personType">{{eventRegistration.personType.name}}</span></td>
-		  <td><span ng-if="vm.showMobilePhone">{{eventRegistration.person.mobilePhone}}</span></td>
-		  <td><span ng-if="vm.showHomePhone">{{eventRegistration.person.homePhone}}</span></td>
-		  <td><span ng-if="vm.showOtherPhone">{{eventRegistration.person.otherPhone}}</span></td>
-		  <td colspan="2">
-		  	<span ng-if="vm.showContactInfo">
-		  		<contact-info show-headers="true" contacts="eventRegistration.person.contactInfo" readonly="true" report="true"></contact-info> 
-	  		</span>
-		  </td>
-		  <td>
-		  	<span ng-if="vm.showEventGroup">
-		  		{{eventRegistration.eventGroup}}
-		  	</span>
-		  </td>
-		  <td><span ng-if="vm.showMedicalTreatmentComments">{{eventRegistration.person.medicalTreatment.comments}}</span></td>
-		  <td><span ng-if="vm.showMedicalTreatmentMedicineType">{{eventRegistration.person.medicalTreatment.medicineType}}</span></td>
-		  <td><span ng-if="vm.showMedicalTreatmentAllergies">{{eventRegistration.person.medicalTreatment.allergies}}</span></td>
-		  <td><span ng-if="vm.showSponsorshipSponsorName">{{eventRegistration.person.sponsorship.sponsorName}}</span></td>
-		  <td><span ng-if="vm.showSponsorshipPhoneNumber">{{eventRegistration.person.sponsorship.phoneNumber}}</span></td>
-		  <td><span ng-if="vm.showSponsorshipComments">{{eventRegistration.person.sponsorship.comments}}</span></td>
-		  <td>{{eventRegistration.person.shirtSize}}</td>		
-		  <td>{{eventRegistration.shirtsQuantity}}</td>		  
-		  <td>{{eventRegistration.totalPayments | currency:''}}</td>
-		  <td>{{eventRegistration.balanceAmount | currency:''}}</td>
-		  <td><span ng-if="vm.showStatus">{{eventRegistration.status}}</span></td>
-		  <td><span ng-if="vm.showNotes">{{eventRegistration.notes}}</span></td>
-		</tr>
-		</tbody>
-		<tfoot>
-			<tr> 
-			<td colspan="27"></td>
+			</div>
+		<div class="table table-responsive"> 
+			<table class="table table-condensed">
+			<thead>
+			<tr>
+				<th>
+				<a href="#" ng-click="vm.orderByMe('registrationNumber'); vm.sortReverse = !vm.sortReverse">
+							# Inscripción
+							<span ng-show="vm.myOrderBy == 'registrationNumber' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'registrationNumber' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a href="#" ng-click="vm.orderByMe('registrationDate'); vm.sortReverse = !vm.sortReverse">
+							Fecha Inscripción
+							<span ng-show="vm.myOrderBy == 'registrationDate' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'registrationDate' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a href="#" ng-click="vm.orderByMe('person.firstName'); vm.sortReverse = !vm.sortReverse">
+							Nombre
+							<span ng-show="vm.myOrderBy == 'person.firstName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.firstName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a href="#" ng-click="vm.orderByMe('person.lastName'); vm.sortReverse = !vm.sortReverse">
+							1er Apellido
+							<span ng-show="vm.myOrderBy == 'person.lastName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.lastName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>		  	
+					<a href="#" ng-click="vm.orderByMe('person.secondLastName'); vm.sortReverse = !vm.sortReverse">
+							2do Apellido
+							<span ng-show="vm.myOrderBy == 'person.secondLastName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.secondLastName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a href="#" ng-click="vm.orderByMe('person.age'); vm.sortReverse = !vm.sortReverse">
+							Edad
+							<span ng-show="vm.myOrderBy == 'person.age' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.age' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a href="#" ng-click="vm.orderByMe('person.maritalStatus'); vm.sortReverse = !vm.sortReverse">
+							Estado civil
+							<span ng-show="vm.myOrderBy == 'person.maritalStatus' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.maritalStatus' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a ng-if="!vm.eventPeopleGroup" href="#" ng-click="vm.orderByMe('eventPeopleGroup.name'); vm.sortReverse = !vm.sortReverse">
+							Grupo
+							<span ng-show="vm.myOrderBy == 'eventPeopleGroup.name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'eventPeopleGroup.name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a ng-if="!vm.personType" href="#" ng-click="vm.orderByMe('personType.name'); vm.sortReverse = !vm.sortReverse">
+							Tipo de Persona
+							<span ng-show="vm.myOrderBy == 'personType.name' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'personType.name' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th> 
+				<th>
+					<a ng-if="vm.showMobilePhone" href="#" ng-click="vm.orderByMe('person.mobilePhone'); vm.sortReverse = !vm.sortReverse">
+							Tel. Celular
+							<span ng-show="vm.myOrderBy == 'person.mobilePhone' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.mobilePhone' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th> 
+				<th>
+					<a ng-if="vm.showHomePhone" href="#" ng-click="vm.orderByMe('person.homePhone'); vm.sortReverse = !vm.sortReverse">
+							Tel. Casa
+							<span ng-show="vm.myOrderBy == 'person.homePhone' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.homePhone' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th> 
+				<th>
+					<a ng-if="vm.showOtherPhone" href="#" ng-click="vm.orderByMe('person.otherPhone'); vm.sortReverse = !vm.sortReverse">
+							Tel. Otro
+							<span ng-show="vm.myOrderBy == 'person.otherPhone' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.otherPhone' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th> 
+				<th colspan="2">
+					<a ng-if="vm.showContactInfo" href="#" ng-click="vm.orderByMe('person.contactInfo'); vm.sortReverse = !vm.sortReverse">
+							Información de Contacto
+							<span ng-show="vm.myOrderBy == 'person.contactInfo' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.contactInfo' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th> 
+				<th>
+					<a ng-if="vm.showEventGroup" href="#" ng-click="vm.orderByMe('eventGroup'); vm.sortReverse = !vm.sortReverse">
+							Cabaña
+							<span ng-show="vm.myOrderBy == 'eventGroup' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'eventGroup' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th> 
+				<th>
+					<a ng-if="vm.showMedicalTreatmentComments" href="#" ng-click="vm.orderByMe('person.medicalTreatment.comments'); vm.sortReverse = !vm.sortReverse">
+							Tratamiento medico
+							<span ng-show="vm.myOrderBy == 'person.medicalTreatment.comments' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.medicalTreatment.comments' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th> 
+				<th>
+					<a ng-if="vm.showMedicalTreatmentMedicineType" href="#" ng-click="vm.orderByMe('person.medicalTreatment.medicineType'); vm.sortReverse = !vm.sortReverse">
+							Tipo de Medicina
+							<span ng-show="vm.myOrderBy == 'person.medicalTreatment.medicineType' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.medicalTreatment.medicineType' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a ng-if="vm.showMedicalTreatmentAllergies" href="#" ng-click="vm.orderByMe('person.medicalTreatment.allergies'); vm.sortReverse = !vm.sortReverse">
+							Alergias
+							<span ng-show="vm.myOrderBy == 'person.medicalTreatment.allergies' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.medicalTreatment.allergies' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a ng-if="vm.showSponsorshipSponsorName" href="#" ng-click="vm.orderByMe('person.sponsorship.sponsorName'); vm.sortReverse = !vm.sortReverse">
+							Patrocinador
+							<span ng-show="vm.myOrderBy == 'person.sponsorship.sponsorName' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.sponsorship.sponsorName' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th> 
+				<th>
+					<a ng-if="vm.showSponsorshipPhoneNumber" href="#" ng-click="vm.orderByMe('person.sponsorship.phoneNumber'); vm.sortReverse = !vm.sortReverse">
+							Tel. Patrocinador
+							<span ng-show="vm.myOrderBy == 'person.sponsorship.phoneNumber' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.sponsorship.phoneNumber' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a ng-if="vm.showSponsorshipComments" href="#" ng-click="vm.orderByMe('person.sponsorship.comments'); vm.sortReverse = !vm.sortReverse">
+							Comentarios Patrocinio
+							<span ng-show="vm.myOrderBy == 'person.sponsorship.comments' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.sponsorship.comments' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a href="#" ng-click="vm.orderByMe('person.shirtSize'); vm.sortReverse = !vm.sortReverse">
+							Talla
+							<span ng-show="vm.myOrderBy == 'person.shirtSize' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'person.shirtSize' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a href="#" ng-click="vm.orderByMe('shirtsQuantity'); vm.sortReverse = !vm.sortReverse">
+							Cantidad Camisas
+							<span ng-show="vm.myOrderBy == 'shirtsQuantity' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'shirtsQuantity' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a href="#" ng-click="vm.orderByMe('totalPayments'); vm.sortReverse = !vm.sortReverse">
+							Pagos ₡ 
+							<span ng-show="vm.myOrderBy == 'totalPayments' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'totalPayments' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a href="#" ng-click="vm.orderByMe('balanceAmount'); vm.sortReverse = !vm.sortReverse">
+							Saldo Pendiente ₡ 
+							<span ng-show="vm.myOrderBy == 'balanceAmount' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'balanceAmount' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a ng-if="vm.showStatus" href="#" ng-click="vm.orderByMe('status'); vm.sortReverse = !vm.sortReverse">
+							Estado 
+							<span ng-show="vm.myOrderBy == 'status' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'status' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
+				<th>
+					<a ng-if="vm.showNotes" href="#" ng-click="vm.orderByMe('notes'); vm.sortReverse = !vm.sortReverse">
+							Observaciones 
+							<span ng-show="vm.myOrderBy == 'notes' && !vm.sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="vm.myOrderBy == 'notes' && vm.sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+						</a>
+				</th>
 			</tr>
-			<tr class="info"> 
-				<td colspan="27">
-					<div class="col-md-2" align="left"> 
-						<span><b>Total de Inscripciones:</b> {{vm.filteredItems.length}}</span> 
-					</div>  
-					<div class="col-md-2" align="left"> 
-						<span><b>Total Camisas:</b> {{vm.filteredItems | sumByKey:'shirtsQuantity'}}</span> 
-					</div>    
-					<div class="col-md-4" align="right">
-				  		<span><b>Total Pagos (Recaudación) ₡:</b> {{vm.filteredItems | sumByKey:'totalPayments'  | currency:''}}</span>
-					</div>        
-					<div class="col-md-4" align="right">
-					  <span><b>Saldo Pendiente (por cobrar) ₡:</b> {{vm.filteredItems | sumByKey:'balanceAmount'  | currency:''}}</span>
-					</div>  
-				</td>      
+			</thead>
+			<tbody>
+			<tr ng-repeat="eventRegistration in vm.filteredItems = (vm.eventregistrations | orderBy:['eventRegistration.balanceAmount', 'eventRegistration.person.firstName', 'eventRegistration.person.lastName', 'eventRegistration.person.secondLastName', 'eventRegistration.registrationDate','eventRegistration.registrationNumber'] | orderBy: vm.myOrderBy:vm.sortReverse | filter: vm.searchFilter | filter:{registrationDate:vm.dateFilterValue}:strict | filter: vm.event.name | filter: vm.eventPeopleGroup.name | filter:vm.personType.name)" ng-class="vm.getStatusClass(eventRegistration)">
+				<td><a data-ui-sref="eventregistrations.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })" target="_blank" data-toggle="tooltip" title="Editar inscripción #{{eventRegistration.registrationNumber}}">{{eventRegistration.registrationNumber}}</a></td>
+				<td>{{eventRegistration.registrationDate | date:'dd-MMM-yyyy'}}</td>
+				<td>{{eventRegistration.person.firstName}}</td>
+				<td>{{eventRegistration.person.lastName}}</td>
+				<td>{{eventRegistration.person.secondLastName}}</td>
+				<td>{{eventRegistration.person.age}}</td>
+				<td>{{eventRegistration.person.maritalStatus}}</td>
+				<td><span ng-if="!vm.eventPeopleGroup">{{eventRegistration.eventPeopleGroup.name}}</span></td>
+				<td><span ng-if="!vm.personType">{{eventRegistration.personType.name}}</span></td>
+				<td><span ng-if="vm.showMobilePhone">{{eventRegistration.person.mobilePhone}}</span></td>
+				<td><span ng-if="vm.showHomePhone">{{eventRegistration.person.homePhone}}</span></td>
+				<td><span ng-if="vm.showOtherPhone">{{eventRegistration.person.otherPhone}}</span></td>
+				<td colspan="2">
+					<span ng-if="vm.showContactInfo">
+						<contact-info show-headers="true" contacts="eventRegistration.person.contactInfo" readonly="true" report="true"></contact-info> 
+					</span>
+				</td>
+				<td>
+					<span ng-if="vm.showEventGroup">
+						{{eventRegistration.eventGroup}}
+					</span>
+				</td>
+				<td><span ng-if="vm.showMedicalTreatmentComments">{{eventRegistration.person.medicalTreatment.comments}}</span></td>
+				<td><span ng-if="vm.showMedicalTreatmentMedicineType">{{eventRegistration.person.medicalTreatment.medicineType}}</span></td>
+				<td><span ng-if="vm.showMedicalTreatmentAllergies">{{eventRegistration.person.medicalTreatment.allergies}}</span></td>
+				<td><span ng-if="vm.showSponsorshipSponsorName">{{eventRegistration.person.sponsorship.sponsorName}}</span></td>
+				<td><span ng-if="vm.showSponsorshipPhoneNumber">{{eventRegistration.person.sponsorship.phoneNumber}}</span></td>
+				<td><span ng-if="vm.showSponsorshipComments">{{eventRegistration.person.sponsorship.comments}}</span></td>
+				<td>{{eventRegistration.person.shirtSize}}</td>		
+				<td>{{eventRegistration.shirtsQuantity}}</td>		  
+				<td>{{eventRegistration.totalPayments | currency:''}}</td>
+				<td>{{eventRegistration.balanceAmount | currency:''}}</td>
+				<td><span ng-if="vm.showStatus">{{eventRegistration.status}}</span></td>
+				<td><span ng-if="vm.showNotes">{{eventRegistration.notes}}</span></td>
 			</tr>
-        </tfoot>
-		</table>   		
+			</tbody>
+			<tfoot>
+				<tr> 
+				<td colspan="27"></td>
+				</tr>
+				<tr class="info"> 
+					<td colspan="27">
+						<div class="col-md-2" align="left"> 
+							<span><b>Total de Inscripciones:</b> {{vm.filteredItems.length}}</span> 
+						</div>  
+						<div class="col-md-2" align="left"> 
+							<span><b>Total Camisas:</b> {{vm.filteredItems | sumByKey:'shirtsQuantity'}}</span> 
+						</div>    
+						<div class="col-md-4" align="right">
+								<span><b>Total Pagos (Recaudación) ₡:</b> {{vm.filteredItems | sumByKey:'totalPayments'  | currency:''}}</span>
+						</div>        
+						<div class="col-md-4" align="right">
+							<span><b>Saldo Pendiente (por cobrar) ₡:</b> {{vm.filteredItems | sumByKey:'balanceAmount'  | currency:''}}</span>
+						</div>  
+					</td>      
+				</tr>
+					</tfoot>
+			</table>   	
+		</div>
 		<br/>
     </div> 
     <div class="col-md-12" ng-show="vm.event">    

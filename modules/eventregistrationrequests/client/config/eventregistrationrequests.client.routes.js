@@ -48,17 +48,12 @@
         }
       })
       .state('eventregistrationrequests.edit', {
-        url: '/:eventregistrationrequestId/edit/:newMember',
-        params: {
-          'newMember': 'true',
-          'personId': null
-        },
-        templateUrl: 'modules/eventregistrationrequests/client/views/form-eventregistrationrequet.client.view.html',
+        url: '/:eventregistrationrequestId/edit',
+        templateUrl: 'modules/eventregistrationrequests/client/views/form-eventregistrationrequest.client.view.html',
         controller: 'EventregistrationrequestsController',
         controllerAs: 'vm',
         resolve: {
-          eventregistrationrequestResolve: getEventregistrationrequest,
-          personResolve: getPerson
+          eventregistrationrequestResolve: getEventregistrationrequest
         },
         data: {
           roles: ['admin', 'inscriptor'],
@@ -67,12 +62,11 @@
       })
       .state('eventregistrationrequests.view', {
         url: '/:eventregistrationrequestId',
-        templateUrl: 'modules/eventregistrationrequests/client/views/view-eventregistrationrequet.client.view.html',
+        templateUrl: 'modules/eventregistrationrequests/client/views/view-eventregistrationrequest.client.view.html',
         controller: 'EventregistrationrequestsController',
         controllerAs: 'vm',
         resolve: {
-          eventregistrationrequestResolve: getEventregistrationrequest,
-          personResolve: newPerson
+          eventregistrationrequestResolve: getEventregistrationrequest
         },
         data: {
           roles: ['admin', 'inscriptor'],
@@ -95,20 +89,10 @@
     return new EventregistrationrequestsService();
   }
 
-  getPerson.$inject = ['$stateParams', 'PeopleService'];
+  newEventregistration.$inject = ['EventregistrationsService'];
 
-  function getPerson($stateParams, PeopleService) {
-    if ($stateParams.personId) {
-      return PeopleService.get({
-        personId: $stateParams.personId
-      }).$promise;
-    }
-  }
-
-  newPerson.$inject = ['PeopleService'];
-
-  function newPerson(PeopleService) {
-    return new PeopleService();
+  function newEventregistration(EventregistrationsService) {
+    return new EventregistrationsService();
   }
 
 })();

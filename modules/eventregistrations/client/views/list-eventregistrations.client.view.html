@@ -70,7 +70,7 @@
       </label>
     </div>
     <button class="btn btn-warning pull-right" ng-disabled="!vm.tableParams.hasFilter()" ng-click="vm.tableParams.filter({});vm.registrationDate = undefined;">Borrar Filtros de Búsqueda</button>
-    <div id="exportable">        
+    <div id="exportable" class="table table-responsive">        
       <table ng-table="vm.tableParams" class="table table-hover table-condensed editable-table" show-filter="true" ng-table-columns-binding="vm.cols" export-csv='csv' ng-form="vm.tableForm" disable-filter="vm.isAdding" demo-tracked-table="vm.tableTracker" >
         <tbody>
           <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in $data" ng-form="rowForm" demo-tracked-table-row="eventRegistration">

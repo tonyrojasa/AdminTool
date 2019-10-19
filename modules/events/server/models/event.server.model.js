@@ -72,6 +72,21 @@ var EventSchema = new Schema({
   shirtTypes: {
     type: Array
   },
+  maxQuantityPerPerson: {
+    type: Number,
+    default: 1,
+    trim: true
+  },
+  maxEventFemaleQuantity: {
+    type: Number,
+    default: 1,
+    trim: true
+  },
+  maxEventMaleQuantity: {
+    type: Number,
+    default: 1,
+    trim: true
+  },
   created: {
     type: Date,
     default: Date.now

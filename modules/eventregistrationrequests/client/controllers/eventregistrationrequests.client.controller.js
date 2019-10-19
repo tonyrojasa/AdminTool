@@ -9,12 +9,12 @@
   EventregistrationrequestsController.$inject = ['$scope', '$anchorScroll', '$state', '$stateParams', 'Authentication',
     'eventregistrationrequestResolve', 'CurrentEventsService', 'EventpeoplegroupsService',
     'PeopleService', 'EventregistrationrequestsByEventService', '$rootScope', 'PersontypesService', 'Notification',
-    'StudentsService', '$filter'
+    'StudentsService', '$filter', 'PeopleDataService', '$window'
   ];
 
   function EventregistrationrequestsController($scope, $anchorScroll, $state, $stateParams, Authentication, eventregistrationrequest,
     CurrentEventsService, EventpeoplegroupsService, PeopleService, EventregistrationrequestsByEventService, $rootScope,
-    PersontypesService, Notification, StudentsService, $filter) {
+    PersontypesService, Notification, StudentsService, $filter, PeopleDataService, $window) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -81,13 +81,6 @@
     function init() {
       vm.eventregistrationrequest.quantity = vm.eventregistrationrequest.quantity ? vm.eventregistrationrequest.quantity : 1;
       loadDates();
-
-      if (!vm.eventregistrationrequest.eventExternalServer) {
-        vm.eventregistrationrequest.eventExternalServer = {
-          isEventExternalServer: false,
-          specialPrice: 0
-        };
-      }
     }
 
     function isQuickRegistration() {
@@ -95,41 +88,11 @@
     }
 
     function setEventPrice(event) {
-      if (!vm.eventregistrationrequest._id) {//if new eventregistrationrequest
-        if (vm.eventregistrationrequest.isEventServer) {// for event server registration 
-          vm.eventregistrationrequest.balanceAmount = event.serverPrice;
-          if (event.shirtPrice && vm.eventregistrationrequest.shirtsQuantity) {
-            vm.eventregistrationrequest.balanceAmount += (event.shirtPrice * vm.eventregistrationrequest.shirtsQuantity);
-          }
-        } else if (vm.eventregistrationrequest.eventExternalServer.isEventExternalServer) { //for external server
-          vm.eventregistrationrequest.balanceAmount = vm.eventregistrationrequest.eventExternalServer.specialPrice;
-          if (event.shirtPrice && vm.eventregistrationrequest.shirtsQuantity) {
-            vm.eventregistrationrequest.balanceAmount += (event.shirtPrice * vm.eventregistrationrequest.shirtsQuantity);
-          }
-        } else { //normal event registration price
-          if (event.shirtPrice && vm.eventregistrationrequest.shirtsQuantity) {
-            vm.eventregistrationrequest.balanceAmount = (event.price * vm.eventregistrationrequest.quantity) +
-              (event.shirtPrice * vm.eventregistrationrequest.shirtsQuantity);
-          } else {
-            vm.eventregistrationrequest.balanceAmount = event.price * vm.eventregistrationrequest.quantity;
-          }
-        }
-      } else {//if existing eventregistrationrequest
-        //shirt price calculation
-        var newShirtsQuantity = vm.eventregistrationrequest.shirtsQuantity - vm.oldShirtsQuantity;
-        if (newShirtsQuantity === 0) {
-          vm.eventregistrationrequest.balanceAmount = vm.oldBalanceAmount;
-        } else {
-          vm.eventregistrationrequest.balanceAmount = vm.oldBalanceAmount + (event.shirtPrice * newShirtsQuantity);
-        }
-        //event price calculation
-        var newQuantity = vm.eventregistrationrequest.quantity - vm.oldQuantity;
-        if (newQuantity === 0) {
-          vm.eventregistrationrequest.balanceAmount = vm.oldBalanceAmount;
-        } else {
-          vm.eventregistrationrequest.balanceAmount = vm.oldBalanceAmount + (event.price * newQuantity);
-        }
-      }
+      let eventPrice = event.price ? event.price : 0;
+      let shirtPrice = event.shirtPrice ? event.shirtPrice : 0;
+      
+      vm.eventPrice = eventPrice  + shirtPrice;
+      vm.serverPrice = event.serverPrice ? event.serverPrice : 0;
     }
 
     if (vm.eventregistrationrequest._id) {
@@ -145,6 +108,49 @@
       } else {
         vm.eventregistrationrequest.registrationDate = new Date();
       }
+    }
+
+    vm.onFindMyDataKeyPress = function($event){
+      if ($event.which === 13){
+        vm.findMyDataChange(vm.findMyDataFilter);
+        event.preventDefault();
+      }
+    }
+
+    vm.findMyDataChange = function(findMyDataFilter){
+      $rootScope.showLoadingSpinner = true;   
+      vm.findMyDataError = null;
+      if(!vm.isValidFindMyDataFilter(findMyDataFilter)) {
+        vm.findMyDataError = "Debe ingresar mas al menos 9 caracteres";
+        vm.findMyDataResults = null;
+        $rootScope.showLoadingSpinner = false;   
+        return;
+      }
+      PeopleDataService(findMyDataFilter).then(function (response) {
+        vm.findMyDataResults = response && response.data ? response.data.results : null;
+        $rootScope.showLoadingSpinner = false;
+      }, function (error) {
+        vm.findMyDataError = 'Ocurrió un error al buscar los datos, intentar de nuevo o llenar los campos manualmente.';
+        $rootScope.showLoadingSpinner = false;
+      });
+    };
+
+    vm.populateMyData = function(mydataRow) {  
+      vm.eventregistrationrequest.person.personId = mydataRow.cedula;
+      vm.eventregistrationrequest.person.firstName = mydataRow.firstname;
+      vm.eventregistrationrequest.person.lastName = mydataRow.lastname1;
+      vm.eventregistrationrequest.person.secondLastName = mydataRow.lastname2;
+      vm.selectedMyDatRow = mydataRow;
+
+      $window.document.getElementById('personId').focus();
+    };
+
+    vm.isValidFindMyDataFilter = function(findMyDataFilter){
+      return findMyDataFilter != null && findMyDataFilter.length >= 9
+    };
+
+    vm.getMyDataRowClass = function(myDataRow) {
+      return vm.selectedMyDatRow == myDataRow ? 'info': '';
     }
 
     function isSelectionDisabled() {
@@ -170,7 +176,7 @@
 
     //set registration event
     function setEvent(event) {
-      vm.eventregistrationrequest.person = {};
+      vm.eventregistrationrequest.person = vm.eventregistrationrequest.person ? vm.eventregistrationrequest.person : {};
       vm.eventregistrationrequest.person.organization = event.organization;
       vm.eventregistrationrequest.event = event;
       vm.setEventPrice(event);
@@ -186,18 +192,29 @@
 
       function successCallback(res) {
         $rootScope.showLoadingSpinner = false;
-        if (!vm.editMode) {
+        if(res.error){
+          debugger;
+          let error = res.error && res.error === 'personId already exist in this event' ? 'La persona ya realizo la inscripción a este evento' : res.error;
+          vm.error = error;
+          $anchorScroll(document.body.scrollTop);
+        }else {
+          if (!vm.editMode) {
+            Notification.info({
+              title: 'Operación ejecutada exitosamente!',
+              message: 'Se actualizó la solicitud # ' + res.requestNumber + ' correctamente.',
+              delay: 15000
+            });
+          } else {
+            Notification.info({
+              title: 'Operación ejecutada exitosamente!',
+              message: 'Se creó la solicitud # ' + res.requestNumber + ' correctamente.',
+              delay: 15000
+            });
+          }
           $state.go('eventregistrationrequests.view', {
-            'eventregistrationrequestId': res._id
+            eventregistrationrequestId: res._id
           });
-        } else {
-          Notification.info({
-            title: 'Operación ejecutada exitosamente!',
-            message: 'Se creó/actualizó la solicitud # ' + res.requestNumber + ' correctamente.',
-            delay: 15000
-          });
-          $state.go('eventregistrationrequests.list');
-        }
+        }        
       }
 
       function errorCallback(res) {

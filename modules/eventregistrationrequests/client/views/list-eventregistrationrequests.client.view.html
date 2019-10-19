@@ -43,17 +43,17 @@
       </div> 
     </div>  
     <div class="form-group col-md-6">        
-      <label class="control-label" for="registrationDate">Fecha de inscripción</label>
+      <label class="control-label" for="requestDate">Fecha de Solicitud</label>
         <br />
         <div class="input-group select2-bootstrap-append">
             <datetimepicker ng-if="!vm.editMode"
-              ng-model="vm.registrationDate" 
+              ng-model="vm.requestDate" 
               hidden-time="true" 
               date-format="dd-MMM-yyyy" 
               current-text="Hoy"
               clear-text="Limpiar"
               close-text="Cerrar"></datetimepicker>         
-            <button type="button" ng-click="vm.registrationDate = undefined" class="btn btn-default" data-toggle="tooltip" title="Borrar filtro de fecha">
+            <button type="button" ng-click="vm.requestDate = undefined" class="btn btn-default" data-toggle="tooltip" title="Borrar filtro de fecha">
                 <span class="glyphicon glyphicon-trash"></span>
             </button>
         </div>
@@ -69,19 +69,19 @@
         {{col.title()}}
       </label>
     </div>
-    <button class="btn btn-warning pull-right" ng-disabled="!vm.tableParams.hasFilter()" ng-click="vm.tableParams.filter({});vm.registrationDate = undefined;">Borrar Filtros de Búsqueda</button>
-    <div id="exportable">        
+    <button class="btn btn-warning pull-right" ng-disabled="!vm.tableParams.hasFilter()" ng-click="vm.tableParams.filter({});vm.requestDate = undefined;">Borrar Filtros de Búsqueda</button>
+    <div id="exportable" class="table table-responsive">        
       <table ng-table="vm.tableParams" class="table table-hover table-condensed editable-table" show-filter="true" ng-table-columns-binding="vm.cols" export-csv='csv' ng-form="vm.tableForm" disable-filter="vm.isAdding" demo-tracked-table="vm.tableTracker" >
         <tbody>
-          <tr ng-class="vm.getStatusClass(eventRegistration)" ng-repeat="eventRegistration in $data" ng-form="rowForm" demo-tracked-table-row="eventRegistration">
-            <td class="col-md-1" title="'#'" filter="{ 'registrationNumber': 'number'}" sortable="'registrationNumber'" ng-if="true">
-                <a data-ui-sref="eventregistrationrequests.edit({ eventregistrationId: eventRegistration._id, personId: eventRegistration.person._id })" data-toggle="tooltip" title="Editar inscripción #{{eventRegistration.registrationNumber}}">{{eventRegistration.registrationNumber}}</a></td>
+          <tr class="success" ng-repeat="eventRegistration in $data" ng-form="rowForm" demo-tracked-table-row="eventRegistration">
+            <td class="col-md-1" title="'# de Solicitud'" filter="{ 'requestNumber': 'number'}" sortable="'requestNumber'" ng-if="true">
+                <a data-ui-sref="eventregistrationrequests.edit({ eventregistrationrequestId: eventRegistration._id, personId: eventRegistration.person._id })" data-toggle="tooltip" title="Editar inscripción #{{eventRegistration.requestNumber}}">{{eventRegistration.requestNumber}}</a></td>
             <td title="'Evento'" filter="{ 'event.name': 'select'}" filter-data="vm.eventsFilterArray" sortable="'event.name'" ng-if="true">
                 {{eventRegistration.event.name}}</td>
-            <td title="'Fecha de Inscripción'" sortable="'registrationDate'" ng-if="true">
-                {{eventRegistration.registrationDate | date:'dd-MMM-yyyy'}}</td>
-            <td title="'Grupo'" filter="{ 'eventPeopleGroup.name': 'select'}" filter-data="vm.groupsFilterArray"  sortable="'eventPeopleGroup.name'" ng-if="true">
-                {{eventRegistration.eventPeopleGroup.name}}</td>
+            <td title="'Fecha de Solicitud'" sortable="'requestDate'" ng-if="true">
+                {{eventRegistration.requestDate | date:'dd-MMM-yyyy'}}</td>
+            <td title="'Cédula'" filter="{ 'person.personId': 'text'}" sortable="'person.personId'" ng-if="true">
+                {{eventRegistration.person.personId}}</td>
             <td title="'Nombre'" filter="{ 'person.firstName': 'text'}" sortable="'person.firstName'" ng-if="true">
                 {{eventRegistration.person.firstName}}</td>
             <td title="'1er. Apellido'" filter="{ 'person.lastName': 'text'}" sortable="'person.lastName'" ng-if="true">
@@ -99,36 +99,21 @@
                 {{eventRegistration.person.otherPhone}}</td>
             <td title="'Cantidad'" filter="{ 'quantity': 'number'}" sortable="'quantity'" ng-if="true">
               {{eventRegistration.quantity}}</td>
-            <td class="col-md-1" title="'Saldo ₡ Pendiente'" filter="{ 'balanceAmount': 'text'}" sortable="'balanceAmount'" ng-if="true">
-                {{eventRegistration.balanceAmount | currency:''}} {{$data.$sum('balanceAmount')}}</td>            
-            <td class="col-md-1" title="'Estado'" filter="{ 'status': 'select'}" filter-data="vm.filterEventRegistrationStatuses" sortable="'status'" ng-if="true">
-              <ui-select ng-model="eventRegistration.status">
-                <ui-select-match  placeholder="Seleccione el estado...">
-                      <span>{{eventRegistration.status}}</span>
-                  </ui-select-match>
-                  <ui-select-choices repeat="item in (vm.eventRegistrationStatuses | filter: $select.search)">
-                      <div ng-bind-html="item | highlight: $select.search" data-ng-click="vm.updateStatus(eventRegistration, item)"></div>
-                  </ui-select-choices>
-              </ui-select> 
-            </td>
-            <td class="col-md-1" title="'Observaciones'" filter="{ 'notes': 'text'}" sortable="'notes'" ng-if="true" ng-switch="eventRegistration.isEditing" ng-form="notes" demo-tracked-table-cell>
-              <span ng-switch-default class="editable-text">{{eventRegistration.notes}}</span>
-              <div class="controls" ng-class="notes.$invalid && notes.$dirty ? 'has-error' : ''" ng-switch-when="true">
-                <input type="text" name="notes" ng-model="eventRegistration.notes" class="editable-input form-control input-sm" />
-              </div>
-            </td>
-            <td class="col-md-3">    
-              <button class="btn btn-primary btn-sm" ng-click="vm.update(eventRegistration, rowForm)" ng-if="eventRegistration.isEditing" ng-disabled="rowForm.$pristine || rowForm.$invalid"><span class="glyphicon glyphicon-ok"></span></button>
-              <button class="btn btn-default btn-sm" ng-click="vm.cancel(eventRegistration, rowForm)" ng-if="eventRegistration.isEditing"><span class="glyphicon glyphicon-remove"></span></button>
-              <button class="btn btn-default btn-sm" ng-click="eventRegistration.isEditing = true" ng-if="!eventRegistration.isEditing" data-toggle="tooltip" title="Editar campos en linea para inscripción #{{eventRegistration.registrationNumber}}"><span class="glyphicon glyphicon-pencil"></span></button>
-
-              <a ng-if="vm.hasPendingPayment(eventRegistration) || vm.authentication.isUserAdmin()" data-ui-sref="receipts.createFromEventRegistration({ eventregistrationId: eventRegistration._id })"  data-toggle="tooltip" title="Realizar pago a inscripción #{{eventRegistration.registrationNumber}}" class="btn btn-default btn-sm"> 
-                <i class="glyphicon glyphicon-piggy-bank">Pago</i>
-              </a> 
-
-              <a ng-if="vm.authentication.isUserAdmin()" ng-show="!eventRegistration.isEditing" class="btn btn-danger btn-sm" data-ng-click="vm.remove(eventRegistration)" data-toggle="tooltip" title="Eliminar inscripción #{{eventRegistration.registrationNumber}}">
-                <i class="glyphicon glyphicon-trash"></i>
-              </a>
+            <td class="col-md-1" title="'Pago Reportado ₡'" filter="{ 'paymentInformation.paymentAmount': 'text'}" sortable="'paymentAmount'" ng-if="true">
+                {{eventRegistration.paymentInformation.paymentAmount | currency:''}}</td>   
+            <td class="col-md-1" title="'Comprobante de Pago'" filter="{ 'paymentInformation.confirmationCode': 'text'}" sortable="'confirmationCode'" ng-if="true">
+                {{eventRegistration.paymentInformation.confirmationCode}}</td>          
+            <td title="'Fecha de Pago'" sortable="'paymentInformation.paymentDate'" ng-if="true">
+                {{eventRegistration.paymentInformation.paymentDate | date:'dd-MMM-yyyy'}}</td>
+            <td class="col-md-1">  
+              <a class="btn btn-success btn-sm"
+              data-toggle="tooltip" 
+              data-ui-sref="eventregistrations.createFromRequest({ eventregistrationrequestId: eventRegistration._id})"
+              title="Desea crear la inscripción basada en la solicitud #{{eventRegistration.requestNumber}}">
+                <i class="glyphicon glyphicon glyphicon-copy"></i> Crear Inscripción </a>
+            <td class="col-md-1">
+              <a ng-if="vm.authentication.isUserAdmin()" class="btn btn-danger btn-sm" data-ng-click="vm.remove(eventRegistration)" data-toggle="tooltip" title="Eliminar solicitud #{{eventRegistration.requestNumber}}">
+                <i class="glyphicon glyphicon-trash"></i> Eliminar</a>
             </td>
           </tr>
         </tbody>
@@ -142,21 +127,20 @@
             <td ng-if="vm.cols[5].show()"></td> 
             <td ng-if="vm.cols[6].show()"></td> 
             <td ng-if="vm.cols[7].show()"></td> 
-            <td ng-if="vm.cols[8].show()"></td> 
-            <td ng-if="vm.cols[9].show()" ng-class="vm.getTotalClass($data | sumByKey:'balanceAmount')">
-              <span><b>Total ₡ Pendiente:</b> {{$data | sumByKey:'balanceAmount'  | currency:''}}</span>
-            </td>
+            <td ng-if="vm.cols[9].show()"></td> 
+            <td ng-if="vm.cols[10].show()"></td> 
+            <td ng-if="vm.cols[11].show()"></td> 
+            <td ng-if="vm.cols[13].show()"></td> 
             <td ng-if="true" class="text-center">            
-              <span><b>Inscripciones:</b> {{($data).length}}</span>
+              <span><b>Solicitudes:</b> {{($data).length}}</span>
             </td>
             <td>
               <div class="text-right">
               <a class="btn" title="Export Table" ng-click='csv.generate()' ng-href="{{ csv.link() }}"
-                 download="INSCRIPCIONES.csv">
+                 download="SOLICITUDES_DE_INSCRIPCION.csv">
                 <i class="glyphicon glyphicon-new-window"></i> &#160;Exportar
-              </a>  
-                <!-- <export-to-file link-text="Exportar" element-id="exportable" format="excel" file-name="INSCRIPCIONES"></export-to-file> -->
-              </div>
+              </a> 
+            </div>
             </td>
           </tr>
         </tfoot>

@@ -10,6 +10,22 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
+  var parseQuery = function(jsonQuery) {
+    var query = _.forEach(jsonQuery, function (value, key) {
+      var queryParam = {
+        $regex: new RegExp('^' + value + '$', 'i'),
+        $options: 'i'
+      };
+      req.query[key] = _.zipObject([key], [queryParam]);
+    });
+  
+    if (!_.isEmpty(query)) {
+      query = {
+        $and: _.toArray(query)
+      };
+    }
+    return query;
+  }
 /**
  * Create a EventRegistrationRequest
  */
@@ -17,15 +33,34 @@ exports.create = function (req, res) {
   var eventRegistrationRequest = new EventRegistrationRequest(req.body);
   eventRegistrationRequest.user = req.user;
 
-  eventRegistrationRequest.save(function (err) {
+  var query = {
+    personId: req.body.personId,
+    event: req.body.event._id
+  };
+  EventRegistrationRequest.find(query)
+  .where('deleted', false)
+  .exec(function (err, eventRegistrationRequests) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(eventRegistrationRequest);
+      if(eventRegistrationRequests.length > 0){
+        return res.send({
+          error: 'personId already exist in this event'
+        });
+      }
+      eventRegistrationRequest.save(function (err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(eventRegistrationRequest);
+        }
+      });
     }
-  });
+  });  
 };
 
 /**
@@ -50,15 +85,34 @@ exports.update = function (req, res) {
 
   eventRegistrationRequest = _.extend(eventRegistrationRequest, req.body);
 
-  eventRegistrationRequest.save(function (err) {
+  var query = {
+    personId: req.body.personId,
+    event: req.body.event._id
+  };
+  EventRegistrationRequest.find(query)
+  .where('deleted', false)
+  .exec(function (err, eventRegistrationRequests) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(eventRegistrationRequest);
+      if(eventRegistrationRequests.length > 1 && eventRegistrationRequest.personId === query.personId){
+        return res.send({
+          error: 'personId already exist in this event'
+        });
+      }
+      eventRegistrationRequest.save(function (err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(eventRegistrationRequest);
+        }
+      });
     }
-  });
+  }); 
 };
 
 /**
@@ -100,7 +154,7 @@ exports.list = function (req, res) {
   EventRegistrationRequest.find(query).sort('-created')
     .populate('user', 'displayName')
     .populate('personType', 'name')
-    .populate('event', 'name')
+    .populate('event')
     .where('deleted', false)
     .exec(function (err, eventRegistrationRequests) {
       if (err) {
@@ -144,7 +198,7 @@ exports.listAllPending = function (req, res) {
       EventRegistrationRequest.find(query).find({ event: { $in: events } }).sort('-created')
         .populate('user', 'displayName')
         .populate('personType', 'name')
-        .populate('event', 'name')
+        .populate('event')
         .where('deleted', false)
         .exec(function (err, eventRegistrationRequests) {
           if (err) {
@@ -167,7 +221,7 @@ exports.listByEventId = function (req, res) {
   EventRegistrationRequest.where('event', eventId).sort('-created')
     .populate('user', 'displayName')
     .populate('personType', 'name')
-    .populate('event', 'name')
+    .populate('event')
     .where('deleted', false)
     .exec(function (err, eventRegistrationRequests) {
       if (err) {
@@ -204,7 +258,7 @@ exports.listByPersonId = function (req, res) {
   EventRegistrationRequest.where('person', personId).sort('-created')
     .populate('user', 'displayName')
     .populate('personType', 'name')
-    .populate('event', 'name')
+    .populate('event')
     .where('deleted', false)
     .exec(function (err, eventRegistrationRequests) {
       if (err) {
@@ -231,7 +285,7 @@ exports.eventRegistrationRequestByID = function (req, res, next, id) {
   EventRegistrationRequest.findById(id)
     .populate('user', 'displayName')
     .populate('personType', 'name')
-    .populate('event', 'name')
+    .populate('event')
     .where('deleted', false)
     .exec(function (err, eventRegistrationRequest) {
       if (err) {

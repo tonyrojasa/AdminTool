@@ -27,6 +27,10 @@ var EventregistrationSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Person'
   },
+  eventRegistrationRequest: {
+    type: Schema.ObjectId,
+    ref: 'EventRegistrationRequest'
+  },
   registrationDate: {
     type: Date,
     default: Date.now

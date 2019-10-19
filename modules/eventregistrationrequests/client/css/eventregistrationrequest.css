@@ -1,0 +1,5 @@
+.filterMyDataContainer {
+    max-height: 200px;
+    overflow: scroll;
+    border: 1px solid;
+}

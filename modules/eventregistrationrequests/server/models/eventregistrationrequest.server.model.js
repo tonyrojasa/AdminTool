@@ -23,10 +23,14 @@ var EventRegistrationRequestSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  quantity: {
+    type: Number,
+    default: 1,
+    trim: true
+  },
   paymentInformation:{
     paymentDate: {
-      type: Date,
-      default: Date.now
+      type: Date
     },
     paymentAmount: {
       type: String

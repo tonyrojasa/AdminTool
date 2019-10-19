@@ -54,11 +54,30 @@
         controllerAs: 'vm',
         resolve: {
           eventregistrationResolve: newEventregistration,
-          personResolve: newPerson
+          personResolve: newPerson,
+          eventregistrationrequestResolve: function(){return null;}
         },
         data: {
           roles: ['admin', 'inscriptor'],
           pageTitle: 'Crear Inscripcion'
+        }
+      })
+      .state('eventregistrations.createFromRequest', {
+        url: '/create/request/:eventregistrationrequestId',
+        params: {
+          newMember: 'true'
+        },
+        templateUrl: 'modules/eventregistrations/client/views/form-eventregistration.client.view.html',
+        controller: 'EventregistrationsController',
+        controllerAs: 'vm',
+        resolve: {
+          eventregistrationResolve: newEventregistration,
+          eventregistrationrequestResolve: getEventregistrationrequest,
+          personResolve: function(){return null;}
+        },
+        data: {
+          roles: ['admin', 'inscriptor'],
+          pageTitle: 'Crear Inscripcion por Solicitud'
         }
       })
       .state('eventregistrations.edit', {
@@ -72,7 +91,8 @@
         controllerAs: 'vm',
         resolve: {
           eventregistrationResolve: getEventregistration,
-          personResolve: getPerson
+          personResolve: getPerson,
+          eventregistrationrequestResolve: function(){return null;}
         },
         data: {
           roles: ['admin', 'inscriptor'],
@@ -86,7 +106,8 @@
         controllerAs: 'vm',
         resolve: {
           eventregistrationResolve: getEventregistration,
-          personResolve: newPerson
+          personResolve: newPerson,
+          eventregistrationrequestResolve: function(){return null;}
         },
         data: {
           roles: ['admin', 'inscriptor'],
@@ -123,6 +144,14 @@
 
   function newPerson(PeopleService) {
     return new PeopleService();
+  }
+
+  getEventregistrationrequest.$inject = ['$stateParams', 'EventregistrationrequestsService'];
+
+  function getEventregistrationrequest($stateParams, EventregistrationrequestsService) {
+    return EventregistrationrequestsService.get({
+      eventregistrationrequestId: $stateParams.eventregistrationrequestId
+    }).$promise;
   }
 
 })();

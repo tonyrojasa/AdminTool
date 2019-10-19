@@ -58,3 +58,8 @@ a:hover .header-profile-image {
    max-height: 200px;
    overflow-y: auto;
 }
+
+.homeButton {
+  padding: 10px;
+  margin: 10px;
+}

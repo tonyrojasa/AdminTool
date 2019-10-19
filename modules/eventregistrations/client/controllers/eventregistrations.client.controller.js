@@ -9,12 +9,12 @@
   EventregistrationsController.$inject = ['$scope', '$anchorScroll', '$state', '$stateParams', 'Authentication',
     'eventregistrationResolve', 'CurrentEventsService', 'EventpeoplegroupsService', 'personResolve',
     'PeopleService', 'EventregistrationsByEventService', '$rootScope', 'PersontypesService', 'Notification',
-    'StudentsService', '$filter'
+    'StudentsService', '$filter', 'eventregistrationrequestResolve'
   ];
 
   function EventregistrationsController($scope, $anchorScroll, $state, $stateParams, Authentication, eventregistration,
     CurrentEventsService, EventpeoplegroupsService, person, PeopleService, EventregistrationsByEventService, $rootScope,
-    PersontypesService, Notification, StudentsService, $filter) {
+    PersontypesService, Notification, StudentsService, $filter, eventregistrationrequest) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -79,15 +79,31 @@
     init();
 
     function init() {
-      vm.eventregistration.quantity = vm.eventregistration.quantity ? vm.eventregistration.quantity : 1;
+      initQuantity()
       loadDates();
       setShirtTypes();
-      if (!vm.isNewMemberRegistration()) {
-        vm.person = undefined;
-      } else {
-        vm.person = person;
-      }
+      loadEventExternalServerData();
+      loadPersonData();
+    }
 
+    function initQuantity(){
+      vm.eventregistration.quantity = vm.eventregistration.quantity ? vm.eventregistration.quantity : 1;
+    }
+
+    function loadPersonData(){
+      if(eventregistrationrequest){
+        vm.person = eventregistrationrequest.person;
+        vm.setEvent(eventregistrationrequest.event);
+      }else{
+        if (!vm.isNewMemberRegistration()) {
+          vm.person = undefined;
+        } else {
+          vm.person = person;
+        }
+      }
+    }
+
+    function loadEventExternalServerData(){
       if (!vm.eventregistration.eventExternalServer) {
         vm.eventregistration.eventExternalServer = {
           isEventExternalServer: false,

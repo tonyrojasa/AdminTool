@@ -60,8 +60,8 @@
         eventregistration.registrationDate = vm.moment(eventregistration.registrationDate).format('YYYY-MM-DD');
         if (index === vm.lastIndex) {
           vm.originalData = angular.copy(data);
-          $rootScope.showLoadingSpinner = false;
         }
+        $rootScope.showLoadingSpinner = false;
       });
     }, function () {
       $rootScope.showLoadingSpinner = false;

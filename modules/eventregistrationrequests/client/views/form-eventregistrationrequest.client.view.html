@@ -19,7 +19,7 @@
   </div>
   <section>
     <div class="page-header">
-      <h1>{{vm.eventregistrationrequest._id ? 'Editar' : 'Nueva Solicitud'}} <span ng-if="vm.isNewMemberRegistration()"> - Nuevo Miembro</span> <span ng-if="!vm.isNewMemberRegistration()"> - Miembro Existente</span></h1>
+      <h1>{{vm.eventregistrationrequest._id ? 'Editar Solicitud' : 'Nueva Solicitud'}} de Inscripción</h1>
       
       <h2 ng-if="vm.eventregistrationrequest._id"># de Solicitud: {{vm.eventregistrationrequest.requestNumber}}</h2>
         <small ng-if="vm.eventregistrationrequest._id">
@@ -69,8 +69,71 @@
             <div ng-messages="vm.form.eventregistrationrequestForm.event.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Evento es requerido.</p>
             </div>
-          </div>   
+          </div> 
+          <div class="form-group" ng-if="vm.serverPrice && vm.eventPrice"> 
+            <p ng-if="vm.eventPrice">
+                <span><strong>Precio Encuentrista: {{vm.eventPrice | currency:'₡'}}</strong></span>
+            </p>
+            <p ng-if="vm.serverPrice">
+                <span><strong>Precio de Servidor: {{vm.serverPrice | currency:'₡'}}</strong></span>
+            </p>
+          </div>        
           <br />
+          
+          <fieldset ng-if="vm.eventregistrationrequest.event && vm.eventregistrationrequest.person">
+            <legend>Buscar Mis datos (cedula o nombre)</legend>
+            <div class="form-group" ng-if="vm.eventregistrationrequest.event">        
+                <label class="control-label" for="findMyData">Debe ingresar mas al menos 9 caracteres</label>                  
+                <div class="row">   
+                  <div class="col-md-5">
+                      <input name="findMyData" ng-keypress="vm.onFindMyDataKeyPress($event)" autocomplete="off" type="text" ng-model="vm.findMyDataFilter"  id="findMyData" class="form-control">
+                  </div>      
+                  <div class="col-md-2">
+                      <a type="button" ng-disabled="!vm.isValidFindMyDataFilter(vm.findMyDataFilter)" 
+                      ng-click="vm.findMyDataChange(vm.findMyDataFilter)" class="btn btn-default">Buscar</a>
+                  </div>       
+                  <div class="col-md-2" ng-if="vm.findMyDataResults && vm.findMyDataResults.length > 0">
+                      <strong>{{vm.findMyDataResults.length}}</strong> registros encontrados
+                  </div>                      
+                </div> 
+                <div ng-if="vm.findMyDataError">
+                  <br />
+                  <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" ng-click='vm.findMyDataError = undefined'>&times;</a>
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <strong class="text-danger">Error:</strong>
+                    <span ng-bind-html="vm.findMyDataError"></span>
+                  </div>
+                </div>
+                <br />
+                <div class="table-responsive filterMyDataContainer" ng-if="vm.findMyDataResults && vm.findMyDataResults.length > 0"> 
+                  <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                          <th>Cédula</th>
+                          <th>Nombre</th>
+                          <th>Segundo Nombre</th>
+                          <th>Primer Appellido</th>
+                          <th>Segundo Apellido</th>
+                          <th>Acciones</th>
+                        </tr>
+                      </thead>
+                    <tbody>
+                      <tr ng-repeat="mydataRow in vm.findMyDataResults" ng-class="vm.getMyDataRowClass(mydataRow)">
+                        <td>{{mydataRow.cedula}}</td>
+                        <td>{{mydataRow.firstname1}}</td>
+                        <td>{{mydataRow.firstname2}}</td>
+                        <td>{{mydataRow.lastname1}}</td>
+                        <td>{{mydataRow.lastname2}}</td>
+                        <td>
+                          <button type="button" ng-click="vm.populateMyData(mydataRow)" class="btn btn-sm btn-default">Seleccionar</button>
+                        </td>
+                      </tr>
+                  </table>
+                </div>
+            </div>   
+          </fieldset>
+
           <fieldset ng-if="vm.eventregistrationrequest.event && vm.eventregistrationrequest.person">
           <legend>Datos Personales</legend>
             <div ng-if="!vm.isQuickRegistration()">
@@ -80,59 +143,65 @@
               <person-form id="2" person="vm.eventregistrationrequest.person" form="vm.form.eventregistrationrequestForm" required-fields="vm.quickRegistrationRequiredFields" hide-optional-fields="true" error="vm.error"></person-form>
             </div>
           </fieldset>
+          <br />
 
+          <div class="form-group" ng-if="vm.serverPrice && vm.eventPrice"> 
+            <p ng-if="vm.eventPrice">
+                <span><strong>Precio Encuentrista: {{vm.eventPrice | currency:'₡'}}</strong></span>
+            </p>
+            <p ng-if="vm.serverPrice">
+                <span><strong>Precio de Servidor: {{vm.serverPrice | currency:'₡'}}</strong></span>
+            </p>
+          </div>
 
-        <br />
-
-        <div class="form-group">  
-          <input name="paymentDetailsIncluded" type="hidden" ng-model="paymentDetailsIncluded" id="paymentDetailsIncluded" autocomplete="off" class="form-control">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" ng-model="paymentDetailsIncluded">
-              <b>Incluir Detalles del Pago</b>
-            </label>
-          </div>
-        </div>
-        <br />
-        <fieldset ng-if="paymentDetailsIncluded">
-          <legend>Detalles del pago</legend>
-          <div class="form-group" show-errors>
-            <label class="control-label" for="paymentDate">Fecha de pago *</label>
-            <br />
-            <input name="paymentDate" type="hidden" ng-model="vm.vm.eventregistrationrequest.paymentInfo.paymentDate" id="paymentDate" class="form-control" required>
-            <input name="paymentDate" type="text" value="{{vm.vm.eventregistrationrequest.paymentInfo.paymentDate | date:'mediumDate'}}" id="paymentDate" class="form-control" ng-if="vm.receipt._id" ng-disabled="true">
-            <div>
-              <datetimepicker 
-                ng-model="vm.vm.eventregistrationrequest.paymentInfo.paymentDate" 
-                hidden-time="true" 
-                date-format="dd-MMM-yyyy" 
-                current-text="Hoy"
-                clear-text="Limpiar"
-                close-text="Cerrar"> 
-              </datetimepicker>    
-            </div>      
-            <div ng-messages="vm.form.eventregistrationrequestForm.paymentDate.$error" role="alert">
-              <p class="help-block error-text" ng-message="required" >Fecha de pago es requerido.</p>
+          <div class="form-group"  ng-if="vm.eventregistrationrequest.event">  
+            <input name="paymentDetailsIncluded" type="hidden" ng-model="vm.paymentDetailsIncluded" id="paymentDetailsIncluded" autocomplete="off" class="form-control">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" ng-model="vm.paymentDetailsIncluded">
+                <b>Incluir Detalles del Pago</b>
+              </label>
             </div>
           </div>
-          <div class="form-group" show-errors>
-            <label class="control-label" for="paymentAmount">Monto del pago *</label>
-            <div class="input-group"> 
-              <span class="input-group-addon">₡</span>              
-              <input name="paymentAmount" type="number"  onwheel="return false;" ng-model="vm.vm.eventregistrationrequest.paymentInfo.paymentAmount" id="paymentAmount" class="form-control currency" placeholder="Monto del pago" required>
+          <fieldset ng-if="vm.paymentDetailsIncluded">
+            <legend>Detalles del pago</legend>
+            <div class="form-group" show-errors>
+              <label class="control-label" for="paymentDate">Fecha de pago *</label>
+              <br />
+              <input name="paymentDate" type="hidden" ng-model="vm.eventregistrationrequest.paymentInformation.paymentDate" id="paymentDate" class="form-control" required>
+              <input name="paymentDate" type="text" value="{{vm.eventregistrationrequest.paymentInformation.paymentDate | date:'mediumDate'}}" id="paymentDate" class="form-control" ng-if="vm.receipt._id" ng-disabled="true">
+              <div>
+                <datetimepicker 
+                  ng-model="vm.eventregistrationrequest.paymentInformation.paymentDate" 
+                  hidden-time="true" 
+                  date-format="dd-MMM-yyyy" 
+                  current-text="Hoy"
+                  clear-text="Limpiar"
+                  close-text="Cerrar"> 
+                </datetimepicker>    
+              </div>      
+              <div ng-messages="vm.form.eventregistrationrequestForm.paymentDate.$error" role="alert">
+                <p class="help-block error-text" ng-message="required" >Fecha de pago es requerido.</p>
+              </div>
             </div>
-            <div ng-messages="vm.form.eventregistrationrequestForm.paymentAmount.$error" role="alert">
-              <p class="help-block error-text" ng-message="required">Monto del pago es requerido.</p>    
+            <div class="form-group" show-errors>
+              <label class="control-label" for="paymentAmount">Monto del pago *</label>
+              <div class="input-group"> 
+                <span class="input-group-addon">₡</span>              
+                <input name="paymentAmount" type="number"  onwheel="return false;" ng-model="vm.eventregistrationrequest.paymentInformation.paymentAmount" id="paymentAmount" class="form-control currency" placeholder="Monto del pago" required>
+              </div>
+              <div ng-messages="vm.form.eventregistrationrequestForm.paymentAmount.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Monto del pago es requerido.</p>    
+              </div>
             </div>
-          </div>
-          <div class="form-group" show-errors>
-            <label class="control-label" for="confirmationCode">Código de confirmación (Número de transferencia) *</label>
-            <input name="confirmationCode" type="text" ng-model="person.sponsorship.confirmationCode" id="confirmationCode" autocomplete="off" class="form-control" placeholder="Código de confirmación" required>
-            <div ng-messages="form.eventregistrationrequestForm.confirmationCode.$error" role="alert">
-              <p class="help-block error-text" ng-message="required">Código de confirmación es requerido</p>
+            <div class="form-group" show-errors>
+              <label class="control-label" for="confirmationCode">Código de confirmación (Número de transferencia) *</label>
+              <input name="confirmationCode" type="text" ng-model="vm.eventregistrationrequest.paymentInformation.confirmationCode" id="confirmationCode" autocomplete="off" class="form-control" placeholder="Código de confirmación" required>
+              <div ng-messages="form.eventregistrationrequestForm.confirmationCode.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Código de confirmación es requerido</p>
+              </div>
             </div>
-          </div>
-        </fieldset>
+          </fieldset>
           <div class="form-group">
             <button type="submit" class="btn btn-primary">{{vm.eventregistrationrequest._id ? 'Actualizar' : 'Crear'}}</button>
           </div>

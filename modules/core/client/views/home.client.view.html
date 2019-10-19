@@ -8,28 +8,41 @@
         Iglesia Miel - Herramienta de Administración
       </h4>
        <h5 class="text-muted">
-         v1.0
+         v2.0
       </h5> 
     </div>     
-    <div class="row" ng-show="vm.authentication.isBoardDirectorUser() || vm.authentication.isBoardReviewerUser() ">    
+    <div class="row" ng-show="vm.authentication.isUserAdmin() || vm.authentication.isBoardDirectorUser() || vm.authentication.isBoardReviewerUser() ">    
       <h5 class="text-muted">Junta directiva:</h5>
       <div class="form-group" ng-if="vm.authentication.user">
-        <a class="btn btn-primary" data-ui-sref="moneycollections.list">Flujos de dinero</a>
+        <div class="row">
+          <div class="col-md-12"> 
+            <a class="btn btn-primary homeButton" data-ui-sref="moneycollections.list">Flujos de dinero</a>
+          </div>
+        </div>
       </div>
     </div> 
     <div class="row" ng-show="!vm.authentication.isGuestUser() && (vm.authentication.isInscriptorUser() || vm.authentication.isUserAdmin())">    
-      <h5 class="text-muted">Accesos directos:</h5>
+      <h5 class="text-muted">Menú Principal:</h5>
       <div class="form-group" ng-if="vm.authentication.user">
-        <a class="btn btn-primary" data-ui-sref="eventregistrations.list">Inscripciones</a>
-        <a class="btn btn-primary" data-ui-sref="receipts.createForNonRegistrationEvents">Entradas / Tiquetes</a>
-        <a class="btn btn-primary" data-ui-sref="receipts.list">Recibos</a>
-        <a class="btn btn-primary" data-ui-sref="serviceacademyclasses.list">Academias</a>
         <div class="row">
+          <div class="col-md-12"> 
+            <a class="btn btn-primary homeButton" data-ui-sref="eventregistrationrequests.list">Solicitudes de Inscripción</a>
+            <a class="btn btn-primary homeButton" data-ui-sref="eventregistrations.list">Inscripciones</a>
+            <a class="btn btn-primary homeButton" data-ui-sref="receipts.createForNonRegistrationEvents">Entradas / Tiquetes</a>
+            <a class="btn btn-primary homeButton" data-ui-sref="receipts.list">Recibos</a>
+            <a class="btn btn-primary homeButton" data-ui-sref="serviceacademyclasses.list">Academias</a>
+          </div>
+        </div>
         <br>
+        <div class="row">
           <h6 class="text-muted">Reportes:</h6>
-          <a class="btn btn-info btn-sm" data-ui-sref="eventregistrations.report">Inscripciones</a>
-          <a class="btn btn-info btn-sm" data-ui-sref="eventregistrations.shirtsReport">Camisas</a>
-          <a class="btn btn-info btn-sm" data-ui-sref="receipts.report">Recibos</a>
+          <div class="row">
+            <div class="col-md-12"> 
+              <a class="btn btn-info btn-sm homeButton" data-ui-sref="eventregistrations.report">Inscripciones</a>
+              <a class="btn btn-info btn-sm homeButton" data-ui-sref="eventregistrations.shirtsReport">Camisas</a>
+              <a class="btn btn-info btn-sm homeButton" data-ui-sref="receipts.report">Recibos</a>
+            </div>
+          </div>
         </div>
       </div> 
     </div> 
