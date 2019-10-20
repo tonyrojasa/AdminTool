@@ -25,7 +25,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="event in vm.events | orderBy:['startDate', 'name'] | filter: vm.searchFilter" ng-class="vm.getStatusClass(event)">
+        <tr ng-repeat="event in vm.events | orderBy:['-startDate', '-name'] | filter: vm.searchFilter" ng-class="vm.getStatusClass(event)">
           <td>{{event.name}}</td>
           <td>{{event.startDate | date:'mediumDate'}}</td>
           <td>{{event.endDate | date:'mediumDate'}}</td>

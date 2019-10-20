@@ -33,14 +33,16 @@
           </em>
         </small>
     </div>  
-    <div class="pull-left">
+    <div class="pull-left" ng-if="!vm.authentication.isGuestUser()">
        <a class="btn btn-secondary"
          data-ui-sref="eventregistrationrequests.list()">
         <i class="glyphicon glyphicon-arrow-left"></i>
         Regresar
-      </a>
+      </a>      
     </div>
-    <br /><br />
+    <div ng-if="!vm.authentication.isGuestUser()">      
+      <br /><br />
+    </div>
     <h3 class="bg-warning" for="event">Los campos marcados con asterisco (*) son requeridos.</h3> 
     <div class="col-md-12">
       <form name="vm.form.eventregistrationrequestForm" class="form-horizontal" ng-submit="vm.save(vm.form.eventregistrationrequestForm.$valid)" novalidate>

@@ -6,6 +6,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   EventRegistrationRequest = mongoose.model('EventRegistrationRequest'),
+  EventRegistration = mongoose.model('Eventregistration'),
   Event = mongoose.model('Event'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
@@ -26,6 +27,68 @@ var path = require('path'),
     }
     return query;
   }
+
+  var checkIfPersoInExistInEventRegistrationsOrRequestsOnCreate = function (query, res, callback) {
+    EventRegistration.find(query)
+      .where('deleted', false)
+      .exec(function (err, eventRegistrations) {
+        if (err) {
+          return callback(err);
+        } else {
+          if(eventRegistrations.length > 0){
+            return res.send({
+              error: 'personId already exist in this event'
+            });
+          }    
+          EventRegistrationRequest.find(query)
+          .where('deleted', false)
+          .exec(function (err, eventRegistrationRequests) {
+            if (err) {
+              return callback(err);
+            } else {
+              if(eventRegistrationRequests.length > 0){
+                return res.send({
+                  error: 'personId already exist in this event'
+                });
+              }            
+              callback();
+            }
+          });  
+        }
+      });
+  };
+
+  var checkIfPersoInExistInEventRegistrationsOrRequestsOnUpdate = function (query, eventRegistrationRequest, res, callback) {
+    EventRegistrationRequest.find(query)
+      .where('deleted', false)
+      .exec(function (err, eventRegistrationRequets) {
+        if (err) {
+          return callback(err);
+        } else {
+          if(eventRegistrationRequets.length === 0 || (eventRegistrationRequets.length == 1 && eventRegistrationRequets[0].id === eventRegistrationRequest.id)){
+            EventRegistration.find(query)
+            .where('deleted', false)
+            .exec(function (err, eventRegistrations) {
+              if (err) {
+                return callback(err);
+              } else {
+                if(eventRegistrations.length === 0 || (eventRegistrations.length == 1 && eventRegistrationRequets[0].id === eventRegistrationRequest.id)){                  
+                  callback();
+                } else{                  
+                  return res.send({
+                    error: 'personId already exist in this event'
+                  });
+                }                
+              }
+            });  
+          } else{                  
+            return res.send({
+              error: 'personId already exist in this event'
+            });
+          }                          
+        }
+      });
+  };
 /**
  * Create a EventRegistrationRequest
  */
@@ -34,22 +97,15 @@ exports.create = function (req, res) {
   eventRegistrationRequest.user = req.user;
 
   var query = {
-    personId: req.body.personId,
+    'person.personId': req.body.person.personId,
     event: req.body.event._id
   };
-  EventRegistrationRequest.find(query)
-  .where('deleted', false)
-  .exec(function (err, eventRegistrationRequests) {
+  checkIfPersoInExistInEventRegistrationsOrRequestsOnCreate(query, res, function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
-    } else {
-      if(eventRegistrationRequests.length > 0){
-        return res.send({
-          error: 'personId already exist in this event'
-        });
-      }
+    } else {      
       eventRegistrationRequest.save(function (err) {
         if (err) {
           return res.status(400).send({
@@ -86,22 +142,15 @@ exports.update = function (req, res) {
   eventRegistrationRequest = _.extend(eventRegistrationRequest, req.body);
 
   var query = {
-    personId: req.body.personId,
+    'person.personId': req.body.person.personId,
     event: req.body.event._id
   };
-  EventRegistrationRequest.find(query)
-  .where('deleted', false)
-  .exec(function (err, eventRegistrationRequests) {
+  checkIfPersoInExistInEventRegistrationsOrRequestsOnUpdate(query, eventRegistrationRequest, res, function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      if(eventRegistrationRequests.length > 1 && eventRegistrationRequest.personId === query.personId){
-        return res.send({
-          error: 'personId already exist in this event'
-        });
-      }
       eventRegistrationRequest.save(function (err) {
         if (err) {
           return res.status(400).send({
@@ -210,6 +259,27 @@ exports.listAllPending = function (req, res) {
           }
         });
     }
+  });
+};
+
+/**
+ * List of All EventRegistrationRequests by RequestNumber
+ */
+exports.listByRequestNumber = function (req, res) {
+  var requestNumber = req.params.requestNumber;
+  EventRegistrationRequest.where('requestNumber', requestNumber).findOne().sort('-created')
+    .populate('user', 'displayName')
+    .populate('personType', 'name')
+    .populate('event')
+    .where('deleted', false)
+    .exec(function (err, eventRegistrationRequests) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {        
+        res.jsonp(eventRegistrationRequests);
+      }
   });
 };
 

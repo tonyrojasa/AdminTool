@@ -21,6 +21,9 @@ exports.invokeRolesPolicies = function() {
       resources: '/api/eventregistrationrequests/:eventRegistrationRequestId',
       permissions: '*'
     }, {
+      resources: '/api/eventregistrationrequests/requestNumber/:requestNumber',
+      permissions: ['*']
+    }, {
       resources: '/api/eventregistrationrequests/event/:eventId',
       permissions: '*'
     }, {
@@ -41,6 +44,9 @@ exports.invokeRolesPolicies = function() {
     }, {
       resources: '/api/eventregistrationrequests/:eventRegistrationRequestId',
       permissions: ['get', 'post', 'patch', 'put']
+    },, {
+      resources: '/api/eventregistrationrequests/requestNumber/:requestNumber',
+      permissions: ['get', 'post', 'patch', 'put']
     }, {
       resources: '/api/eventregistrationrequests/event/:eventId',
       permissions: ['get']
@@ -58,9 +64,12 @@ exports.invokeRolesPolicies = function() {
     roles: ['guest', 'user', 'teacher', 'student'],
     allows: [{
       resources: '/api/eventregistrationrequests',
-      permissions: ['get']
+      permissions: ['get', 'post', 'patch', 'put']
     }, {
       resources: '/api/eventregistrationrequests/:eventRegistrationRequestId',
+      permissions: ['get', 'post', 'patch', 'put']
+    }, {
+      resources: '/api/eventregistrationrequests/requestNumber/:requestNumber',
       permissions: ['get']
     }, {
       resources: '/api/eventregistrationrequests/event/:eventId',

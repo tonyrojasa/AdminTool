@@ -11,16 +11,6 @@
       <i class="glyphicon glyphicon-trash"></i>
     </a>
   </div>
-  <small>
-    <em class="text-muted">
-      Posted on
-      <span data-ng-bind="vm.eventregistrationrequest.created | date:'mediumDate'"></span>
-      by
-      <span data-ng-if="vm.eventregistrationrequest.user"
-            data-ng-bind="vm.eventregistrationrequest.user.displayName"></span>
-      <span data-ng-if="!vm.eventregistrationrequest.user">Deleted User</span>
-    </em>
-  </small>
   <p class="lead" data-ng-bind="vm.eventregistrationrequest.event.name"></p>
   <p class="lead" data-ng-bind="vm.eventregistrationrequest.person.firstName"></p>
   <p class="lead" data-ng-bind="vm.eventregistrationrequest.person.lastName"></p>

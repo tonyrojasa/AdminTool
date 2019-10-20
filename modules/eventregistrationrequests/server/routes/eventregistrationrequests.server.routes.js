@@ -25,6 +25,11 @@ module.exports = function(app) {
     .put(eventregistrationrequests.update)
     .delete(eventregistrationrequests.delete);
 
+  app.route('/api/eventregistrationrequests/requestNumber/:requestNumber').all(eventregistrationrequestsPolicy.isAllowed)
+    .get(eventregistrationrequests.listByRequestNumber)
+    .put(eventregistrationrequests.update)
+    .delete(eventregistrationrequests.delete);
+
   app.route('/api/eventregistrationrequests/event/:eventId').all(eventregistrationrequestsPolicy.isAllowed)
     .get(eventregistrationrequests.listByEventId);
 

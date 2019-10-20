@@ -11,7 +11,7 @@
     $stateProvider
       .state('eventregistrationrequests', {
         abstract: true,
-        url: '/eventregistrationrequests',
+        url: '/solicitudes',
         template: '<ui-view/>'
       })
       .state('eventregistrationrequests.report', {
@@ -35,7 +35,7 @@
         }
       })
       .state('eventregistrationrequests.create', {
-        url: '/create',
+        url: '/inscripcion',
         templateUrl: 'modules/eventregistrationrequests/client/views/form-eventregistrationrequest.client.view.html',
         controller: 'EventregistrationrequestsController',
         controllerAs: 'vm',
@@ -43,7 +43,7 @@
           eventregistrationrequestResolve: newEventregistrationrequest
         },
         data: {
-          roles: ['admin', 'inscriptor'],
+          roles: ['admin', 'inscriptor', 'guest'],
           pageTitle: 'Crear Sulicitud Inscripcion'
         }
       })
@@ -69,7 +69,20 @@
           eventregistrationrequestResolve: getEventregistrationrequest
         },
         data: {
-          roles: ['admin', 'inscriptor'],
+          roles: ['admin', 'inscriptor', 'guest'],
+          pageTitle: 'Inscripcion - {{ articleResolve.name }}'
+        }
+      })
+      .state('eventregistrationrequests.viewByRequestNumber', {
+        url: '/inscripcion/:requestNumber',
+        templateUrl: 'modules/eventregistrationrequests/client/views/view-eventregistrationrequest.client.view.html',
+        controller: 'EventregistrationrequestsController',
+        controllerAs: 'vm',
+        resolve: {
+          eventregistrationrequestResolve: getEventregistrationrequestByRequestNumber
+        },
+        data: {
+          roles: ['admin', 'inscriptor', 'guest'],
           pageTitle: 'Inscripcion - {{ articleResolve.name }}'
         }
       });
@@ -80,6 +93,14 @@
   function getEventregistrationrequest($stateParams, EventregistrationrequestsService) {
     return EventregistrationrequestsService.get({
       eventregistrationrequestId: $stateParams.eventregistrationrequestId
+    }).$promise;
+  }
+
+  getEventregistrationrequestByRequestNumber.$inject = ['$stateParams', 'EventregistrationrequestsServiceByRequestNumber'];
+
+  function getEventregistrationrequestByRequestNumber($stateParams, EventregistrationrequestsServiceByRequestNumber) {
+    return EventregistrationrequestsServiceByRequestNumber.get({
+      requestNumber: $stateParams.requestNumber
     }).$promise;
   }
 

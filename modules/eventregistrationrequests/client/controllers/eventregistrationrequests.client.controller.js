@@ -18,6 +18,10 @@
     var vm = this;
 
     vm.authentication = Authentication;
+    if(vm.authentication.isGuestUser()){
+      $rootScope.isHeaderVisible = false;
+    }
+
     vm.eventregistrationrequest = eventregistrationrequest;
     vm.error = null;
     vm.form = {};
@@ -211,8 +215,8 @@
               delay: 15000
             });
           }
-          $state.go('eventregistrationrequests.view', {
-            eventregistrationrequestId: res._id
+          $state.go('eventregistrationrequests.viewByRequestNumber', {
+            requestNumber: res.requestNumber
           });
         }        
       }

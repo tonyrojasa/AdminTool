@@ -168,7 +168,7 @@ var EventRegistrationRequestSchema = new Schema({
   },
   status: {
     type: String,
-    default: 'enviada',
+    default: 'pendiente',
     trim: true
   },
   created: {
