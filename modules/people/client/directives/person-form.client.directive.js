@@ -25,9 +25,8 @@
         if (!scope.person.serviceArea) {
           scope.person.serviceArea = [];
         }
-        if (!scope.person._id) {
-          scope.person.isFemale = undefined;
-        } else {
+        
+        if (scope.person.isFemale === undefined || !scope.person.isFemale === null) {
           scope.person.isFemale = false;
         }
         scope.personIdOptions ={
@@ -51,13 +50,13 @@
         };
 
         scope.isMaleSexChecked = function() {
-          if (scope.person.isFemale) {
-            return !scope.person.isFemale;
-          } else if (scope.person._id) {
-            return true;
-          } else {
+          if(scope.person.isFemale === undefined || scope.person.isFemale === null){
             return undefined;
-          }
+          }else if (scope.person.isFemale) {
+            return !scope.person.isFemale;
+          } else {
+            return true;
+          } 
         };
 
         scope.getServiceAreaNames = function() {

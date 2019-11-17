@@ -93,6 +93,7 @@
     function loadPersonData(){
       if(eventregistrationrequest){
         vm.person = eventregistrationrequest.person;
+        vm.eventregistration.personType = eventregistrationrequest.person.personType;
         vm.setEvent(eventregistrationrequest.event);
       }else{
         if (!vm.isNewMemberRegistration()) {

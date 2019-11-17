@@ -345,7 +345,7 @@ exports.listByPersonId = function (req, res) {
  * EventRegistrationRequest middleware
  */
 exports.eventRegistrationRequestByID = function (req, res, next, id) {
-
+debugger;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'EventRegistrationRequest is invalid'
@@ -354,7 +354,7 @@ exports.eventRegistrationRequestByID = function (req, res, next, id) {
 
   EventRegistrationRequest.findById(id)
     .populate('user', 'displayName')
-    .populate('personType', 'name')
+    .populate('person.personType', 'name')
     .populate('event')
     .where('deleted', false)
     .exec(function (err, eventRegistrationRequest) {

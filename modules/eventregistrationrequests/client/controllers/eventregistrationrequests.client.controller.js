@@ -216,14 +216,22 @@
             });
           }
           $state.go('eventregistrationrequests.viewByRequestNumber', {
-            requestNumber: res.requestNumber
+            eventregistrationrequestId: res.requestNumber
           });
         }        
       }
 
       function errorCallback(res) {
-        $rootScope.showLoadingSpinner = false;
         vm.error = res.data.message;
+
+        return EventregistrationrequestsService.get({
+          eventregistrationrequestId: vm.eventregistrationrequest._id
+        }).then(function(eventregistrationrequestOriginal){
+          vm.eventregistrationrequest = eventregistrationrequestOriginal;
+          $rootScope.showLoadingSpinner = false;
+        }, function(){
+          $rootScope.showLoadingSpinner = false;
+        });
         $anchorScroll(document.body.scrollTop);
       }
     }
