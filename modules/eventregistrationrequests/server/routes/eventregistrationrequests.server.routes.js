@@ -12,10 +12,10 @@ module.exports = function(app) {
     .get(eventregistrationrequests.list)
     .post(eventregistrationrequests.create);
 
-  app.route('/api/eventregistrationrequests/current').all(eventregistrationrequestsPolicy.isAllowed)
+  app.route('/api/eventregistrationrequests/pending').all(eventregistrationrequestsPolicy.isAllowed)
     .get(eventregistrationrequests.listAllPending);
 
-  app.route('/api/eventregistrationrequests/current/:eventRegistrationRequestId').all(eventregistrationrequestsPolicy.isAllowed)
+  app.route('/api/eventregistrationrequests/pending/:eventRegistrationRequestId').all(eventregistrationrequestsPolicy.isAllowed)
     .get(eventregistrationrequests.read)
     .put(eventregistrationrequests.update)
     .delete(eventregistrationrequests.delete);

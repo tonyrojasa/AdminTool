@@ -30,10 +30,10 @@ exports.invokeRolesPolicies = function() {
       resources: '/api/eventregistrationrequests/person/:personId',
       permissions: '*'
     }, {
-      resources: '/api/eventregistrationrequests/current',
+      resources: '/api/eventregistrationrequests/pending',
       permissions: '*'
     }, {
-      resources: '/api/eventregistrationrequests/current/:eventRegistrationRequestId',
+      resources: '/api/eventregistrationrequests/pending/:eventRegistrationRequestId',
       permissions: '*'
     }]
   }, {
@@ -54,10 +54,10 @@ exports.invokeRolesPolicies = function() {
       resources: '/api/eventregistrationrequests/event/:eventId',
       permissions: ['get']
     }, {
-      resources: '/api/eventregistrationrequests/current',
+      resources: '/api/eventregistrationrequests/pending',
       permissions: ['get', 'post', 'patch', 'put']
     }, {
-      resources: '/api/eventregistrationrequests/current/:eventRegistrationRequestId',
+      resources: '/api/eventregistrationrequests/pending/:eventRegistrationRequestId',
       permissions: ['get', 'post', 'patch', 'put']
     }]
   }, {
@@ -78,10 +78,10 @@ exports.invokeRolesPolicies = function() {
       resources: '/api/eventregistrationrequests/person/:personId',
       permissions: ['get']
     }, {
-      resources: '/api/eventregistrationrequests/current',
+      resources: '/api/eventregistrationrequests/pending',
       permissions: ['get']
     }, {
-      resources: '/api/eventregistrationrequests/current/:eventRegistrationRequestId',
+      resources: '/api/eventregistrationrequests/pending/:eventRegistrationRequestId',
       permissions: ['get']
     }]
   }]);

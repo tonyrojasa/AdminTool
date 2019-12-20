@@ -234,30 +234,22 @@ exports.listAllPending = function (req, res) {
     };
   }
 
-  Event.find({
+  EventRegistrationRequest.find({
     $or: [
       { 'status': 'pendiente' }
     ]
-  }).exec(function (err, events) {
+  }).find(query).sort('-created')
+  .populate('user', 'displayName')
+  .populate('personType', 'name')
+  .populate('event')
+  .where('deleted', false)
+  .exec(function (err, eventRegistrationRequests) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      EventRegistrationRequest.find(query).find({ event: { $in: events } }).sort('-created')
-        .populate('user', 'displayName')
-        .populate('personType', 'name')
-        .populate('event')
-        .where('deleted', false)
-        .exec(function (err, eventRegistrationRequests) {
-          if (err) {
-            return res.status(400).send({
-              message: errorHandler.getErrorMessage(err)
-            });
-          } else {
-            res.jsonp(eventRegistrationRequests);
-          }
-        });
+      res.jsonp(eventRegistrationRequests);
     }
   });
 };

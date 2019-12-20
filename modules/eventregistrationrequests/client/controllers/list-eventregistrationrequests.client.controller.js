@@ -5,12 +5,12 @@
     .module('eventregistrationrequests')
     .controller('EventregistrationrequestsListController', EventregistrationrequestsListController);
 
-  EventregistrationrequestsListController.$inject = ['$rootScope', '$scope', 'EventregistrationrequestsService', 'CurrentEventsService', 'Authentication',
+  EventregistrationrequestsListController.$inject = ['$rootScope', '$scope', 'PendingEventregistrationrequestsService', 'CurrentEventsService', 'Authentication',
     'ReceiptsByEventRegistrationService', '$anchorScroll', 'NgTableParams', '$filter', 'moment',
     'PersontypesService', 'Notification', 'PeopleDataService'
   ];
 
-  function EventregistrationrequestsListController($rootScope, $scope, EventregistrationrequestsService, CurrentEventsService, Authentication,
+  function EventregistrationrequestsListController($rootScope, $scope, PendingEventregistrationrequestsService, CurrentEventsService, Authentication,
     ReceiptsByEventRegistrationService, $anchorScroll, NgTableParams, $filter, moment,
     PersontypesService, Notification, PeopleDataService) {
     var vm = this;
@@ -38,7 +38,7 @@
     });
 
     $rootScope.showLoadingSpinner = true;
-    vm.eventregistrationrequests = EventregistrationrequestsService.query(function (data) {
+    vm.eventregistrationrequests = PendingEventregistrationrequestsService.query(function (data) {
       if (data.length && data.length > 0) {
         vm.lastIndex = data.length - 1;
       } else {
@@ -187,7 +187,7 @@
     // Remove existing Eventregistration
     function remove(eventRegistration) {
       if (confirm('Está seguro que desea eliminar la Solicitud # ' + eventRegistration.requestNumber + '?')) {        
-        EventregistrationrequestsService.delete({
+        PendingEventregistrationrequestsService.delete({
           'eventregistrationrequestId': eventRegistration._id
         }, function () {
           vm.warning = 'Se eliminó la solicitud #' + eventRegistration.requestNumber + '. ';

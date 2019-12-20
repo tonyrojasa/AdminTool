@@ -4,11 +4,11 @@
 
   angular
     .module('eventregistrationrequests')
-    .factory('CurrentEventregistrationsService', CurrentEventregistrationsService);
+    .factory('PendingEventregistrationrequestsService', PendingEventregistrationrequestsService);
 
-  CurrentEventregistrationsService.$inject = ['$resource'];
+  PendingEventregistrationrequestsService.$inject = ['$resource'];
 
-  function CurrentEventregistrationsService($resource) {
+  function PendingEventregistrationrequestsService($resource) {
     return $resource('api/eventregistrationrequests/pending/:eventRegistrationRequestId', {
       eventregistrationId: '@_id'
     }, {
