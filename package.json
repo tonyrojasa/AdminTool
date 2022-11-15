@@ -100,7 +100,7 @@
     "gulp-util": "~3.0.7",
     "imagemin-pngquant": "~5.0.0",
     "istanbul": "~0.4.2",
-    "karma": "~1.6.0",
+    "karma": "~5.0.8",
     "karma-chrome-launcher": "~2.0.0",
     "karma-coverage": "~1.1.1",
     "karma-firefox-launcher": "~1.0.0",
